@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2006
  * Nintendo Co., Ltd.
- *  
+ *
  * Permission to use, copy, modify, distribute and sell this software
  * and its documentation for any purpose is hereby granted without fee,
  * provided that the above copyright notice appear in all copies and
@@ -156,6 +156,7 @@ public:
                         IidIsAttribute* iidis = dynamic_cast<IidIsAttribute*>(attr);
                         if (iidis)
                         {
+                            // XXX Should verify that the type of iid_is parameter is Guid.
                             typeMap[id] |= IS_IID;
                             typeOffset += 4;
                             dec->setIid(f->getParamNum(iidis->getName().c_str()));

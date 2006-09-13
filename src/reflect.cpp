@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2006
  * Nintendo Co., Ltd.
- *  
+ *
  * Permission to use, copy, modify, distribute and sell this software
  * and its documentation for any purpose is hereby granted without fee,
  * provided that the above copyright notice appear in all copies and
@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <es.h>
 #include <es/reflect.h>
 #include <es/types.h>
 
@@ -74,6 +73,11 @@ void printType(Reflect::Type type)
 
     // We also need the byte count of each parameter.
     printf(" {%d}", type.getSize());
+
+    if (type.isPointer() || type.isReference())
+    {
+        printf("-{%d}", type.getReferentSize());
+    }
 }
 
 char* indent = "";
@@ -86,7 +90,6 @@ int main(int argc, char* argv[])
 
     for (i = 1; i < argc; ++i)
     {
-
         int fd = open(argv[i], O_RDONLY);
         if (fd < 0)
         {
