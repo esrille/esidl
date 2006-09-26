@@ -403,13 +403,13 @@ void NameSpaceVisitor::at(const Declarator* d)
 void NameSpaceVisitor::at(const Structure* s)
 {
     TypeSpecVisitor::at(s);
-    out << ';';
+    out << ";\n";
 }
 
 void NameSpaceVisitor::at(const Enum* e)
 {
     TypeSpecVisitor::at(e);
-    out << ';';
+    out << ";\n";
 }
 
 void NameSpaceVisitor::at(const Interface* interface)

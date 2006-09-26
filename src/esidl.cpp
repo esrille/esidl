@@ -75,14 +75,26 @@ static std::string GetOutputFilename(const char* input, const char* suffix)
 
     if (includePath)
     {
-        filename.replace(filename.find(includePath), strlen(includePath) + 1, "");
+        int pos = filename.find(includePath);
+        if (pos == 0)
+        {
+            filename.replace(pos, strlen(includePath) + 1, "");
+        }
+        else
+        {
+            int slash = filename.rfind("/");
+            if (0 <= slash)
+            {
+                filename.replace(0, slash + 1, "");
+            }
+        }
     }
 
     std::string dir;
     std::string path(filename);
     for (;;)
     {
-        int slash(path.find("/"));
+        int slash = path.find("/");
         if (slash < 0)
         {
             break;
