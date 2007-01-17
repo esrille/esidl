@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006
+ * Copyright (c) 2006, 2007
  * Nintendo Co., Ltd.
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -123,7 +123,7 @@ void DeclaratorHandler(std::ostream& out, const Declarator* d, bool interface = 
         }
     }
 
-    if (0 < constant && (0 < d->getPointer() || dynamic_cast<const Ref*>(d)))
+    if (0 < constant && (0 < d->getPointer() || dynamic_cast<const Ref*>(d) || a))
     {
         out << "const ";
     }
