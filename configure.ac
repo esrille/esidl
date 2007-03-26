@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script
-AC_INIT([esidl], [0.0.7])
+AC_INIT([esidl], [0.0.8])
 AC_CONFIG_AUX_DIR(.)
 AM_INIT_AUTOMAKE
 AC_PROG_YACC
