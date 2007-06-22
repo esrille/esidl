@@ -14,8 +14,9 @@ reflect_SOURCES = src/reflect.cpp
 AM_YFLAGS = -d -v -t
 
 AM_CPPFLAGS = \
-	-iquote $(srcdir)/include \
-	-iquote $(srcdir)/src \
+	-I$(srcdir)/include \
+	-I$(srcdir)/src \
+	-I- \
 	-I$(srcdir)/../include
 
 clean-local:
