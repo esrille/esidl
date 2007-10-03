@@ -1,0 +1,34 @@
+module X
+{
+    const short A = -3 + 1;
+    const long B = -2 - 1;
+    const long long C = -1 * 4;
+    const octet D = 6 / 3;
+    const unsigned short E = 5 % 2;
+    const unsigned long F = 1 << 3 ;
+    const unsigned long long G = 8 >> 1;
+    const float H = 1.23 * 2 /2 - 1;
+    const double I = 2.34 * 2 / 2 + 1;
+    const long double J = 3.45 * 2 / 2;
+
+    const char K = 'A';
+    const wchar L = L'漢';
+    const string M = "ABC";
+    const wstring N = L"漢字";
+
+    const boolean O = TRUE | FALSE;
+    const boolean P = TRUE & FALSE;
+    const boolean Q = TRUE ^ FALSE;
+    const boolean R = P & Q;
+
+    typedef boolean S;
+    const S T = TRUE;
+
+    interface Y
+    {
+        typedef S U;
+
+        const U V = FALSE;
+        const double PI = 3.14159;
+    };
+};

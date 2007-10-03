@@ -1,0 +1,10 @@
+module A
+{
+    typedef sequence<unsigned short> S;
+    typedef long T[10];
+
+    interface X
+    {
+        void op(in S s, out T t);
+    };
+};

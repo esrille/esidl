@@ -1,0 +1,18 @@
+// cf. 3.20.2 Scoping Rules and Name Resolution
+
+module M
+{
+    typedef long A;
+    interface B
+    {
+        typedef string A;
+    };
+};
+
+module N
+{
+    interface Y : M::B
+    {
+        void op(in A a);
+    };
+};

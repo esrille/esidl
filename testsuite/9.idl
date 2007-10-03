@@ -1,0 +1,6 @@
+struct A
+{
+    sequence<long> x;
+    sequence<sequence<long> > y;
+    sequence<long, 5> z;
+};

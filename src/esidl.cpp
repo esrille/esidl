@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006
+ * Copyright (c) 2007
  * Nintendo Co., Ltd.
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -13,11 +13,10 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <iostream>
+#include <sys/wait.h>
 #include <stdio.h>
-#include <ctype.h>
+#include <stdlib.h>
 #include "esidl.h"
-#include <fstream>
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,37 +26,76 @@ int yyparse(void);
 
 extern FILE* yyin;
 
-char* includePath;
-
 #ifdef __cplusplus
 }
 #endif
 
-#define OUTPUT_MODE_HEADER   1 // C++ header
-#define OUTPUT_MODE_TYPELIB  2 // TypeLibrary
+namespace
+{
+    Node* specification;
+    Node* current;          // Current name space
+    char  filename[PATH_MAX + 1];
+    char* includePath;
+    std::string javadoc;
+}
 
-Integer         NameSpace::s8Type(8, true);
-Integer         NameSpace::s16Type(16, true);
-Integer         NameSpace::s32Type(32, true);
-Integer         NameSpace::s64Type(64, true);
-Integer         NameSpace::u8Type(8, false);
-Integer         NameSpace::u16Type(16, false);
-Integer         NameSpace::u32Type(32, false);
-Integer         NameSpace::u64Type(64, false);
-Character       NameSpace::characterType;
-Float           NameSpace::floatType(32);
-Float           NameSpace::doubleType(64);
-Boolean         NameSpace::booleanType;
-Void            NameSpace::voidType;
-UuidType        NameSpace::uuidType;
-NameSpace       NameSpace::globalSpace;
-NameSpace*      NameSpace::localSpace(&globalSpace);
+int Node::level = 1;
 
-extern void GenerateHeader(std::ostream& out);
-extern void GenerateTypeLib(std::ostream& out);
-extern void GenerateIrd(std::ostream& out);
+Node* getSpecification()
+{
+    return specification;
+}
 
-static std::string GetOutputFilename(const char* input, const char* suffix)
+Node* setSpecification(Node* node)
+{
+    Node* prev = specification;
+    specification = node;
+    return prev;
+}
+
+Node* getCurrent()
+{
+    return current;
+}
+
+Node* setCurrent(const Node* node)
+{
+    Node* prev = current;
+    current = const_cast<Node*>(node);
+    return prev;
+}
+
+char* getFilename()
+{
+    return filename;
+}
+
+void setFilename(const char* name)
+{
+    if (*name == '"')
+    {
+        size_t len = strlen(name) - 2;
+        assert(len < PATH_MAX);
+        memmove(filename, name + 1, len);
+        filename[len] = '\0';
+    }
+    else
+    {
+        strncpy(filename, name, PATH_MAX);
+    }
+}
+
+std::string& getJavadoc()
+{
+    return javadoc;
+}
+
+void setJavadoc(const char* doc)
+{
+    javadoc = doc ? doc : "";
+}
+
+std::string getOutputFilename(const char* input, const char* suffix)
 {
     std::string filename(input);
 
@@ -105,84 +143,108 @@ static std::string GetOutputFilename(const char* input, const char* suffix)
         dir += '/';
     }
 
-    std::cout << filename << '\n';
-
     return filename;
 }
 
-static std::string GetIncludedName(const char* header)
+void Module::add(Node* node)
 {
-    std::string included(header);
-
-    for (int i = 0; i < included.size(); ++i)
+    if (node->getRank() == 1)
     {
-        char c = included[i];
-        included[i] = toupper(c);
-        if (c == '.' || c == '/' || c == '\\')
+        if (dynamic_cast<Interface*>(node) && !node->isLeaf())
         {
-            included[i] = '_';
+            ++interfaceCount;
+        }
+        if (dynamic_cast<ConstDcl*>(node))
+        {
+            ++constCount;
+        }
+        if (dynamic_cast<Module*>(node))
+        {
+            ++moduleCount;
         }
     }
-    return "NINTENDO_" + included + "_INCLUDED";
+    Node::add(node);
+}
+
+void StructType::add(Node* node)
+{
+    ++memberCount;
+    Node::add(node);
+}
+
+void Interface::add(Node* node)
+{
+    if (dynamic_cast<ConstDcl*>(node))
+    {
+        ++constCount;
+    }
+    else if (dynamic_cast<OpDcl*>(node))
+    {
+        ++methodCount;
+    }
+    else if (Attribute* attr = dynamic_cast<Attribute*>(node))
+    {
+        if (attr->isReadonly())
+        {
+            ++methodCount;
+        }
+        else
+        {
+            methodCount += 2;
+        }
+    }
+    Node::add(node);
+}
+
+void OpDcl::add(Node* node)
+{
+    if (dynamic_cast<ParamDcl*>(node))
+    {
+        ++paramCount;
+    }
+    Node::add(node);
 }
 
 int main(int argc, char* argv[])
 {
-    for (int i = 1; i < argc; ++i)
+    for (int i = 0; i < argc; ++i)
     {
-        switch (*argv[i])
+        if (argv[i][0] == '-')
         {
-          case '-':
-            switch (argv[i][1])
+            if (strcmp(argv[i], "-I") == 0)
             {
-              case 'I':
                 ++i;
                 includePath = argv[i];
-                break;
-              default:
-                std::cerr << "WARNING: unknown option '" << argv[i] << "'\n";
-                exit(EXIT_FAILURE);
-                break;
             }
-            break;
-          default:
-            yyin = fopen(argv[i], "r");
-            if (!yyin)
-            {
-                std::cerr << "Could not open '" << argv[i] << "'.\n";
-                continue;
-            }
-            yyparse();
-            fclose(yyin);
-            std::cout << "yyparse() ok.\n";
-
-            // Generate C++ header
-            std::string filename = GetOutputFilename(argv[i], "h");
-            std::string included = GetIncludedName(filename.c_str());
-            // std::cout << "Creating C++ header file: " << filename << std::endl;
-            std::ofstream header(filename.c_str());
-
-            header << "/* Generated by Nintendo esidl " << VERSION << ". */\n\n";
-
-            header << "#ifndef " << included << std::endl;
-            header << "#define " << included << std::endl;
-            header << std::endl;
-            header << "#include <es/uuid.h>" << std::endl;
-            GenerateHeader(header);
-            header << "#endif  // " << included << std::endl;
-            header.close();
-
-            // Generate interface reflection data.
-            filename = GetOutputFilename(argv[i], "ird");
-            // std::cout << "Creating a interface reflection data: " << filename << std::endl;
-            std::ofstream ird(filename.c_str(), std::ios::out | std::ios::binary);
-            GenerateIrd(ird);
-            ird.close();
-
-            // XXX need to clean up...
-            break;
         }
     }
 
-    std::cout << "done.\n";
+    Module* node = new Module("");
+    setSpecification(node);
+    setCurrent(node);
+
+    try
+    {
+        yyin = stdin;
+        yyparse();
+        fclose(yyin);
+        printf("yyparse() ok.\n");
+    }
+    catch (...)
+    {
+        return EXIT_FAILURE;
+    }
+
+    printf("-I %s\n", includePath);
+    printf("-----------------------------------\n");
+    print();
+    printf("-----------------------------------\n");
+    printCxx(getOutputFilename(getFilename(), "h"));
+    printf("-----------------------------------\n");
+    printEnt(getOutputFilename(getFilename(), "ent"));
+    printf("-----------------------------------\n");
+
+    delete node;
+
+    return EXIT_SUCCESS;
 }

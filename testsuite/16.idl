@@ -1,0 +1,9 @@
+interface I
+{
+    typedef sequence<unsigned short> Name;
+
+    Name getName();
+    long setName(in Name name);
+
+    attribute Name middle;
+};

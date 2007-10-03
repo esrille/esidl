@@ -1,13 +1,20 @@
+SUBDIRS = . testsuite
+
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 
-bin_PROGRAMS = esidl reflect
+bin_PROGRAMS = esidl esidl2 entdump reflect
 
-esidl_SOURCES = src/lexer.ll src/parser.yy src/esidl.cpp src/guid.c \
-                include/esidl.h \
-                src/header.cpp include/header.h \
-		src/ird.cpp include/binaryStream.h
+esidl_SOURCES = src/driver.cpp
 
-esidl_CXXFLAGS = -D YYERROR_VERBOSE
+esidl2_SOURCES = src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
+		 src/guid.cpp include/guid.h include/utf.h \
+		 src/print.cpp src/cxx.cpp \
+		 src/ent.cpp \
+		 include/expr.h include/string.h
+
+esidl2_CXXFLAGS = -D YYERROR_VERBOSE
+
+entdump_SOURCES = src/entdump.cpp
 
 reflect_SOURCES = src/reflect.cpp
 

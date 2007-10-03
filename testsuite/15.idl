@@ -1,0 +1,10 @@
+interface Stream
+{
+    typedef sequence<octet> Buf;
+
+    Buf read();
+    long write(in Buf buf);
+    attribute Buf data;
+
+    attribute any position;
+};

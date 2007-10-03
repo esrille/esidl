@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006
+ * Copyright (c) 2007
  * Nintendo Co., Ltd.
  *
  * Permission to use, copy, modify, distribute and sell this software
@@ -11,20 +11,27 @@
  * purpose.  It is provided "as is" without express or implied warranty.
  */
 
-%x import_state
+/*
+ * These coded instructions, statements, and computer programs contain
+ * software derived from the following specification:
+ *
+ * Common Object Request Broker Architecture: Core Specification,
+ * Version 3.0.3, Object Management Group, Inc., March 2004.
+ * http://www.omg.org/technology/documents/formal/corba_iiop.htm.
+ */
 
 %{
 
-#include <stdlib.h>
-#include <string.h>
-#include <iostream>
-#include <set>
-#include <stack>
 #include "esidl.h"
 #include "parser.h"
 
-std::stack<YY_BUFFER_STATE> includeStack;
-std::set<std::string> importedFiles;
+// #define VERBOSE
+
+#ifndef VERBOSE
+#define PRINTF(...)     (__VA_ARGS__)
+#else
+#define PRINTF(...)     printf(__VA_ARGS__)
+#endif
 
 extern "C" int yyparse(void);
 
@@ -35,234 +42,192 @@ void yyerror(const char* str);
 
 extern "C" int yywrap();
 
-int includeLevel()
-{
-    return includeStack.size();
-}
-
-extern char* includePath;
-
 %}
 
 /* regular definitions */
-delim               [ \t\n\f\r]
-ws                  {delim}
-letter              [A-Za-z_]
-digit               [0-9]
-hex_digit           [0-9A-Fa-f]
-id                  {letter}({letter}|{digit})*
-ll_suffix           (ll|LL)
-l_suffix            (l|L)
-u_suffix            (u|U)
-f_suffix            (f|F)
-suffix              (({u_suffix}{ll_suffix})|({ll_suffix}{u_suffix})|({u_suffix}{l_suffix})|({l_suffix}{u_suffix})|{ll_suffix}|{l_suffix}|{u_suffix})?
-integer             -?{digit}+{suffix}
-hex_integer         (0(x|X){hex_digit}+){suffix}
-float               {digit}+\.{digit}+({f_suffix}|{l_suffix})?
-octet               {hex_digit}{hex_digit}
-octet2              {octet}{octet}
-uuid_rep            {octet2}{octet2}\-{octet2}\-{octet2}\-{octet2}\-{octet2}{octet2}{octet2}
-character_lit       '([^'\\\n]|\\.)*
-string_lit          \"([^\"\\\n]|\\.)*
-comment             \/\*(([^*])|(\*[^/]))*\*\/
+
+USP                     (\xe1\x9a\x80)|(\xe1\xa0\x8e)|(\xe2\x80[\x80-\x8a])|(\xe2\x80\xaf)|(\xe2\x81\x9f)|(\xe3\x80\x80)
+LS                      (\xe2\x80\xa8)
+PS                      (\xe2\x80\xa9)
+NBSP                    (\xc2\xa0)
+/* Lu up to \u00ff */
+Lu                      (\xc3[\x80-\x9e])
+/* Ll up to \u00ff */
+Ll                      (\xc2[\xaa\xb5\xba])|(\xc3[\x9f-\xbf])
+/* Unicode excluding USP, LS, PS, Lu and Li */
+Unicode                 ([\xc4-\xdf][\x80-\xbf])|(\xe0[\xa0-\xbf][\x80-\xbf])|(\e1[\x80-\x99][\x80-\xbf])|(\e1\9a[\x81-\xbf])|(\e1[\x9b-\x9f][\x80-\xbf])|(\e1\xa0[\x80-\x8d\x8f-\xbf])|(\e1[\xa1-\xbf][\x80-\xbf])|(\e2\x80[\x8b-\xa7\xaa-\xbf])|(\e2\x81[\x80-\x9e\xa0-\xbf])|(\e2[\x82-\xbf][\x80-\xbf])|(\e3\x80[\x81-\xbf])|(\e3[\x81-\xbf][\x80-\xbf])|([\xe4-\xec][\x80-\xbf][\x80-\xbf])|(\xed[\x80-\x9f][\x80-\xbf])|([\xee-\xef][\x80-\xbf][\x80-\xbf])|(\xf0[\x90-\xbf][\x80-\xbf][\x80-\xbf])|([\xf1-\xf3][\x80-\xbf][\x80-\xbf][\x80-\xbf])|(\xf4[\x80-\x8f][\x80-\xbf][\x80-\xbf])
+
+WhiteSpace              ([ \t\v\f]|{NBSP}|{USP})
+LineTerminator          ([\n\r]|{LS}|{PS})
+HexDigit                [0-9A-Fa-f]
+DecimalDigit            [0-9]
+HexIntegerLiteral       0(x|X){HexDigit}+
+DecimalLiteral          ({DecimalIntegerLiteral}\.[0-9]*{ExponentPart}?)|(\.[0-9]+{ExponentPart}?)|({DecimalIntegerLiteral}{ExponentPart}?)
+
+ExponentPart            (e|E)[\+\-]?[0-9]+
+DecimalIntegerLiteral   0|([1-9][0-9]*)
+OctalIntegerLiteral     (0[0-8]+)
+
+SingleEscapeCharacter   ['\"\\bfnrtv]
+NonEscapeCharacter      [^'\"\\bfnrtv\n\r]
+HexEscapeSequence       x{HexDigit}{2}
+UnicodeEscapeSequence   u{HexDigit}{4}
+CharacterEscapeSequence {SingleEscapeCharacter}|{NonEscapeCharacter}
+EscapeSequence          {CharacterEscapeSequence}|0|{HexEscapeSequence}|{UnicodeEscapeSequence}
+SingleStringCharacter   ([^'\\\n\r]|\\{EscapeSequence})
+DoubleStringCharacter   ([^\"\\\n\r]|\\{EscapeSequence})
+IdentifierStart         ([A-Za-z$_]|{Lu}|{Ll}|{Unicode})
+IdentifierPart          ([0-9]|{IdentifierStart}|(\\{UnicodeEscapeSequence}))
+Identifier              {IdentifierStart}{IdentifierPart}*
+
+FixedPointLiteral       (({DecimalIntegerLiteral}\.[0-9]*)|(\.[0-9]+)|({DecimalIntegerLiteral}))[dD]
+
+MultiLineComment        \/\*(([^*])|(\*[^/]))*\*\/
+SingleLineComment       \/\/
+
+PoundSign               ^{WhiteSpace}*#
 
 %%
 
-{ws}                { /* No action, and no return */ }
+{WhiteSpace}        { /* No action, and no return */ }
+{LineTerminator}    { /* No action, and no return */ }
 
-{character_lit}'    {
-                        yylval->expression = new Literal<char>((yytext[1] != '\\') ? yytext[1] : yytext[2]);
-                        return CHARACTER_CONST;
+abstract            { return ABSTRACT; }
+any                 { return ANY; }
+attribute           { return ATTRIBUTE; }
+boolean             { return BOOLEAN; }
+case                { return CASE; }
+char                { return CHAR; }
+const               { return CONST; }
+context             { return CONTEXT; }
+custom              { return CUSTOM; }
+default             { return DEFAULT; }
+double              { return DOUBLE; }
+exception           { return EXCEPTION; }
+enum                { return ENUM; }
+FALSE               { return FALSE; }
+fixed               { return FIXED; }
+float               { return FLOAT; }
+getraises           { return GETRAISES; }
+import              { return IMPORT; }
+in                  { return IN; }
+inout               { return INOUT; }
+interface           { return INTERFACE; }
+local               { return LOCAL; }
+long                { return LONG; }
+module              { return MODULE; }
+native              { return NATIVE; }
+Object              { return OBJECT; }
+octet               { return OCTET; }
+oneway              { return ONEWAY; }
+out                 { return OUT; }
+private             { return PRIVATE; }
+public              { return PUBLIC; }
+raises              { return RAISES; }
+readonly            { return READONLY; }
+setraises           { return SETRAISES; }
+sequence            { return SEQUENCE; }
+short               { return SHORT; }
+string              { return STRING; }
+struct              { return STRUCT; }
+supports            { return SUPPORTS; }
+switch              { return SWITCH; }
+TRUE                { return TRUE; }
+truncatable         { return TRUNCATABLE; }
+typedef             { return TYPEDEF; }
+typeid              { return TYPEID; }
+typeprefix          { return TYPEPREFIX; }
+unsigned            { return UNSIGNED; }
+union               { return UNION; }
+ValueBase           { return VALUEBASE; }
+valuetype           { return VALUETYPE; }
+void                { return VOID; }
+wchar               { return WCHAR; }
+wstring             { return WSTRING; }
+
+"::"                { return OP_SCOPE; }
+"<<"                { return OP_SHL; }
+">>"                { return OP_SHR; }
+
+uuid                { return UUID; }
+
+{Identifier}        {
+                        yylval->name = strdup(yytext);
+                        return IDENTIFIER;
                     }
 
-{string_lit}\"      {
-                        char* s = strdup(yytext + 1);
-                        s[strlen(s) - 1] = '\0';
-                        yylval->expression = new Literal<char*>(s);
-                        return STRING_CONST;
-                    }
-
-{integer}           {
-                        yylval->expression = new Literal<int>(strtoll(yytext, 0, 10));
+{DecimalIntegerLiteral} {
+                        yylval->name = strdup(yytext);
                         return INTEGER_LITERAL;
                     }
 
-{hex_integer}       {
-                        yylval->expression = new Literal<int>(strtoll(yytext, 0, 16), 16);
+{OctalIntegerLiteral}   {
+                        yylval->name = strdup(yytext);
                         return INTEGER_LITERAL;
                     }
 
-boolean             {
-                        yylval->type = NameSpace::newBoolean();
-                        return BOOLEAN;
-                    }
-byte                {
-                        return BYTE;
-                    }
-char                {
-                        yylval->type = NameSpace::newCharacter();
-                        return CHAR;
-                    }
-const               {
-                        return CONST;
-                    }
-double              {
-                        yylval->type = NameSpace::newFloat(64);
-                        return FLOAT;
-                    }
-enum                {
-                        return ENUM;
-                    }
-false               {
-                        yylval->expression = new Literal<bool>(false);
-                        return FALSE;
-                    }
-float               {
-                        yylval->type = NameSpace::newFloat(32);
-                        return FLOAT;
-                    }
-import              {
-                        BEGIN(import_state);
-                        return IMPORT;
-                    }
-in                  {
-                        yylval->attribute = new InAttribute();
-                        return IN;
-                    }
-int                 {
-                        return INT;
-                    }
-interface           {
-                        return INTERFACE;
-                    }
-long                {
-                        return LONG;
-                    }
-object              {
-                        yylval->attribute = new ObjectAttribute();
-                        return OBJECT;
-                    }
-out                 {
-                        yylval->attribute = new OutAttribute();
-                        return OUT;
-                    }
-short               {
-                        return SHORT;
-                    }
-struct              {
-                        return STRUCT;
-                    }
-true                {
-                        yylval->expression = new Literal<bool>(true);
-                        return TRUE;
-                    }
-unsigned            {
-                        return UNSIGNED;
-                    }
-uuid                {
-                        return UUID;
-                    }
-void                {
-                        return VOID;
-                    }
-iid_is              {
-                        return IID_IS;
-                    }
-size_is             {
-                        return SIZE_IS;
-                    }
-ref                 {
-                        yylval->attribute = new RefAttribute();
-                        return REF;
-                    }
-unique              {
-                        yylval->attribute = new UniqueAttribute();
-                        return UNIQUE;
-                    }
-full                {
-                        yylval->attribute = new FullAttribute();
-                        return FULL;
-                    }
-{id}                {
-                        yylval->id = strdup(yytext);
-                        return ID;
-                    }
-{uuid_rep}          {
-                        yylval->attribute = new UuidAttribute(yytext);
-                        return UUID_REP;
+{HexIntegerLiteral} {
+                        yylval->name = strdup(yytext);
+                        return INTEGER_LITERAL;
                     }
 
-{comment}           {
-                        /* Comment */
+'{SingleStringCharacter}'   {
+                        yylval->name = strdup(yytext);
+                        return CHARACTER_LITERAL;
+                    }
+
+L'{SingleStringCharacter}*' {
+                        yylval->name = strdup(yytext);
+                        return WIDE_CHARACTER_LITERAL;
+                    }
+
+{DecimalLiteral}    {
+                        yylval->name = strdup(yytext);
+                        return FLOATING_PT_LITERAL;
+                    }
+
+\"{DoubleStringCharacter}*\"    {
+                        yylval->name = strdup(yytext);
+                        return STRING_LITERAL;
+                    }
+
+L\"{DoubleStringCharacter}*\"   {
+                        yylval->name = strdup(yytext);
+                        return WIDE_STRING_LITERAL;
+                    }
+
+{FixedPointLiteral} {
+                        yylval->name = strdup(yytext);
+                        return FIXED_PT_LITERAL;
+                    }
+
+{MultiLineComment}  {
+                        /* MultiLineComment */
                         if (strncmp(yytext, "/**", 3) == 0)
                         {
                             /* Javadoc style comment */
-                            yylval->id = strdup(yytext);
-                            return COMMENT;
+                            yylval->name = strdup(yytext);
+                            return JAVADOC;
                         }
                     }
 
-"//"                {
-                        /* Comment */
+{SingleLineComment} {
+                        /* SingleLineComment */
                         int c;
 
                         do
                         {
                             c = yyinput();
-                        } while (c != '\n' && c != EOF);
+                        } while (c != '\n' && c != '\r' && c != EOF);
                     }
 
-<import_state>{ws}  { /* No action, and no return */ }
-
-<import_state>{string_lit}\"    {
-                        /* save the import file name */
-                        yylval->id = strdup(yytext);
-
-                        std::string filename;
-                        if (includePath)
-                        {
-                            filename = includePath;
-                            filename += "/";
-                            filename += (yytext + 1);
-                        }
-                        else
-                        {
-                            filename = yytext + 1;
-                        }
-                        filename.erase(filename.size() - 1);
-
-                        if (importedFiles.count(filename))
-                        {
-                            // filename has been imported once.
-                            return ID;
-                        }
-                        importedFiles.insert(filename);
-
-                        includeStack.push(YY_CURRENT_BUFFER);
-                        yyin = fopen(filename.c_str(), "r");
-                        if (!yyin)
-                        {
-                            yyerror(filename.c_str());
-                            yyerror("Could not open an include file.");
-                            break;
-                        }
-
-                        yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
-                        BEGIN(INITIAL);
-                        yyparse();
-                        yy_delete_buffer(YY_CURRENT_BUFFER);
-                        yy_switch_to_buffer(includeStack.top());
-                        includeStack.pop();
-                        BEGIN(import_state);
-                        return ID;
+{PoundSign}         {
+                        return POUND_SIGN;
                     }
 
-<import_state>;     {
-                        BEGIN(INITIAL);
-                        return (int) yytext[0];
+{PoundSign}pragma({WhiteSpace})+ID  {
+                        return PRAGMA_ID;
                     }
-
-<import_state>.     { return (int) yytext[0]; }
 
 .                   { return (int) yytext[0]; }
 

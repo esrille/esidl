@@ -1,0 +1,9 @@
+interface I
+{
+    boolean queryInterface(in uuid iid, out Object objectPtr);
+};
+
+interface J
+{
+    I getI(in J x);
+};

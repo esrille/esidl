@@ -1,0 +1,6 @@
+#include "7.idl"
+
+interface X
+{
+    void method() raises(E);
+};
