@@ -398,20 +398,17 @@ public:
 
             // setter
             fprintf(file, "virtual ");
-            if (seq ||
-                spec->isString(node->getParent()) ||
-                spec->isWString(node->getParent()))
+            if (seq)
             {
                 fprintf(file, "int set%s(const ", cap.c_str());
-                if (seq)
-                {
-                    seq->accept(this);
-                }
-                else
-                {
-                    spec->accept(this);
-                }
+                seq->accept(this);
                 fprintf(file, " %s, int %sLength)", name.c_str(), name.c_str());
+            }
+            else if (spec->isString(node->getParent()) || spec->isWString(node->getParent()))
+            {
+                fprintf(file, "int set%s(const ", cap.c_str());
+                spec->accept(this);
+                fprintf(file, " %s)", name.c_str());
             }
             else if (spec->isStruct(node->getParent()))
             {
