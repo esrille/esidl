@@ -888,6 +888,8 @@ uninstall-am: uninstall-binPROGRAMS
 	uninstall-binPROGRAMS
 
 
+esidl2-cxx.$(OBJEXT) : Makefile
+
 clean-local:
 	-rm -f $(BUILT_SOURCES) parser.output
 

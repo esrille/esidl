@@ -12,6 +12,8 @@ esidl2_SOURCES = src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
 		 src/ent.cpp \
 		 include/expr.h include/string.h
 
+esidl2-cxx.$(OBJEXT) : Makefile
+
 esidl2_CXXFLAGS = -D YYERROR_VERBOSE
 
 entdump_SOURCES = src/entdump.cpp
