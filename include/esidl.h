@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <list>
 #include <string>
-#include <es/irf.h>
 #include <es/uuid.h>
 #include "guid.h"
 
