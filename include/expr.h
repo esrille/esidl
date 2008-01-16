@@ -372,7 +372,7 @@ public:
 
 class ConstOffsetter : public Visitor
 {
-    size_t offset;
+    u32 offset;
 
 public:
     ConstOffsetter(size_t base) :
@@ -380,7 +380,7 @@ public:
     {
     }
 
-    size_t getOffset() const
+    u32 getOffset() const
     {
         return offset;
     }
@@ -526,7 +526,7 @@ public:
             EvalString<std::string> eval(node->getParent());
 
             node->getExp()->accept(&eval);
-            printf("%s (%lld)", eval.getValue().c_str(), offset);
+            printf("%s (%u)", eval.getValue().c_str(), offset);
 
             node->setValue(offset);
             offset += eval.getValue().length() + 1;
@@ -536,7 +536,7 @@ public:
             EvalString<std::string> eval(node->getParent());
 
             node->getExp()->accept(&eval);
-            printf("%s (%lld)", eval.getValue().c_str(), offset);
+            printf("%s (%u)", eval.getValue().c_str(), offset);
 
             node->setValue(offset);
             offset += eval.getValue().length() + 1;

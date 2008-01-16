@@ -27,7 +27,7 @@
 class StringOffsetter : public Visitor
 {
     std::map<std::string, size_t>& dict;
-    size_t offset;
+    u32 offset;
 
 public:
     StringOffsetter(std::map<std::string, size_t>& dict, size_t base) :
@@ -36,7 +36,7 @@ public:
     {
     }
 
-    size_t getOffset() const
+    u32 getOffset() const
     {
         return offset;
     }
