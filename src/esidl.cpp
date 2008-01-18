@@ -212,14 +212,21 @@ void OpDcl::add(Node* node)
 
 int main(int argc, char* argv[])
 {
-    for (int i = 0; i < argc; ++i)
+    for (int i = 1; i < argc; ++i)
     {
         if (argv[i][0] == '-')
         {
-            if (strcmp(argv[i], "-I") == 0)
+            if (argv[i][1] == 'I')
             {
-                ++i;
-                includePath = argv[i];
+                if (argv[i][2])
+                {
+                    includePath = &argv[i][2];
+                }
+                else
+                {
+                    ++i;
+                    includePath = argv[i];
+                }
             }
         }
     }
