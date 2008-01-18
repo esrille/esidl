@@ -484,7 +484,8 @@ class StructType : public Node
 
 public:
     StructType(std::string identifier) :
-        Node(identifier)
+        Node(identifier),
+        memberCount(0)
     {
         separator = ";\n";
         javadoc = ::getJavadoc();
