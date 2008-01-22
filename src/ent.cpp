@@ -90,7 +90,7 @@ class TypeOffsetter : public Visitor
         else if (const Interface* i = dynamic_cast<const Interface*>(node))
         {
             // Imported interface. Do not process members.
-            offset += sizeof(Interface);
+            offset += sizeof(Ent::Interface);
         }
     }
 
