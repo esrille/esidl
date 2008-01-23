@@ -26,7 +26,7 @@
 
 class TypeOffsetter : public Visitor
 {
-    u32 offset;
+    size_t offset;
 
     void processMembers(const Node* node)
     {
@@ -100,7 +100,7 @@ public:
     {
     }
 
-    u32 getOffset() const
+    size_t getOffset() const
     {
         return offset;
     }
@@ -146,7 +146,7 @@ public:
 
 class EntOffsetter : public Visitor
 {
-    u32 offset;
+    size_t offset;
 
 public:
     EntOffsetter() :
@@ -154,7 +154,7 @@ public:
     {
     }
 
-    u32 getOffset() const
+    size_t getOffset() const
     {
         return offset;
     }
@@ -299,7 +299,7 @@ public:
              ++i)
         {
             strcpy(reinterpret_cast<char*>(image) + i->second, i->first.c_str());
-            printf("%04lx: \"%s\"\n", i->second, i->first.c_str());
+            printf("%04zx: \"%s\"\n", i->second, i->first.c_str());
         }
     }
 
@@ -323,7 +323,7 @@ public:
             return;
         }
 
-        printf("%04lx: Module %s\n", node->getOffset(), node->getName().c_str());
+        printf("%04zx: Module %s\n", node->getOffset(), node->getName().c_str());
 
         Node* parent = node->getParent();
         if (parent)
@@ -337,7 +337,7 @@ public:
                                                    node->getModuleCount(), node->getInterfaceCount(), node->getConstCount());
 
 
-        u32 offset = node->getOffset() + sizeof(Ent::Module) + sizeof(Ent::Spec) * (node->getModuleCount() + node->getInterfaceCount());
+        size_t offset = node->getOffset() + sizeof(Ent::Module) + sizeof(Ent::Spec) * (node->getModuleCount() + node->getInterfaceCount());
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
             if (ConstDcl* c = dynamic_cast<ConstDcl*>(*i))
@@ -357,7 +357,7 @@ public:
             return;
         }
 
-        printf("%04lx: Enum %s\n", node->getOffset(), node->getName().c_str());
+        printf("%04zx: Enum %s\n", node->getOffset(), node->getName().c_str());
 
         Ent::Enum* e = new(image + node->getOffset()) Ent::Enum(node->getMemberCount());
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
@@ -373,7 +373,7 @@ public:
             return;
         }
 
-        printf("%04lx: Structure %s\n", node->getOffset(), node->getName().c_str());
+        printf("%04zx: Structure %s\n", node->getOffset(), node->getName().c_str());
 
         Ent::Structure* st = new(image + node->getOffset()) Ent::Structure(node->getMemberCount());
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
@@ -395,7 +395,7 @@ public:
             return;
         }
 
-        printf("%04lx: Exception %s\n", node->getOffset(), node->getName().c_str());
+        printf("%04zx: Exception %s\n", node->getOffset(), node->getName().c_str());
 
         Ent::Exception* exc = new(image + node->getOffset()) Ent::Exception(node->getMemberCount());
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
@@ -417,7 +417,7 @@ public:
             return;
         }
 
-        printf("%04lx: Interface %s\n", node->getOffset(), node->getName().c_str());
+        printf("%04zx: Interface %s\n", node->getOffset(), node->getName().c_str());
 
         Node* parent = node->getParent();
         assert(parent);
@@ -490,7 +490,7 @@ public:
 
         Ent::Spec spec = getSpec(node->getSpec(), getCurrent());
 
-        printf("%04lx: Sequence<%x>\n", node->getOffset(), spec);
+        printf("%04zx: Sequence<%x>\n", node->getOffset(), spec);
 
         if (Node* max = node->getMax())
         {
@@ -518,7 +518,7 @@ public:
 
         Ent::Spec spec = getSpec(node->getSpec(), getCurrent());
 
-        printf("%04lx: Array of %x - %s\n", node->getOffset(), spec, node->getName().c_str());
+        printf("%04zx: Array of %x - %s\n", node->getOffset(), spec, node->getName().c_str());
 
         Ent::Array* array = new(image + node->getOffset()) Ent::Array(spec, node->getDimension());
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
@@ -546,12 +546,12 @@ public:
 
         interface->addMethod(node->getOffset());
         Ent::Spec spec = getSpec(node->getSpec(), getCurrent());
-        printf("%04lx: Getter %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
+        printf("%04zx: Getter %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
         new(image + node->getOffset()) Ent::Method(spec, dict[node->getName()], Ent::Method::AttrGetter, 0, 0);
         if (!node->isReadonly())
         {
             interface->addMethod(node->getOffset() + Ent::Method::getSize(0, 0));
-            printf("%04lx: Setter %s : %x\n", node->getOffset() + Ent::Method::getSize(0, 0), node->getName().c_str(), spec);
+            printf("%04zx: Setter %s : %x\n", node->getOffset() + Ent::Method::getSize(0, 0), node->getName().c_str(), spec);
             Ent::Method* setter = new(image + node->getOffset() + Ent::Method::getSize(0, 0))
                                     Ent::Method(Ent::SpecVoid, dict[node->getName()], Ent::Method::AttrSetter, 1, 0);
             setter->addParam(spec, dict[node->getName()], Ent::Param::AttrIn);
@@ -571,7 +571,7 @@ public:
         assert(type);
         Ent::Spec spec = getSpec(type->getName());
 
-        printf("%04lx: Constant %s %x\n", node->getOffset(), node->getName().c_str(), spec);
+        printf("%04zx: Constant %s %x\n", node->getOffset(), node->getName().c_str(), spec);
 
         switch (spec)
         {
@@ -709,7 +709,7 @@ public:
         Ent::Method* method = new(image + node->getOffset()) Ent::Method(spec, dict[node->getName()], 0,
                                                                          node->getParamCount(), node->getRaiseCount());
 
-        printf("%04lx: Method %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
+        printf("%04zx: Method %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
             assert(dynamic_cast<ParamDcl*>(*i));

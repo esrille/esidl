@@ -526,7 +526,7 @@ public:
             EvalString<std::string> eval(node->getParent());
 
             node->getExp()->accept(&eval);
-            printf("%s (%u)", eval.getValue().c_str(), offset);
+            printf("%s (%zd)", eval.getValue().c_str(), offset);
 
             node->setValue(offset);
             offset += eval.getValue().length() + 1;
@@ -536,7 +536,7 @@ public:
             EvalString<std::string> eval(node->getParent());
 
             node->getExp()->accept(&eval);
-            printf("%s (%u)", eval.getValue().c_str(), offset);
+            printf("%s (%zd)", eval.getValue().c_str(), offset);
 
             node->setValue(offset);
             offset += eval.getValue().length() + 1;
