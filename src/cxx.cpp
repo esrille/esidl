@@ -175,7 +175,7 @@ public:
         if (node->getExtends())
         {
             fprintf(file, " : ");
-            prefix = "public ";
+            prefix = "public virtual ";
             interfaceMode = true;
             node->getExtends()->accept(this);
             interfaceMode = false;
