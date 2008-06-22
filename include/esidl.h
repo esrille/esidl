@@ -19,6 +19,7 @@
 #define NINTENDO_ESIDL_H_INCLUDED
 
 #include <assert.h>
+#include <string.h>
 #include <stdio.h>
 #include <list>
 #include <string>
