@@ -757,6 +757,7 @@ const char* Emitter::specTable[] =
     "Object",               // SpecObject
     "fixed",                // SpecFixed
     "ValueBase",            // SpecValue
+    "Variant",              // SpecVariant
 };
 
 void printEnt(const std::string& filename)

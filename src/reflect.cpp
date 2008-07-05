@@ -102,6 +102,9 @@ void processType(Reflect::Type type)
     case Ent::SpecValue:
         printf("value");
         break;
+    case Ent::SpecVariant:
+        printf("Variant");
+        break;
     case Ent::TypeModule:
         printf("module");
         break;

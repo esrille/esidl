@@ -273,6 +273,10 @@ public:
         {
             fprintf(file, "Guid&");
         }
+        else if (node->getName() == "Variant")
+        {
+            fprintf(file, "Variant");
+        }
         else
         {
             fprintf(file, "%s", node->getName().c_str());
@@ -406,6 +410,12 @@ public:
             spec->accept(this);
             fprintf(file, " %s)", name.c_str());
         }
+        else if (spec->isVariant(node->getParent()))
+        {
+            spec->accept(this);
+            fprintf(file, " get%s(", cap.c_str());
+            fprintf(file, "void* %s, int %sLength)", name.c_str(), name.c_str());
+        }
         else
         {
             if (spec->isInterface(node->getParent()))
@@ -451,6 +461,12 @@ public:
                      spec->isAny(node->getParent()))
             {
                 fprintf(file, "void set%s(const ", cap.c_str());
+                spec->accept(this);
+                fprintf(file, " %s)", name.c_str());
+            }
+            else if (spec->isVariant(node->getParent()))
+            {
+                fprintf(file, "int set%s(", cap.c_str());
                 spec->accept(this);
                 fprintf(file, " %s)", name.c_str());
             }

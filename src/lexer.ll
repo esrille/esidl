@@ -148,6 +148,7 @@ valuetype           { return VALUETYPE; }
 void                { return VOID; }
 wchar               { return WCHAR; }
 wstring             { return WSTRING; }
+Variant             { return VARIANT; }
 
 "::"                { return OP_SCOPE; }
 "<<"                { return OP_SHL; }

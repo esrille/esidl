@@ -279,6 +279,11 @@ public:
         return compare("uuid", scope) == 0;
     }
 
+    virtual bool isVariant(const Node* scope) const
+    {
+        return compare("Variant", scope) == 0;
+    }
+
     virtual const Interface* isInterface(const Node* scope) const
     {
         return 0;
