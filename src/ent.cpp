@@ -706,8 +706,7 @@ public:
         interface->addMethod(node->getOffset());
 
         Ent::Spec spec = getSpec(node->getSpec(), getCurrent());
-        Ent::Method* method = new(image + node->getOffset()) Ent::Method(spec, dict[node->getName()], 0,
-                                                                         node->getParamCount(), node->getRaiseCount());
+        Ent::Method* method = new(image + node->getOffset()) Ent::Method(spec, dict[node->getName()], node->getExtAttr(), node->getParamCount(), node->getRaiseCount());
 
         printf("%04zx: Method %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
@@ -728,7 +727,6 @@ public:
                 printf("  Raise %x\n", getSpec(*i, node));
             }
         }
-
         node->getSpec()->accept(this);
     }
 };

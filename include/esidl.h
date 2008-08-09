@@ -47,6 +47,7 @@ class Node;
         class ConstDcl;
         class OpDcl;
         class ParamDcl;
+    class ExtendedAttribute;
 class Visitor;
 
 typedef std::list<Node*> NodeList;
@@ -72,6 +73,7 @@ protected:
     mutable size_t      offset;
     int                 rank;
     std::string         javadoc;
+    NodeList*           extendedAttributes;
 
     static int          level;      // current include level
 
@@ -81,6 +83,7 @@ public:
         children(0),
         separator(", "),
         offset(0),
+        extendedAttributes(0),
         rank(level)
     {
     }
@@ -91,6 +94,7 @@ public:
         children(0),
         separator(", "),
         offset(0),
+        extendedAttributes(0),
         rank(level)
     {
     }
@@ -99,6 +103,7 @@ public:
         parent(0),
         separator(", "),
         offset(0),
+        extendedAttributes(0),
         rank(level)
     {
         setChildren(children);
@@ -109,6 +114,7 @@ public:
         name(name),
         separator(", "),
         offset(0),
+        extendedAttributes(0),
         rank(level)
     {
         setChildren(children);
@@ -125,7 +131,17 @@ public:
             while (0 < children->size())
             {
                 Node* child = children->front();
+                children->pop_front();
                 delete child;
+            }
+        }
+        if (extendedAttributes)
+        {
+            while (0 < extendedAttributes->size())
+            {
+                Node* attr = extendedAttributes->front();
+                extendedAttributes->pop_front();
+                delete attr;
             }
         }
     }
@@ -342,6 +358,32 @@ public:
         return rank;
     }
 
+    virtual void setExtendedAttributes(NodeList* list)
+    {
+        assert(extendedAttributes == 0);
+        extendedAttributes = list;
+    }
+
+    bool hasExtendedAttributes()
+    {
+        return (extendedAttributes == 0) ? false : true;
+    }
+
+    const bool hasExtendedAttributes() const
+    {
+        return (extendedAttributes == 0) ? false : true;
+    }
+
+    NodeList* getExtendedAttributes()
+    {
+        return extendedAttributes;
+    }
+
+    const NodeList* getExtendedAttributes() const
+    {
+        return extendedAttributes;
+    }
+
     static int incLevel()
     {
         ++level;
@@ -447,6 +489,7 @@ public:
     }
 
     virtual void add(Node* node);
+    virtual void setExtendedAttributes(NodeList* list);
 
     int getInterfaceCount() const
     {
@@ -554,6 +597,7 @@ public:
     }
 
     virtual void add(Node* node);
+    virtual void setExtendedAttributes(NodeList* list);
 
     virtual Node* search(const std::string& elem, size_t pos = 0) const
     {
@@ -959,18 +1003,27 @@ class OpDcl : public Member
 {
     Node* raises;
     int paramCount;
+    int extAttr;
 
 public:
+    // XXX: 0 = AttrNone, 1 = AttrGetter, 2 = AttrSetter
+    static const int ExtAttrIndexGetter = 3;
+    static const int ExtAttrIndexSetter = 4;
+    static const int ExtAttrNameGetter = 5;
+    static const int ExtAttrNameSetter = 6;
+
     OpDcl(std::string identifier, Node* spec) :
         Member(identifier, spec),
         raises(0),
-        paramCount(0)
+        paramCount(0),
+        extAttr(0)
     {
         separator = ";\n";
         children = new NodeList;
     }
 
     virtual void add(Node* node);
+    virtual void setExtendedAttributes(NodeList* list);
 
     Node* getRaises() const
     {
@@ -997,6 +1050,11 @@ public:
         return raises->getSize();
     }
 
+    int getExtAttr() const
+    {
+        return extAttr;
+    }
+
     virtual void accept(Visitor* visitor);
 };
 
@@ -1019,6 +1077,38 @@ public:
     int getAttr() const
     {
         return attr;
+    }
+
+    virtual void accept(Visitor* visitor);
+};
+
+class ExtendedAttribute : public Node
+{
+    std::string identifier;
+
+public:
+    ExtendedAttribute(std::string name) :
+        Node(name),
+        identifier("")
+    {
+        separator = ", ";
+    }
+
+    ExtendedAttribute(std::string name, std::string identifier) :
+        Node(name),
+        identifier(identifier)
+    {
+        separator = ", ";
+    }
+
+    std::string& getIdentifier()
+    {
+        return identifier;
+    }
+
+    std::string getIdentifier() const
+    {
+        return identifier;
     }
 
     virtual void accept(Visitor* visitor);
@@ -1156,6 +1246,11 @@ public:
     {
         at(static_cast<const Member*>(node));
     }
+
+    virtual void at(const ExtendedAttribute* node)
+    {
+        at(static_cast<const Node*>(node));
+    }
 };
 
 inline void Node::accept(Visitor* visitor)
@@ -1267,6 +1362,11 @@ inline void OpDcl::accept(Visitor* visitor)
 }
 
 inline void ParamDcl::accept(Visitor* visitor)
+{
+    visitor->at(this);
+}
+
+inline void ExtendedAttribute::accept(Visitor* visitor)
 {
     visitor->at(this);
 }

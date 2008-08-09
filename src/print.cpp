@@ -55,6 +55,31 @@ class Print : public Visitor
         }
     }
 
+    void printExtendedAttributes(const Node* node)
+    {
+        if (!node->hasExtendedAttributes())
+        {
+            return;
+        }
+
+        const NodeList* attrlist = node->getExtendedAttributes();
+        std::string separator;
+        int count = 0;
+        printf("[");
+        for (NodeList::const_iterator i = attrlist->begin();
+             i != attrlist->end();
+             ++i)
+        {
+            if (0 < count)
+            {
+                printf("%s", separator.c_str());
+            }
+            separator = (*i)->getSeparator();
+            (*i)->accept(this);
+            ++count;
+        }
+        printf("] ", count);
+    }
 public:
     virtual void at(const Node* node)
     {
@@ -70,6 +95,10 @@ public:
 
     virtual void at(const Module* node)
     {
+        if (node->hasExtendedAttributes())
+        {
+            printExtendedAttributes(node);
+        }
         if (0 < node->getName().size())
         {
             printf("module %s // countCount: %d, moduleCount: %d\n",
@@ -121,6 +150,10 @@ public:
 
     virtual void at(const Interface* node)
     {
+        if (node->hasExtendedAttributes())
+        {
+            printExtendedAttributes(node);
+        }
         printf("interface %s", node->getName().c_str());
         if (node->getExtends())
         {
@@ -216,6 +249,10 @@ public:
 
     virtual void at(const Attribute* node)
     {
+        if (node->hasExtendedAttributes())
+        {
+            printExtendedAttributes(node);
+        }
         if (node->isReadonly())
         {
             printf("readonly ");
@@ -234,6 +271,10 @@ public:
 
     virtual void at(const OpDcl* node)
     {
+        if (node->hasExtendedAttributes())
+        {
+            printExtendedAttributes(node);
+        }
         at(static_cast<const Member*>(node));
         printf("(");
         printChildren(node);
@@ -267,6 +308,15 @@ public:
     virtual void at(const Include* node)
     {
         printf("# 1 \"%s\" 1", node->getName().c_str());
+    }
+
+    virtual void at(const ExtendedAttribute* node)
+    {
+        printf("%s", node->getName().c_str());
+        if (0 < node->getIdentifier().size())
+        {
+            printf("=%s", node->getIdentifier().c_str());
+        }
     }
 };
 

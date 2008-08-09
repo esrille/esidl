@@ -210,6 +210,105 @@ void OpDcl::add(Node* node)
     Node::add(node);
 }
 
+void Module::setExtendedAttributes(NodeList* list)
+{
+    if (!list)
+    {
+        return;
+    }
+    NodeList* attributes = new NodeList;
+
+    for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
+    {
+        if ((*i)->getName() == "ExceptionConsts")
+        {
+            attributes->push_back(*i);
+        }
+    }
+    delete list;
+    if (0 < attributes->size())
+    {
+        Node::setExtendedAttributes(attributes);
+    }
+    else
+    {
+        delete attributes;
+    }
+}
+
+void Interface::setExtendedAttributes(NodeList* list)
+{
+    if (!list)
+    {
+        return;
+    }
+    NodeList* attributes = new NodeList;
+
+    for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
+    {
+        if (((*i)->getName() == "Constructor")
+            || ((*i)->getName() == "Stringifies"))
+        {
+            attributes->push_back(*i);
+        }
+    }
+    delete list;
+    if (0 < attributes->size())
+    {
+        Node::setExtendedAttributes(attributes);
+    }
+    else
+    {
+        delete attributes;
+    }
+}
+
+void OpDcl::setExtendedAttributes(NodeList* list)
+{
+    if (!list)
+    {
+        return;
+    }
+    NodeList* attributes = new NodeList;
+
+    for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
+    {
+        if ((*i)->getName() == "IndexGetter")
+        {
+            extAttr = OpDcl::ExtAttrIndexGetter;
+            attributes->push_back(*i);
+        }
+        else if ((*i)->getName() == "IndexSetter")
+        {
+            extAttr = OpDcl::ExtAttrIndexSetter;
+            attributes->push_back(*i);
+        }
+        else if ((*i)->getName() == "NameGetter")
+        {
+            extAttr = OpDcl::ExtAttrNameGetter;
+            attributes->push_back(*i);
+        }
+        else if ((*i)->getName() == "NameSetter")
+        {
+            extAttr = OpDcl::ExtAttrNameSetter;
+            attributes->push_back(*i);
+        }
+        else
+        {
+            // ignore
+        }
+    }
+    delete list;
+    if (0 < attributes->size())
+    {
+        Node::setExtendedAttributes(attributes);
+    }
+    else
+    {
+        delete attributes;
+    }
+}
+
 int main(int argc, char* argv[])
 {
     for (int i = 1; i < argc; ++i)

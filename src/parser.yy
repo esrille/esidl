@@ -205,6 +205,11 @@ int yylex(YYSTYPE* yylval);
 
 %type <node>        uuid_type
 
+%type <nodeList>    extended_attribute_opt
+%type <nodeList>    extended_attribute_list
+%type <nodeList>    extended_attributes
+%type <node>        extended_attribute
+
 %type <name>        unary_operator
 %type <name>        simple_declarator
 
@@ -263,9 +268,9 @@ definition :
     ;
 
 module :
-    MODULE IDENTIFIER
+    extended_attribute_opt MODULE IDENTIFIER
         {
-            Node* node = getCurrent()->search($2);
+            Node* node = getCurrent()->search($3);
             if (node)
             {
                 if (Module* module = dynamic_cast<Module*>(node))
@@ -274,17 +279,18 @@ module :
                 }
                 else
                 {
-                    fprintf(stderr, "Inv. module name '%s'\n", $2);
+                    fprintf(stderr, "Inv. module name '%s'\n", $3);
                     exit(EXIT_FAILURE);
                 }
             }
             else
             {
-                Module* module = new Module($2);
+                Module* module = new Module($3);
+                module->setExtendedAttributes($1);
                 getCurrent()->add(module);
                 setCurrent(module);
             }
-            free($2);
+            free($3);
         }
     '{' definition_list '}'
         {
@@ -327,6 +333,22 @@ interface_header :
             getCurrent()->add(node);
             setCurrent(node);
             free($3);
+        }
+    | extended_attribute_list abstract_local_opt INTERFACE IDENTIFIER interface_inheritance_spec
+        {
+            Interface* node = new Interface($4, $5);
+			node->setExtendedAttributes($1);
+            getCurrent()->add(node);
+            setCurrent(node);
+            free($4);
+        }
+    | extended_attribute_list abstract_local_opt INTERFACE IDENTIFIER
+        {
+            Interface* node = new Interface($4);
+			node->setExtendedAttributes($1);
+            getCurrent()->add(node);
+            setCurrent(node);
+            free($4);
         }
     ;
 
@@ -1143,6 +1165,20 @@ op_dcl :
             op->setRaises($6);
             setCurrent(op->getParent());
         }
+    | extended_attribute_list op_attribute_opt op_type_spec IDENTIFIER
+        {
+            OpDcl* op = new OpDcl($4, $3);
+            op->setExtendedAttributes($1);
+            getCurrent()->add(op);
+            setCurrent(op);
+            free($4);
+        }
+    parameter_dcls raises_expr_opt context_expr
+        {
+            OpDcl* op = static_cast<OpDcl*>(getCurrent());
+            op->setRaises($7);
+            setCurrent(op->getParent());
+        }
     ;
 
 op_attribute_opt :
@@ -1169,10 +1205,12 @@ param_dcl_list :
     ;
 
 param_dcl :
-    param_attribute param_type_spec simple_declarator
+    extended_attribute_opt param_attribute param_type_spec simple_declarator
         {
-            getCurrent()->add(new ParamDcl($3, $2, $1));
-            free($3);
+            ParamDcl* param = new ParamDcl($4, $3, $2);
+            param->setExtendedAttributes($1);
+            getCurrent()->add(param);
+            free($4);
         }
     ;
 
@@ -1269,36 +1307,44 @@ type_prefix_dcl :
     ;
 
 readonly_attr_spec :
-    READONLY ATTRIBUTE param_type_spec simple_declarator raises_expr
+    extended_attribute_opt READONLY ATTRIBUTE param_type_spec simple_declarator raises_expr
         {
-            getCurrent()->add(new Attribute($4, $3, true));
+            Attribute* attr = new Attribute($5, $4, true);
+            attr->setExtendedAttributes($1);
+            getCurrent()->add(attr);
         }
-    | READONLY ATTRIBUTE param_type_spec simple_declarator_list
+    | extended_attribute_opt READONLY ATTRIBUTE param_type_spec simple_declarator_list
+        {
+            for (std::list<std::string>::iterator i = $5->begin();
+                 i != $5->end();
+                 ++i)
+            {
+                Attribute* attr = new Attribute(*i, $4, true);
+                attr->setExtendedAttributes($1);
+                getCurrent()->add(attr);
+            }
+            delete $5;
+        }
+    ;
+
+attr_spec :
+    extended_attribute_opt ATTRIBUTE param_type_spec simple_declarator attr_raises_expr
+        {
+            Attribute* attr = new Attribute($4, $3);
+            attr->setExtendedAttributes($1);
+            getCurrent()->add(attr);
+        }
+    | extended_attribute_opt ATTRIBUTE param_type_spec simple_declarator_list
         {
             for (std::list<std::string>::iterator i = $4->begin();
                  i != $4->end();
                  ++i)
             {
-                getCurrent()->add(new Attribute(*i, $3, true));
+                Attribute* attr = new Attribute(*i, $3);
+                attr->setExtendedAttributes($1);
+                getCurrent()->add(attr);
             }
             delete $4;
-        }
-    ;
-
-attr_spec :
-    ATTRIBUTE param_type_spec simple_declarator attr_raises_expr
-        {
-            getCurrent()->add(new Attribute($3, $2));
-        }
-    | ATTRIBUTE param_type_spec simple_declarator_list
-        {
-            for (std::list<std::string>::iterator i = $3->begin();
-                 i != $3->end();
-                 ++i)
-            {
-                getCurrent()->add(new Attribute(*i, $2));
-            }
-            delete $3;
         }
     ;
 
@@ -1374,4 +1420,43 @@ javadoc:
             $$ = 0;
         }
     | JAVADOC
+    ;
+
+extended_attribute_opt :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | extended_attribute_list
+    ;
+
+extended_attribute_list :
+    '[' extended_attributes ']'
+        {
+            $$ = $2;
+        }
+    ;
+
+extended_attributes :
+    extended_attribute
+        {
+            $$ = new NodeList;
+            $$->push_back($1);
+        }
+    | extended_attributes ',' extended_attribute
+        {
+            $1->push_back($3);
+            $$ = $1;
+        }
+    ;
+
+extended_attribute :
+    IDENTIFIER
+        {
+            $$ = new ExtendedAttribute($1);
+        }
+    | IDENTIFIER '=' IDENTIFIER
+        {
+            $$ = new ExtendedAttribute($1, $3);
+        }
     ;
