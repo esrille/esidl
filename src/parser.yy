@@ -116,7 +116,6 @@ int yylex(YYSTYPE* yylval);
 %token TRUNCATABLE
 %token TYPEDEF
 %token TYPEID
-%token TYPEPREFIX
 %token UNSIGNED
 %token UNION
 %token USES
@@ -256,7 +255,6 @@ definition :
     | module ';'
     | value ';'
     | type_id_dcl ';'
-    | type_prefix_dcl ';'
     | preprocessor
     ;
 
@@ -388,7 +386,6 @@ export :
     | attr_dcl ';'
     | op_dcl ';'
     | type_id_dcl ';'
-    | type_prefix_dcl ';'
     | preprocessor
     ;
 
@@ -1284,10 +1281,6 @@ constr_forward_decl :
 
 type_id_dcl :
     TYPEID scoped_name STRING_LITERAL
-    ;
-
-type_prefix_dcl :
-    TYPEPREFIX scoped_name STRING_LITERAL
     ;
 
 readonly_attr_spec :
