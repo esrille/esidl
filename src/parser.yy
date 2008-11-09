@@ -66,7 +66,6 @@ int yylex(YYSTYPE* yylval);
 
 %}
 
-%token ABSTRACT
 %token ANY
 %token ATTRIBUTE
 %token BOOLEAN
@@ -76,14 +75,12 @@ int yylex(YYSTYPE* yylval);
 %token CONST
 %token CONSUMES
 %token CONTEXT
-%token CUSTOM
 %token DEFAULT
 %token DOUBLE
 %token EXCEPTION
 %token EMITS
 %token ENUM
 %token EVENTTYPE
-%token FACTORY
 %token FALSE
 %token FINDER
 %token FIXED
@@ -103,9 +100,7 @@ int yylex(YYSTYPE* yylval);
 %token ONEWAY
 %token OUT
 %token PRIMARYKEY
-%token PRIVATE
 %token PROVIDES
-%token PUBLIC
 %token PUBLISHES
 %token RAISES
 %token READONLY
@@ -117,13 +112,11 @@ int yylex(YYSTYPE* yylval);
 %token SUPPORTS
 %token SWITCH
 %token TRUE
-%token TRUNCATABLE
 %token TYPEDEF
 %token UNSIGNED
 %token UNION
 %token USES
 %token UUID
-%token VALUEBASE
 %token VALUETYPE
 %token VOID
 %token WCHAR
@@ -195,7 +188,6 @@ int yylex(YYSTYPE* yylval);
 %type <node>        boolean_literal
 %type <node>        positive_int_const
 
-%type <node>        value_base_type
 %type <node>        object_type
 %type <node>        op_type_spec
 %type <node>        raises_expr_opt
@@ -430,104 +422,16 @@ scoped_name :
     ;
 
 value :
-    value_dcl
-    | value_abs_dcl
-    | value_box_dcl
+    value_box_dcl
     | value_forward_dcl
     ;
 
 value_forward_dcl :
     VALUETYPE IDENTIFIER
-    | ABSTRACT VALUETYPE IDENTIFIER
     ;
 
 value_box_dcl :
     VALUETYPE IDENTIFIER type_spec
-    ;
-
-value_abs_dcl :
-    ABSTRACT VALUETYPE IDENTIFIER value_inheritance_spec_opt '{' export_list_opt '}'
-    ;
-
-value_dcl :
-    value_header '{' value_element_list_opt '}'
-    ;
-
-value_header :
-    CUSTOM VALUETYPE IDENTIFIER value_inheritance_spec_opt
-    | VALUETYPE IDENTIFIER value_inheritance_spec_opt
-    ;
-
-value_inheritance_spec_opt :
-    /* empty */
-    | value_inheritance_spec
-    ;
-
-value_inheritance_spec :
-    ':' truncatable_opt value_name_list
-    | ':' truncatable_opt value_name_list SUPPORTS scoped_name_list
-    | SUPPORTS scoped_name_list
-    ;
-
-truncatable_opt :
-    /* empty */
-    | TRUNCATABLE
-    ;
-
-value_name_list :
-    value_name
-    | value_name_list ',' value_name
-    ;
-
-value_name :
-    scoped_name
-    ;
-
-value_element_list_opt :
-    /* empty */
-    | value_element_list
-    ;
-
-value_element_list :
-    value_element
-    | value_element_list value_element
-    ;
-
-value_element :
-    export
-    | state_member
-    | init_dcl
-    ;
-
-state_member :
-    public_or_private type_spec declarators ';'
-    ;
-
-public_or_private:
-    PUBLIC
-    | PRIVATE
-    ;
-
-init_dcl :
-    FACTORY IDENTIFIER '(' init_param_decls_opt ')' raises_expr_opt ';'
-    ;
-
-init_param_decls_opt :
-    /* empty */
-    | init_param_decls
-    ;
-
-init_param_decls :
-    init_param_decl
-    | init_param_decls ',' init_param_decl
-    ;
-
-init_param_decl :
-    init_param_attribute param_type_spec simple_declarator
-    ;
-
-init_param_attribute :
-    IN
     ;
 
 const_dcl :
@@ -750,7 +654,6 @@ base_type_spec :
     | octet_type
     | any_type
     | object_type
-    | value_base_type
     | variant_type
     ;
 
@@ -1236,13 +1139,6 @@ fixed_pt_const_type :
     FIXED
         {
             $$ = new Type("fixed");
-        }
-    ;
-
-value_base_type :
-    VALUEBASE
-        {
-            $$ = new Type("ValueBase");
         }
     ;
 

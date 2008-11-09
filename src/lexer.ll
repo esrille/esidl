@@ -101,7 +101,6 @@ PoundSign               ^{WhiteSpace}*#
 {WhiteSpace}        { /* No action, and no return */ }
 {LineTerminator}    { /* No action, and no return */ }
 
-abstract            { return ABSTRACT; }
 any                 { return ANY; }
 attribute           { return ATTRIBUTE; }
 boolean             { return BOOLEAN; }
@@ -109,7 +108,6 @@ case                { return CASE; }
 char                { return CHAR; }
 const               { return CONST; }
 context             { return CONTEXT; }
-custom              { return CUSTOM; }
 default             { return DEFAULT; }
 double              { return DOUBLE; }
 exception           { return EXCEPTION; }
@@ -128,8 +126,6 @@ Object              { return OBJECT; }
 octet               { return OCTET; }
 oneway              { return ONEWAY; }
 out                 { return OUT; }
-private             { return PRIVATE; }
-public              { return PUBLIC; }
 raises              { return RAISES; }
 readonly            { return READONLY; }
 setraises           { return SETRAISES; }
@@ -137,14 +133,11 @@ sequence            { return SEQUENCE; }
 short               { return SHORT; }
 string              { return STRING; }
 struct              { return STRUCT; }
-supports            { return SUPPORTS; }
 switch              { return SWITCH; }
 TRUE                { return TRUE; }
-truncatable         { return TRUNCATABLE; }
 typedef             { return TYPEDEF; }
 unsigned            { return UNSIGNED; }
 union               { return UNION; }
-ValueBase           { return VALUEBASE; }
 valuetype           { return VALUETYPE; }
 void                { return VOID; }
 wchar               { return WCHAR; }
