@@ -113,7 +113,6 @@ FALSE               { return FALSE; }
 fixed               { return FIXED; }
 float               { return FLOAT; }
 getraises           { return GETRAISES; }
-import              { return IMPORT; }
 in                  { return IN; }
 inout               { return INOUT; }
 interface           { return INTERFACE; }

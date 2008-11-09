@@ -85,7 +85,6 @@ int yylex(YYSTYPE* yylval);
 %token FLOAT
 %token GETRAISES
 %token HOME
-%token IMPORT
 %token IN
 %token INOUT
 %token INTERFACE
@@ -225,13 +224,7 @@ int yylex(YYSTYPE* yylval);
 %%
 
 specification :
-    import_list definition_list
     | definition_list
-    ;
-
-import_list :
-    import
-    | import_list import
     ;
 
 definition_list :
@@ -1287,15 +1280,6 @@ constr_forward_decl :
             free($2);
         }
     | UNION IDENTIFIER
-    ;
-
-import :
-    IMPORT imported_scope ';'
-    ;
-
-imported_scope :
-    scoped_name
-    | STRING_LITERAL
     ;
 
 type_id_dcl :
