@@ -113,7 +113,6 @@ int yylex(YYSTYPE* yylval);
 %token TRUE
 %token TYPEDEF
 %token UNSIGNED
-%token UNION
 %token USES
 %token UUID
 %token VALUETYPE
@@ -610,7 +609,6 @@ positive_int_const :
 type_dcl :
     TYPEDEF type_declarator
     | struct_type
-    | union_type
     | enum_type
     | NATIVE simple_declarator
     | constr_forward_decl
@@ -665,7 +663,6 @@ template_type_spec :
 
 constr_type_spec :
     struct_type
-    | union_type
     | enum_type
     ;
 
@@ -874,41 +871,6 @@ member :
             }
             delete $2;
         }
-    ;
-
-union_type :
-    UNION IDENTIFIER SWITCH '(' switch_type_spec ')' '{' switch_body '}'
-    ;
-
-switch_type_spec :
-    integer_type
-    | char_type
-    | boolean_type
-    | enum_type
-    | scoped_name
-    ;
-
-switch_body :
-    case
-    | switch_body case
-    ;
-
-case :
-    case_label_list element_spec ';'
-    ;
-
-case_label_list :
-    case_label
-    | case_label_list case_label
-    ;
-
-case_label :
-    CASE const_exp ':'
-    | DEFAULT ':'
-    ;
-
-element_spec :
-    type_spec declarator
     ;
 
 enum_type :
@@ -1142,7 +1104,6 @@ constr_forward_decl :
             getCurrent()->add(new StructType($2));
             free($2);
         }
-    | UNION IDENTIFIER
     ;
 
 readonly_attr_spec :

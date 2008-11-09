@@ -136,7 +136,6 @@ switch              { return SWITCH; }
 TRUE                { return TRUE; }
 typedef             { return TYPEDEF; }
 unsigned            { return UNSIGNED; }
-union               { return UNION; }
 valuetype           { return VALUETYPE; }
 void                { return VOID; }
 wchar               { return WCHAR; }
