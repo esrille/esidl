@@ -121,7 +121,6 @@ getraises           { return GETRAISES; }
 in                  { return IN; }
 inout               { return INOUT; }
 interface           { return INTERFACE; }
-local               { return LOCAL; }
 long                { return LONG; }
 module              { return MODULE; }
 native              { return NATIVE; }

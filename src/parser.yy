@@ -93,7 +93,6 @@ int yylex(YYSTYPE* yylval);
 %token IN
 %token INOUT
 %token INTERFACE
-%token LOCAL
 %token LONG
 %token MANAGES
 %token MODULE
@@ -305,51 +304,45 @@ interface_dcl :
     ;
 
 forward_dcl :
-    abstract_local_opt INTERFACE IDENTIFIER
+    INTERFACE IDENTIFIER
         {
-            Interface* node = new Interface($3, 0, true);
+            Interface* node = new Interface($2, 0, true);
             getCurrent()->add(node);
-            free($3);
+            free($2);
         }
     ;
 
 interface_header :
-    abstract_local_opt INTERFACE IDENTIFIER interface_inheritance_spec
+    INTERFACE IDENTIFIER interface_inheritance_spec
+        {
+            Interface* node = new Interface($2, $3);
+            getCurrent()->add(node);
+            setCurrent(node);
+            free($2);
+        }
+    | INTERFACE IDENTIFIER
+        {
+            Interface* node = new Interface($2);
+            getCurrent()->add(node);
+            setCurrent(node);
+            free($2);
+        }
+    | extended_attribute_list INTERFACE IDENTIFIER interface_inheritance_spec
         {
             Interface* node = new Interface($3, $4);
+            node->setExtendedAttributes($1);
             getCurrent()->add(node);
             setCurrent(node);
             free($3);
         }
-    | abstract_local_opt INTERFACE IDENTIFIER
+    | extended_attribute_list INTERFACE IDENTIFIER
         {
             Interface* node = new Interface($3);
+            node->setExtendedAttributes($1);
             getCurrent()->add(node);
             setCurrent(node);
             free($3);
         }
-    | extended_attribute_list abstract_local_opt INTERFACE IDENTIFIER interface_inheritance_spec
-        {
-            Interface* node = new Interface($4, $5);
-			node->setExtendedAttributes($1);
-            getCurrent()->add(node);
-            setCurrent(node);
-            free($4);
-        }
-    | extended_attribute_list abstract_local_opt INTERFACE IDENTIFIER
-        {
-            Interface* node = new Interface($4);
-			node->setExtendedAttributes($1);
-            getCurrent()->add(node);
-            setCurrent(node);
-            free($4);
-        }
-    ;
-
-abstract_local_opt :
-    /* empty */
-    | ABSTRACT
-    | LOCAL
     ;
 
 interface_body :
