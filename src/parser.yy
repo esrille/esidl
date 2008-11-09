@@ -147,8 +147,6 @@ int yylex(YYSTYPE* yylval);
 %token <name>       FIXED_PT_LITERAL
 
 %type <node>        interface_inheritance_spec
-%type <node>        interface_name_list
-%type <node>        interface_name
 %type <node>        scoped_name_list
 %type <node>        scoped_name
 %type <node>        const_type
@@ -385,27 +383,10 @@ export :
     ;
 
 interface_inheritance_spec :
-    ':' interface_name_list
+    ':' scoped_name_list
         {
             $$ = $2;
         }
-    ;
-
-interface_name_list :
-    interface_name
-        {
-            $$ = new Node();
-            $$->add($1);
-        }
-    | interface_name_list ',' interface_name
-        {
-            $1->add($3);
-            $$ = $1;
-        }
-    ;
-
-interface_name :
-    scoped_name
     ;
 
 scoped_name_list :
@@ -484,8 +465,8 @@ value_inheritance_spec_opt :
 
 value_inheritance_spec :
     ':' truncatable_opt value_name_list
-    | ':' truncatable_opt value_name_list SUPPORTS interface_name_list
-    | SUPPORTS interface_name_list
+    | ':' truncatable_opt value_name_list SUPPORTS scoped_name_list
+    | SUPPORTS scoped_name_list
     ;
 
 truncatable_opt :
