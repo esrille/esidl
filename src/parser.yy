@@ -120,7 +120,6 @@ int yylex(YYSTYPE* yylval);
 %token TRUE
 %token TRUNCATABLE
 %token TYPEDEF
-%token TYPEID
 %token UNSIGNED
 %token UNION
 %token USES
@@ -253,13 +252,12 @@ definition_list :
     ;
 
 definition :
-    type_dcl ';'
-    | const_dcl ';'
-    | except_dcl ';'
+    module ';'
     | interface ';'
-    | module ';'
+    | except_dcl ';'
+    | type_dcl ';'
     | value ';'
-    | type_id_dcl ';'
+    | const_dcl ';'
     | preprocessor
     ;
 
@@ -390,7 +388,6 @@ export :
     | except_dcl ';'
     | attr_dcl ';'
     | op_dcl ';'
-    | type_id_dcl ';'
     | preprocessor
     ;
 
@@ -1282,10 +1279,6 @@ constr_forward_decl :
             free($2);
         }
     | UNION IDENTIFIER
-    ;
-
-type_id_dcl :
-    TYPEID scoped_name STRING_LITERAL
     ;
 
 readonly_attr_spec :

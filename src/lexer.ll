@@ -143,7 +143,6 @@ switch              { return SWITCH; }
 TRUE                { return TRUE; }
 truncatable         { return TRUNCATABLE; }
 typedef             { return TYPEDEF; }
-typeid              { return TYPEID; }
 unsigned            { return UNSIGNED; }
 union               { return UNION; }
 ValueBase           { return VALUEBASE; }
