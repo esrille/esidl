@@ -104,10 +104,8 @@ PoundSign               ^{WhiteSpace}*#
 any                 { return ANY; }
 attribute           { return ATTRIBUTE; }
 boolean             { return BOOLEAN; }
-case                { return CASE; }
 char                { return CHAR; }
 const               { return CONST; }
-default             { return DEFAULT; }
 double              { return DOUBLE; }
 exception           { return EXCEPTION; }
 enum                { return ENUM; }
@@ -132,7 +130,6 @@ sequence            { return SEQUENCE; }
 short               { return SHORT; }
 string              { return STRING; }
 struct              { return STRUCT; }
-switch              { return SWITCH; }
 TRUE                { return TRUE; }
 typedef             { return TYPEDEF; }
 unsigned            { return UNSIGNED; }
