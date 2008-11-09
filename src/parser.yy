@@ -17,7 +17,12 @@
 
 /*
  * These coded instructions, statements, and computer programs contain
- * software derived from the following specification:
+ * software derived from the following specifications:
+ *
+ * W3C,
+ * Web IDL,
+ * W3C Working Draft 29 August 2008.
+ * http://www.w3.org/TR/WebIDL/
  *
  * Common Object Request Broker Architecture: Core Specification,
  * Version 3.0.3, Object Management Group, Inc., March 2004.
