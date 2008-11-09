@@ -107,7 +107,6 @@ boolean             { return BOOLEAN; }
 case                { return CASE; }
 char                { return CHAR; }
 const               { return CONST; }
-context             { return CONTEXT; }
 default             { return DEFAULT; }
 double              { return DOUBLE; }
 exception           { return EXCEPTION; }

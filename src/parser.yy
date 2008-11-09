@@ -74,7 +74,6 @@ int yylex(YYSTYPE* yylval);
 %token COMPONENT
 %token CONST
 %token CONSUMES
-%token CONTEXT
 %token DEFAULT
 %token DOUBLE
 %token EXCEPTION
@@ -1028,7 +1027,7 @@ op_dcl :
             setCurrent(op);
             free($3);
         }
-    parameter_dcls raises_expr_opt context_expr
+    parameter_dcls raises_expr_opt
         {
             OpDcl* op = static_cast<OpDcl*>(getCurrent());
             op->setRaises($6);
@@ -1042,7 +1041,7 @@ op_dcl :
             setCurrent(op);
             free($4);
         }
-    parameter_dcls raises_expr_opt context_expr
+    parameter_dcls raises_expr_opt
         {
             OpDcl* op = static_cast<OpDcl*>(getCurrent());
             op->setRaises($7);
@@ -1111,11 +1110,6 @@ raises_expr :
         {
             $$ = $3;
         }
-    ;
-
-context_expr :
-    /* empty */
-    | CONTEXT '(' string_literal_list ')'
     ;
 
 string_literal_list :
