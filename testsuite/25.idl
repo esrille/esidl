@@ -1,0 +1,11 @@
+module A
+{
+    interface X
+    {
+        native void_pointer;
+        void op1(in void_pointer addr);
+        void op2(out void_pointer addr);
+        attribute void_pointer address;
+        void_pointer op3();
+    };
+};

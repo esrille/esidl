@@ -43,6 +43,10 @@ class Cxx : public Visitor
             {
                 continue;
             }
+            if ((*i)->isNative(node->getParent()))
+            {
+                continue;
+            }
             if (0 < count)
             {
                 fprintf(file, "%s", separator.c_str());
@@ -101,7 +105,7 @@ public:
             printChildren(node);
         }
     }
-    
+
     virtual void at(const Module* node)
     {
         if (0 < node->getName().size())
@@ -190,7 +194,7 @@ public:
             int count = 0;
             for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
             {
-                if (dynamic_cast<PragmaID*>(*i) || (*i)->isSequence(node))
+                if (dynamic_cast<PragmaID*>(*i) || (*i)->isSequence(node) || (*i)->isNative(node))
                 {
                     continue;
                 }
@@ -251,7 +255,7 @@ public:
         }
         else if (node->getName() == "any")
         {
-            fprintf(file, "void*");
+            fprintf(file, "Variant");
         }
         else if (node->getName() == "wchar")
         {
@@ -273,9 +277,17 @@ public:
         {
             fprintf(file, "Guid&");
         }
-        else if (node->getName() == "Variant")
+        else
         {
-            fprintf(file, "Variant");
+            fprintf(file, "%s", node->getName().c_str());
+        }
+    }
+
+    virtual void at(const NativeType* node)
+    {
+        if (node->getName() == "void_pointer")
+        {
+            fprintf(file, "void*");
         }
         else
         {
@@ -410,7 +422,7 @@ public:
             spec->accept(this);
             fprintf(file, " %s)", name.c_str());
         }
-        else if (spec->isVariant(node->getParent()))
+        else if (spec->isAny(node->getParent()))
         {
             spec->accept(this);
             fprintf(file, " get%s(", cap.c_str());
@@ -424,6 +436,10 @@ public:
                 spec->accept(this);
                 fprintf(file, "*");
                 interfaceMode = false;
+            }
+            else if (NativeType* nativeType = spec->isNative(node->getParent()))
+            {
+                nativeType->accept(this);
             }
             else
             {
@@ -464,12 +480,6 @@ public:
                 spec->accept(this);
                 fprintf(file, " %s)", name.c_str());
             }
-            else if (spec->isVariant(node->getParent()))
-            {
-                fprintf(file, "int set%s(", cap.c_str());
-                spec->accept(this);
-                fprintf(file, " %s)", name.c_str());
-            }
             else
             {
                 fprintf(file, "void set%s(", cap.c_str());
@@ -479,6 +489,10 @@ public:
                     spec->accept(this);
                     fprintf(file, "*");
                     interfaceMode = false;
+                }
+                else if (NativeType* nativeType = spec->isNative(node->getParent()))
+                {
+                    nativeType->accept(this);
                 }
                 else
                 {
@@ -578,6 +592,25 @@ public:
                 fprintf(file, ", ");
             }
         }
+        else if (spec->isAny(node->getParent()))
+        {
+            std::string name = spec->getName();
+            size_t pos = name.rfind("::");
+            if (pos != std::string::npos)
+            {
+                name = name.substr(pos + 2);
+            }
+            name[0] = tolower(name[0]); // XXX
+
+            spec->accept(this);
+            fprintf(file, " %s(", node->getName().c_str());
+            fprintf(file, "void* %s, int %sLength", name.c_str(), name.c_str());
+
+            if (node->begin() != node->end())
+            {
+                fprintf(file, ", ");
+            }
+        }
         else
         {
             if (spec->isInterface(node->getParent()))
@@ -586,6 +619,10 @@ public:
                 spec->accept(this);
                 fprintf(file, "*");
                 interfaceMode = false;
+            }
+            else if (NativeType* nativeType = spec->isNative(node->getParent()))
+            {
+                nativeType->accept(this);
             }
             else
             {
@@ -624,7 +661,6 @@ public:
         {
         case ParamDcl::In:
             if (seq ||
-                spec->isAny(node->getParent()) ||
                 spec->isGuid(node->getParent()) ||
                 spec->isString(node->getParent()) ||
                 spec->isWString(node->getParent()) ||
@@ -659,6 +695,10 @@ public:
                 spec->accept(this);
                 fprintf(file, "*");
                 interfaceMode = false;
+            }
+            else if (NativeType* nativeType = spec->isNative(node->getParent()))
+            {
+                nativeType->accept(this);
             }
             else
             {

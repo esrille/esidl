@@ -751,11 +751,11 @@ const char* Emitter::specTable[] =
     "uuid",                 // SpecUuid
     "string",               // SpecString
     "wstring",              // SpecWString
-    "any",                  // SpecAny
+    "void_pointer",         // SpecAny
     "Object",               // SpecObject
     "fixed",                // SpecFixed
     "ValueBase",            // SpecValue
-    "Variant",              // SpecVariant
+    "any",                  // SpecVariant
 };
 
 void printEnt(const std::string& filename)

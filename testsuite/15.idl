@@ -5,6 +5,4 @@ interface Stream
     Buf read();
     long write(in Buf buf);
     attribute Buf data;
-
-    attribute any position;
 };

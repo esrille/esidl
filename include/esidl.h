@@ -35,6 +35,7 @@ class Node;
     class ExceptDcl;
     class Interface;
     class Type;
+    class NativeType;
     class SequenceType;
     class BinaryExpr;
     class UnaryExpr;
@@ -295,27 +296,27 @@ public:
         return compare("uuid", scope) == 0;
     }
 
-    virtual bool isVariant(const Node* scope) const
-    {
-        return compare("Variant", scope) == 0;
-    }
-
-    virtual const Interface* isInterface(const Node* scope) const
+    virtual Interface* isInterface(const Node* scope)
     {
         return 0;
     }
 
-    virtual const SequenceType* isSequence(const Node* scope) const
+    virtual SequenceType* isSequence(const Node* scope)
     {
         return 0;
     }
 
-    virtual const StructType* isStruct(const Node* scope) const
+    virtual StructType* isStruct(const Node* scope)
     {
         return 0;
     }
 
-    virtual const ArrayDcl* isArray(const Node* scope) const
+    virtual ArrayDcl* isArray(const Node* scope)
+    {
+        return 0;
+    }
+
+    virtual NativeType* isNative(const Node* scope)
     {
         return 0;
     }
@@ -439,31 +440,61 @@ public:
 
     virtual bool compare(const char* str, const Node* scope) const
     {
-        const Node* node = search(scope);
+        Node* node = search(scope);
+        if (!node)
+        {
+            return false;
+        }
         return node->compare(str, node->getParent());
     }
 
-    virtual const Interface* isInterface(const Node* scope) const
+    virtual Interface* isInterface(const Node* scope)
     {
-        const Node* node = search(scope);
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
         return node->isInterface(node->getParent());
     }
 
-    virtual const SequenceType* isSequence(const Node* scope) const
+    virtual SequenceType* isSequence(const Node* scope)
     {
-        const Node* node = search(scope);
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
         return node->isSequence(node->getParent());
     }
 
-    virtual const StructType* isStruct(const Node* scope) const
+    virtual StructType* isStruct(const Node* scope)
     {
-        const Node* node = search(scope);
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
         return node->isStruct(node->getParent());
     }
 
-    virtual const ArrayDcl* isArray(const Node* scope) const
+    virtual NativeType* isNative(const Node* scope)
     {
-        const Node* node = search(scope);
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
+        return node->isNative(node->getParent());
+    }
+
+    virtual ArrayDcl* isArray(const Node* scope)
+    {
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
         return node->isArray(node->getParent());
     }
 
@@ -547,7 +578,7 @@ public:
         return memberCount;
     }
 
-    virtual const StructType* isStruct(const Node* scope) const
+    virtual StructType* isStruct(const Node* scope)
     {
         return this;
     }
@@ -628,7 +659,7 @@ public:
         return extends;
     }
 
-    virtual const Interface* isInterface(const Node* scope) const
+    virtual Interface* isInterface(const Node* scope)
     {
         return this;
     }
@@ -671,6 +702,22 @@ public:
     virtual void accept(Visitor* visitor);
 };
 
+class NativeType : public Type
+{
+public:
+    NativeType(std::string identifier) :
+        Type(identifier)
+    {
+    }
+
+    virtual NativeType* isNative(const Node* scope)
+    {
+        return this;
+    }
+
+    virtual void accept(Visitor* visitor);
+};
+
 class SequenceType : public Node
 {
     Node* spec;
@@ -702,7 +749,7 @@ public:
         return max;
     }
 
-    virtual const SequenceType* isSequence(const Node* scope) const
+    virtual SequenceType* isSequence(const Node* scope)
     {
         return this;
     }
@@ -866,7 +913,7 @@ public:
         return spec->compare(str, scope);
     }
 
-    virtual const Interface* isInterface(const Node* scope) const
+    virtual Interface* isInterface(const Node* scope)
     {
         if (!type)
         {
@@ -875,7 +922,7 @@ public:
         return spec->isInterface(scope);
     }
 
-    virtual const SequenceType* isSequence(const Node* scope) const
+    virtual SequenceType* isSequence(const Node* scope)
     {
         if (!type)
         {
@@ -884,7 +931,7 @@ public:
         return spec->isSequence(scope);
     }
 
-    virtual const StructType* isStruct(const Node* scope) const
+    virtual StructType* isStruct(const Node* scope)
     {
         if (!type)
         {
@@ -893,7 +940,16 @@ public:
         return spec->isStruct(scope);
     }
 
-    virtual const ArrayDcl* isArray(const Node* scope) const
+    virtual NativeType* isNative(const Node* scope)
+    {
+        if (!type)
+        {
+            return 0;
+        }
+        return spec->isNative(scope);
+    }
+
+    virtual ArrayDcl* isArray(const Node* scope)
     {
         if (!type)
         {
@@ -913,7 +969,7 @@ public:
     {
     }
 
-    virtual const ArrayDcl* isArray(const Node* scope) const
+    virtual ArrayDcl* isArray(const Node* scope)
     {
         return this;
     }
@@ -1187,6 +1243,11 @@ public:
         at(static_cast<const Node*>(node));
     }
 
+    virtual void at(const NativeType* node)
+    {
+        at(static_cast<const Type*>(node));
+    }
+
     virtual void at(const SequenceType* node)
     {
         at(static_cast<const Node*>(node));
@@ -1302,6 +1363,11 @@ inline void Interface::accept(Visitor* visitor)
 }
 
 inline void Type::accept(Visitor* visitor)
+{
+    visitor->at(this);
+}
+
+inline void NativeType::accept(Visitor* visitor)
 {
     visitor->at(this);
 }

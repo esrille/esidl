@@ -2,7 +2,7 @@ module A
 {
     interface B
     {
-        attribute Variant C;
-        void D(in Variant E);
+        attribute any C;
+        void D(in any E);
     };
 };

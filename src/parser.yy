@@ -104,7 +104,6 @@ int yylex(YYSTYPE* yylval);
 %token VOID
 %token WCHAR
 %token WSTRING
-%token VARIANT
 
 %token OP_SCOPE
 %token OP_SHL
@@ -153,7 +152,6 @@ int yylex(YYSTYPE* yylval);
 %type <node>        sequence_type
 %type <node>        string_type
 %type <node>        wide_string_type
-%type <node>        variant_type
 %type <node>        array_declarator
 %type <node>        fixed_array_size_list
 %type <node>        fixed_array_size
@@ -596,6 +594,10 @@ type_dcl :
     | struct_type
     | enum_type
     | NATIVE simple_declarator
+        {
+            NativeType* nt = new NativeType($2);
+            getCurrent()->add(nt);
+        }
     | constr_forward_decl
     ;
 
@@ -636,7 +638,6 @@ base_type_spec :
     | octet_type
     | any_type
     | object_type
-    | variant_type
     ;
 
 template_type_spec :
@@ -809,13 +810,6 @@ object_type :
     OBJECT
         {
             $$ = new Type("Object");
-        }
-    ;
-
-variant_type :
-    VARIANT
-        {
-            $$ = new Type("Variant");
         }
     ;
 
