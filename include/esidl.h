@@ -76,7 +76,8 @@ protected:
     std::string         javadoc;
     NodeList*           extendedAttributes;
 
-    static int          level;      // current include level
+    static int          level;          // current include level
+    static const char*  baseObjectName; // default base object name
 
 public:
     Node() :
@@ -393,6 +394,16 @@ public:
     static int decLevel()
     {
         --level;
+    }
+
+    static void setBaseObjectName(const char* name)
+    {
+        baseObjectName = name;
+    }
+
+    static const char* getBaseObjectName()
+    {
+        return baseObjectName;
     }
 };
 

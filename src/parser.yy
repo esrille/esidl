@@ -293,7 +293,17 @@ interface_header :
         }
     | INTERFACE IDENTIFIER
         {
-            Interface* node = new Interface($2);
+            Node* extends = 0;
+            if (const char* base = Node::getBaseObjectName())
+            {
+                if (strcmp(base, $2) != 0) {
+                    ScopedName* name = new ScopedName(base);
+                    assert(name->search(getCurrent()));
+                    extends = new Node();
+                    extends->add(name);
+                }
+            }
+            Interface* node = new Interface($2, extends);
             getCurrent()->add(node);
             setCurrent(node);
             free($2);
@@ -308,7 +318,17 @@ interface_header :
         }
     | extended_attribute_list INTERFACE IDENTIFIER
         {
-            Interface* node = new Interface($3);
+            Node* extends = 0;
+            if (const char* base = Node::getBaseObjectName())
+            {
+                if (strcmp(base, $3) != 0) {
+                    ScopedName* name = new ScopedName(base);
+                    assert(name->search(getCurrent()));
+                    extends = new Node();
+                    extends->add(name);
+                }
+            }
+            Interface* node = new Interface($3, extends);
             node->setExtendedAttributes($1);
             getCurrent()->add(node);
             setCurrent(node);

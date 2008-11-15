@@ -35,29 +35,44 @@ int main(int argc, char* argv[])
 
     argCpp[0] = "cpp";
     argIdl[0] = "esidl2";
-
-    int opt = 1;
+    int optCpp = 1;
+    int optIdl = 1;
     for (int i = 1; i < argc; ++i)
     {
         if (argv[i][0] == '-')
         {
-            argCpp[opt] = argIdl[opt] = argv[i];
-            ++opt;
-            if (strcmp(argv[i], "-I") == 0)
+            if (argv[i][1] == 'I')
             {
-                argCpp[opt] = argIdl[opt] = argv[++i];
-                ++opt;
+                argCpp[optCpp++] = argv[i];
+                argIdl[optIdl++] = argv[i];
+                if (argv[i][2] == '\0')
+                {
+                    ++i;
+                    argCpp[optCpp++] = argv[i];
+                    argIdl[optIdl++] = argv[i];
+                }
+            }
+            else if (strcmp(argv[i], "-include") == 0)
+            {
+                argCpp[optCpp++] = argv[i];
+                ++i;
+                argCpp[optCpp++] = argv[i];
+            }
+            else if (strcmp(argv[i], "-object") == 0)
+            {
+                argIdl[optIdl++] = argv[i];
+                ++i;
+                argIdl[optIdl++] = argv[i];
+            }
+            else
+            {
+                argCpp[optCpp++] = argv[i];
             }
         }
     }
 
-    if (argc == opt)
-    {
-        return EXIT_FAILURE;
-    }
-
-    argCpp[opt + 1] = 0;
-    argIdl[opt] = 0;
+    argCpp[optCpp + 1] = 0;
+    argIdl[optIdl] = 0;
 
     int result = EXIT_SUCCESS;
 
@@ -65,59 +80,60 @@ int main(int argc, char* argv[])
     {
         if (argv[i][0] == '-')
         {
-            if (strcmp(argv[i], "-I") == 0)
+            if (strcmp(argv[i], "-I") == 0 ||
+                strcmp(argv[i], "-include") == 0 ||
+                strcmp(argv[i], "-object") == 0)
             {
                 ++i;
+            }
+            continue;
+        }
+
+        argCpp[optCpp] = argv[i];
+        pid_t id = fork();
+        if (id == 0)
+        {
+            int stream[2];
+            pipe(stream);
+
+            if (fork() == 0)
+            {
+                // Child process - execute cpp
+                close(1);
+                dup(stream[1]);
+                close(stream[0]);
+                close(stream[1]);
+                execvp(argCpp[0], argCpp);
+                break;
+            }
+            else
+            {
+                // Parent process - execute esidl2
+                close(0);
+                dup(stream[0]);
+                close(stream[0]);
+                close(stream[1]);
+                execvp(argIdl[0], argIdl);
+                break;
+            }
+        }
+        else if (0 < id)
+        {
+            int status;
+
+            while (wait(&status) != id)
+            {
+            }
+            if (result == EXIT_SUCCESS &&
+                WIFEXITED(status) &&
+                WEXITSTATUS(status) != EXIT_SUCCESS)
+            {
+                result = WEXITSTATUS(status);
             }
         }
         else
         {
-            argCpp[opt] = argv[i];
-            pid_t id = fork();
-            if (id == 0)
-            {
-                int stream[2];
-                pipe(stream);
-
-                if (fork() == 0)
-                {
-                    // Child process - execute cpp
-                    close(1);
-                    dup(stream[1]);
-                    close(stream[0]);
-                    close(stream[1]);
-                    execvp(argCpp[0], argCpp);
-                    break;
-                }
-                else
-                {
-                    // Parent process - execute esidl2
-                    close(0);
-                    dup(stream[0]);
-                    close(stream[0]);
-                    close(stream[1]);
-                    execvp(argIdl[0], argIdl);
-                    break;
-                }
-            }
-            else if (0 < id)
-            {
-                int status;
-
-                while (wait(&status) != id)
-                {
-                }
-                if (result == EXIT_SUCCESS &&
-                    WIFEXITED(status) &&
-                    WEXITSTATUS(status) != EXIT_SUCCESS)
-                {
-                    result = WEXITSTATUS(status);
-                }
-            }
-            else
-            {
-                return EXIT_FAILURE;
-            }
+            return EXIT_FAILURE;
         }
     }
 

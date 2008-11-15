@@ -45,6 +45,7 @@ namespace
 }
 
 int Node::level = 1;
+const char* Node::baseObjectName = 0;
 
 Node* getSpecification()
 {
@@ -326,6 +327,11 @@ int main(int argc, char* argv[])
                     ++i;
                     includePath = argv[i];
                 }
+            }
+            else if (strcmp(argv[i], "-object") == 0)
+            {
+                ++i;
+                Node::setBaseObjectName(argv[i]);
             }
         }
     }
