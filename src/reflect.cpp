@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2006, 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -228,16 +228,8 @@ void processMethod(Reflect::Method& method)
 void processInterface(Reflect::Interface& interface)
 {
     printf("interface %s\n", interface.getName());
-    printf("iid: ");
-    printGuid(interface.getIid());
-    printf("\n");
-
-    if (interface.getSuperIid() != GUID_NULL)
-    {
-        printf("piid: ");
-        printGuid(interface.getSuperIid());
-        printf("\n");
-    }
+    printf("fully qualified name: %s\n", interface.getFullyQualifiedName());
+    printf("fully qualified super name: %s\n", interface.getFullyQualifiedSuperName());
 
     for (int i = 0; i < interface.getMethodCount(); ++i)
     {

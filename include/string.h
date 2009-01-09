@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,15 @@ class StringOffsetter : public Visitor
     std::map<std::string, size_t>& dict;
     size_t offset;
 
+    void add(const std::string& name)
+    {
+        if (0 < name.size() && dict.find(name) == dict.end())
+        {
+            dict[name] = offset;
+            offset += name.length() + 1;
+        }
+    }
+
 public:
     StringOffsetter(std::map<std::string, size_t>& dict, size_t base) :
         dict(dict),
@@ -47,15 +56,7 @@ public:
         {
             return;
         }
-
-        if (0 < node->getName().size())
-        {
-            if (dict.find(node->getName()) == dict.end())
-            {
-                dict[node->getName()] = offset;
-                offset += node->getName().length() + 1;
-            }
-        }
+        add(node->getName());
         visitChildren(node);
     }
 
@@ -69,15 +70,12 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if (1 < node->getRank())
-        {
-            return;
-        }
-
+        add(node->getFullyQualifiedName());
         at(static_cast<const Node*>(node));
-        if (node->getExtends())
+        if (Interface* super = node->getSuper())
         {
-            node->getExtends()->accept(this);
+            add(super->getFullyQualifiedName());
+            super->accept(this);
         }
     }
 

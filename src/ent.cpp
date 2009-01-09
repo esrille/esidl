@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -418,55 +418,47 @@ public:
         }
 
         printf("%04zx: Interface %s\n", node->getOffset(), node->getName().c_str());
-
-        Node* parent = node->getParent();
-        assert(parent);
-        assert(dynamic_cast<Module*>(parent));
+        const Node* parent = node;
+        do {
+            parent = parent->getParent();
+            assert(parent);
+        } while (!dynamic_cast<const Module*>(parent));
+        const Module* module = dynamic_cast<const Module*>(parent);
 
         if (node->getRank() == 1)
         {
-            Ent::Module* module = reinterpret_cast<Ent::Module*>(image + parent->getOffset());
-            module->addInterface(node->getOffset());
+            Ent::Module* entModule = reinterpret_cast<Ent::Module*>(image + module->getOffset());
+            entModule->addInterface(node->getOffset());
         }
 
-        Guid iid;
-        node->getIID(iid);
-
-        Guid piid = GUID_NULL;
         u32 inheritedMethodCount = 0;
-        if (Node* extends = node->getExtends())
+        Interface* super = 0;
+        if (super = node->getSuper())
         {
-            for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
-            {
-                ScopedName* scoped = static_cast<ScopedName*>(*i);
-                Node* base = scoped->search(node);
-                Interface* super = static_cast<Interface*>(base);
-                super->getIID(piid);
-                inheritedMethodCount += super->getMethodCount();
-                while (Node* extends = super->getExtends())
-                {
-                    for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
-                    {
-                        scoped = static_cast<ScopedName*>(*i);
-                        base = scoped->search(node);
-                        super = static_cast<Interface*>(base);
-                        inheritedMethodCount += super->getMethodCount();
-                        break;  // Multiple inheritance is not allowed.
-                    }
-                }
-                break;  // Multiple inheritance is not allowed.
-            }
+            Interface* extend = super;
+            do {
+                inheritedMethodCount += extend->getMethodCount();
+            } while (extend = extend->getSuper());
         }
 
+        Interface* constructor = node->getConstructor();
         if (1 < node->getRank())
         {
-            new(image + node->getOffset()) Ent::Interface(0, iid, piid, 0,
-                                                          node->getMethodCount(), node->getConstCount(), inheritedMethodCount);
+            new(image + node->getOffset()) Ent::Interface(dict[node->getName()],
+                                                          dict[node->getFullyQualifiedName()],
+                                                          super ? dict[super->getFullyQualifiedName()] : 0,
+                                                          0,
+                                                          node->getMethodCount(), node->getConstCount(), inheritedMethodCount,
+                                                          constructor ? constructor->getOffset() : 0);
             return;
         }
 
-        new(image + node->getOffset()) Ent::Interface(dict[node->getName()], iid, piid, parent->getOffset(),
-                                                      node->getMethodCount(), node->getConstCount(), inheritedMethodCount);
+        new(image + node->getOffset()) Ent::Interface(dict[node->getName()],
+                                                      dict[node->getFullyQualifiedName()],
+                                                      super ? dict[super->getFullyQualifiedName()] : 0,
+                                                      module->getOffset(),
+                                                      node->getMethodCount(), node->getConstCount(), inheritedMethodCount,
+                                                      constructor ? constructor->getOffset() : 0);
 
         size_t offset = node->getOffset() + sizeof(Ent::Interface) + sizeof(Ent::Spec) * node->getMethodCount();
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
@@ -479,6 +471,8 @@ public:
         }
 
         visitChildren(node);
+
+        // TODO: Process constructors.
     }
 
     virtual void at(const SequenceType* node)

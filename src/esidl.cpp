@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,6 +42,7 @@ namespace
     char  filename[PATH_MAX + 1];
     char* includePath;
     std::string javadoc;
+    std::string savedJavadoc;
 }
 
 int Node::level = 1;
@@ -101,6 +102,18 @@ void setJavadoc(const char* doc)
     javadoc = doc ? doc : "";
 }
 
+std::string& popJavadoc()
+{
+    javadoc = savedJavadoc;
+    return javadoc;
+}
+
+void pushJavadoc()
+{
+    savedJavadoc = getJavadoc();
+    setJavadoc(0);
+}
+
 std::string getOutputFilename(const char* input, const char* suffix)
 {
     std::string filename(input);
@@ -156,9 +169,19 @@ void Module::add(Node* node)
 {
     if (node->getRank() == 1)
     {
-        if (dynamic_cast<Interface*>(node) && !node->isLeaf())
+        if (Interface* interface = dynamic_cast<Interface*>(node))
         {
-            ++interfaceCount;
+            if (!node->isLeaf())
+            {
+                if (interface->getConstructor())
+                {
+                    interfaceCount += 2;
+                }
+                else
+                {
+                    ++interfaceCount;
+                }
+            }
         }
         if (dynamic_cast<ConstDcl*>(node))
         {
@@ -243,25 +266,45 @@ void Interface::setExtendedAttributes(NodeList* list)
     {
         return;
     }
-    NodeList* attributes = new NodeList;
 
+    pushJavadoc();
+    ScopedName* interfaceName;
     for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
-        if (((*i)->getName() == "Constructor")
-            || ((*i)->getName() == "Stringifies"))
+        ExtendedAttribute* attr = dynamic_cast<ExtendedAttribute*>(*i);
+        assert(attr);
+        if (attr->getName() == "Constructor")
         {
-            attributes->push_back(*i);
+            if (constructor == NULL)
+            {
+                Node* extends = 0;
+                if (const char* base = getBaseObjectName())
+                {
+                    ScopedName* name = new ScopedName(base);
+                    extends = new Node();
+                    extends->add(name);
+                }
+                constructor = new Interface("Constructor", extends);
+                add(constructor);
+
+                interfaceName = new ScopedName(getName());
+            }
+            OpDcl* op;
+            if (op = dynamic_cast<OpDcl*>(attr->getDetails()))
+            {
+                op->setSpec(interfaceName);
+                op->getName() = "createInstance";
+            }
+            else
+            {
+                // Default constructor
+                op = new OpDcl("createInstance", interfaceName);
+            }
+            constructor->add(op);
         }
     }
-    delete list;
-    if (0 < attributes->size())
-    {
-        Node::setExtendedAttributes(attributes);
-    }
-    else
-    {
-        delete attributes;
-    }
+    popJavadoc();
+    Node::setExtendedAttributes(list);
 }
 
 void OpDcl::setExtendedAttributes(NodeList* list)

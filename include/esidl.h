@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,6 +62,8 @@ void setFilename(const char* name);
 char* getFilename();
 std::string& getJavadoc();
 void setJavadoc(const char* doc);
+std::string& popJavadoc();
+void pushJavadoc();
 
 class Node
 {
@@ -219,6 +221,16 @@ public:
 
     const std::string& getName() const
     {
+        return name;
+    }
+
+    std::string getFullyQualifiedName() const
+    {
+        std::string name = getName();
+        for (Node* node = getParent(); node && node->name != ""; node = node->getParent())
+        {
+            name = node->name + "::" + name;
+        }
         return name;
     }
 
@@ -614,13 +626,15 @@ class Interface : public Node
     Node* extends;
     int constCount;
     int methodCount;
+    Interface* constructor;
 
 public:
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
         Node(identifier),
         extends(extends),
         constCount(0),
-        methodCount(0)
+        methodCount(0),
+        constructor(0)
     {
         separator = ";\n";
         if (!forward)
@@ -683,6 +697,27 @@ public:
     int getMethodCount() const
     {
         return methodCount;
+    }
+
+    Interface* getSuper() const
+    {
+        Interface* super = 0;
+        if (Node* extends = getExtends())
+        {
+            for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
+            {
+                ScopedName* scoped = static_cast<ScopedName*>(*i);
+                Node* base = scoped->search(this);
+                super = static_cast<Interface*>(base);
+                break;  // Multiple inheritance is not allowed.
+            }
+        }
+        return super;
+    }
+
+    Interface* getConstructor() const
+    {
+        return constructor;
     }
 
     bool getIID(Guid& iid) const
@@ -1073,7 +1108,9 @@ class OpDcl : public Member
     int extAttr;
 
 public:
-    // XXX: 0 = AttrNone, 1 = AttrGetter, 2 = AttrSetter
+    static const int AttrNone = 0u;     // cf. ent.h
+    static const int AttrGetter = 1u;   // cf. ent.h
+    static const int AttrSetter = 2u;   // cf. ent.h
     static const int ExtAttrIndexGetter = 3;
     static const int ExtAttrIndexSetter = 4;
     static const int ExtAttrNameGetter = 5;
@@ -1151,31 +1188,18 @@ public:
 
 class ExtendedAttribute : public Node
 {
-    std::string identifier;
+    Node* details;
 
 public:
-    ExtendedAttribute(std::string name) :
+    ExtendedAttribute(std::string name, Node* details = 0) :
         Node(name),
-        identifier("")
+        details(details)
     {
-        separator = ", ";
     }
 
-    ExtendedAttribute(std::string name, std::string identifier) :
-        Node(name),
-        identifier(identifier)
+    Node* getDetails() const
     {
-        separator = ", ";
-    }
-
-    std::string& getIdentifier()
-    {
-        return identifier;
-    }
-
-    std::string getIdentifier() const
-    {
-        return identifier;
+        return details;
     }
 
     virtual void accept(Visitor* visitor);

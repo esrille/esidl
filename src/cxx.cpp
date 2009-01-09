@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +26,7 @@ class Cxx : public Visitor
     std::string prefix;
     FILE* file;
     bool interfaceMode;
+    bool constructorMode;
 
     void printChildren(const Node* node)
     {
@@ -73,7 +74,8 @@ class Cxx : public Visitor
 public:
     Cxx(FILE* file) :
         file(file),
-        interfaceMode(false)
+        interfaceMode(false),
+        constructorMode(false)
     {
     }
 
@@ -213,25 +215,46 @@ public:
                 fprintf(file, ";\n");
             }
 
-            Guid guid;
-            if (node->getIID(guid))
+            fprintf(file, "%sstatic const char* iid()\n", indent.c_str());
+            fprintf(file, "%s{\n", indent.c_str());
+            fprintf(file, "%s    static const char* name = \"%s\";\n", indent.c_str(), node->getFullyQualifiedName().c_str());
+            fprintf(file, "%s    return name;\n", indent.c_str());
+            fprintf(file, "%s}\n", indent.c_str());
+
+            if (Interface* constructor = node->getConstructor())
             {
-                fprintf(file, "%sstatic const Guid& iid()\n", indent.c_str());
+                // Process constructors.
+                constructorMode = true;
+                for (NodeList::iterator i = constructor->begin();
+                     i != constructor->end();
+                     ++i)
+                {
+                    fprintf(file, "%s", indent.c_str());
+                    (*i)->accept(this);
+                }
+                constructorMode = false;
+                fprintf(file, "%sstatic IConstructor* getConstructor()\n", indent.c_str());
                 fprintf(file, "%s{\n", indent.c_str());
-                fprintf(file, "%s    static const Guid iid =\n", indent.c_str());
-                fprintf(file, "%s    {\n", indent.c_str());
-                fprintf(file, "%s        0x%08x, 0x%04x, 0x%04x, { 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x }\n",
-                        indent.c_str(),
-                        guid.Data1, guid.Data2, guid.Data3,
-                        guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3],
-                        guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
-                fprintf(file, "%s    };\n", indent.c_str());
-                fprintf(file, "%s    return iid;\n", indent.c_str());
+                fprintf(file, "%s    return constructor;\n", indent.c_str());
                 fprintf(file, "%s}\n", indent.c_str());
+                fprintf(file, "%sstatic void setConstructor(IConstructor* ctor)\n", indent.c_str());
+                fprintf(file, "%s{\n", indent.c_str());
+                fprintf(file, "%s    constructor = ctor;\n", indent.c_str());
+                fprintf(file, "%s}\n", indent.c_str());
+                fprintf(file, "private:\n");
+                fprintf(file, "%sstatic IConstructor* constructor;\n", indent.c_str());
             }
 
             indent.erase(indent.length() - 4);
             fprintf(file, "%s}", indent.c_str());
+        }
+
+        if (node->getConstructor())
+        {
+            fprintf(file, ";\n\n");
+            fprintf(file, "%sI%s::IConstructor* I%s::constructor __attribute__((weak))",
+                    indent.c_str(), node->getName().c_str(), node->getName().c_str());
+
         }
     }
 
@@ -522,7 +545,14 @@ public:
         {
             fprintf(file, "%s\n%s", node->getJavadoc().c_str(), indent.c_str());
         }
-        fprintf(file, "virtual ");
+        if (!constructorMode)
+        {
+            fprintf(file, "virtual ");
+        }
+        else
+        {
+            fprintf(file, "static ");
+        }
 
         Node* spec = node->getSpec();
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
@@ -649,7 +679,26 @@ public:
             fprintf(file, ")");
         }
 
-        fprintf(file, " = 0");
+        if (!constructorMode)
+        {
+            fprintf(file, " = 0");
+        }
+        else
+        {
+            fprintf(file, "\n%s{\n", indent.c_str());
+            fprintf(file, "%s    if (constructor)\n", indent.c_str());
+            fprintf(file, "%s        constructor->createInstance(", indent.c_str());
+            for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
+            {
+                if (i != node->begin())
+                {
+                    fprintf(file, ", ");
+                }
+                fprintf(file, "%s", (*i)->getName().c_str());
+            }
+            fprintf(file, ");\n");
+            fprintf(file, "%s}\n", indent.c_str());
+        }
     }
 
     virtual void at(const ParamDcl* node)
@@ -748,7 +797,7 @@ std::string getIncludedName(const std::string& header)
             included[i] = '_';
         }
     }
-    return "GOOGLE_" + included + "_INCLUDED";
+    return included + "_INCLUDED";
 }
 
 class Import : public Visitor
@@ -791,10 +840,9 @@ void printCxx(const std::string& filename)
     }
 
     std::string included = getIncludedName(filename);
-    fprintf(file, "/* Generated by Google esidl %s. */\n\n", VERSION);
+    fprintf(file, "// Generated by esidl %s.\n\n", VERSION);
     fprintf(file, "#ifndef %s\n", included.c_str());
     fprintf(file, "#define %s\n\n", included.c_str());
-    fprintf(file, "#include <es/uuid.h>\n");
 
     Import import(file);
     getSpecification()->accept(&import);

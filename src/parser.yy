@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -181,6 +181,7 @@ int yylex(YYSTYPE* yylval);
 %type <nodeList>    extended_attribute_list
 %type <nodeList>    extended_attributes
 %type <node>        extended_attribute
+%type <node>        extended_attribute_details
 
 %type <name>        unary_operator
 %type <name>        simple_declarator
@@ -1165,7 +1166,7 @@ exception_list :
     '(' scoped_name_list ')'
     ;
 
-preprocessor:
+preprocessor :
     POUND_SIGN INTEGER_LITERAL STRING_LITERAL INTEGER_LITERAL
         {
             // # LINENUM FILENAME FLAGS
@@ -1206,14 +1207,14 @@ preprocessor:
         }
     ;
 
-uuid_type:
+uuid_type :
     UUID
         {
             $$ = new Type("uuid");
         }
     ;
 
-javadoc:
+javadoc :
     /* empty */
         {
             $$ = 0;
@@ -1230,9 +1231,13 @@ extended_attribute_opt :
     ;
 
 extended_attribute_list :
+        {
+            pushJavadoc();
+        }
     '[' extended_attributes ']'
         {
-            $$ = $2;
+            popJavadoc();
+            $$ = $3;
         }
     ;
 
@@ -1250,12 +1255,54 @@ extended_attributes :
     ;
 
 extended_attribute :
-    IDENTIFIER
+    javadoc
         {
-            $$ = new ExtendedAttribute($1);
+            setJavadoc($1);
+            free($1);
         }
-    | IDENTIFIER '=' IDENTIFIER
+    IDENTIFIER extended_attribute_details
         {
-            $$ = new ExtendedAttribute($1, $3);
+            $$ = new ExtendedAttribute($3, $4);
+            free($3);
+            setJavadoc(0);
+        }
+    ;
+
+extended_attribute_details :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | '=' IDENTIFIER
+        {
+            $$ = new Node($2);
+            free($2);
+        }
+    | '=' IDENTIFIER
+        {
+            $<node>$ = getCurrent();
+            OpDcl* op = new OpDcl($2, 0);
+            // We need to set parent for op here. Otherwise, some names cannot be resolved.
+            op->setParent(getCurrent());
+            setCurrent(op);
+            free($2);
+        }
+    parameter_dcls
+        {
+            $$ = getCurrent();
+            setCurrent($<node>3);
+        }
+    |
+        {
+            $<node>$ = getCurrent();
+            OpDcl* op = new OpDcl("", 0);
+            // We need to set parent for op here. Otherwise, some names cannot be resolved.
+            op->setParent(getCurrent());
+            setCurrent(op);
+        }
+    parameter_dcls
+        {
+            $$ = getCurrent();
+            setCurrent($<node>1);
         }
     ;

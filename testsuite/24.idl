@@ -1,6 +1,5 @@
 module A
 {
-    [Constructor]
     interface I
     {
         attribute float attr1;
