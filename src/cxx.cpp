@@ -278,7 +278,7 @@ public:
         }
         else if (node->getName() == "any")
         {
-            fprintf(file, "Variant");
+            fprintf(file, "Any");
         }
         else if (node->getName() == "wchar")
         {
