@@ -224,12 +224,12 @@ public:
         return name;
     }
 
-    std::string getFullyQualifiedName() const
+    std::string getQualifiedName() const
     {
-        std::string name = getName();
-        for (Node* node = getParent(); node && node->name != ""; node = node->getParent())
+        std::string name;
+        for (const Node* node = this; node && node->name != ""; node = node->getParent())
         {
-            name = node->name + "::" + name;
+            name = "::" + node->name + name;
         }
         return name;
     }

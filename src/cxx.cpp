@@ -217,7 +217,7 @@ public:
 
             fprintf(file, "%sstatic const char* iid()\n", indent.c_str());
             fprintf(file, "%s{\n", indent.c_str());
-            fprintf(file, "%s    static const char* name = \"%s\";\n", indent.c_str(), node->getFullyQualifiedName().c_str());
+            fprintf(file, "%s    static const char* name = \"%s\";\n", indent.c_str(), node->getQualifiedName().c_str());
             fprintf(file, "%s    return name;\n", indent.c_str());
             fprintf(file, "%s}\n", indent.c_str());
 

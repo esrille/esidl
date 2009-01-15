@@ -70,11 +70,11 @@ public:
 
     virtual void at(const Interface* node)
     {
-        add(node->getFullyQualifiedName());
+        add(node->getQualifiedName());
         at(static_cast<const Node*>(node));
         if (Interface* super = node->getSuper())
         {
-            add(super->getFullyQualifiedName());
+            add(super->getQualifiedName());
             super->accept(this);
         }
     }

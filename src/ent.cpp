@@ -445,8 +445,8 @@ public:
         if (1 < node->getRank())
         {
             new(image + node->getOffset()) Ent::Interface(dict[node->getName()],
-                                                          dict[node->getFullyQualifiedName()],
-                                                          super ? dict[super->getFullyQualifiedName()] : 0,
+                                                          dict[node->getQualifiedName()],
+                                                          super ? dict[super->getQualifiedName()] : 0,
                                                           0,
                                                           node->getMethodCount(), node->getConstCount(), inheritedMethodCount,
                                                           constructor ? constructor->getOffset() : 0);
@@ -454,8 +454,8 @@ public:
         }
 
         new(image + node->getOffset()) Ent::Interface(dict[node->getName()],
-                                                      dict[node->getFullyQualifiedName()],
-                                                      super ? dict[super->getFullyQualifiedName()] : 0,
+                                                      dict[node->getQualifiedName()],
+                                                      super ? dict[super->getQualifiedName()] : 0,
                                                       module->getOffset(),
                                                       node->getMethodCount(), node->getConstCount(), inheritedMethodCount,
                                                       constructor ? constructor->getOffset() : 0);
