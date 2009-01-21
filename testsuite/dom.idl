@@ -1,0 +1,19 @@
+#include "Interface.idl"
+
+module dom
+{
+    interface Node : Interface
+    {
+        readonly attribute string nodeName;
+    };
+
+    interface Element : Node
+    {
+      readonly attribute string tagName;
+    };
+
+    interface Document : Node
+    {
+        Element getElementById(in string elementId);
+    };
+};

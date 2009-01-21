@@ -309,7 +309,7 @@ public:
         return compare("uuid", scope) == 0;
     }
 
-    virtual Interface* isInterface(const Node* scope)
+    virtual Interface* isInterface(const Node* scope) const
     {
         return 0;
     }
@@ -444,22 +444,7 @@ public:
     {
     }
 
-    Node* search(const Node* scope) const
-    {
-        if (name.compare(0, 2, "::") == 0)
-        {
-            return getSpecification()->search(name, 2);
-        }
-
-        for (const Node* node = scope; node; node = node->getParent())
-        {
-            if (Node* find = node->search(name))
-            {
-                return find;
-            }
-        }
-        return 0;
-    }
+    Node* search(const Node* scope) const;
 
     virtual bool compare(const char* str, const Node* scope) const
     {
@@ -471,7 +456,7 @@ public:
         return node->compare(str, node->getParent());
     }
 
-    virtual Interface* isInterface(const Node* scope)
+    virtual Interface* isInterface(const Node* scope) const
     {
         Node* node = search(scope);
         if (!node)
@@ -684,9 +669,9 @@ public:
         return extends;
     }
 
-    virtual Interface* isInterface(const Node* scope)
+    virtual Interface* isInterface(const Node* scope) const
     {
-        return this;
+        return const_cast<Interface*>(this);
     }
 
     int getConstCount() const
@@ -708,7 +693,8 @@ public:
             {
                 ScopedName* scoped = static_cast<ScopedName*>(*i);
                 Node* base = scoped->search(this);
-                super = static_cast<Interface*>(base);
+                super = dynamic_cast<Interface*>(base);
+                assert(super);
                 break;  // Multiple inheritance is not allowed.
             }
         }
@@ -959,7 +945,7 @@ public:
         return spec->compare(str, scope);
     }
 
-    virtual Interface* isInterface(const Node* scope)
+    virtual Interface* isInterface(const Node* scope) const
     {
         if (!type)
         {

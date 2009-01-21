@@ -353,6 +353,42 @@ void OpDcl::setExtendedAttributes(NodeList* list)
     }
 }
 
+Node* ScopedName::search(const Node* scope) const
+{
+    Node* found = 0;
+    if (name.compare(0, 2, "::") == 0)
+    {
+        found = getSpecification()->search(name, 2);
+    }
+    else
+    {
+      for (const Node* node = scope; node; node = node->getParent())
+      {
+          if (found = node->search(name))
+          {
+              break;
+          }
+      }
+    }
+    if (found)
+    {
+        if (Member* member = dynamic_cast<Member*>(found))
+        {
+            if (member->isTypedef() && !member->isArray(member->getParent()))
+            {
+                if (ScopedName* node = dynamic_cast<ScopedName*>(member->getSpec()))
+                {
+                    if (Node* resolved = node->search(member->getParent()))
+                    {
+                        found = resolved;
+                    }
+                }
+            }
+        }
+    }
+    return found;
+}
+
 int main(int argc, char* argv[])
 {
     for (int i = 1; i < argc; ++i)
@@ -369,6 +405,15 @@ int main(int argc, char* argv[])
                 {
                     ++i;
                     includePath = argv[i];
+                }
+            }
+            else if (strcmp(argv[i], "-debug") == 0)
+            {
+                bool stop = true;
+                while (stop)
+                {
+                    fprintf(stderr, ".");
+                    sleep(1);
                 }
             }
             else if (strcmp(argv[i], "-object") == 0)

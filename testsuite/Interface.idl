@@ -1,0 +1,6 @@
+interface Interface
+{
+    Object queryInterface(in string iid);
+    unsigned long retain();
+    unsigned long release();
+};

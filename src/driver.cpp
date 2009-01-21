@@ -52,6 +52,10 @@ int main(int argc, char* argv[])
                     argIdl[optIdl++] = argv[i];
                 }
             }
+            else if (strcmp(argv[i], "-debug") == 0)
+            {
+                argIdl[optIdl++] = argv[i];
+            }
             else if (strcmp(argv[i], "-include") == 0)
             {
                 argCpp[optCpp++] = argv[i];

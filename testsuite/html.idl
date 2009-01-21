@@ -1,0 +1,20 @@
+#include "dom.idl"
+
+module html
+{
+    typedef dom::Node Node;
+    typedef dom::Document Document;
+    typedef dom::Element Element;
+
+    interface HTMLElement : Element
+    {
+        attribute string id;
+    };
+
+    interface HTMLCanvasElement : HTMLElement
+    {
+        attribute unsigned long width;
+        attribute unsigned long height;
+        Object getContext(in string contextId);
+    };
+};

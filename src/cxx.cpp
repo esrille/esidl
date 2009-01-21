@@ -380,8 +380,18 @@ public:
         {
             fprintf(file, "typedef ");
         }
-        node->getSpec()->accept(this);
-        fprintf(file, " %s", node->getName().c_str());
+        if (node->isInterface(node->getParent()))
+        {
+            interfaceMode = true;
+            node->getSpec()->accept(this);
+            fprintf(file, " I%s", node->getName().c_str());
+            interfaceMode = false;
+        }
+        else
+        {
+            node->getSpec()->accept(this);
+            fprintf(file, " %s", node->getName().c_str());
+        }
     }
 
     virtual void at(const ArrayDcl* node)
