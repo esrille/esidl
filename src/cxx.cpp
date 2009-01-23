@@ -294,7 +294,14 @@ public:
         }
         else if (node->getName() == "Object")
         {
-            fprintf(file, "void*");
+            if (const char* base = Node::getBaseObjectName())
+            {
+                fprintf(file, "I%s*", base);
+            }
+            else
+            {
+                fprintf(file, "void*");
+            }
         }
         else if (node->getName() == "uuid")
         {
