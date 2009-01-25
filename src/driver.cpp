@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,6 +51,10 @@ int main(int argc, char* argv[])
                     argCpp[optCpp++] = argv[i];
                     argIdl[optIdl++] = argv[i];
                 }
+            }
+            else if (strcmp(argv[i], "-npapi") == 0)
+            {
+                argIdl[optIdl++] = argv[i];
             }
             else if (strcmp(argv[i], "-debug") == 0)
             {

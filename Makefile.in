@@ -194,6 +194,7 @@ sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = . testsuite
@@ -203,7 +204,7 @@ esidl2_SOURCES = src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
 		 src/guid.cpp include/guid.h include/utf.h \
 		 src/print.cpp src/cxx.cpp \
 		 src/ent.cpp \
-		 include/expr.h include/string.h
+		 include/expr.h include/string.h include/cplusplus.h
 
 esidl2_CXXFLAGS = -D YYERROR_VERBOSE
 entdump_SOURCES = src/entdump.cpp

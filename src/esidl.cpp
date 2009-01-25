@@ -389,8 +389,26 @@ Node* ScopedName::search(const Node* scope) const
     return found;
 }
 
+std::string getIncludedName(const std::string& header)
+{
+    std::string included(header);
+
+    for (int i = 0; i < included.size(); ++i)
+    {
+        char c = included[i];
+        included[i] = toupper(c);
+        if (c == '.' || c == '/' || c == '\\')
+        {
+            included[i] = '_';
+        }
+    }
+    return included + "_INCLUDED";
+}
+
 int main(int argc, char* argv[])
 {
+    bool npapi = false;
+
     for (int i = 1; i < argc; ++i)
     {
         if (argv[i][0] == '-')
@@ -415,6 +433,10 @@ int main(int argc, char* argv[])
                     fprintf(stderr, ".");
                     sleep(1);
                 }
+            }
+            else if (strcmp(argv[i], "-npapi") == 0)
+            {
+                npapi = true;
             }
             else if (strcmp(argv[i], "-object") == 0)
             {
@@ -448,8 +470,18 @@ int main(int argc, char* argv[])
     printf("-----------------------------------\n");
     printEnt(getOutputFilename(getFilename(), "ent"));
     printf("-----------------------------------\n");
+    if (npapi)
+    {
+        printNpapi(getFilename());
+        printf("-----------------------------------\n");
+    }
 
     delete node;
 
     return EXIT_SUCCESS;
+}
+
+void printNpapi(const char* idlFilename) __attribute__ ((weak));
+void printNpapi(const char* idlFilename)
+{
 }

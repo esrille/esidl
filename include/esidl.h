@@ -279,6 +279,11 @@ public:
         return name.compare(str);
     }
 
+    virtual bool isVoid(const Node* scope) const
+    {
+        return compare("void", scope) == 0;
+    }
+
     virtual bool isAny(const Node* scope) const
     {
         return compare("any", scope) == 0;
@@ -292,6 +297,36 @@ public:
     virtual bool isBoolean(const Node* scope) const
     {
         return compare("boolean", scope) == 0;
+    }
+
+    virtual bool isShort(const Node* scope) const
+    {
+        return compare("short", scope) == 0;
+    }
+
+    virtual bool isLong(const Node* scope) const
+    {
+        return compare("long", scope) == 0;
+    }
+
+    virtual bool isLongLong(const Node* scope) const
+    {
+        return compare("long long", scope) == 0;
+    }
+
+    virtual bool isUnsignedShort(const Node* scope) const
+    {
+        return compare("unsigned short", scope) == 0;
+    }
+
+    virtual bool isUnsignedLong(const Node* scope) const
+    {
+        return compare("unsigned long", scope) == 0;
+    }
+
+    virtual bool isUnsignedLongLong(const Node* scope) const
+    {
+        return compare("unsigned long long", scope) == 0;
     }
 
     virtual bool isString(const Node* scope) const
@@ -309,9 +344,19 @@ public:
         return compare("uuid", scope) == 0;
     }
 
-    virtual Interface* isInterface(const Node* scope) const
+    virtual bool isInterface(const Node* scope) const
     {
-        return 0;
+        return compare("Object", scope) == 0;
+    }
+
+    virtual bool isFloat(const Node* scope) const
+    {
+        return compare("float", scope) == 0;
+    }
+
+    virtual bool isDouble(const Node* scope) const
+    {
+        return compare("double", scope) == 0;
     }
 
     virtual SequenceType* isSequence(const Node* scope)
@@ -456,12 +501,12 @@ public:
         return node->compare(str, node->getParent());
     }
 
-    virtual Interface* isInterface(const Node* scope) const
+    virtual bool isInterface(const Node* scope) const
     {
         Node* node = search(scope);
         if (!node)
         {
-            return 0;
+            return false;
         }
         return node->isInterface(node->getParent());
     }
@@ -669,9 +714,9 @@ public:
         return extends;
     }
 
-    virtual Interface* isInterface(const Node* scope) const
+    virtual bool isInterface(const Node* scope) const
     {
-        return const_cast<Interface*>(this);
+        return true;
     }
 
     int getConstCount() const
@@ -945,7 +990,7 @@ public:
         return spec->compare(str, scope);
     }
 
-    virtual Interface* isInterface(const Node* scope) const
+    virtual bool isInterface(const Node* scope) const
     {
         if (!type)
         {
@@ -1461,7 +1506,9 @@ inline void ExtendedAttribute::accept(Visitor* visitor)
 extern void print();
 extern void printCxx(const std::string& filename);
 extern void printEnt(const std::string& filename);
+extern void printNpapi(const char* idlFilename);
 
 extern std::string getOutputFilename(const char* input, const char* suffix);
+extern std::string getIncludedName(const std::string& header);
 
 #endif  // NINTENDO_ESIDL_H_INCLUDED

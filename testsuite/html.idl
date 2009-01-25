@@ -17,4 +17,10 @@ module html
         attribute unsigned long height;
         Object getContext(in string contextId);
     };
+
+    interface CanvasRenderingContext2D : Interface
+    {
+        attribute any fillStyle;
+        void fillRect(in float x, in float y, in float width, in float height);
+    };
 };
