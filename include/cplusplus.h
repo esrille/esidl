@@ -132,17 +132,8 @@ public:
             }
             else
             {
-                std::string name = node->getName();
-                size_t pos = name.rfind("::");
-                if (pos != std::string::npos)
-                {
-                    name.insert(pos + 2, "I");
-                    write("%s", name.c_str());
-                }
-                else
-                {
-                    write("I%s", name.c_str());
-                }
+                std::string name = getInterfaceName(node->getName());
+                write("%s", name.c_str());
             }
         }
         else
@@ -575,6 +566,20 @@ public:
 
     virtual void at(const Include* node)
     {
+    }
+
+    static std::string getInterfaceName(std::string qualifiedName)
+    {
+        size_t pos = qualifiedName.rfind("::");
+        if (pos != std::string::npos)
+        {
+            qualifiedName.insert(pos + 2, "I");
+        }
+        else
+        {
+            qualifiedName.insert(0, "I");
+        }
+        return qualifiedName;
     }
 };
 

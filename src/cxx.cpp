@@ -354,7 +354,14 @@ public:
         {
             return;
         }
-        fprintf(file, "#include <%s>\n", getOutputFilename(node->getName().c_str(), "h").c_str());
+        if (node->isSystem())
+        {
+            fprintf(file, "#include <%s>\n", getOutputFilename(node->getName().c_str(), "h").c_str());
+        }
+        else
+        {
+            fprintf(file, "#include \"%s\"\n", getOutputFilename(node->getName().c_str(), "h").c_str());
+        }
     }
 };
 

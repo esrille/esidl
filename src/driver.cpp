@@ -52,6 +52,14 @@ int main(int argc, char* argv[])
                     argIdl[optIdl++] = argv[i];
                 }
             }
+            else if (strcmp(argv[i], "-isystem") == 0)
+            {
+                argCpp[optCpp++] = argv[i];
+                argIdl[optIdl++] = argv[i];
+                ++i;
+                argCpp[optCpp++] = argv[i];
+                argIdl[optIdl++] = argv[i];
+            }
             else if (strcmp(argv[i], "-npapi") == 0)
             {
                 argIdl[optIdl++] = argv[i];
@@ -90,6 +98,7 @@ int main(int argc, char* argv[])
         {
             if (strcmp(argv[i], "-I") == 0 ||
                 strcmp(argv[i], "-include") == 0 ||
+                strcmp(argv[i], "-isystem") == 0 ||
                 strcmp(argv[i], "-object") == 0)
             {
                 ++i;

@@ -408,6 +408,7 @@ std::string getIncludedName(const std::string& header)
 int main(int argc, char* argv[])
 {
     bool npapi = false;
+    bool isystem = false;
 
     for (int i = 1; i < argc; ++i)
     {
@@ -424,6 +425,12 @@ int main(int argc, char* argv[])
                     ++i;
                     includePath = argv[i];
                 }
+            }
+            else if (strcmp(argv[i], "-isystem") == 0)
+            {
+                ++i;
+                includePath = argv[i];
+                isystem = true;
             }
             else if (strcmp(argv[i], "-debug") == 0)
             {
@@ -472,7 +479,7 @@ int main(int argc, char* argv[])
     printf("-----------------------------------\n");
     if (npapi)
     {
-        printNpapi(getFilename());
+        printNpapi(getFilename(), isystem);
         printf("-----------------------------------\n");
     }
 
@@ -481,7 +488,7 @@ int main(int argc, char* argv[])
     return EXIT_SUCCESS;
 }
 
-void printNpapi(const char* idlFilename) __attribute__ ((weak));
-void printNpapi(const char* idlFilename)
+void printNpapi(const char* idlFilename, bool isystem) __attribute__ ((weak));
+void printNpapi(const char* idlFilename, bool isystem)
 {
 }

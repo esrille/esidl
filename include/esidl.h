@@ -466,9 +466,12 @@ public:
 
 class Include : public Node
 {
+    bool system;
+
 public:
-    Include(std::string identifier) :
-        Node(identifier)
+    Include(std::string identifier, bool system = false) :
+        Node(identifier),
+        system(system)
     {
         separator = "\n";
 
@@ -476,6 +479,11 @@ public:
         {
             name = name.substr(1, name.size() - 2);
         }
+    }
+
+    bool isSystem() const
+    {
+        return system;
     }
 
     virtual void accept(Visitor* visitor);
@@ -1506,7 +1514,7 @@ inline void ExtendedAttribute::accept(Visitor* visitor)
 extern void print();
 extern void printCxx(const std::string& filename);
 extern void printEnt(const std::string& filename);
-extern void printNpapi(const char* idlFilename);
+extern void printNpapi(const char* idlFilename, bool isystem);
 
 extern std::string getOutputFilename(const char* input, const char* suffix);
 extern std::string getIncludedName(const std::string& header);

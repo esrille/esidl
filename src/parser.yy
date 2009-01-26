@@ -1185,6 +1185,24 @@ preprocessor :
             free($3);
             free($4);
         }
+    | POUND_SIGN INTEGER_LITERAL STRING_LITERAL INTEGER_LITERAL INTEGER_LITERAL INTEGER_LITERAL
+        {
+            // # LINENUM FILENAME FLAGS
+            // FLAGS: 1) new file 2) return
+            switch (atoi($4))
+            {
+            case 1: // New file
+                getCurrent()->add(new Include($3, strcmp("3", $5) == 0));
+                Node::incLevel();
+                break;
+            case 2: // Return
+                Node::decLevel();
+                break;
+            }
+            free($2);
+            free($3);
+            free($4);
+        }
     | POUND_SIGN INTEGER_LITERAL STRING_LITERAL
         {
             // # LINENUM FILENAME
