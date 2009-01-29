@@ -96,10 +96,10 @@ protected:
                 write("%s", separator.c_str());
             }
             separator = (*i)->getSeparator();
-            br  = (separator[separator.size() - 1] == '\n') ? true : false;
+            br = (separator[separator.size() - 1] == '\n') ? true : false;
             if (br)
             {
-                write("%s", indentString.c_str());
+                writetab();
             }
             if (0 < prefix.size())
             {
@@ -135,6 +135,29 @@ public:
                 std::string name = getInterfaceName(node->getName());
                 write("%s", name.c_str());
             }
+        }
+        else
+        {
+            printChildren(node);
+        }
+    }
+
+    virtual void at(const Module* node)
+    {
+        if (0 < node->getName().size())
+        {
+            if (node->getJavadoc().size())
+            {
+                write("%s\n", node->getJavadoc().c_str());
+                writetab();
+            }
+            write("namespace %s\n", node->getName().c_str());
+            writeln("{");
+            indent();
+            printChildren(node);
+            unindent();
+            writetab();
+            write("}");
         }
         else
         {
@@ -570,14 +593,29 @@ public:
 
     static std::string getInterfaceName(std::string qualifiedName)
     {
-        size_t pos = qualifiedName.rfind("::");
-        if (pos != std::string::npos)
+        if (qualifiedName == "Object")
         {
-            qualifiedName.insert(pos + 2, "I");
+            if (const char* base = Node::getBaseObjectName())
+            {
+                qualifiedName = "I";
+                qualifiedName += base;
+            }
+            else
+            {
+                qualifiedName = "void";
+            }
         }
         else
         {
-            qualifiedName.insert(0, "I");
+            size_t pos = qualifiedName.rfind("::");
+            if (pos != std::string::npos)
+            {
+                qualifiedName.insert(pos + 2, "I");
+            }
+            else
+            {
+                qualifiedName.insert(0, "I");
+            }
         }
         return qualifiedName;
     }

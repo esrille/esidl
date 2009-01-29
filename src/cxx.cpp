@@ -25,33 +25,12 @@ public:
     {
     }
 
-    virtual void at(const Module* node)
-    {
-        if (0 < node->getName().size())
-        {
-            if (node->getJavadoc().size())
-            {
-                write("%s\n%s", node->getJavadoc().c_str(), indentString.c_str());
-            }
-            write("namespace %s\n", node->getName().c_str());
-            write("%s{\n", indentString.c_str());
-            indent();
-            printChildren(node);
-            unindent();
-            write("%s}", indentString.c_str());
-        }
-        else
-        {
-            printChildren(node);
-        }
-    }
-
     virtual void at(const EnumType* node)
     {
         write("enum %s", node->getName().c_str());
         write("\n%s{\n", indentString.c_str());
         indent();
-        write("%s", indentString.c_str());
+        writetab();
         printChildren(node);
         unindent();
         write("\n%s}", indentString.c_str());
@@ -92,7 +71,8 @@ public:
     {
         if (node->getJavadoc().size())
         {
-            write("%s\n%s", node->getJavadoc().c_str(), indentString.c_str());
+            writeln("%s\n", node->getJavadoc().c_str());
+            writetab();
         }
         write("class I%s", node->getName().c_str());
         if (node->getExtends())
@@ -106,7 +86,9 @@ public:
         }
         if (!node->isLeaf())
         {
-            write("\n%s{\n%spublic:\n", indentString.c_str(), indentString.c_str());
+            writeln("");
+            writeln("{");
+            writeln("public:");
             indent();
 
             // printChildren(node);
@@ -122,9 +104,9 @@ public:
                 {
                     write(";\n");
                 }
-                write("%s", indentString.c_str());
 
                 ++count;
+                writetab();
                 (*i)->accept(this);
             }
             if (0 < count)
@@ -132,11 +114,13 @@ public:
                 write(";\n");
             }
 
-            write("%sstatic const char* iid()\n", indentString.c_str());
-            write("%s{\n", indentString.c_str());
-            write("%s    static const char* name = \"%s\";\n", indentString.c_str(), node->getQualifiedName().c_str());
-            write("%s    return name;\n", indentString.c_str());
-            write("%s}\n", indentString.c_str());
+            writeln("static const char* iid()");
+            writeln("{");
+            indent();
+                writeln("static const char* name = \"%s\";", node->getQualifiedName().c_str());
+                writeln("return name;");
+            unindent();
+            writeln("}");
 
             if (Interface* constructor = node->getConstructor())
             {
@@ -146,31 +130,39 @@ public:
                      i != constructor->end();
                      ++i)
                 {
-                    write("%s", indentString.c_str());
+                    writetab();
                     (*i)->accept(this);
                 }
                 constructorMode = false;
-                write("%sstatic IConstructor* getConstructor()\n", indentString.c_str());
-                write("%s{\n", indentString.c_str());
-                write("%s    return constructor;\n", indentString.c_str());
-                write("%s}\n", indentString.c_str());
-                write("%sstatic void setConstructor(IConstructor* ctor)\n", indentString.c_str());
-                write("%s{\n", indentString.c_str());
-                write("%s    constructor = ctor;\n", indentString.c_str());
-                write("%s}\n", indentString.c_str());
-                write("private:\n");
-                write("%sstatic IConstructor* constructor;\n", indentString.c_str());
+                writeln("static IConstructor* getConstructor()");
+                writeln("{");
+                indent();
+                    writeln("return constructor;");
+                unindent();
+                writeln("}");
+                writeln("static void setConstructor(IConstructor* ctor)");
+                writeln("{");
+                indent();
+                    writeln("constructor = ctor;");
+                unindent();
+                writeln("}");
+                unindent();
+                writeln("private:");
+                indent();
+                writeln("static IConstructor* constructor;");
             }
 
             unindent();
-            write("%s}", indentString.c_str());
+            writetab();
+            write("}");
         }
 
         if (node->getConstructor())
         {
             write(";\n\n");
-            write("%sI%s::IConstructor* I%s::constructor __attribute__((weak))",
-                    indentString.c_str(), node->getName().c_str(), node->getName().c_str());
+            writetab();
+            write("I%s::IConstructor* I%s::constructor __attribute__((weak))",
+                  node->getName().c_str(), node->getName().c_str());
         }
     }
 
@@ -265,7 +257,8 @@ public:
     {
         if (node->getJavadoc().size())
         {
-            write("%s\n%s", node->getJavadoc().c_str(), indentString.c_str());
+            writeln("%s", node->getJavadoc().c_str());
+            writetab();
         }
         write("static const ");
         at(static_cast<const Member*>(node));
@@ -287,9 +280,8 @@ public:
 
         if (!node->isReadonly())
         {
-            write(";\n");
-
             // setter
+            write(";\n");
             writetab();
             CPlusPlus::setter(node);
             write(" = 0");
@@ -312,19 +304,26 @@ public:
         }
         else
         {
-            write("\n%s{\n", indentString.c_str());
-            write("%s    if (constructor)\n", indentString.c_str());
-            write("%s        constructor->createInstance(", indentString.c_str());
-            for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-            {
-                if (i != node->begin())
-                {
-                    write(", ");
-                }
-                write("%s", (*i)->getName().c_str());
-            }
-            write(");\n");
-            write("%s}\n", indentString.c_str());
+            writeln("");
+            writeln("{");
+            indent();
+                writeln("if (constructor)");
+                indent();
+                    writetab();
+                    write("constructor->createInstance(");
+                    for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
+                    {
+                        if (i != node->begin())
+                        {
+                            write(", ");
+                        }
+                        write("%s", (*i)->getName().c_str());
+                    }
+                    write(");");
+                    writeln("");
+                unindent();
+            unindent();
+            writeln("}");
         }
     }
 };
