@@ -296,7 +296,7 @@ public:
                 Node* resolved = resolve(node->getParent(), name);
                 if (resolved)
                 {
-                    std::string name = resolved->getQualifiedName();
+                    name = resolved->getQualifiedName();
                     name = getScopedName(moduleName, name);
                 }
                 name = getInterfaceName(name);
@@ -496,7 +496,7 @@ public:
                 Node* resolved = resolve(node->getParent(), name);
                 if (resolved)
                 {
-                    std::string name = resolved->getQualifiedName();
+                    name = resolved->getQualifiedName();
                     name = getScopedName(moduleName, name);
                 }
                 name = getInterfaceName(name);
