@@ -1519,4 +1519,8 @@ extern void printNpapi(const char* idlFilename, bool isystem);
 extern std::string getOutputFilename(const char* input, const char* suffix);
 extern std::string getIncludedName(const std::string& header);
 
+extern Node* resolve(const Node* scope, std::string name);
+
+extern std::string getScopedName(std::string moduleName, std::string absoluteName);
+
 #endif  // NINTENDO_ESIDL_H_INCLUDED

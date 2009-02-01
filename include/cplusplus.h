@@ -35,6 +35,8 @@ protected:
     bool interfaceMode;
     bool constructorMode;
 
+    std::string moduleName;
+
     void indent()
     {
         indentString += std::string(TabWidth, ' ');
@@ -154,7 +156,10 @@ public:
             write("namespace %s\n", node->getName().c_str());
             writeln("{");
             indent();
-            printChildren(node);
+                moduleName += "::";
+                moduleName += node->getName();
+                printChildren(node);
+                moduleName.erase(moduleName.size() - node->getName().size() - 2);
             unindent();
             writetab();
             write("}");
@@ -203,7 +208,7 @@ public:
         {
             if (const char* base = Node::getBaseObjectName())
             {
-                write("I%s", base);
+                write("%s", base);
             }
             else
             {
@@ -286,10 +291,22 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
+#if 1
+                std::string name = spec->getName();
+                Node* resolved = resolve(node->getParent(), name);
+                if (resolved)
+                {
+                    std::string name = resolved->getQualifiedName();
+                    name = getScopedName(moduleName, name);
+                }
+                name = getInterfaceName(name);
+                write("%s*", name.c_str());
+#else
                 interfaceMode = true;
                 spec->accept(this);
                 write("*");
                 interfaceMode = false;
+#endif
             }
             else if (NativeType* nativeType = spec->isNative(node->getParent()))
             {
@@ -474,10 +491,22 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
+#if 1
+                std::string name = spec->getName();
+                Node* resolved = resolve(node->getParent(), name);
+                if (resolved)
+                {
+                    std::string name = resolved->getQualifiedName();
+                    name = getScopedName(moduleName, name);
+                }
+                name = getInterfaceName(name);
+                write("%s*", name.c_str());
+#else
                 interfaceMode = true;
                 spec->accept(this);
                 write("*");
                 interfaceMode = false;
+#endif
             }
             else if (NativeType* nativeType = spec->isNative(node->getParent()))
             {
@@ -597,24 +626,11 @@ public:
         {
             if (const char* base = Node::getBaseObjectName())
             {
-                qualifiedName = "I";
-                qualifiedName += base;
+                qualifiedName = base;
             }
             else
             {
                 qualifiedName = "void";
-            }
-        }
-        else
-        {
-            size_t pos = qualifiedName.rfind("::");
-            if (pos != std::string::npos)
-            {
-                qualifiedName.insert(pos + 2, "I");
-            }
-            else
-            {
-                qualifiedName.insert(0, "I");
             }
         }
         return qualifiedName;

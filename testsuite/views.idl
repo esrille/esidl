@@ -1,0 +1,22 @@
+// File: views.idl
+
+#ifndef _VIEWS_IDL_
+#define _VIEWS_IDL_
+
+#include "dom.idl"
+#include "html.idl"
+
+module views
+{
+  interface DocumentView;
+
+  interface AbstractView {
+    readonly attribute DocumentView     document;
+  };
+
+  interface DocumentView : dom::Document {
+    readonly attribute AbstractView     defaultView;
+  };
+};
+
+#endif // _VIEWS_IDL_

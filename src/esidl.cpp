@@ -355,38 +355,64 @@ void OpDcl::setExtendedAttributes(NodeList* list)
 
 Node* ScopedName::search(const Node* scope) const
 {
-    Node* found = 0;
-    if (name.compare(0, 2, "::") == 0)
+    Node* resolved = resolve(scope, name);
+    if (resolved)
     {
-        found = getSpecification()->search(name, 2);
-    }
-    else
-    {
-      for (const Node* node = scope; node; node = node->getParent())
-      {
-          if (found = node->search(name))
-          {
-              break;
-          }
-      }
-    }
-    if (found)
-    {
-        if (Member* member = dynamic_cast<Member*>(found))
+        if (Member* member = dynamic_cast<Member*>(resolved))
         {
             if (member->isTypedef() && !member->isArray(member->getParent()))
             {
                 if (ScopedName* node = dynamic_cast<ScopedName*>(member->getSpec()))
                 {
-                    if (Node* resolved = node->search(member->getParent()))
+                    if (Node* found = node->search(member->getParent()))
                     {
-                        found = resolved;
+                        resolved = found;
                     }
                 }
             }
         }
     }
-    return found;
+    return resolved;
+}
+
+Node* resolve(const Node* scope, std::string name)
+{
+    if (name.compare(0, 2, "::") == 0)
+    {
+        return getSpecification()->search(name, 2);
+    }
+    else
+    {
+        for (const Node* node = scope; node; node = node->getParent())
+        {
+            if (Node* found = node->search(name))
+            {
+                return found;
+            }
+        }
+    }
+    return 0;
+}
+
+std::string getScopedName(std::string moduleName, std::string absoluteName)
+{
+    while (moduleName != "")
+    {
+        if (absoluteName.compare(0, moduleName.size(), moduleName) == 0)
+        {
+            return absoluteName.substr(moduleName.size() + 2);
+        }
+        size_t pos = moduleName.rfind("::");
+        if (pos == std::string::npos)
+        {
+            moduleName = "";
+        }
+        else
+        {
+            moduleName.erase(pos);
+        }
+    }
+    return absoluteName.substr(2);
 }
 
 std::string getIncludedName(const std::string& header)

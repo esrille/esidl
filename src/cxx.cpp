@@ -71,10 +71,10 @@ public:
     {
         if (node->getJavadoc().size())
         {
-            writeln("%s\n", node->getJavadoc().c_str());
+            write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
-        write("class I%s", node->getName().c_str());
+        write("class %s", node->getName().c_str());
         if (node->getExtends())
         {
             write(" : ");
@@ -134,13 +134,13 @@ public:
                     (*i)->accept(this);
                 }
                 constructorMode = false;
-                writeln("static IConstructor* getConstructor()");
+                writeln("static Constructor* getConstructor()");
                 writeln("{");
                 indent();
                     writeln("return constructor;");
                 unindent();
                 writeln("}");
-                writeln("static void setConstructor(IConstructor* ctor)");
+                writeln("static void setConstructor(Constructor* ctor)");
                 writeln("{");
                 indent();
                     writeln("constructor = ctor;");
@@ -149,7 +149,7 @@ public:
                 unindent();
                 writeln("private:");
                 indent();
-                writeln("static IConstructor* constructor;");
+                writeln("static Constructor* constructor;");
             }
 
             unindent();
@@ -161,7 +161,7 @@ public:
         {
             write(";\n\n");
             writetab();
-            write("I%s::IConstructor* I%s::constructor __attribute__((weak))",
+            write("%s::Constructor* %s::constructor __attribute__((weak))",
                   node->getName().c_str(), node->getName().c_str());
         }
     }
@@ -230,7 +230,7 @@ public:
         {
             interfaceMode = true;
             node->getSpec()->accept(this);
-            write(" I%s", node->getName().c_str());
+            write(" %s", node->getName().c_str());
             interfaceMode = false;
         }
         else
