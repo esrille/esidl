@@ -131,7 +131,6 @@ int yylex(YYSTYPE* yylval);
 %type <node>        simple_type_spec
 %type <node>        base_type_spec
 %type <node>        template_type_spec
-%type <node>        constr_type_spec
 
 %type <node>        floating_pt_type
 %type <node>        integer_type
@@ -639,7 +638,7 @@ type_declarator :
 
 type_spec :
     simple_type_spec
-    | constr_type_spec
+    | struct_type
     ;
 
 simple_type_spec :
@@ -664,10 +663,6 @@ template_type_spec :
     | string_type
     | wide_string_type
     | fixed_pt_type
-    ;
-
-constr_type_spec :
-    struct_type
     ;
 
 declarators :
@@ -1044,11 +1039,6 @@ raises_expr :
         }
     ;
 
-string_literal_list :
-    STRING_LITERAL
-    | string_literal_list ',' STRING_LITERAL
-    ;
-
 param_type_spec :
     base_type_spec
     | string_type
@@ -1261,10 +1251,9 @@ extended_attribute_details :
         {
             $$ = 0;
         }
-    | '=' IDENTIFIER
+    | '=' scoped_name
         {
-            $$ = new Node($2);
-            free($2);
+            $$ = $2;
         }
     | '=' IDENTIFIER
         {
