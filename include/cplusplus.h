@@ -36,6 +36,7 @@ protected:
     bool constructorMode;
 
     std::string moduleName;
+    const Node* currentNode;
 
     void indent()
     {
@@ -107,6 +108,7 @@ protected:
             {
                 write("%s", prefix.c_str());
             }
+            currentNode = (*i);
             (*i)->accept(this);
             ++count;
         }
@@ -114,13 +116,15 @@ protected:
         {
             write("%s", separator.c_str());
         }
+        currentNode = node;
     }
 
 public:
     CPlusPlus(FILE* file) :
         file(file),
         interfaceMode(false),
-        constructorMode(false)
+        constructorMode(false),
+        currentNode(getSpecification())
     {
     }
 
@@ -128,6 +132,17 @@ public:
     {
         if (0 < node->getName().size())
         {
+#if 1
+            std::string name = node->getName();
+            Node* resolved = resolve(currentNode, name);
+            if (resolved)
+            {
+                name = resolved->getQualifiedName();
+                name = getScopedName(moduleName, name);
+            }
+            name = getInterfaceName(name);
+            write("%s", name.c_str());
+#else
             if (!interfaceMode)
             {
                 write("%s", node->getName().c_str());
@@ -137,6 +152,7 @@ public:
                 std::string name = getInterfaceName(node->getName());
                 write("%s", name.c_str());
             }
+#endif
         }
         else
         {
@@ -291,22 +307,10 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
-#if 1
-                std::string name = spec->getName();
-                Node* resolved = resolve(node->getParent(), name);
-                if (resolved)
-                {
-                    name = resolved->getQualifiedName();
-                    name = getScopedName(moduleName, name);
-                }
-                name = getInterfaceName(name);
-                write("%s*", name.c_str());
-#else
                 interfaceMode = true;
                 spec->accept(this);
                 write("*");
                 interfaceMode = false;
-#endif
             }
             else if (NativeType* nativeType = spec->isNative(node->getParent()))
             {
@@ -491,22 +495,10 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
-#if 1
-                std::string name = spec->getName();
-                Node* resolved = resolve(node->getParent(), name);
-                if (resolved)
-                {
-                    name = resolved->getQualifiedName();
-                    name = getScopedName(moduleName, name);
-                }
-                name = getInterfaceName(name);
-                write("%s*", name.c_str());
-#else
                 interfaceMode = true;
                 spec->accept(this);
                 write("*");
                 interfaceMode = false;
-#endif
             }
             else if (NativeType* nativeType = spec->isNative(node->getParent()))
             {

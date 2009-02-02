@@ -73,7 +73,6 @@ int yylex(YYSTYPE* yylval);
 %token CONST
 %token DOUBLE
 %token EXCEPTION
-%token ENUM
 %token FALSE
 %token FIXED
 %token FLOAT
@@ -613,7 +612,6 @@ positive_int_const :
 type_dcl :
     TYPEDEF type_declarator
     | struct_type
-    | enum_type
     | NATIVE simple_declarator
         {
             NativeType* nt = new NativeType($2);
@@ -670,7 +668,6 @@ template_type_spec :
 
 constr_type_spec :
     struct_type
-    | enum_type
     ;
 
 declarators :
@@ -870,33 +867,6 @@ member :
                 getCurrent()->add(*i);
             }
             delete $2;
-        }
-    ;
-
-enum_type :
-    ENUM IDENTIFIER
-        {
-            EnumType* en = new EnumType($2);
-            getCurrent()->add(en);
-            setCurrent(en);
-            free($2);
-        }
-    '{' enumerator_list '}'
-        {
-            setCurrent(getCurrent()->getParent());
-        }
-    ;
-
-enumerator_list :
-    enumerator
-    | enumerator_list ',' enumerator
-    ;
-
-enumerator :
-    IDENTIFIER
-        {
-            getCurrent()->add(new Node($1));
-            free($1);
         }
     ;
 

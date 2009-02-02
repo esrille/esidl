@@ -117,9 +117,6 @@ void processType(Reflect::Type type)
     case Ent::TypeException:
         printf("exception");
         break;
-    case Ent::TypeEnum:
-        printf("enum");
-        break;
     case Ent::TypeArray:
         printf("array");
         break;

@@ -172,17 +172,6 @@ public:
         visitChildren(node);
     }
 
-    virtual void at(const EnumType* node)
-    {
-        if (1 < node->getRank())
-        {
-            return;
-        }
-
-        node->setOffset(offset);
-        offset += Ent::Enum::getSize(node->getMemberCount());
-    }
-
     virtual void at(const Interface* node)
     {
         if (1 < node->getRank())
@@ -348,22 +337,6 @@ public:
         }
 
         visitChildren(node);
-    }
-
-    virtual void at(const EnumType* node)
-    {
-        if (node->getOffset() == 0)
-        {
-            return;
-        }
-
-        printf("%04zx: Enum %s\n", node->getOffset(), node->getName().c_str());
-
-        Ent::Enum* e = new(image + node->getOffset()) Ent::Enum(node->getMemberCount());
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            e->add(dict[(*i)->getName()]);
-        }
     }
 
     virtual void at(const StructType* node)

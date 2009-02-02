@@ -25,17 +25,6 @@ public:
     {
     }
 
-    virtual void at(const EnumType* node)
-    {
-        write("enum %s", node->getName().c_str());
-        write("\n%s{\n", indentString.c_str());
-        indent();
-        writetab();
-        printChildren(node);
-        unindent();
-        write("\n%s}", indentString.c_str());
-    }
-
     virtual void at(const StructType* node)
     {
         if (node->getJavadoc().size())

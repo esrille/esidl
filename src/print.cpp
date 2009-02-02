@@ -115,16 +115,6 @@ public:
         }
     }
 
-    virtual void at(const EnumType* node)
-    {
-        printf("enum %s", node->getName().c_str());
-        printf("\n%s{\n", indent.c_str());
-        indent += "    ";
-        printChildren(node);
-        indent.erase(indent.length() - 4);
-        printf("%s}", indent.c_str());
-    }
-
     virtual void at(const StructType* node)
     {
         printf("struct %s", node->getName().c_str());

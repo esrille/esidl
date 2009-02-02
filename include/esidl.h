@@ -30,7 +30,6 @@ class Node;
     class Include;
     class ScopedName;
     class Module;
-    class EnumType;
     class StructType;
     class ExceptDcl;
     class Interface;
@@ -596,24 +595,6 @@ public:
     int getModuleCount() const
     {
         return moduleCount;
-    }
-
-    virtual void accept(Visitor* visitor);
-};
-
-class EnumType : public Node
-{
-public:
-    EnumType(std::string identifier) :
-        Node(identifier)
-    {
-        separator = ";\n";
-    }
-
-    int getMemberCount() const
-    {
-        assert(children);
-        return children->size();
     }
 
     virtual void accept(Visitor* visitor);
@@ -1292,11 +1273,6 @@ public:
         at(static_cast<const Node*>(node));
     }
 
-    virtual void at(const EnumType* node)
-    {
-        at(static_cast<const Node*>(node));
-    }
-
     virtual void at(const StructType* node)
     {
         at(static_cast<const Node*>(node));
@@ -1408,11 +1384,6 @@ inline void Module::accept(Visitor* visitor)
     Node* prev = setCurrent(this);
     visitor->at(this);
     setCurrent(prev);
-}
-
-inline void EnumType::accept(Visitor* visitor)
-{
-    visitor->at(this);
 }
 
 inline void StructType::accept(Visitor* visitor)

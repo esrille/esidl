@@ -78,8 +78,6 @@ void addSpec(const Header* header, Spec spec)
             }
         }
         break;
-    case TypeEnum:
-        break;
     case TypeArray:
         {
             const Array* a = reinterpret_cast<const Array*>(reinterpret_cast<const char*>(header) + spec);
@@ -326,21 +324,6 @@ void dumpSpec(const Header* header, Spec spec)
                 printf("    Member: %#x '%s'\n",
                        m->spec,
                        getString(header, m->name));
-            }
-        }
-        break;
-    case TypeEnum:
-        {
-            const Enum* en = reinterpret_cast<const Enum*>(reinterpret_cast<const char*>(header) + spec);
-            printf("Enum(%#x): %#x : (%u)\n",
-                   reinterpret_cast<const u8*>(en) - reinterpret_cast<const u8*>(header),
-                   en->type,
-                   en->enumCount);
-            for (u32 i = 0; i < en->enumCount; ++i)
-            {
-                u32 name = en->get(i);
-                printf("    '%s' = %u\n",
-                       getString(header, name), i);
             }
         }
         break;

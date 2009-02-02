@@ -108,7 +108,6 @@ char                { return CHAR; }
 const               { return CONST; }
 double              { return DOUBLE; }
 exception           { return EXCEPTION; }
-enum                { return ENUM; }
 FALSE               { return FALSE; }
 fixed               { return FIXED; }
 float               { return FLOAT; }
