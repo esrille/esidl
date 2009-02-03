@@ -4,17 +4,17 @@
 #define _VIEWS_IDL_
 
 #include "dom.idl"
-#include "html.idl"
 
 module views
 {
   interface DocumentView;
 
-  interface AbstractView {
+  interface AbstractView : Interface {
     readonly attribute DocumentView     document;
   };
 
-  interface DocumentView : dom::Document {
+  [ImplementedOn=dom::Document]
+  interface DocumentView : Interface {
     readonly attribute AbstractView     defaultView;
   };
 };

@@ -303,7 +303,14 @@ public:
     virtual void at(const ExtendedAttribute* node)
     {
         printf("%s", node->getName().c_str());
-        // TODO:
+        if (Node* details = node->getDetails())
+        {
+            if (ScopedName* scopedName = dynamic_cast<ScopedName*>(details))
+            {
+                printf(" = %s", scopedName->getName().c_str());
+            }
+            // TODO: else if (OpDcl* op = dynamic_cast<OpDcl*>(details))
+        }
     }
 };
 

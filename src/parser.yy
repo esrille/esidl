@@ -310,9 +310,9 @@ interface_header :
     | extended_attribute_list INTERFACE IDENTIFIER interface_inheritance_spec
         {
             Interface* node = new Interface($3, $4);
-            node->setExtendedAttributes($1);
             getCurrent()->add(node);
             setCurrent(node);
+            node->setExtendedAttributes($1);
             free($3);
         }
     | extended_attribute_list INTERFACE IDENTIFIER
@@ -328,9 +328,9 @@ interface_header :
                 }
             }
             Interface* node = new Interface($3, extends);
-            node->setExtendedAttributes($1);
             getCurrent()->add(node);
             setCurrent(node);
+            node->setExtendedAttributes($1);
             free($3);
         }
     ;

@@ -302,6 +302,18 @@ void Interface::setExtendedAttributes(NodeList* list)
             }
             constructor->add(op);
         }
+        else if (attr->getName() == "ImplementedOn")
+        {
+            if (ScopedName* scopedName = dynamic_cast<ScopedName*>(attr->getDetails()))
+            {
+                Node* on = scopedName->search(getParent());
+                if (Interface* interface = dynamic_cast<Interface*>(on))
+                {
+                    implementedOn.push_back(interface);
+                    interface->implementedOn.push_back(this);
+                }
+            }
+        }
     }
     popJavadoc();
     Node::setExtendedAttributes(list);

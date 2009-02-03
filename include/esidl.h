@@ -646,6 +646,7 @@ class Interface : public Node
     int constCount;
     int methodCount;
     Interface* constructor;
+    std::list<const Interface*> implementedOn;
 
 public:
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
@@ -738,6 +739,11 @@ public:
     Interface* getConstructor() const
     {
         return constructor;
+    }
+
+    const std::list<const Interface*>* getImplementedOn() const
+    {
+        return &implementedOn;
     }
 
     bool getIID(Guid& iid) const
