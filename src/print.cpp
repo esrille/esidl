@@ -101,8 +101,9 @@ public:
         }
         if (0 < node->getName().size())
         {
-            printf("module %s // countCount: %d, moduleCount: %d\n",
-                   node->getName().c_str(), node->getConstCount(), node->getModuleCount());
+            printf("module %s // countCount: %d, moduleCount: %d, interfaceCount: %d\n",
+                   node->getName().c_str(), node->getConstCount(), node->getModuleCount(),
+                   node->getInterfaceCount());
             printf("%s{\n", indent.c_str());
             indent += "    ";
             printChildren(node);

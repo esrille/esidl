@@ -587,6 +587,11 @@ public:
         return interfaceCount;
     }
 
+    void incInterfaceCount()
+    {
+        ++interfaceCount;
+    }
+
     int getConstCount() const
     {
         return constCount;

@@ -173,14 +173,7 @@ void Module::add(Node* node)
         {
             if (!node->isLeaf())
             {
-                if (interface->getConstructor())
-                {
-                    interfaceCount += 2;
-                }
-                else
-                {
-                    ++interfaceCount;
-                }
+                ++interfaceCount;
             }
         }
         if (dynamic_cast<ConstDcl*>(node))
@@ -220,6 +213,17 @@ void Interface::add(Node* node)
         else
         {
             methodCount += 2;
+        }
+    }
+    else if (Interface* interface = dynamic_cast<Interface*>(node))
+    {
+        if (node->getRank() == 1)
+        {
+            assert(!interface->isLeaf());
+            if (Module* module = dynamic_cast<Module*>(getParent()))
+            {
+                module->incInterfaceCount();
+            }
         }
     }
     Node::add(node);
