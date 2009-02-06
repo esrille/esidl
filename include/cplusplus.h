@@ -270,19 +270,18 @@ public:
         name[0] = tolower(name[0]); // XXX
 
         write("virtual ");
-        if (seq ||
-            spec->isString(node->getParent()) ||
-            spec->isWString(node->getParent()))
+        if (seq)
         {
             write("int get%s(", cap.c_str());
-            if (seq)
-            {
-                seq->accept(this);
-            }
-            else
-            {
-                spec->accept(this);
-            }
+            seq->accept(this);
+            write(" %s, int %sLength)", name.c_str(), name.c_str());
+        }
+        else if (spec->isString(node->getParent()) || spec->isWString(node->getParent()))
+        {
+            write("const ", cap.c_str());
+            spec->accept(this);
+            write(" get%s(", cap.c_str());
+            spec->accept(this);
             write(" %s, int %sLength)", name.c_str(), name.c_str());
         }
         else if (spec->isStruct(node->getParent()))
@@ -353,7 +352,7 @@ public:
         }
         else if (spec->isString(node->getParent()) || spec->isWString(node->getParent()))
         {
-            write("int set%s(const ", cap.c_str());
+            write("void set%s(const ", cap.c_str());
             spec->accept(this);
             write(" %s)", name.c_str());
         }
@@ -363,8 +362,7 @@ public:
             spec->accept(this);
             write("* %s)", name.c_str());
         }
-        else if (spec->isArray(node->getParent()) ||
-                 spec->isAny(node->getParent()))
+        else if (spec->isArray(node->getParent()) || spec->isAny(node->getParent()))
         {
             write("void set%s(const ", cap.c_str());
             spec->accept(this);
@@ -406,9 +404,7 @@ public:
 
         Node* spec = node->getSpec();
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-        if (seq ||
-            spec->isString(node->getParent()) ||
-            spec->isWString(node->getParent()))
+        if (seq)
         {
             std::string name = spec->getName();
             size_t pos = name.rfind("::");
@@ -419,14 +415,28 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             write("int %s(", node->getName().c_str());
-            if (seq)
+            seq->accept(this);
+            write(" %s, int %sLength", name.c_str(), name.c_str());
+
+            if (node->begin() != node->end())
             {
-                seq->accept(this);
+                write(", ");
             }
-            else
+        }
+        else if (spec->isString(node->getParent()) || spec->isWString(node->getParent()))
+        {
+            std::string name = spec->getName();
+            size_t pos = name.rfind("::");
+            if (pos != std::string::npos)
             {
-                spec->accept(this);
+                name = name.substr(pos + 2);
             }
+            name[0] = tolower(name[0]); // XXX
+
+            write("const ");
+            spec->accept(this);
+            write(" %s(", node->getName().c_str());
+            spec->accept(this);
             write(" %s, int %sLength", name.c_str(), name.c_str());
 
             if (node->begin() != node->end())
