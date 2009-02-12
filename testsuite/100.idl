@@ -1,0 +1,7 @@
+// Test [Null], [Undefined]
+interface X {
+  [Null=Null] attribute string x;
+  [Null=Empty] attribute string y;
+  [Undefined=Null] attribute string u;
+  [Undefined=Empty] attribute string v;
+};

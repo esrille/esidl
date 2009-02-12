@@ -547,7 +547,7 @@ public:
 
         switch (node->getAttr())
         {
-        case ParamDcl::In:
+        case ParamDcl::AttrIn:
             if (seq ||
                 spec->isGuid(node->getParent()) ||
                 spec->isString(node->getParent()) ||
@@ -597,8 +597,8 @@ public:
             {
                 switch (node->getAttr())
                 {
-                case ParamDcl::Out:
-                case ParamDcl::InOut:
+                case ParamDcl::AttrOut:
+                case ParamDcl::AttrInOut:
                     write("*");
                     break;
                 }
@@ -609,8 +609,8 @@ public:
                 write(" %s", node->getName().c_str());
                 switch (node->getAttr())
                 {
-                case ParamDcl::Out:
-                case ParamDcl::InOut:
+                case ParamDcl::AttrOut:
+                case ParamDcl::AttrInOut:
                     write(", int %sLength", node->getName().c_str());
                     break;
                 }

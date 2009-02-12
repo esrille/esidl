@@ -1,0 +1,7 @@
+// Test [Callable]
+[Callable=compute]
+interface NumberQuadrupler {
+  // This operation simply returns four times the given number x.
+  float compute(in float x);
+};
+

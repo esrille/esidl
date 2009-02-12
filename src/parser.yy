@@ -399,7 +399,7 @@ scoped_name :
         {
             ScopedName* name = new ScopedName($1);
             free($1);
-            assert(name->search(getCurrent()));
+            // assert(name->search(getCurrent()));
             $$ = name;
         }
     | OP_SCOPE IDENTIFIER
@@ -1012,15 +1012,15 @@ param_dcl :
 param_attribute :
     IN
         {
-            $$ = ParamDcl::In;
+            $$ = ParamDcl::AttrIn;
         }
     | OUT
         {
-            $$ = ParamDcl::Out;
+            $$ = ParamDcl::AttrOut;
         }
     | INOUT
         {
-            $$ = ParamDcl::InOut;
+            $$ = ParamDcl::AttrInOut;
         }
     ;
 

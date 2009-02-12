@@ -200,9 +200,13 @@ void Interface::add(Node* node)
     {
         ++constCount;
     }
-    else if (dynamic_cast<OpDcl*>(node))
+    else if (OpDcl* op = dynamic_cast<OpDcl*>(node))
     {
         ++methodCount;
+        if (callable == op->getName())
+        {
+            op->setCallable();
+        }
     }
     else if (Attribute* attr = dynamic_cast<Attribute*>(node))
     {
@@ -213,6 +217,10 @@ void Interface::add(Node* node)
         else
         {
             methodCount += 2;
+        }
+        if (stringifies == attr->getName())
+        {
+            attr->setStringifies();
         }
     }
     else if (Interface* interface = dynamic_cast<Interface*>(node))
@@ -275,9 +283,25 @@ void Interface::setExtendedAttributes(NodeList* list)
     ScopedName* interfaceName;
     for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
-        ExtendedAttribute* attr = dynamic_cast<ExtendedAttribute*>(*i);
-        assert(attr);
-        if (attr->getName() == "Constructor")
+        ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
+        assert(ext);
+        if (ext->getName() == "NoIndexingOperations")
+        {
+            attr |= NoIndexingOperations;
+        }
+        else if (ext->getName() == "Callback")
+        {
+            attr |= Callback;
+        }
+        else if (ext->getName() == "NoInterfaceObject")
+        {
+            attr |= NoInterfaceObject;
+        }
+        else if (ext->getName() == "PrototypeRoot")
+        {
+            attr |= PrototypeRoot;
+        }
+        else if (ext->getName() == "Constructor")
         {
             if (constructor == NULL)
             {
@@ -294,7 +318,7 @@ void Interface::setExtendedAttributes(NodeList* list)
                 interfaceName = new ScopedName(getName());
             }
             OpDcl* op;
-            if (op = dynamic_cast<OpDcl*>(attr->getDetails()))
+            if (op = dynamic_cast<OpDcl*>(ext->getDetails()))
             {
                 op->setSpec(interfaceName);
                 op->getName() = "createInstance";
@@ -306,9 +330,9 @@ void Interface::setExtendedAttributes(NodeList* list)
             }
             constructor->add(op);
         }
-        else if (attr->getName() == "ImplementedOn")
+        else if (ext->getName() == "ImplementedOn")
         {
-            if (ScopedName* scopedName = dynamic_cast<ScopedName*>(attr->getDetails()))
+            if (ScopedName* scopedName = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
                 Node* on = scopedName->search(getParent());
                 if (Interface* interface = dynamic_cast<Interface*>(on))
@@ -318,8 +342,81 @@ void Interface::setExtendedAttributes(NodeList* list)
                 }
             }
         }
+        else if (ext->getName() == "Callable")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                assert(callable == "");
+                callable = name->getName();
+            }
+        }
+        else if (ext->getName() == "Stringifies")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                assert(stringifies == "");
+                stringifies = name->getName();
+            }
+            else
+            {
+                // TODO: Add custom toString() attribute
+            }
+        }
     }
     popJavadoc();
+    Node::setExtendedAttributes(list);
+}
+
+void Attribute::setExtendedAttributes(NodeList* list)
+{
+    if (!list)
+    {
+        return;
+    }
+    for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
+    {
+        ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
+        assert(ext);
+        if (ext->getName() == "Replaceable")
+        {
+            attr |= Replaceable;
+        }
+        else if (ext->getName() == "Null")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                if (name->getName() == "Empty")
+                {
+                    attr |= NullIsEmpty;
+                }
+                else if (name->getName() == "Null")
+                {
+                    attr |= NullIsNull;
+                }
+            }
+        }
+        else if (ext->getName() == "Undefined")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                if (name->getName() == "Empty")
+                {
+                    attr |= UndefinedIsEmpty;
+                }
+                else if (name->getName() == "Null")
+                {
+                    attr |= UndefinedIsNull;
+                }
+            }
+        }
+        else if (ext->getName() == "PutForwards")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                putForwards = name->getName();
+            }
+        }
+    }
     Node::setExtendedAttributes(list);
 }
 
@@ -329,44 +426,126 @@ void OpDcl::setExtendedAttributes(NodeList* list)
     {
         return;
     }
-    NodeList* attributes = new NodeList;
-
     for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
-        if ((*i)->getName() == "IndexGetter")
+        ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
+        assert(ext);
+        if (ext->getName() == "IndexCreator")
         {
-            extAttr = OpDcl::ExtAttrIndexGetter;
-            attributes->push_back(*i);
+            attr |= IndexCreator;
         }
-        else if ((*i)->getName() == "IndexSetter")
+        else if (ext->getName() == "IndexDeleter")
         {
-            extAttr = OpDcl::ExtAttrIndexSetter;
-            attributes->push_back(*i);
+            attr |= IndexDeleter;
         }
-        else if ((*i)->getName() == "NameGetter")
+        else if (ext->getName() == "IndexGetter")
         {
-            extAttr = OpDcl::ExtAttrNameGetter;
-            attributes->push_back(*i);
+            attr |= IndexGetter;
         }
-        else if ((*i)->getName() == "NameSetter")
+        else if (ext->getName() == "IndexSetter")
         {
-            extAttr = OpDcl::ExtAttrNameSetter;
-            attributes->push_back(*i);
+            attr |= IndexSetter;
+        }
+        else if (ext->getName() == "NameCreator")
+        {
+            attr |= NameCreator;
+        }
+        else if (ext->getName() == "NameDeleter")
+        {
+            attr |= NameDeleter;
+        }
+        else if (ext->getName() == "NameGetter")
+        {
+            attr |= NameGetter;
+        }
+        else if (ext->getName() == "NameSetter")
+        {
+            attr |= NameSetter;
+        }
+        else if (ext->getName() == "Null")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                if (name->getName() == "Empty")
+                {
+                    attr |= NullIsEmpty;
+                }
+                else if (name->getName() == "Null")
+                {
+                    attr |= NullIsNull;
+                }
+            }
+        }
+        else if (ext->getName() == "Undefined")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                if (name->getName() == "Empty")
+                {
+                    attr |= UndefinedIsEmpty;
+                }
+                else if (name->getName() == "Null")
+                {
+                    attr |= UndefinedIsNull;
+                }
+            }
         }
         else
         {
             // ignore
         }
     }
-    delete list;
-    if (0 < attributes->size())
+    Node::setExtendedAttributes(list);
+}
+
+void ParamDcl::setExtendedAttributes(NodeList* list)
+{
+    if (!list)
     {
-        Node::setExtendedAttributes(attributes);
+        return;
     }
-    else
+    for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
-        delete attributes;
+        ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
+        assert(ext);
+        if (ext->getName() == "Optional")
+        {
+            attr |= Optional;
+        }
+        else if (ext->getName() == "Variadic")
+        {
+            attr |= Variadic;
+        }
+        else if (ext->getName() == "Null")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                if (name->getName() == "Empty")
+                {
+                    attr |= NullIsEmpty;
+                }
+                else if (name->getName() == "Null")
+                {
+                    attr |= NullIsNull;
+                }
+            }
+        }
+        else if (ext->getName() == "Undefined")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                if (name->getName() == "Empty")
+                {
+                    attr |= UndefinedIsEmpty;
+                }
+                else if (name->getName() == "Null")
+                {
+                    attr |= UndefinedIsNull;
+                }
+            }
+        }
     }
+    Node::setExtendedAttributes(list);
 }
 
 Node* ScopedName::search(const Node* scope) const

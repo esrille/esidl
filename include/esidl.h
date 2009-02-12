@@ -652,14 +652,24 @@ class Interface : public Node
     int methodCount;
     Interface* constructor;
     std::list<const Interface*> implementedOn;
+    u32 attr;
+    std::string callable;
+    std::string stringifies;
 
 public:
+    // Extended attribute bits
+    static const u32 NoIndexingOperations = 0x00000001;
+    static const u32 Callback =             0x00000002;
+    static const u32 NoInterfaceObject =    0x00000004;
+    static const u32 PrototypeRoot =        0x00000008;
+
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
         Node(identifier),
         extends(extends),
         constCount(0),
         methodCount(0),
-        constructor(0)
+        constructor(0),
+        attr(0)
     {
         separator = ";\n";
         if (!forward)
@@ -763,6 +773,11 @@ public:
             memset(&iid, 0, sizeof(Guid));
             return false;
         }
+    }
+
+    u32 getAttr() const
+    {
+        return attr;
     }
 
     virtual void accept(Visitor* visitor);
@@ -947,6 +962,34 @@ class Member : public Node
     bool            type;
 
 public:
+    // Attributes for attributes and operations
+    static const u32 AttrMask =         0x00000003;
+    static const u32 AttrOperation =    0x00000000;
+    static const u32 AttrGetter =       0x00000001;
+    static const u32 AttrSetter =       0x00000002;
+    // [IndexCreator], [IndexDeleter], [IndexGetter] and [IndexSetter]
+    static const u32 IndexCreator =     0x00000004;
+    static const u32 IndexDeleter =     0x00000008;
+    static const u32 IndexGetter =      0x00000010;
+    static const u32 IndexSetter =      0x00000020;
+    // [NameCreator], [NameDeleter], [NameGetter] and [NameSetter]
+    static const u32 NameCreator =      0x00000040;
+    static const u32 NameDeleter =      0x00000080;
+    static const u32 NameGetter =       0x00000100;
+    static const u32 NameSetter =       0x00000200;
+    // [Null]
+    static const u32 NullIsEmpty =      0x00000400;
+    static const u32 NullIsNull =       0x00000800;
+    // [Stringifies]
+    static const u32 Stringifies =      0x00001000;
+    // [Replaceable]
+    static const u32 Replaceable =      0x00002000;
+    // [Undefined]
+    static const u32 UndefinedIsEmpty = 0x00004000;
+    static const u32 UndefinedIsNull =  0x00008000;
+    // [Callable]
+    static const u32 Callable =         0x00010000;
+
     Member(std::string identifier, Node* spec = 0) :
         Node(identifier),
         spec(spec),
@@ -1063,11 +1106,14 @@ public:
 class Attribute : public Member
 {
     bool readonly;
+    u32 attr;
+    std::string putForwards;
 
 public:
     Attribute(std::string identifier, Node* spec, bool readonly = false) :
         Member(identifier, spec),
-        readonly(readonly)
+        readonly(readonly),
+        attr(0)
     {
         separator = ";\n";
     }
@@ -1076,6 +1122,13 @@ public:
     {
         return readonly;
     }
+
+    void setStringifies()
+    {
+        attr |= Stringifies;
+    }
+
+    virtual void setExtendedAttributes(NodeList* list);
 
     virtual void accept(Visitor* visitor);
 };
@@ -1136,22 +1189,14 @@ class OpDcl : public Member
 {
     Node* raises;
     int paramCount;
-    int extAttr;
+    u32 attr;
 
 public:
-    static const int AttrNone = 0u;     // cf. ent.h
-    static const int AttrGetter = 1u;   // cf. ent.h
-    static const int AttrSetter = 2u;   // cf. ent.h
-    static const int ExtAttrIndexGetter = 3;
-    static const int ExtAttrIndexSetter = 4;
-    static const int ExtAttrNameGetter = 5;
-    static const int ExtAttrNameSetter = 6;
-
     OpDcl(std::string identifier, Node* spec) :
         Member(identifier, spec),
         raises(0),
         paramCount(0),
-        extAttr(0)
+        attr(0)
     {
         separator = ";\n";
         children = new NodeList;
@@ -1185,9 +1230,14 @@ public:
         return raises->getSize();
     }
 
-    int getExtAttr() const
+    u32 getAttr() const
     {
-        return extAttr;
+        return attr;
+    }
+
+    void setCallable()
+    {
+        attr |= Callable;
     }
 
     virtual void accept(Visitor* visitor);
@@ -1195,24 +1245,37 @@ public:
 
 class ParamDcl : public Member
 {
-    int attr;
+    u32 attr;
 
 public:
-    static const int In = 0;
-    static const int Out = 1;
-    static const int InOut = 2;
+    static const u32 AttrMask =         0x00000003;
+    static const u32 AttrIn =           0x00000000;
+    static const u32 AttrOut =          0x00000001;
+    static const u32 AttrInOut =        0x00000002;
+    // [Null]
+    static const u32 NullIsEmpty =      0x00000004;
+    static const u32 NullIsNull =       0x00000008;
+    // [Undefined]
+    static const u32 UndefinedIsEmpty = 0x00000010;
+    static const u32 UndefinedIsNull =  0x00000020;
+    // [Optional]
+    static const u32 Optional =         0x00000040;
+    // [Variadic]
+    static const u32 Variadic =         0x00000080;
 
-    ParamDcl(std::string identifier, Node* spec, int attr) :
+    ParamDcl(std::string identifier, Node* spec, u32 attr) :
         Member(identifier, spec),
         attr(attr)
     {
         separator = ", ";
     }
 
-    int getAttr() const
+    u32 getAttr() const
     {
         return attr;
     }
+
+    virtual void setExtendedAttributes(NodeList* list);
 
     virtual void accept(Visitor* visitor);
 };

@@ -673,7 +673,9 @@ public:
         interface->addMethod(node->getOffset());
 
         Ent::Spec spec = getSpec(node->getSpec(), getCurrent());
-        Ent::Method* method = new(image + node->getOffset()) Ent::Method(spec, dict[node->getName()], node->getExtAttr(), node->getParamCount(), node->getRaiseCount());
+        Ent::Method* method = new(image + node->getOffset())
+            Ent::Method(spec, dict[node->getName()], node->getAttr(),
+                        node->getParamCount(), node->getRaiseCount());
 
         printf("%04zx: Method %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)

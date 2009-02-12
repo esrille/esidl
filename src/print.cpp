@@ -283,13 +283,13 @@ public:
     {
         switch (node->getAttr())
         {
-        case ParamDcl::In:
+        case ParamDcl::AttrIn:
             printf("in ");
             break;
-        case ParamDcl::Out:
+        case ParamDcl::AttrOut:
             printf("out ");
             break;
-        case ParamDcl::InOut:
+        case ParamDcl::AttrInOut:
             printf("inout ");
             break;
         }
