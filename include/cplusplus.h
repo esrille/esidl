@@ -32,7 +32,6 @@ protected:
     std::string indentString;
     std::string prefix;
     FILE* file;
-    bool interfaceMode;
     bool constructorMode;
 
     std::string moduleName;
@@ -122,7 +121,6 @@ protected:
 public:
     CPlusPlus(FILE* file) :
         file(file),
-        interfaceMode(false),
         constructorMode(false),
         currentNode(getSpecification())
     {
@@ -132,7 +130,6 @@ public:
     {
         if (0 < node->getName().size())
         {
-#if 1
             std::string name = node->getName();
             Node* resolved = resolve(currentNode, name);
             if (resolved)
@@ -142,17 +139,6 @@ public:
             }
             name = getInterfaceName(name);
             write("%s", name.c_str());
-#else
-            if (!interfaceMode)
-            {
-                write("%s", node->getName().c_str());
-            }
-            else
-            {
-                std::string name = getInterfaceName(node->getName());
-                write("%s", name.c_str());
-            }
-#endif
         }
         else
         {
@@ -306,10 +292,8 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
-                interfaceMode = true;
                 spec->accept(this);
                 write("*");
-                interfaceMode = false;
             }
             else if (NativeType* nativeType = spec->isNative(node->getParent()))
             {
@@ -373,10 +357,8 @@ public:
             write("void set%s(", cap.c_str());
             if (spec->isInterface(node->getParent()))
             {
-                interfaceMode = true;
                 spec->accept(this);
                 write("*");
-                interfaceMode = false;
             }
             else if (NativeType* nativeType = spec->isNative(node->getParent()))
             {
@@ -505,10 +487,8 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
-                interfaceMode = true;
                 spec->accept(this);
                 write("*");
-                interfaceMode = false;
             }
             else if (NativeType* nativeType = spec->isNative(node->getParent()))
             {
@@ -579,10 +559,8 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
-                interfaceMode = true;
                 spec->accept(this);
                 write("*");
-                interfaceMode = false;
             }
             else if (NativeType* nativeType = spec->isNative(node->getParent()))
             {

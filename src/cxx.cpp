@@ -68,9 +68,7 @@ public:
         {
             write(" : ");
             prefix = "public ";
-            interfaceMode = true;
             node->getExtends()->accept(this);
-            interfaceMode = false;
             prefix = "";
         }
         if (!node->isLeaf())
@@ -217,10 +215,8 @@ public:
         }
         if (node->isInterface(node->getParent()))
         {
-            interfaceMode = true;
             node->getSpec()->accept(this);
             write(" %s", node->getName().c_str());
-            interfaceMode = false;
         }
         else
         {

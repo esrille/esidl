@@ -780,6 +780,11 @@ public:
         return attr;
     }
 
+    bool isCallback() const
+    {
+        return attr & Callback;
+    }
+
     virtual void accept(Visitor* visitor);
 };
 
