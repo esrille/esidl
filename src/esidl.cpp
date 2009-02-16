@@ -210,7 +210,7 @@ void Interface::add(Node* node)
     }
     else if (Attribute* attr = dynamic_cast<Attribute*>(node))
     {
-        if (attr->isReadonly())
+        if (attr->isReadonly() && !attr->isPutForwards() && !attr->isReplaceable())
         {
             ++methodCount;
         }

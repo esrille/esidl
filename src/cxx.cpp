@@ -275,7 +275,7 @@ public:
         CPlusPlus::getter(node);
         write(" = 0");
 
-        if (!node->isReadonly())
+        if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
         {
             // setter
             write(";\n");

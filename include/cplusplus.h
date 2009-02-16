@@ -251,9 +251,14 @@ public:
 
     void getter(const Attribute* node)
     {
+        static Type replaceable("any");
         std::string cap = node->getName().c_str();
         cap[0] = toupper(cap[0]);   // XXX
         Node* spec = node->getSpec();
+        if (node->isReplaceable())
+        {
+            spec = &replaceable;
+        }
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         std::string name = node->getName();
         size_t pos = name.rfind("::");
@@ -317,14 +322,27 @@ public:
 
     bool setter(const Attribute* node)
     {
-        if (node->isReadonly())
+        if (node->isReadonly() && !node->isPutForwards() && !node->isReplaceable())
         {
             return false;
         }
 
+        static Type replaceable("any");
         std::string cap = node->getName().c_str();
         cap[0] = toupper(cap[0]);   // XXX
         Node* spec = node->getSpec();
+        if (node->isReplaceable())
+        {
+            spec = &replaceable;
+        }
+        else if (node->isPutForwards())
+        {
+            Interface* target = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
+            assert(target);
+            Attribute* forwards = dynamic_cast<Attribute*>(target->search(node->getPutForwards()));
+            assert(forwards);
+            spec = forwards->getSpec();
+        }
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         std::string name = node->getName();
         size_t pos = name.rfind("::");

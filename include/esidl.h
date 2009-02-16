@@ -1145,6 +1145,21 @@ public:
 
     virtual void setExtendedAttributes(NodeList* list);
 
+    bool isReplaceable() const
+    {
+        return attr & Replaceable;
+    }
+
+    bool isPutForwards() const
+    {
+        return putForwards != "";
+    }
+
+    const std::string& getPutForwards() const
+    {
+        return putForwards;
+    }
+
     virtual void accept(Visitor* visitor);
 };
 

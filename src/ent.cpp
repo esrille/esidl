@@ -199,7 +199,7 @@ public:
 
         node->setOffset(offset);
         offset += Ent::Method::getSize(0, 0);
-        if (!node->isReadonly())
+        if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
         {
             offset += Ent::Method::getSize(1, 0);
         }
@@ -523,10 +523,23 @@ public:
 
         interface->addMethod(node->getOffset());
         Ent::Spec spec = getSpec(node->getSpec(), getCurrent());
+        if (node->isReplaceable())
+        {
+            spec = Ent::SpecVariant;
+        }
+
         printf("%04zx: Getter %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
         new(image + node->getOffset()) Ent::Method(spec, dict[node->getName()], Ent::Method::AttrGetter, 0, 0);
-        if (!node->isReadonly())
+        if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
         {
+            if (node->isPutForwards())
+            {
+                Interface* target = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(node->getSpec())->search(node->getParent()));
+                assert(target);
+                Attribute* forwards = dynamic_cast<Attribute*>(target->search(node->getPutForwards()));
+                assert(forwards);
+                spec = getSpec(forwards->getSpec(), target);
+            }
             interface->addMethod(node->getOffset() + Ent::Method::getSize(0, 0));
             printf("%04zx: Setter %s : %x\n", node->getOffset() + Ent::Method::getSize(0, 0), node->getName().c_str(), spec);
             Ent::Method* setter = new(image + node->getOffset() + Ent::Method::getSize(0, 0))
