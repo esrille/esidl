@@ -213,7 +213,10 @@ public:
         }
 
         node->setOffset(offset);
-        offset += Ent::Method::getSize(node->getParamCount(), node->getRaiseCount());
+        for (int i = 0; i < node->getMethodCount(); ++i)
+        {
+            offset += Ent::Method::getSize(node->getParamCount(i), node->getRaiseCount());
+        }
     }
 };
 
@@ -224,6 +227,11 @@ class Emitter : public Visitor
     std::map<std::string, size_t>& dict;
     u8* image;
     size_t fileSize;
+
+    int callbackStage;
+    int callbackCount;
+    int optionalStage;
+    int optionalCount;
 
     Ent::Spec getSpec(const std::string& name)
     {
@@ -275,7 +283,9 @@ public:
     Emitter(std::map<std::string, size_t>& dict, size_t fileSize) :
         dict(dict),
         image(0),
-        fileSize(fileSize)
+        fileSize(fileSize),
+        callbackStage(0),
+        callbackCount(0)
     {
         assert(sizeof(Ent::Header) < fileSize);
         image = new u8[fileSize];
@@ -670,33 +680,91 @@ public:
         assert(dynamic_cast<Interface*>(parent));
         Ent::Interface* interface = reinterpret_cast<Ent::Interface*>(image + parent->getOffset());
         assert(interface->type == Ent::TypeInterface);
-        interface->addMethod(node->getOffset());
 
-        Ent::Spec spec = getSpec(node->getSpec(), getCurrent());
-        Ent::Method* method = new(image + node->getOffset())
-            Ent::Method(spec, dict[node->getName()], node->getAttr(),
-                        node->getParamCount(), node->getRaiseCount());
-
-        printf("%04zx: Method %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
+        int methodNumber = 0;
+        callbackStage = 0;
+        optionalStage = 0;
+        do
         {
-            assert(dynamic_cast<ParamDcl*>(*i));
-            ParamDcl* param = static_cast<ParamDcl*>(*i);
-            Ent::Spec spec = getSpec(param->getSpec(), node);
-            method->addParam(spec, dict[param->getName()], param->getAttr());
-
-            printf("  Param %s : %x\n", param->getName().c_str(), spec);
-        }
-
-        if (Node* raises = node->getRaises())
-        {
-            for (NodeList::iterator i = raises->begin(); i != raises->end(); ++i)
+            optionalCount = 0;
+            do
             {
-                method->addRaise(getSpec(*i, node));
-                printf("  Raise %x\n", getSpec(*i, node));
-            }
-        }
-        node->getSpec()->accept(this);
+                callbackCount = 0;
+
+                size_t offset = node->getOffset();
+                for (int i = 0; i < methodNumber; ++i)
+                {
+                    offset += Ent::Method::getSize(node->getParamCount(i), node->getRaiseCount());
+                }
+
+                interface->addMethod(offset);
+                Ent::Spec spec = getSpec(node->getSpec(), getCurrent());
+                Ent::Method* method = new(image + offset)
+                    Ent::Method(spec, dict[node->getName()], node->getAttr(),
+                                node->getParamCount(methodNumber), node->getRaiseCount());
+
+                printf("%04zx: Method %s : %x\n", offset, node->getName().c_str(), spec);
+                int paramCount = 0;
+                for (NodeList::iterator i = node->begin();
+                     i != node->end();
+                     ++i, ++paramCount)
+                {
+                    assert(dynamic_cast<ParamDcl*>(*i));
+                    ParamDcl* param = static_cast<ParamDcl*>(*i);
+                    if (param->isOptional())
+                    {
+                        ++optionalCount;
+                        if (optionalStage < optionalCount)
+                        {
+                            break;
+                        }
+                    }
+
+                    Ent::Spec spec = getSpec(param->getSpec(), node);
+
+                    if (param->getSpec()->isInterface(node->getParent()))
+                    {
+                        Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(param->getSpec())->search(node->getParent()));
+                        assert(callback);
+                        if (u32 attr = callback->isCallback())
+                        {
+                            bool function;
+                            if (attr == Interface::Callback)
+                            {
+                                function = (1u << callbackCount) & callbackStage;
+                                ++callbackCount;
+                            }
+                            else
+                            {
+                                function = (attr == Interface::CallbackIsFunctionOnly);
+                            }
+                            if (function)
+                            {
+                                method->addParam(Ent::SpecAny, dict[param->getName()], param->getAttr());
+                                printf("  Param %s : %x\n", param->getName().c_str(), Ent::SpecAny);
+                                continue;
+                            }
+                        }
+                    }
+                    method->addParam(spec, dict[param->getName()], param->getAttr());
+                    printf("  Param %s : %x\n", param->getName().c_str(), spec);
+                }
+
+                if (Node* raises = node->getRaises())
+                {
+                    for (NodeList::iterator i = raises->begin(); i != raises->end(); ++i)
+                    {
+                        method->addRaise(getSpec(*i, node));
+                        printf("  Raise %x\n", getSpec(*i, node));
+                    }
+                }
+                node->getSpec()->accept(this);
+
+                ++methodNumber;
+                ++callbackStage;
+            } while (callbackStage < (1u << callbackCount));
+            ++optionalStage;
+        } while (optionalStage <= optionalCount);
     }
 };
 

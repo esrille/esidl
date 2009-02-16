@@ -246,6 +246,60 @@ void OpDcl::add(Node* node)
     Node::add(node);
 }
 
+void OpDcl::setRaises(Node* raises)
+{
+    this->raises = raises;
+    this->methodCount = 0;
+
+    // Adjust methodCount for [Callback] and [Optional].
+    int optionalStage = 0;
+    int optionalCount;
+    do
+    {
+        optionalCount = 0;
+        int callbackStage = 0;
+        int callbackCount;
+        do
+        {
+            callbackCount = 0;
+            ++methodCount;
+            int paramCount = 0;
+            for (NodeList::iterator i = begin(); i != end(); ++i)
+            {
+                ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
+                assert(param);
+                if (param->isOptional())
+                {
+                    ++optionalCount;
+                    if (optionalStage < optionalCount)
+                    {
+                        break;
+                    }
+                }
+
+                ++paramCount;
+
+                Node* spec = param->getSpec();
+                if (spec->isInterface(this))
+                {
+                    Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(getParent()));
+                    assert(callback);
+                    if (callback->isCallback() == Interface::Callback)
+                    {
+                        ++callbackCount;
+                    }
+                }
+            }
+            paramCounts.push_back(paramCount);
+            ++callbackStage;
+        } while (callbackStage < (1u << callbackCount));
+        ++optionalStage;
+    } while (optionalStage <= optionalCount);
+    Interface* interface = dynamic_cast<Interface*>(getParent());
+    assert(interface);
+    interface->addMethodCount(methodCount - 1);
+}
+
 void Module::setExtendedAttributes(NodeList* list)
 {
     if (!list)
@@ -291,7 +345,21 @@ void Interface::setExtendedAttributes(NodeList* list)
         }
         else if (ext->getName() == "Callback")
         {
-            attr |= Callback;
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                if (name->getName() == "FunctionOnly")
+                {
+                    attr |= CallbackIsFunctionOnly;
+                }
+                else if (name->getName() == "PropertyOnly")
+                {
+                    attr |= CallbackIsPropertyOnly;
+                }
+            }
+            else
+            {
+                attr |= Callback;
+            }
         }
         else if (ext->getName() == "NoInterfaceObject")
         {

@@ -33,6 +33,11 @@ protected:
     std::string prefix;
     FILE* file;
     bool constructorMode;
+    bool asParam;
+    int callbackStage;
+    int callbackCount;
+    int optionalStage;
+    int optionalCount;
 
     std::string moduleName;
     const Node* currentNode;
@@ -122,7 +127,10 @@ public:
     CPlusPlus(FILE* file) :
         file(file),
         constructorMode(false),
-        currentNode(getSpecification())
+        asParam(false),
+        currentNode(getSpecification()),
+        callbackStage(0),
+        callbackCount(0)
     {
     }
 
@@ -375,13 +383,16 @@ public:
 
     virtual void at(const OpDcl* node)
     {
-        if (!constructorMode)
+        if (!asParam)
         {
-            write("virtual ");
-        }
-        else
-        {
-            write("static ");
+            if (!constructorMode)
+            {
+                write("virtual ");
+            }
+            else
+            {
+                write("static ");
+            }
         }
 
         Node* spec = node->getSpec();
@@ -396,7 +407,15 @@ public:
             }
             name[0] = tolower(name[0]); // XXX
 
-            write("int %s(", node->getName().c_str());
+            write("int");
+            if (!asParam)
+            {
+                write(" %s(", node->getName().c_str());
+            }
+            else
+            {
+                write(" (*%s)(", node->getName().c_str());
+            }
             seq->accept(this);
             write(" %s, int %sLength", name.c_str(), name.c_str());
 
@@ -417,7 +436,14 @@ public:
 
             write("const ");
             spec->accept(this);
-            write(" %s(", node->getName().c_str());
+            if (!asParam)
+            {
+                write(" %s(", node->getName().c_str());
+            }
+            else
+            {
+                write(" (*%s)(", node->getName().c_str());
+            }
             spec->accept(this);
             write(" %s, int %sLength", name.c_str(), name.c_str());
 
@@ -436,7 +462,15 @@ public:
             }
             name[0] = tolower(name[0]); // XXX
 
-            write("void %s(", node->getName().c_str());
+            write("void");
+            if (!asParam)
+            {
+                write(" %s(", node->getName().c_str());
+            }
+            else
+            {
+                write(" (*%s)(", node->getName().c_str());
+            }
             spec->accept(this);
             write("* %s", name.c_str());
 
@@ -455,7 +489,15 @@ public:
             }
             name[0] = tolower(name[0]); // XXX
 
-            write("void %s(", node->getName().c_str());
+            write("void");
+            if (!asParam)
+            {
+                write(" %s(", node->getName().c_str());
+            }
+            else
+            {
+                write(" (*%s)(", node->getName().c_str());
+            }
             spec->accept(this);
             write(" %s", name.c_str());
 
@@ -475,7 +517,14 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             spec->accept(this);
-            write(" %s(", node->getName().c_str());
+            if (!asParam)
+            {
+                write(" %s(", node->getName().c_str());
+            }
+            else
+            {
+                write(" (*%s)(", node->getName().c_str());
+            }
             write("void* %s, int %sLength", name.c_str(), name.c_str());
 
             if (node->begin() != node->end())
@@ -498,17 +547,33 @@ public:
             {
                 spec->accept(this);
             }
-            write(" %s", node->getName().c_str());
-            write("(");
+            if (!asParam)
+            {
+                write(" %s(", node->getName().c_str());
+            }
+            else
+            {
+                write(" (*%s)(", node->getName().c_str());
+            }
         }
 
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
+            ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
+            assert(param);
+            if (param->isOptional())
+            {
+                ++optionalCount;
+                if (optionalStage < optionalCount)
+                {
+                    break;
+                }
+            }
             if (i != node->begin())
             {
                 write(", ");
             }
-            (*i)->accept(this);
+            param->accept(this);
         }
 
         write(")");
@@ -559,6 +624,35 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
+                Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
+                assert(callback);
+                if (u32 attr = callback->isCallback())
+                {
+                    bool function;
+                    if (attr == Interface::Callback)
+                    {
+                        function = (1u << callbackCount) & callbackStage;
+                        ++callbackCount;
+                    }
+                    else
+                    {
+                        function = (attr == Interface::CallbackIsFunctionOnly);
+                    }
+                    if (function)
+                    {
+                        asParam = true;
+                        for (NodeList::iterator i = callback->begin(); i != callback->end(); ++i)
+                        {
+                            if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
+                            {
+                                CPlusPlus::at(op);
+                                break;
+                            }
+                        }
+                        asParam = false;
+                        return;
+                    }
+                }
                 spec->accept(this);
                 write("*");
             }

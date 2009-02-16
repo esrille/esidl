@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <list>
 #include <string>
+#include <vector>
 #include <es/uuid.h>
 #include "guid.h"
 
@@ -658,10 +659,13 @@ class Interface : public Node
 
 public:
     // Extended attribute bits
-    static const u32 NoIndexingOperations = 0x00000001;
-    static const u32 Callback =             0x00000002;
-    static const u32 NoInterfaceObject =    0x00000004;
-    static const u32 PrototypeRoot =        0x00000008;
+    static const u32 NoIndexingOperations =     0x00000001;
+    static const u32 CallbackMask =             0x00000006;
+    static const u32 Callback =                 0x00000006;
+    static const u32 CallbackIsFunctionOnly =   0x00000002;
+    static const u32 CallbackIsPropertyOnly =   0x00000004;
+    static const u32 NoInterfaceObject =        0x00000008;
+    static const u32 PrototypeRoot =            0x00000010;
 
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
         Node(identifier),
@@ -734,6 +738,12 @@ public:
         return methodCount;
     }
 
+    int addMethodCount(int count)
+    {
+        methodCount += count;
+        return methodCount;
+    }
+
     Interface* getSuper() const
     {
         Interface* super = 0;
@@ -780,9 +790,9 @@ public:
         return attr;
     }
 
-    bool isCallback() const
+    u32 isCallback() const
     {
-        return attr & Callback;
+        return (attr & CallbackMask);
     }
 
     virtual void accept(Visitor* visitor);
@@ -1195,13 +1205,16 @@ class OpDcl : public Member
     Node* raises;
     int paramCount;
     u32 attr;
+    int methodCount;
+    std::vector<int> paramCounts;  // for each method
 
 public:
     OpDcl(std::string identifier, Node* spec) :
         Member(identifier, spec),
         raises(0),
         paramCount(0),
-        attr(0)
+        attr(0),
+        methodCount(1)
     {
         separator = ";\n";
         children = new NodeList;
@@ -1215,10 +1228,7 @@ public:
         return raises;
     }
 
-    void setRaises(Node* raises)
-    {
-        this->raises = raises;
-    }
+    void setRaises(Node* raises);
 
     int getParamCount() const
     {
@@ -1243,6 +1253,17 @@ public:
     void setCallable()
     {
         attr |= Callable;
+    }
+
+    int getMethodCount() const
+    {
+        return methodCount;
+    }
+
+    int getParamCount(int i) const
+    {
+        assert(0 <= i && i < methodCount);
+        return (methodCount == 1) ? paramCount : paramCounts[i];
     }
 
     virtual void accept(Visitor* visitor);
@@ -1278,6 +1299,11 @@ public:
     u32 getAttr() const
     {
         return attr;
+    }
+
+    bool isOptional() const
+    {
+        return attr & Optional;
     }
 
     virtual void setExtendedAttributes(NodeList* list);

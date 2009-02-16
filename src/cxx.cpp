@@ -87,14 +87,26 @@ public:
                     continue;
                 }
 
-                if (0 < count)
+                callbackStage = 0;
+                optionalStage = 0;
+                do
                 {
-                    write(";\n");
-                }
+                    optionalCount = 0;
+                    do
+                    {
+                        if (0 < count)
+                        {
+                            write(";\n");
+                        }
 
-                ++count;
-                writetab();
-                (*i)->accept(this);
+                        callbackCount = 0;
+                        ++count;
+                        writetab();
+                        (*i)->accept(this);
+                        ++callbackStage;
+                    } while (callbackStage < (1u << callbackCount));
+                    ++optionalStage;
+                } while (optionalStage <= optionalCount);
             }
             if (0 < count)
             {

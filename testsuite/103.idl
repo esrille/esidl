@@ -1,0 +1,5 @@
+// Test [Optional]
+interface ColorCreator {
+  Object createColor(in float v1, [Optional] in float v2, in float v3,
+                     [Optional] in float alpha);
+};
