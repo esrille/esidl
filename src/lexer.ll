@@ -107,6 +107,7 @@ boolean             { return BOOLEAN; }
 char                { return CHAR; }
 const               { return CONST; }
 double              { return DOUBLE; }
+DOMString           { return STRING; }
 exception           { return EXCEPTION; }
 FALSE               { return FALSE; }
 fixed               { return FIXED; }
