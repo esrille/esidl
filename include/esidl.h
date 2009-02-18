@@ -808,6 +808,11 @@ public:
         return (attr & CallbackMask);
     }
 
+    std::string getCallable() const
+    {
+        return callable;
+    }
+
     virtual void accept(Visitor* visitor);
 };
 
