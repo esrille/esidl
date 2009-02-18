@@ -851,6 +851,11 @@ public:
         return spec;
     }
 
+    void setSpec(Node* spec)
+    {
+        this->spec = spec;
+    }
+
     Node* getMax() const
     {
         return max;
@@ -1316,9 +1321,19 @@ public:
         return attr;
     }
 
+    bool isInput() const
+    {
+        return (attr & AttrMask) == AttrIn;
+    }
+
     bool isOptional() const
     {
         return attr & Optional;
+    }
+
+    bool isVariadic() const
+    {
+        return attr & Variadic;
     }
 
     virtual void setExtendedAttributes(NodeList* list);

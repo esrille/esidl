@@ -281,7 +281,7 @@ public:
 
     virtual void at(const ParamDcl* node)
     {
-        switch (node->getAttr())
+        switch (node->getAttr() & ParamDcl::AttrMask)
         {
         case ParamDcl::AttrIn:
             printf("in ");

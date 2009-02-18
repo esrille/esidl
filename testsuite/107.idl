@@ -1,0 +1,7 @@
+// Test [Variadic]
+interface IntegerSet {
+  readonly attribute unsigned long cardinality;
+
+  void union([Variadic] in long ints);
+  void intersection([Variadic] in long ints);
+};

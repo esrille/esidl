@@ -605,12 +605,18 @@ public:
 
     virtual void at(const ParamDcl* node)
     {
+        static SequenceType variadic(0);
+
         Node* spec = node->getSpec();
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-
-        switch (node->getAttr())
+        if (node->isVariadic())
         {
-        case ParamDcl::AttrIn:
+            variadic.setSpec(spec);
+            seq = &variadic;
+        }
+
+        if (node->isInput())
+        {
             if (seq ||
                 spec->isGuid(node->getParent()) ||
                 spec->isString(node->getParent()) ||
@@ -620,7 +626,6 @@ public:
             {
                 write("const ");
             }
-            break;
         }
 
         if (seq)
@@ -685,24 +690,18 @@ public:
             if (!spec->isString(node->getParent()) &&
                 !spec->isWString(node->getParent()))
             {
-                switch (node->getAttr())
+                if (!node->isInput())
                 {
-                case ParamDcl::AttrOut:
-                case ParamDcl::AttrInOut:
                     write("*");
-                    break;
                 }
                 write(" %s", node->getName().c_str());
             }
             else
             {
                 write(" %s", node->getName().c_str());
-                switch (node->getAttr())
+                if (!node->isInput())
                 {
-                case ParamDcl::AttrOut:
-                case ParamDcl::AttrInOut:
                     write(", int %sLength", node->getName().c_str());
-                    break;
                 }
             }
         }
