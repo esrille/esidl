@@ -462,6 +462,19 @@ public:
     {
         return baseObjectName;
     }
+
+    bool isBaseObject() const
+    {
+        if (name == "Object")
+        {
+            return true;
+        }
+        if (baseObjectName && name == baseObjectName)
+        {
+            return true;
+        }
+        return false;
+    }
 };
 
 class Include : public Node
