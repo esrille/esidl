@@ -369,7 +369,7 @@ void Interface::setExtendedAttributes(NodeList* list)
         {
             attr |= PrototypeRoot;
         }
-        else if (ext->getName() == "Constructor")
+        else if (ext->getName() == "Constructor" || ext->getName() == "NamedConstructor")
         {
             if (constructor == NULL)
             {
