@@ -1163,6 +1163,11 @@ public:
 
     virtual void setExtendedAttributes(NodeList* list);
 
+    u32 getAttr() const
+    {
+        return attr;
+    }
+
     bool isReplaceable() const
     {
         return attr & Replaceable;
