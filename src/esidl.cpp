@@ -202,6 +202,7 @@ void Interface::add(Node* node)
     }
     else if (OpDcl* op = dynamic_cast<OpDcl*>(node))
     {
+        attr |= (op->getAttr() & (IndexMask | NameMask));
         ++methodCount;
         if (callable == op->getName())
         {

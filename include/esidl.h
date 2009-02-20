@@ -82,6 +82,55 @@ protected:
     static const char*  baseObjectName; // default base object name
 
 public:
+    // Attribute bits
+    static const u32 AttrMask =                 0x00000003;
+    static const u32 AttrOperation =            0x00000000;
+    static const u32 AttrGetter =               0x00000001;
+    static const u32 AttrSetter =               0x00000002;
+    static const u32 AttrIn =                   0x00000000;
+    static const u32 AttrOut =                  0x00000001;
+    static const u32 AttrInOut =                0x00000002;
+    // Extended attribute bits
+    // [IndexCreator], [IndexDeleter], [IndexGetter] and [IndexSetter]
+    static const u32 IndexMask =                0x0000003c;
+    static const u32 IndexCreator =             0x00000004;
+    static const u32 IndexDeleter =             0x00000008;
+    static const u32 IndexGetter =              0x00000010;
+    static const u32 IndexSetter =              0x00000020;
+    // [NameCreator], [NameDeleter], [NameGetter] and [NameSetter]
+    static const u32 NameMask =                 0x000003c0;
+    static const u32 NameCreator =              0x00000040;
+    static const u32 NameDeleter =              0x00000080;
+    static const u32 NameGetter =               0x00000100;
+    static const u32 NameSetter =               0x00000200;
+    // [NoIndexingOperations]
+    static const u32 NoIndexingOperations =     0x00000400;
+    // [Callback]
+    static const u32 CallbackMask =             0x00000006;
+    static const u32 Callback =                 0x00001800;
+    static const u32 CallbackIsFunctionOnly =   0x00000800;
+    static const u32 CallbackIsPropertyOnly =   0x00001000;
+    // [NoInterfaceObject]
+    static const u32 NoInterfaceObject =        0x00002000;
+    // [PrototypeRoot ]
+    static const u32 PrototypeRoot =            0x00004000;
+    // [Null]
+    static const u32 NullIsEmpty =              0x00008000;
+    static const u32 NullIsNull =               0x00010000;
+    // [Undefined]
+    static const u32 UndefinedIsEmpty =         0x00020000;
+    static const u32 UndefinedIsNull =          0x00040000;
+    // [Stringifies]
+    static const u32 Stringifies =              0x00080000;
+    // [Replaceable]
+    static const u32 Replaceable =              0x00100000;
+    // [Callable]
+    static const u32 Callable =                 0x00200000;
+    // [Optional]
+    static const u32 Optional =                 0x00400000;
+    // [Variadic]
+    static const u32 Variadic =                 0x00800000;
+
     Node() :
         parent(0),
         children(0),
@@ -671,15 +720,6 @@ class Interface : public Node
     std::string stringifies;
 
 public:
-    // Extended attribute bits
-    static const u32 NoIndexingOperations =     0x00000001;
-    static const u32 CallbackMask =             0x00000006;
-    static const u32 Callback =                 0x00000006;
-    static const u32 CallbackIsFunctionOnly =   0x00000002;
-    static const u32 CallbackIsPropertyOnly =   0x00000004;
-    static const u32 NoInterfaceObject =        0x00000008;
-    static const u32 PrototypeRoot =            0x00000010;
-
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
         Node(identifier),
         extends(extends),
@@ -1000,34 +1040,6 @@ class Member : public Node
     bool            type;
 
 public:
-    // Attributes for attributes and operations
-    static const u32 AttrMask =         0x00000003;
-    static const u32 AttrOperation =    0x00000000;
-    static const u32 AttrGetter =       0x00000001;
-    static const u32 AttrSetter =       0x00000002;
-    // [IndexCreator], [IndexDeleter], [IndexGetter] and [IndexSetter]
-    static const u32 IndexCreator =     0x00000004;
-    static const u32 IndexDeleter =     0x00000008;
-    static const u32 IndexGetter =      0x00000010;
-    static const u32 IndexSetter =      0x00000020;
-    // [NameCreator], [NameDeleter], [NameGetter] and [NameSetter]
-    static const u32 NameCreator =      0x00000040;
-    static const u32 NameDeleter =      0x00000080;
-    static const u32 NameGetter =       0x00000100;
-    static const u32 NameSetter =       0x00000200;
-    // [Null]
-    static const u32 NullIsEmpty =      0x00000400;
-    static const u32 NullIsNull =       0x00000800;
-    // [Stringifies]
-    static const u32 Stringifies =      0x00001000;
-    // [Replaceable]
-    static const u32 Replaceable =      0x00002000;
-    // [Undefined]
-    static const u32 UndefinedIsEmpty = 0x00004000;
-    static const u32 UndefinedIsNull =  0x00008000;
-    // [Callable]
-    static const u32 Callable =         0x00010000;
-
     Member(std::string identifier, Node* spec = 0) :
         Node(identifier),
         spec(spec),
@@ -1317,21 +1329,6 @@ class ParamDcl : public Member
     u32 attr;
 
 public:
-    static const u32 AttrMask =         0x00000003;
-    static const u32 AttrIn =           0x00000000;
-    static const u32 AttrOut =          0x00000001;
-    static const u32 AttrInOut =        0x00000002;
-    // [Null]
-    static const u32 NullIsEmpty =      0x00000004;
-    static const u32 NullIsNull =       0x00000008;
-    // [Undefined]
-    static const u32 UndefinedIsEmpty = 0x00000010;
-    static const u32 UndefinedIsNull =  0x00000020;
-    // [Optional]
-    static const u32 Optional =         0x00000040;
-    // [Variadic]
-    static const u32 Variadic =         0x00000080;
-
     ParamDcl(std::string identifier, Node* spec, u32 attr) :
         Member(identifier, spec),
         attr(attr)

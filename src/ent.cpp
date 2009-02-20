@@ -529,7 +529,7 @@ public:
         }
 
         printf("%04zx: Getter %s : %x\n", node->getOffset(), node->getName().c_str(), spec);
-        new(image + node->getOffset()) Ent::Method(spec, dict[node->getName()], Ent::Method::AttrGetter, 0, 0);
+        new(image + node->getOffset()) Ent::Method(spec, dict[node->getName()], Ent::AttrGetter, 0, 0);
         if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
         {
             if (node->isPutForwards())
@@ -543,8 +543,8 @@ public:
             interface->addMethod(node->getOffset() + Ent::Method::getSize(0, 0));
             printf("%04zx: Setter %s : %x\n", node->getOffset() + Ent::Method::getSize(0, 0), node->getName().c_str(), spec);
             Ent::Method* setter = new(image + node->getOffset() + Ent::Method::getSize(0, 0))
-                                    Ent::Method(Ent::SpecVoid, dict[node->getName()], Ent::Method::AttrSetter, 1, 0);
-            setter->addParam(spec, dict[node->getName()], Ent::Param::AttrIn);
+                                    Ent::Method(Ent::SpecVoid, dict[node->getName()], Ent::AttrSetter, 1, 0);
+            setter->addParam(spec, dict[node->getName()], Ent::AttrIn);
         }
 
         node->getSpec()->accept(this);

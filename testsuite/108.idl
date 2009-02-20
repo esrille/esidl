@@ -1,0 +1,12 @@
+// Test [IndexGetter], etc.
+interface OrderedMap {
+  readonly attribute unsigned long size;
+
+  [IndexGetter] any getByIndex(in unsigned long index);
+  [IndexSetter] void setByIndex(in unsigned long index, in any value);
+  [IndexDeleter] void removeByIndex(in unsigned long index);
+
+  [NameGetter] any get(in DOMString name);
+  [NameSetter, NameCreator] void set(in DOMString name, in any value);
+  [NameDeleter] void remove(in DOMString name);
+};
