@@ -263,6 +263,18 @@ public:
         return children->end();
     }
 
+    NodeList::reverse_iterator rbegin() const
+    {
+        assert(children);
+        return children->rbegin();
+    }
+
+    NodeList::reverse_iterator rend() const
+    {
+        assert(children);
+        return children->rend();
+    }
+
     std::string& getName()
     {
         return name;
