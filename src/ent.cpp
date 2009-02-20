@@ -724,7 +724,7 @@ public:
                 {
                     assert(dynamic_cast<ParamDcl*>(*i));
                     ParamDcl* param = static_cast<ParamDcl*>(*i);
-                    if (param->isOptional())
+                    if (param->isOptional() || param->isVariadic())
                     {
                         ++optionalCount;
                         if (optionalStage < optionalCount)

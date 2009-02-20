@@ -269,7 +269,7 @@ void OpDcl::setRaises(Node* raises)
             {
                 ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
                 assert(param);
-                if (param->isOptional())
+                if (param->isOptional() || param->isVariadic())
                 {
                     ++optionalCount;
                     if (optionalStage < optionalCount)
