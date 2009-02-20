@@ -1,0 +1,7 @@
+// Test [NoIndexingOperations]
+[NoIndexingOperations]
+interface Dictionary {
+  unsigned long getNumberOfEntries();
+  [NameGetter] DOMString lookUpEntry(in DOMString key);
+  [NameSetter] void setEntry(in DOMString key, in DOMString value);
+};
