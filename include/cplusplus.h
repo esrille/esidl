@@ -42,6 +42,19 @@ protected:
     std::string moduleName;
     const Node* currentNode;
 
+    int paramCount;         // The number of parameters of the previously evaluated operation
+    const ParamDcl* variadicParam;     // Non-NULL if the last parameter of the previously evaluated operation is variadic
+
+    int getParamCount() const
+    {
+        return paramCount;
+    }
+
+    const ParamDcl* getVariadic() const
+    {
+        return variadicParam;
+    }
+
     void indent()
     {
         indentString += std::string(TabWidth, ' ');
@@ -130,7 +143,9 @@ public:
         asParam(false),
         currentNode(getSpecification()),
         callbackStage(0),
-        callbackCount(0)
+        callbackCount(0),
+        paramCount(0),
+        variadicParam(0)
     {
     }
 
@@ -575,6 +590,8 @@ public:
             }
         }
 
+        paramCount = 0;
+        variadicParam = 0;
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
             ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
@@ -591,6 +608,7 @@ public:
             {
                 write(", ");
             }
+            ++paramCount;
             param->accept(this);
         }
 
@@ -605,14 +623,15 @@ public:
 
     virtual void at(const ParamDcl* node)
     {
-        static SequenceType variadic(0);
+        static SequenceType variadicSequence(0);
 
         Node* spec = node->getSpec();
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         if (node->isVariadic())
         {
-            variadic.setSpec(spec);
-            seq = &variadic;
+            variadicParam = node;
+            variadicSequence.setSpec(spec);
+            seq = &variadicSequence;
         }
 
         if (node->isInput())
