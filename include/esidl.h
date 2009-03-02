@@ -866,6 +866,26 @@ public:
     }
 
     virtual void accept(Visitor* visitor);
+
+    void collectImplementedOn(std::list<const Interface*>* interfaceList) const
+    {
+        interfaceList->push_back(this);
+        for (std::list<const Interface*>::const_iterator i = getImplementedOn()->begin();
+             i != getImplementedOn()->end();
+             ++i)
+        {
+            interfaceList->push_back(*i);
+            for (std::list<const Interface*>::const_iterator j = (*i)->getImplementedOn()->begin();
+                 j != (*i)->getImplementedOn()->end();
+                 ++j)
+            {
+                if (*j != this)
+                {
+                    interfaceList->push_back(*j);
+                }
+            }
+        }
+    }
 };
 
 class Type : public Node
