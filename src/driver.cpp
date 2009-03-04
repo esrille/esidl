@@ -60,7 +60,8 @@ int main(int argc, char* argv[])
                 argCpp[optCpp++] = argv[i];
                 argIdl[optIdl++] = argv[i];
             }
-            else if (strcmp(argv[i], "-npapi") == 0)
+            else if (strcmp(argv[i], "-npapi") == 0 ||
+                     strcmp(argv[i], "-ent") == 0)
             {
                 argIdl[optIdl++] = argv[i];
             }

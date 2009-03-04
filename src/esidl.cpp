@@ -697,6 +697,7 @@ std::string getIncludedName(const std::string& header)
 
 int main(int argc, char* argv[])
 {
+    bool ent = false;
     bool npapi = false;
     bool isystem = false;
 
@@ -730,6 +731,10 @@ int main(int argc, char* argv[])
                     fprintf(stderr, ".");
                     sleep(1);
                 }
+            }
+            else if (strcmp(argv[i], "-ent") == 0)
+            {
+                ent = true;
             }
             else if (strcmp(argv[i], "-npapi") == 0)
             {
@@ -765,8 +770,11 @@ int main(int argc, char* argv[])
     printf("-----------------------------------\n");
     printCxx(getOutputFilename(getFilename(), "h"));
     printf("-----------------------------------\n");
-    printEnt(getOutputFilename(getFilename(), "ent"));
-    printf("-----------------------------------\n");
+    if (ent)
+    {
+        printEnt(getOutputFilename(getFilename(), "ent"));
+        printf("-----------------------------------\n");
+    }
     if (npapi)
     {
         printNpapi(getFilename(), isystem);
