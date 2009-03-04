@@ -21,7 +21,7 @@
  *
  * W3C,
  * Web IDL,
- * W3C Working Draft 29 August 2008.
+ * W3C Working Draft 19 December 2008.
  * http://www.w3.org/TR/WebIDL/
  *
  * Common Object Request Broker Architecture: Core Specification,
@@ -98,7 +98,6 @@ int yylex(YYSTYPE* yylval);
 %token TRUE
 %token TYPEDEF
 %token UNSIGNED
-%token UUID
 %token VALUETYPE
 %token VOID
 %token WCHAR
@@ -172,8 +171,6 @@ int yylex(YYSTYPE* yylval);
 %type <node>        raises_expr_opt
 %type <node>        raises_expr
 %type <node>        param_type_spec
-
-%type <node>        uuid_type
 
 %type <nodeList>    extended_attribute_opt
 %type <nodeList>    extended_attribute_list
@@ -1044,7 +1041,6 @@ param_type_spec :
     | string_type
     | wide_string_type
     | scoped_name
-    | uuid_type
     ;
 
 fixed_pt_type :
@@ -1182,13 +1178,6 @@ preprocessor :
         {
             getCurrent()->add(new PragmaID($2, $4));
             free($4);
-        }
-    ;
-
-uuid_type :
-    UUID
-        {
-            $$ = new Type("uuid");
         }
     ;
 

@@ -7,7 +7,7 @@ bin_PROGRAMS = esidl esidl2 entdump reflect
 esidl_SOURCES = src/driver.cpp
 
 esidl2_SOURCES = src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
-		 src/guid.cpp include/guid.h include/utf.h \
+		 include/utf.h \
 		 src/print.cpp src/cxx.cpp \
 		 src/ent.cpp \
 		 include/expr.h include/string.h include/cplusplus.h

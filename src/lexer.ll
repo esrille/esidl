@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@
  *
  * W3C,
  * Web IDL,
- * W3C Working Draft 29 August 2008.
+ * W3C Working Draft 19 December 2008.
  * http://www.w3.org/TR/WebIDL/
  *
  * Common Object Request Broker Architecture: Core Specification,
@@ -141,8 +141,6 @@ wstring             { return WSTRING; }
 "::"                { return OP_SCOPE; }
 "<<"                { return OP_SHL; }
 ">>"                { return OP_SHR; }
-
-uuid                { return UUID; }
 
 {Identifier}        {
                         yylval->name = strdup(yytext);

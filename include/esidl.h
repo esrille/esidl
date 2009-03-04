@@ -20,12 +20,11 @@
 
 #include <assert.h>
 #include <string.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <list>
 #include <string>
 #include <vector>
-#include <es/uuid.h>
-#include "guid.h"
 
 class Node;
     class Include;
@@ -83,53 +82,53 @@ protected:
 
 public:
     // Attribute bits
-    static const u32 AttrMask =                 0x00000003;
-    static const u32 AttrOperation =            0x00000000;
-    static const u32 AttrGetter =               0x00000001;
-    static const u32 AttrSetter =               0x00000002;
-    static const u32 AttrIn =                   0x00000000;
-    static const u32 AttrOut =                  0x00000001;
-    static const u32 AttrInOut =                0x00000002;
+    static const uint32_t AttrMask =                 0x00000003;
+    static const uint32_t AttrOperation =            0x00000000;
+    static const uint32_t AttrGetter =               0x00000001;
+    static const uint32_t AttrSetter =               0x00000002;
+    static const uint32_t AttrIn =                   0x00000000;
+    static const uint32_t AttrOut =                  0x00000001;
+    static const uint32_t AttrInOut =                0x00000002;
     // Extended attribute bits
     // [IndexCreator], [IndexDeleter], [IndexGetter] and [IndexSetter]
-    static const u32 IndexMask =                0x0000003c;
-    static const u32 IndexCreator =             0x00000004;
-    static const u32 IndexDeleter =             0x00000008;
-    static const u32 IndexGetter =              0x00000010;
-    static const u32 IndexSetter =              0x00000020;
+    static const uint32_t IndexMask =                0x0000003c;
+    static const uint32_t IndexCreator =             0x00000004;
+    static const uint32_t IndexDeleter =             0x00000008;
+    static const uint32_t IndexGetter =              0x00000010;
+    static const uint32_t IndexSetter =              0x00000020;
     // [NameCreator], [NameDeleter], [NameGetter] and [NameSetter]
-    static const u32 NameMask =                 0x000003c0;
-    static const u32 NameCreator =              0x00000040;
-    static const u32 NameDeleter =              0x00000080;
-    static const u32 NameGetter =               0x00000100;
-    static const u32 NameSetter =               0x00000200;
+    static const uint32_t NameMask =                 0x000003c0;
+    static const uint32_t NameCreator =              0x00000040;
+    static const uint32_t NameDeleter =              0x00000080;
+    static const uint32_t NameGetter =               0x00000100;
+    static const uint32_t NameSetter =               0x00000200;
     // [NoIndexingOperations]
-    static const u32 NoIndexingOperations =     0x00000400;
+    static const uint32_t NoIndexingOperations =     0x00000400;
     // [Callback]
-    static const u32 CallbackMask =             0x00000006;
-    static const u32 Callback =                 0x00001800;
-    static const u32 CallbackIsFunctionOnly =   0x00000800;
-    static const u32 CallbackIsPropertyOnly =   0x00001000;
+    static const uint32_t CallbackMask =             0x00000006;
+    static const uint32_t Callback =                 0x00001800;
+    static const uint32_t CallbackIsFunctionOnly =   0x00000800;
+    static const uint32_t CallbackIsPropertyOnly =   0x00001000;
     // [NoInterfaceObject]
-    static const u32 NoInterfaceObject =        0x00002000;
+    static const uint32_t NoInterfaceObject =        0x00002000;
     // [PrototypeRoot ]
-    static const u32 PrototypeRoot =            0x00004000;
+    static const uint32_t PrototypeRoot =            0x00004000;
     // [Null]
-    static const u32 NullIsEmpty =              0x00008000;
-    static const u32 NullIsNull =               0x00010000;
+    static const uint32_t NullIsEmpty =              0x00008000;
+    static const uint32_t NullIsNull =               0x00010000;
     // [Undefined]
-    static const u32 UndefinedIsEmpty =         0x00020000;
-    static const u32 UndefinedIsNull =          0x00040000;
+    static const uint32_t UndefinedIsEmpty =         0x00020000;
+    static const uint32_t UndefinedIsNull =          0x00040000;
     // [Stringifies]
-    static const u32 Stringifies =              0x00080000;
+    static const uint32_t Stringifies =              0x00080000;
     // [Replaceable]
-    static const u32 Replaceable =              0x00100000;
+    static const uint32_t Replaceable =              0x00100000;
     // [Callable]
-    static const u32 Callable =                 0x00200000;
+    static const uint32_t Callable =                 0x00200000;
     // [Optional]
-    static const u32 Optional =                 0x00400000;
+    static const uint32_t Optional =                 0x00400000;
     // [Variadic]
-    static const u32 Variadic =                 0x00800000;
+    static const uint32_t Variadic =                 0x00800000;
 
     Node() :
         parent(0),
@@ -727,7 +726,7 @@ class Interface : public Node
     int methodCount;
     Interface* constructor;
     std::list<const Interface*> implementedOn;
-    u32 attr;
+    uint32_t attr;
     std::string callable;
     std::string stringifies;
 
@@ -836,26 +835,12 @@ public:
         return &implementedOn;
     }
 
-    bool getIID(Guid& iid) const
-    {
-        if (getID().compare(0, 5, "\"DCE:") == 0 &&
-            parseGuid(getID().c_str() + 5, &iid))
-        {
-            return true;
-        }
-        else
-        {
-            memset(&iid, 0, sizeof(Guid));
-            return false;
-        }
-    }
-
-    u32 getAttr() const
+    uint32_t getAttr() const
     {
         return attr;
     }
 
-    u32 isCallback() const
+    uint32_t isCallback() const
     {
         return (attr & CallbackMask);
     }
@@ -1188,7 +1173,7 @@ public:
 class Attribute : public Member
 {
     bool readonly;
-    u32 attr;
+    uint32_t attr;
     std::string putForwards;
 
 public:
@@ -1212,7 +1197,7 @@ public:
 
     virtual void setExtendedAttributes(NodeList* list);
 
-    u32 getAttr() const
+    uint32_t getAttr() const
     {
         return attr;
     }
@@ -1291,7 +1276,7 @@ class OpDcl : public Member
 {
     Node* raises;
     int paramCount;
-    u32 attr;
+    uint32_t attr;
     int methodCount;
     std::vector<int> paramCounts;  // for each method
 
@@ -1332,7 +1317,7 @@ public:
         return raises->getSize();
     }
 
-    u32 getAttr() const
+    uint32_t getAttr() const
     {
         return attr;
     }
@@ -1358,17 +1343,17 @@ public:
 
 class ParamDcl : public Member
 {
-    u32 attr;
+    uint32_t attr;
 
 public:
-    ParamDcl(std::string identifier, Node* spec, u32 attr) :
+    ParamDcl(std::string identifier, Node* spec, uint32_t attr) :
         Member(identifier, spec),
         attr(attr)
     {
         separator = ", ";
     }
 
-    u32 getAttr() const
+    uint32_t getAttr() const
     {
         return attr;
     }

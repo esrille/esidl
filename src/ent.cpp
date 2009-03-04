@@ -225,7 +225,7 @@ class Emitter : public Visitor
     static const char* specTable[];
 
     std::map<std::string, size_t>& dict;
-    u8* image;
+    uint8_t* image;
     size_t fileSize;
 
     int callbackStage;
@@ -288,7 +288,7 @@ public:
         callbackCount(0)
     {
         assert(sizeof(Ent::Header) < fileSize);
-        image = new u8[fileSize];
+        image = new uint8_t[fileSize];
         memset(image, 0, fileSize);
 
         new(image) Ent::Header(fileSize);
@@ -414,7 +414,7 @@ public:
             entModule->addInterface(node->getOffset());
         }
 
-        u32 inheritedMethodCount = 0;
+        uint32_t inheritedMethodCount = 0;
         Interface* super = 0;
         if (super = node->getSuper())
         {
@@ -471,7 +471,7 @@ public:
 
         if (Node* max = node->getMax())
         {
-            EvalInteger<u64> eval(node->getParent());
+            EvalInteger<uint64_t> eval(node->getParent());
             max->accept(&eval);
             new(image + node->getOffset()) Ent::Sequence(spec, eval.getValue());
         }
@@ -500,7 +500,7 @@ public:
         Ent::Array* array = new(image + node->getOffset()) Ent::Array(spec, node->getDimension());
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
-            EvalInteger<u32> eval(node->getParent());
+            EvalInteger<uint32_t> eval(node->getParent());
             (*i)->accept(&eval);
             array->setRank(eval.getValue());
         }
@@ -567,60 +567,60 @@ public:
         {
         case Ent::SpecS16:
             {
-                EvalInteger<s16> eval(node->getParent());
+                EvalInteger<int16_t> eval(node->getParent());
                 node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<u32>(eval.getValue()));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
         case Ent::SpecS32:
             {
-                EvalInteger<s32> eval(node->getParent());
+                EvalInteger<int32_t> eval(node->getParent());
                 node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<u32>(eval.getValue()));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
         case Ent::SpecS64:
             {
-                EvalInteger<s64> eval(node->getParent());
+                EvalInteger<int64_t> eval(node->getParent());
                 node->getExp()->accept(&eval);
                 new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], node->getValue());
-                *reinterpret_cast<s64*>(image + node->getValue()) = eval.getValue();
+                *reinterpret_cast<int64_t*>(image + node->getValue()) = eval.getValue();
             }
             break;
         case Ent::SpecU8:
             {
-                EvalInteger<u8> eval(node->getParent());
+                EvalInteger<uint8_t> eval(node->getParent());
                 node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<u32>(eval.getValue()));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
         case Ent::SpecU16:
             {
-                EvalInteger<u16> eval(node->getParent());
+                EvalInteger<uint16_t> eval(node->getParent());
                 node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<u32>(eval.getValue()));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
         case Ent::SpecU32:
             {
-                EvalInteger<u32> eval(node->getParent());
+                EvalInteger<uint32_t> eval(node->getParent());
                 node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<u32>(eval.getValue()));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
         case Ent::SpecU64:
             {
-                EvalInteger<u64> eval(node->getParent());
+                EvalInteger<uint64_t> eval(node->getParent());
                 node->getExp()->accept(&eval);
                 new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], node->getValue());
-                *reinterpret_cast<u64*>(image + node->getValue()) = eval.getValue();
+                *reinterpret_cast<uint64_t*>(image + node->getValue()) = eval.getValue();
             }
             break;
         case Ent::SpecBool:
             {
                 EvalInteger<bool> eval(node->getParent());
                 node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<u32>(eval.getValue()));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
         case Ent::SpecF32:
@@ -628,7 +628,7 @@ public:
                 EvalFloat<float> eval(node->getParent());
                 node->getExp()->accept(&eval);
                 float value = eval.getValue();
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], *reinterpret_cast<u32*>(&value));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], *reinterpret_cast<uint32_t*>(&value));
             }
             break;
         case Ent::SpecF64:
@@ -653,14 +653,14 @@ public:
             {
                 EvalString<char> eval(node->getParent());
                 node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<u32>(eval.getValue()));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
         case Ent::SpecWChar:
             {
                 EvalString<wchar_t> eval(node->getParent());
                 node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<u32>(eval.getValue()));
+                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
         case Ent::SpecString:
@@ -739,7 +739,7 @@ public:
                     {
                         Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(param->getSpec())->search(node->getParent()));
                         assert(callback);
-                        if (u32 attr = callback->isCallback())
+                        if (uint32_t attr = callback->isCallback())
                         {
                             bool function;
                             if (attr == Interface::Callback)

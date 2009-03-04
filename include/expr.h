@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,7 +61,7 @@ Literal::operator wchar_t() const
     }
 
     std::string s = unescape(name, 2, name.size() - 3);
-    u32 utf32 = 0;
+    uint32_t utf32 = 0;
     utf8to32(s.c_str(), &utf32);
     return static_cast<wchar_t>(utf32);
 }
@@ -372,7 +372,7 @@ public:
 
 class ConstOffsetter : public Visitor
 {
-    u32 offset;
+    uint32_t offset;
 
 public:
     ConstOffsetter(size_t base) :
@@ -380,7 +380,7 @@ public:
     {
     }
 
-    u32 getOffset() const
+    uint32_t getOffset() const
     {
         return offset;
     }

@@ -54,9 +54,8 @@ am_esidl_OBJECTS = driver.$(OBJEXT)
 esidl_OBJECTS = $(am_esidl_OBJECTS)
 esidl_LDADD = $(LDADD)
 am_esidl2_OBJECTS = esidl2-lexer.$(OBJEXT) esidl2-parser.$(OBJEXT) \
-	esidl2-esidl.$(OBJEXT) esidl2-guid.$(OBJEXT) \
-	esidl2-print.$(OBJEXT) esidl2-cxx.$(OBJEXT) \
-	esidl2-ent.$(OBJEXT)
+	esidl2-esidl.$(OBJEXT) esidl2-print.$(OBJEXT) \
+	esidl2-cxx.$(OBJEXT) esidl2-ent.$(OBJEXT)
 esidl2_OBJECTS = $(am_esidl2_OBJECTS)
 esidl2_LDADD = $(LDADD)
 esidl2_LINK = $(CXXLD) $(esidl2_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
@@ -201,7 +200,7 @@ SUBDIRS = . testsuite
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 esidl_SOURCES = src/driver.cpp
 esidl2_SOURCES = src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
-		 src/guid.cpp include/guid.h include/utf.h \
+		 include/utf.h \
 		 src/print.cpp src/cxx.cpp \
 		 src/ent.cpp \
 		 include/expr.h include/string.h include/cplusplus.h
@@ -306,7 +305,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-cxx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-ent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-esidl.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-guid.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-lexer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-parser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-print.Po@am__quote@
@@ -395,20 +393,6 @@ esidl2-esidl.obj: src/esidl.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/esidl.cpp' object='esidl2-esidl.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -c -o esidl2-esidl.obj `if test -f 'src/esidl.cpp'; then $(CYGPATH_W) 'src/esidl.cpp'; else $(CYGPATH_W) '$(srcdir)/src/esidl.cpp'; fi`
-
-esidl2-guid.o: src/guid.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -MT esidl2-guid.o -MD -MP -MF $(DEPDIR)/esidl2-guid.Tpo -c -o esidl2-guid.o `test -f 'src/guid.cpp' || echo '$(srcdir)/'`src/guid.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/esidl2-guid.Tpo $(DEPDIR)/esidl2-guid.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/guid.cpp' object='esidl2-guid.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -c -o esidl2-guid.o `test -f 'src/guid.cpp' || echo '$(srcdir)/'`src/guid.cpp
-
-esidl2-guid.obj: src/guid.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -MT esidl2-guid.obj -MD -MP -MF $(DEPDIR)/esidl2-guid.Tpo -c -o esidl2-guid.obj `if test -f 'src/guid.cpp'; then $(CYGPATH_W) 'src/guid.cpp'; else $(CYGPATH_W) '$(srcdir)/src/guid.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/esidl2-guid.Tpo $(DEPDIR)/esidl2-guid.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/guid.cpp' object='esidl2-guid.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -c -o esidl2-guid.obj `if test -f 'src/guid.cpp'; then $(CYGPATH_W) 'src/guid.cpp'; else $(CYGPATH_W) '$(srcdir)/src/guid.cpp'; fi`
 
 esidl2-print.o: src/print.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -MT esidl2-print.o -MD -MP -MF $(DEPDIR)/esidl2-print.Tpo -c -o esidl2-print.o `test -f 'src/print.cpp' || echo '$(srcdir)/'`src/print.cpp

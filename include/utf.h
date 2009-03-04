@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,16 +20,15 @@
 
 #include <ctype.h>
 #include <string>
-#include <es/types.h>
 
-inline char* utf8to32(const char* utf8, u32* utf32)
+inline char* utf8to32(const char* utf8, uint32_t* utf32)
 {
-    u32      u = 0;
-    u8       c;
+    uint32_t u = 0;
+    uint8_t  c;
     unsigned len;
     unsigned i;
 
-    c = (u8) *utf8;
+    c = (uint8_t) *utf8;
     if (c != '\0')
     {
         ++utf8;
@@ -62,7 +61,7 @@ inline char* utf8to32(const char* utf8, u32* utf32)
     for (i = 0; i < len; ++i)
     {
         u <<= 6;
-        c = (u8) *utf8++;
+        c = (uint8_t) *utf8++;
         if ((c & 0xc0u) != 0x80u)
         {
             return NULL;
@@ -101,7 +100,7 @@ inline char* utf8to32(const char* utf8, u32* utf32)
     return (char*) utf8;
 }
 
-inline char* utf32to8(u32 utf32, char* utf8)
+inline char* utf32to8(uint32_t utf32, char* utf8)
 {
     int len;
 
@@ -142,12 +141,12 @@ inline char* utf32to8(u32 utf32, char* utf8)
     return utf8;
 }
 
-inline size_t parseHex(const std::string& str, size_t pos, int limit, u32& hex)
+inline size_t parseHex(const std::string& str, size_t pos, int limit, uint32_t& hex)
 {
     hex = 0;
     for (int i = 0; i < limit; ++i, ++pos)
     {
-        u8 x = str[pos];
+        uint8_t x = str[pos];
         if (!isxdigit(x))
         {
             break;
@@ -182,9 +181,10 @@ inline std::string unescape(const std::string s, size_t pos, size_t n)
         else
         {
             // Process escape sequence
-            u32   ucode;
-            char  utf8[5];
-            char* t;
+            uint32_t ucode;
+            char     utf8[5];
+            char*    t;
+
             c = s[pos++];
             switch (c)
             {

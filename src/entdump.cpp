@@ -26,14 +26,6 @@
 #include <es/ent.h>
 #include "utf.h"
 
-void printGuid(const Guid& guid)
-{
-    printf("%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
-           guid.Data1, guid.Data2, guid.Data3,
-           guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3],
-           guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
-}
-
 using namespace Ent;
 
 std::set<Spec> specs;
@@ -61,7 +53,7 @@ void addSpec(const Header* header, Spec spec)
     case TypeStructure:
         {
             const Structure* st = reinterpret_cast<const Structure*>(reinterpret_cast<const char*>(header) + spec);
-            for (u32 i = 0; i < st->memberCount; ++i)
+            for (uint32_t i = 0; i < st->memberCount; ++i)
             {
                 const Member* m = st->getMember(i);
                 addSpec(header, m->spec);
@@ -71,7 +63,7 @@ void addSpec(const Header* header, Spec spec)
     case TypeException:
         {
             const Exception* st = reinterpret_cast<const Exception*>(reinterpret_cast<const char*>(header) + spec);
-            for (u32 i = 0; i < st->memberCount; ++i)
+            for (uint32_t i = 0; i < st->memberCount; ++i)
             {
                 const Member* m = st->getMember(i);
                 addSpec(header, m->spec);
@@ -97,7 +89,7 @@ void addSpec(const Header* header, Spec spec)
     }
 }
 
-const char* getString(const Header* header, u32 offset)
+const char* getString(const Header* header, uint32_t offset)
 {
     assert(offset < header->fileSize);
     if (offset == 0)
@@ -115,7 +107,7 @@ void dumpConstant(const Header* header, const Constant* constant)
     char utf8[9];
 
     printf("    Constant(%#x): %#x '%s' %#x: ",
-           reinterpret_cast<const u8*>(constant) - reinterpret_cast<const u8*>(header),
+           reinterpret_cast<const uint8_t*>(constant) - reinterpret_cast<const uint8_t*>(header),
            constant->spec,
            getString(header, constant->name),
            constant->value);
@@ -128,7 +120,7 @@ void dumpConstant(const Header* header, const Constant* constant)
         printf("(%d)", constant->value);
         break;
     case Ent::SpecS64:
-        printf("(%lld)", *reinterpret_cast<const s64*>(reinterpret_cast<const u8*>(header) + constant->value));
+        printf("(%lld)", *reinterpret_cast<const int64_t*>(reinterpret_cast<const uint8_t*>(header) + constant->value));
         break;
     case Ent::SpecU8:
     case Ent::SpecU16:
@@ -136,7 +128,7 @@ void dumpConstant(const Header* header, const Constant* constant)
         printf("(%u)", constant->value);
         break;
     case Ent::SpecU64:
-        printf("(%llu)", *reinterpret_cast<const u64*>(reinterpret_cast<const u8*>(header) + constant->value));
+        printf("(%llu)", *reinterpret_cast<const uint64_t*>(reinterpret_cast<const uint8_t*>(header) + constant->value));
         break;
     case Ent::SpecBool:
         printf("(%s)", constant->value ? "TRUE" : "FALSE");
@@ -145,10 +137,10 @@ void dumpConstant(const Header* header, const Constant* constant)
         printf("(%g)", *reinterpret_cast<const float*>(&constant->value));
         break;
     case Ent::SpecF64:
-        printf("(%g)", *reinterpret_cast<const double*>(reinterpret_cast<const u8*>(header) + constant->value));
+        printf("(%g)", *reinterpret_cast<const double*>(reinterpret_cast<const uint8_t*>(header) + constant->value));
         break;
     case Ent::SpecF128:
-        printf("(%Lg)", *reinterpret_cast<const long double*>(reinterpret_cast<const u8*>(header) + constant->value));
+        printf("(%Lg)", *reinterpret_cast<const long double*>(reinterpret_cast<const uint8_t*>(header) + constant->value));
         break;
     case Ent::SpecChar:
         printf("(%c)", constant->value);
@@ -188,7 +180,7 @@ void dumpParam(const Header* header, const Param* param)
 void dumpMethod(const Header* header, const Method* method)
 {
     printf("    Method(%#x): %#x '%s' : %#x (%u, %u)\n",
-           reinterpret_cast<const u8*>(method) - reinterpret_cast<const u8*>(header),
+           reinterpret_cast<const uint8_t*>(method) - reinterpret_cast<const uint8_t*>(header),
            method->spec,
            getString(header, method->name),
            method->attr,
@@ -197,14 +189,14 @@ void dumpMethod(const Header* header, const Method* method)
 
     addSpec(header, method->spec);
 
-    for (u32 index = 0; index < method->paramCount; ++index)
+    for (uint32_t index = 0; index < method->paramCount; ++index)
     {
         const Param* p = method->getParam(index);
         assert(p->spec);
         dumpParam(header, p);
     }
 
-    for (u32 index = 0; index < method->raiseCount; ++index)
+    for (uint32_t index = 0; index < method->raiseCount; ++index)
     {
         Spec spec = method->getRaise(index);
         assert(spec);
@@ -216,7 +208,7 @@ void dumpMethod(const Header* header, const Method* method)
 void dumpInterface(const Header* header, const Interface* interface)
 {
     printf("Interface(%#x): %#x '%s' : %#x (%u, %u, %u)\n",
-           reinterpret_cast<const u8*>(interface) - reinterpret_cast<const u8*>(header),
+           reinterpret_cast<const uint8_t*>(interface) - reinterpret_cast<const uint8_t*>(header),
            interface->type,
            getString(header, interface->name),
            interface->module,
@@ -226,14 +218,14 @@ void dumpInterface(const Header* header, const Interface* interface)
     printf("    fullyQualifiedName: %s\n", getString(header, interface->fullyQualifiedName));
     printf("    fullyQualifiedBaseName: %s\n", getString(header, interface->fullyQualifiedBaseName));
 
-    for (u32 index = 0; index < interface->constCount; ++index)
+    for (uint32_t index = 0; index < interface->constCount; ++index)
     {
         const Constant* c = interface->getConstant(index);
         assert(c->spec);
         dumpConstant(header, c);
     }
 
-    for (u32 index = 0; index < interface->methodCount; ++index)
+    for (uint32_t index = 0; index < interface->methodCount; ++index)
     {
         Spec spec = interface->getMethod(index);
         assert(spec);
@@ -245,7 +237,7 @@ void dumpInterface(const Header* header, const Interface* interface)
 void dumpModule(const Header* header, const Module* module)
 {
     printf("Module(%#x): %#x '%s' : %#x (%u, %u, %u)\n",
-           reinterpret_cast<const u8*>(module) - reinterpret_cast<const u8*>(header),
+           reinterpret_cast<const uint8_t*>(module) - reinterpret_cast<const uint8_t*>(header),
            module->type,
            getString(header, module->name),
            module->parent,
@@ -253,14 +245,14 @@ void dumpModule(const Header* header, const Module* module)
            module->interfaceCount,
            module->constCount);
 
-    for (u32 index = 0; index < module->constCount; ++index)
+    for (uint32_t index = 0; index < module->constCount; ++index)
     {
         const Constant* c = module->getConstant(index);
         assert(c->spec);
         dumpConstant(header, c);
     }
 
-    for (u32 index = 0; index < module->interfaceCount; ++index)
+    for (uint32_t index = 0; index < module->interfaceCount; ++index)
     {
         Spec spec = module->getInterface(index);
         assert(spec);
@@ -268,7 +260,7 @@ void dumpModule(const Header* header, const Module* module)
                       reinterpret_cast<const Interface*>(reinterpret_cast<const char*>(header) + spec));
     }
 
-    for (u32 index = 0; index < module->moduleCount; ++index)
+    for (uint32_t index = 0; index < module->moduleCount; ++index)
     {
         Spec spec = module->getModule(index);
         assert(spec);
@@ -299,10 +291,10 @@ void dumpSpec(const Header* header, Spec spec)
         {
             const Structure* st = reinterpret_cast<const Structure*>(reinterpret_cast<const char*>(header) + spec);
             printf("Structure(%#x): %#x : (%u)\n",
-                   reinterpret_cast<const u8*>(st) - reinterpret_cast<const u8*>(header),
+                   reinterpret_cast<const uint8_t*>(st) - reinterpret_cast<const uint8_t*>(header),
                    st->type,
                    st->memberCount);
-            for (u32 i = 0; i < st->memberCount; ++i)
+            for (uint32_t i = 0; i < st->memberCount; ++i)
             {
                 const Member* m = st->getMember(i);
                 printf("    Member: %#x '%s'\n",
@@ -315,10 +307,10 @@ void dumpSpec(const Header* header, Spec spec)
         {
             const Exception* st = reinterpret_cast<const Exception*>(reinterpret_cast<const char*>(header) + spec);
             printf("Exception(%#x): %#x : (%u)\n",
-                   reinterpret_cast<const u8*>(st) - reinterpret_cast<const u8*>(header),
+                   reinterpret_cast<const uint8_t*>(st) - reinterpret_cast<const uint8_t*>(header),
                    st->type,
                    st->memberCount);
-            for (u32 i = 0; i < st->memberCount; ++i)
+            for (uint32_t i = 0; i < st->memberCount; ++i)
             {
                 const Member* m = st->getMember(i);
                 printf("    Member: %#x '%s'\n",
@@ -331,11 +323,11 @@ void dumpSpec(const Header* header, Spec spec)
         {
             const Array* a = reinterpret_cast<const Array*>(reinterpret_cast<const char*>(header) + spec);
             printf("Array(%#x): %#x : %#x (%u) ",
-                   reinterpret_cast<const u8*>(a) - reinterpret_cast<const u8*>(header),
+                   reinterpret_cast<const uint8_t*>(a) - reinterpret_cast<const uint8_t*>(header),
                    a->type,
                    a->spec,
                    a->dim);
-            for (u32 i = 0; i < a->dim; ++i)
+            for (uint32_t i = 0; i < a->dim; ++i)
             {
                 printf("[%u]", a->getRank(i));
             }
@@ -346,7 +338,7 @@ void dumpSpec(const Header* header, Spec spec)
         {
             const Sequence* seq = reinterpret_cast<const Sequence*>(reinterpret_cast<const char*>(header) + spec);
             printf("Sequence(%#x): %#x : %#x (%u)\n",
-                   reinterpret_cast<const u8*>(seq) - reinterpret_cast<const u8*>(header),
+                   reinterpret_cast<const uint8_t*>(seq) - reinterpret_cast<const uint8_t*>(header),
                    seq->type,
                    seq->spec,
                    seq->max);
