@@ -30,8 +30,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = esidl$(EXEEXT) esidl2$(EXEEXT) entdump$(EXEEXT) \
-	reflect$(EXEEXT)
+bin_PROGRAMS = esidl$(EXEEXT) esidl2$(EXEEXT) entdump$(EXEEXT)
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/configure depcomp \
@@ -60,9 +59,6 @@ esidl2_OBJECTS = $(am_esidl2_OBJECTS)
 esidl2_LDADD = $(LDADD)
 esidl2_LINK = $(CXXLD) $(esidl2_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-am_reflect_OBJECTS = reflect.$(OBJEXT)
-reflect_OBJECTS = $(am_reflect_OBJECTS)
-reflect_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -78,10 +74,8 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(entdump_SOURCES) $(esidl_SOURCES) $(esidl2_SOURCES) \
-	$(reflect_SOURCES)
-DIST_SOURCES = $(entdump_SOURCES) $(esidl_SOURCES) $(esidl2_SOURCES) \
-	$(reflect_SOURCES)
+SOURCES = $(entdump_SOURCES) $(esidl_SOURCES) $(esidl2_SOURCES)
+DIST_SOURCES = $(entdump_SOURCES) $(esidl_SOURCES) $(esidl2_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-dvi-recursive install-exec-recursive \
@@ -207,7 +201,6 @@ esidl2_SOURCES = src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
 
 esidl2_CXXFLAGS = -D YYERROR_VERBOSE
 entdump_SOURCES = src/entdump.cpp
-reflect_SOURCES = src/reflect.cpp
 AM_YFLAGS = -d -v -t
 AM_CPPFLAGS = \
 	-I$(srcdir)/include \
@@ -290,9 +283,6 @@ parser.h: parser.cc
 esidl2$(EXEEXT): $(esidl2_OBJECTS) $(esidl2_DEPENDENCIES) 
 	@rm -f esidl2$(EXEEXT)
 	$(esidl2_LINK) $(esidl2_OBJECTS) $(esidl2_LDADD) $(LIBS)
-reflect$(EXEEXT): $(reflect_OBJECTS) $(reflect_DEPENDENCIES) 
-	@rm -f reflect$(EXEEXT)
-	$(CXXLINK) $(reflect_OBJECTS) $(reflect_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -308,7 +298,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-lexer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-parser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-print.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reflect.Po@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -435,20 +424,6 @@ esidl2-ent.obj: src/ent.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/ent.cpp' object='esidl2-ent.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -c -o esidl2-ent.obj `if test -f 'src/ent.cpp'; then $(CYGPATH_W) 'src/ent.cpp'; else $(CYGPATH_W) '$(srcdir)/src/ent.cpp'; fi`
-
-reflect.o: src/reflect.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reflect.o -MD -MP -MF $(DEPDIR)/reflect.Tpo -c -o reflect.o `test -f 'src/reflect.cpp' || echo '$(srcdir)/'`src/reflect.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/reflect.Tpo $(DEPDIR)/reflect.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/reflect.cpp' object='reflect.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reflect.o `test -f 'src/reflect.cpp' || echo '$(srcdir)/'`src/reflect.cpp
-
-reflect.obj: src/reflect.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reflect.obj -MD -MP -MF $(DEPDIR)/reflect.Tpo -c -o reflect.obj `if test -f 'src/reflect.cpp'; then $(CYGPATH_W) 'src/reflect.cpp'; else $(CYGPATH_W) '$(srcdir)/src/reflect.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/reflect.Tpo $(DEPDIR)/reflect.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/reflect.cpp' object='reflect.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reflect.obj `if test -f 'src/reflect.cpp'; then $(CYGPATH_W) 'src/reflect.cpp'; else $(CYGPATH_W) '$(srcdir)/src/reflect.cpp'; fi`
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

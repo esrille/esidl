@@ -2,7 +2,7 @@ SUBDIRS = . testsuite
 
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 
-bin_PROGRAMS = esidl esidl2 entdump reflect
+bin_PROGRAMS = esidl esidl2 entdump
 
 esidl_SOURCES = src/driver.cpp
 
@@ -17,8 +17,6 @@ esidl2-cxx.$(OBJEXT) : Makefile
 esidl2_CXXFLAGS = -D YYERROR_VERBOSE
 
 entdump_SOURCES = src/entdump.cpp
-
-reflect_SOURCES = src/reflect.cpp
 
 AM_YFLAGS = -d -v -t
 
