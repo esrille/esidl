@@ -193,11 +193,12 @@ top_srcdir = @top_srcdir@
 SUBDIRS = . testsuite
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 esidl_SOURCES = src/driver.cpp
-esidl2_SOURCES = src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
-		 include/utf.h \
-		 src/print.cpp src/cxx.cpp \
-		 src/ent.cpp \
-		 include/expr.h include/string.h include/cplusplus.h
+esidl2_SOURCES = es/ent.h \
+	src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
+	include/utf.h \
+	src/print.cpp src/cxx.cpp \
+	src/ent.cpp \
+	include/expr.h include/string.h include/cplusplus.h
 
 esidl2_CXXFLAGS = -D YYERROR_VERBOSE
 entdump_SOURCES = src/entdump.cpp
@@ -206,7 +207,7 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/include \
 	-I$(srcdir)/src \
 	-I- \
-	-I$(srcdir)/../include
+	-I$(srcdir)
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
