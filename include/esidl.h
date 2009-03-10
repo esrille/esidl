@@ -105,7 +105,7 @@ public:
     // [NoIndexingOperations]
     static const uint32_t NoIndexingOperations =     0x00000400;
     // [Callback]
-    static const uint32_t CallbackMask =             0x00000006;
+    static const uint32_t CallbackMask =             0x00001800;
     static const uint32_t Callback =                 0x00001800;
     static const uint32_t CallbackIsFunctionOnly =   0x00000800;
     static const uint32_t CallbackIsPropertyOnly =   0x00001000;
