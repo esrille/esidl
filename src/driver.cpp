@@ -138,15 +138,19 @@ int main(int argc, char* argv[])
         else if (0 < id)
         {
             int status;
-
             while (wait(&status) != id)
             {
             }
-            if (result == EXIT_SUCCESS &&
-                WIFEXITED(status) &&
-                WEXITSTATUS(status) != EXIT_SUCCESS)
+            if (result == EXIT_SUCCESS)
             {
-                result = WEXITSTATUS(status);
+                if (!WIFEXITED(status))
+                {
+                    result = EXIT_FAILURE;
+                }
+                else
+                {
+                    result = WEXITSTATUS(status);
+                }
             }
         }
         else
