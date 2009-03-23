@@ -1223,7 +1223,7 @@ public:
 class ConstDcl : public Member
 {
     Node* exp;
-    mutable size_t value;
+    mutable uint64_t value;
 
 public:
     ConstDcl(Node* spec, std::string identifier, Node* exp) :
@@ -1243,12 +1243,12 @@ public:
         return exp;
     }
 
-    size_t getValue() const
+    uint64_t getValue() const
     {
         return value;
     }
 
-    void setValue(size_t value) const
+    void setValue(uint64_t value) const
     {
         assert(value == 0 || this->value == 0);
         this->value = value;
