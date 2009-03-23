@@ -21,6 +21,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <map>
 #include <string>
 #include "esidl.h"
 
@@ -42,8 +43,10 @@ protected:
     std::string moduleName;
     const Node* currentNode;
 
-    int paramCount;         // The number of parameters of the previously evaluated operation
-    const ParamDcl* variadicParam;     // Non-NULL if the last parameter of the previously evaluated operation is variadic
+    int paramCount;  // The number of parameters of the previously evaluated operation
+    const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
+
+    std::map<const ParamDcl*, const OpDcl*> callbacks;
 
     int getParamCount() const
     {
@@ -416,6 +419,8 @@ public:
 
     virtual void at(const OpDcl* node)
     {
+        callbacks.clear();
+
         if (!asParam)
         {
             if (!constructorMode)
@@ -683,14 +688,17 @@ public:
                     if (function)
                     {
                         asParam = true;
+                        int saved = paramCount;
                         for (NodeList::iterator i = callback->begin(); i != callback->end(); ++i)
                         {
                             if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
                             {
                                 CPlusPlus::at(op);
+                                callbacks.insert(std::pair<const ParamDcl*, const OpDcl*>(node, op));
                                 break;
                             }
                         }
+                        paramCount = saved;
                         asParam = false;
                         return;
                     }
@@ -744,6 +752,16 @@ public:
             }
         }
         return qualifiedName;
+    }
+
+    const OpDcl* isCallback(const ParamDcl* param) const
+    {
+        std::map<const ParamDcl*, const OpDcl*>::const_iterator i = callbacks.find(param);
+        if (i == callbacks.end())
+        {
+            return 0;
+        }
+        return i->second;
     }
 };
 
