@@ -404,7 +404,11 @@ scoped_name :
             ScopedName* name = new ScopedName("::");
             name->getName() += $2;
             free($2);
-            assert(name->search(getCurrent()));
+            if (!name->search(getCurrent()))
+            {
+                fprintf(stderr, "'%s' is not declared.\n", name->getName().c_str());
+                exit(EXIT_FAILURE);
+            }
             $$ = name;
         }
     | scoped_name OP_SCOPE IDENTIFIER
@@ -413,7 +417,11 @@ scoped_name :
             name->getName() += "::";
             name->getName() += $3;
             free($3);
-            assert(name->search(getCurrent()));
+            if (!name->search(getCurrent()))
+            {
+                fprintf(stderr, "'%s' is not declared.\n", name->getName().c_str());
+                exit(EXIT_FAILURE);
+            }
             $$ = name;
         }
     ;
