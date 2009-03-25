@@ -1305,7 +1305,14 @@ public:
         return raises;
     }
 
-    void setRaises(Node* raises);
+    void setRaises(Node* raises)
+    {
+        this->raises = raises;
+    }
+
+    // Adjust methodCount for [Callback] and [Optional].
+    // Need to be called after the source file is completely read.
+    void adjustMethodCount();
 
     int getParamCount() const
     {

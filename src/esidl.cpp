@@ -247,12 +247,9 @@ void OpDcl::add(Node* node)
     Node::add(node);
 }
 
-void OpDcl::setRaises(Node* raises)
+void OpDcl::adjustMethodCount()
 {
-    this->raises = raises;
-    this->methodCount = 0;
-
-    // Adjust methodCount for [Callback] and [Optional].
+    methodCount = 0;
     int optionalStage = 0;
     int optionalCount;
     do
@@ -695,6 +692,20 @@ std::string getIncludedName(const std::string& header)
     return included + "_INCLUDED";
 }
 
+class AdjustMethodCount : public Visitor
+{
+public:
+    virtual void at(const Node* node)
+    {
+        visitChildren(node);
+    }
+
+    virtual void at(const OpDcl* node)
+    {
+        const_cast<OpDcl*>(node)->adjustMethodCount();
+    }
+};
+
 int main(int argc, char* argv[])
 {
     bool ent = false;
@@ -763,6 +774,9 @@ int main(int argc, char* argv[])
     {
         return EXIT_FAILURE;
     }
+
+    AdjustMethodCount adjustMethodCount;
+    getSpecification()->accept(&adjustMethodCount);
 
     printf("-I %s\n", includePath);
     printf("-----------------------------------\n");
