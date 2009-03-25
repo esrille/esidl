@@ -855,18 +855,23 @@ public:
     void collectImplementedOn(std::list<const Interface*>* interfaceList) const
     {
         interfaceList->push_back(this);
-        for (std::list<const Interface*>::const_iterator i = getImplementedOn()->begin();
-             i != getImplementedOn()->end();
-             ++i)
+        for (const Interface* interface = this;
+              interface && !interface->isBaseObject();
+              interface = interface->getSuper())
         {
-            interfaceList->push_back(*i);
-            for (std::list<const Interface*>::const_iterator j = (*i)->getImplementedOn()->begin();
-                 j != (*i)->getImplementedOn()->end();
-                 ++j)
+            for (std::list<const Interface*>::const_iterator i = interface->getImplementedOn()->begin();
+                i != interface->getImplementedOn()->end();
+                ++i)
             {
-                if (*j != this)
+                interfaceList->push_back(*i);
+                for (std::list<const Interface*>::const_iterator j = (*i)->getImplementedOn()->begin();
+                    j != (*i)->getImplementedOn()->end();
+                    ++j)
                 {
-                    interfaceList->push_back(*j);
+                    if (*j != interface)
+                    {
+                        interfaceList->push_back(*j);
+                    }
                 }
             }
         }
