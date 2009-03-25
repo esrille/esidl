@@ -101,6 +101,7 @@ protected:
             return;
         }
 
+        const Node* saved = currentNode;
         std::string separator;
         bool br;
         int count = 0;
@@ -136,7 +137,7 @@ protected:
         {
             write("%s", separator.c_str());
         }
-        currentNode = node;
+        currentNode = saved;
     }
 
 public:
