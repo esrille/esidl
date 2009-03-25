@@ -1,5 +1,6 @@
 #include "dom.idl"
 #include "views.idl"
+#include "events.idl"
 
 module html
 {

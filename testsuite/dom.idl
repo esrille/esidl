@@ -2,6 +2,8 @@
 
 module dom
 {
+    typedef unsigned long long DOMTimeStamp;
+
     interface Node : Interface
     {
         readonly attribute string nodeName;
