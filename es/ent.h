@@ -256,7 +256,7 @@ namespace Ent
             p += interfaceCount;
             Constant* c = reinterpret_cast<Constant*>(p);
             uint32_t i;
-            for (i = 0; i < constCount; ++i, ++p)
+            for (i = 0; i < constCount; ++i, ++c)
             {
                 if (c->spec == 0)
                 {
@@ -349,7 +349,7 @@ namespace Ent
             p += methodCount;
             Constant* c = reinterpret_cast<Constant*>(p);
             uint32_t i;
-            for (i = 0; i < constCount; ++i, ++p)
+            for (i = 0; i < constCount; ++i, ++c)
             {
                 if (c->spec == 0)
                 {
