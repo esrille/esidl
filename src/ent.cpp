@@ -59,7 +59,13 @@ class TypeOffsetter : public Visitor
             }
             if (const ScopedName* scopedName = dynamic_cast<const ScopedName*>(node))
             {
-                node = scopedName->search(scope);
+                const Node* found = scopedName->search(scope);
+                if (!found)
+                {
+                    fprintf(stderr, "%s not found.\n", node->getName().c_str());
+                    exit(EXIT_FAILURE);
+                }
+                node = found;
                 continue;
             }
             break;
@@ -337,16 +343,21 @@ public:
 
 
         size_t offset = node->getOffset() + sizeof(Ent::Module) + sizeof(Ent::Spec) * (node->getModuleCount() + node->getInterfaceCount());
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
+        if (!node->isLeaf())
         {
-            if (ConstDcl* c = dynamic_cast<ConstDcl*>(*i))
+            for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
             {
-                c->setOffset(offset);
-                offset += sizeof(Ent::Constant);
+                if (ConstDcl* c = dynamic_cast<ConstDcl*>(*i))
+                {
+                    if (c->getRank() == 1)
+                    {
+                        c->setOffset(offset);
+                        offset += sizeof(Ent::Constant);
+                    }
+                }
             }
+            visitChildren(node);
         }
-
-        visitChildren(node);
     }
 
     virtual void at(const StructType* node)
@@ -738,8 +749,8 @@ public:
                     if (param->getSpec()->isInterface(node->getParent()))
                     {
                         Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(param->getSpec())->search(node->getParent()));
-                        assert(callback);
-                        if (uint32_t attr = callback->isCallback())
+                        uint32_t attr;
+                        if (callback && (attr = callback->isCallback()) != 0)
                         {
                             bool function;
                             if (attr == Interface::Callback)

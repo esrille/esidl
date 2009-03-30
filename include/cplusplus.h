@@ -673,8 +673,8 @@ public:
             if (spec->isInterface(node->getParent()))
             {
                 Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
-                assert(callback);
-                if (uint32_t attr = callback->isCallback())
+                uint32_t attr;
+                if (callback && (attr = callback->isCallback()) != 0)
                 {
                     bool function;
                     if (attr == Interface::Callback)

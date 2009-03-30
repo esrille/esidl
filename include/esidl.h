@@ -22,6 +22,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <list>
 #include <string>
 #include <vector>
@@ -773,6 +774,10 @@ public:
         for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
         {
             Node* base = static_cast<ScopedName*>(*i)->search(parent);
+            if (!base)
+            {
+                continue;
+            }
             if (Node* node = base->search(elem, pos))
             {
                 return node;
@@ -818,7 +823,11 @@ public:
                 ScopedName* scoped = static_cast<ScopedName*>(*i);
                 Node* base = scoped->search(this);
                 super = dynamic_cast<Interface*>(base);
-                assert(super);
+                if (!super)
+                {
+                    fprintf(stderr, "%s not found\n", scoped->getName().c_str());
+                    exit(EXIT_FAILURE);
+                }
                 break;  // Multiple inheritance is not allowed.
             }
         }

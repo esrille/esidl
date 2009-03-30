@@ -292,9 +292,16 @@ interface_header :
             Node* extends = 0;
             if (const char* base = Node::getBaseObjectName())
             {
-                if (strcmp(base, $2) != 0) {
+                std::string qualifiedName = getCurrent()->getQualifiedName();
+                qualifiedName += "::";
+                qualifiedName += $2;
+                if (qualifiedName != base) {
                     ScopedName* name = new ScopedName(base);
-                    assert(name->search(getCurrent()));
+                    if (!name->search(getCurrent()))
+                    {
+                        fprintf(stderr, "'%s' is not declared.\n", name->getName().c_str());
+                        exit(EXIT_FAILURE);
+                    }
                     extends = new Node();
                     extends->add(name);
                 }

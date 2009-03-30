@@ -281,8 +281,7 @@ void OpDcl::adjustMethodCount()
                 if (spec->isInterface(this))
                 {
                     Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(getParent()));
-                    assert(callback);
-                    if (callback->isCallback() == Interface::Callback)
+                    if (callback && callback->isCallback() == Interface::Callback)
                     {
                         ++callbackCount;
                     }
