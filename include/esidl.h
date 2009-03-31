@@ -530,7 +530,7 @@ public:
         {
             return true;
         }
-        if (baseObjectName && name == baseObjectName)
+        if (baseObjectName && getQualifiedName() == baseObjectName)
         {
             return true;
         }

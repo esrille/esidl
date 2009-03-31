@@ -237,7 +237,7 @@ public:
         {
             if (const char* base = Node::getBaseObjectName())
             {
-                write("%s", base);
+                write("%s", getScopedName(moduleName, base).c_str());
             }
             else
             {
