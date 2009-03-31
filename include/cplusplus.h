@@ -434,6 +434,7 @@ public:
             }
         }
 
+        bool needComma = true;  // true to write "," before the 1st parameter
         Node* spec = node->getSpec();
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         if (seq)
@@ -457,11 +458,6 @@ public:
             }
             seq->accept(this);
             write(" %s, int %sLength", name.c_str(), name.c_str());
-
-            if (node->begin() != node->end())
-            {
-                write(", ");
-            }
         }
         else if (spec->isString(node->getParent()) || spec->isWString(node->getParent()))
         {
@@ -485,11 +481,6 @@ public:
             }
             spec->accept(this);
             write(" %s, int %sLength", name.c_str(), name.c_str());
-
-            if (node->begin() != node->end())
-            {
-                write(", ");
-            }
         }
         else if (spec->isStruct(node->getParent()))
         {
@@ -512,11 +503,6 @@ public:
             }
             spec->accept(this);
             write("* %s", name.c_str());
-
-            if (node->begin() != node->end())
-            {
-                write(", ");
-            }
         }
         else if (spec->isArray(node->getParent()))
         {
@@ -539,11 +525,6 @@ public:
             }
             spec->accept(this);
             write(" %s", name.c_str());
-
-            if (node->begin() != node->end())
-            {
-                write(", ");
-            }
         }
         else if (spec->isAny(node->getParent()))
         {
@@ -565,11 +546,6 @@ public:
                 write(" (*%s)(", node->getName().c_str());
             }
             write("void* %s, int %sLength", name.c_str(), name.c_str());
-
-            if (node->begin() != node->end())
-            {
-                write(", ");
-            }
         }
         else
         {
@@ -594,6 +570,7 @@ public:
             {
                 write(" (*%s)(", node->getName().c_str());
             }
+            needComma = false;
         }
 
         paramCount = 0;
@@ -610,7 +587,7 @@ public:
                     break;
                 }
             }
-            if (i != node->begin())
+            if (needComma || i != node->begin())
             {
                 write(", ");
             }
