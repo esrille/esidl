@@ -34,7 +34,7 @@ protected:
     std::string prefix;
     FILE* file;
     bool constructorMode;
-    bool asParam;
+    std::string asParam;
     int callbackStage;
     int callbackCount;
     int optionalStage;
@@ -144,7 +144,6 @@ public:
     CPlusPlus(FILE* file) :
         file(file),
         constructorMode(false),
-        asParam(false),
         currentNode(getSpecification()),
         callbackStage(0),
         callbackCount(0),
@@ -422,7 +421,7 @@ public:
     {
         callbacks.clear();
 
-        if (!asParam)
+        if (asParam == "")
         {
             if (!constructorMode)
             {
@@ -448,7 +447,7 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             write("int");
-            if (!asParam)
+            if (asParam == "")
             {
                 write(" %s(", node->getName().c_str());
             }
@@ -471,7 +470,7 @@ public:
 
             write("const ");
             spec->accept(this);
-            if (!asParam)
+            if (asParam == "")
             {
                 write(" %s(", node->getName().c_str());
             }
@@ -493,13 +492,13 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             write("void");
-            if (!asParam)
+            if (asParam == "")
             {
                 write(" %s(", node->getName().c_str());
             }
             else
             {
-                write(" (*%s)(", node->getName().c_str());
+                write(" (*%s)(", asParam.c_str());
             }
             spec->accept(this);
             write("* %s", name.c_str());
@@ -515,7 +514,7 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             write("void");
-            if (!asParam)
+            if (asParam == "")
             {
                 write(" %s(", node->getName().c_str());
             }
@@ -537,13 +536,13 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             spec->accept(this);
-            if (!asParam)
+            if (asParam == "")
             {
                 write(" %s(", node->getName().c_str());
             }
             else
             {
-                write(" (*%s)(", node->getName().c_str());
+                write(" (*%s)(", asParam.c_str());
             }
             write("void* %s, int %sLength", name.c_str(), name.c_str());
         }
@@ -562,13 +561,13 @@ public:
             {
                 spec->accept(this);
             }
-            if (!asParam)
+            if (asParam == "")
             {
                 write(" %s(", node->getName().c_str());
             }
             else
             {
-                write(" (*%s)(", node->getName().c_str());
+                write(" (*%s)(", asParam.c_str());
             }
             needComma = false;
         }
@@ -665,7 +664,7 @@ public:
                     }
                     if (function)
                     {
-                        asParam = true;
+                        asParam = node->getName();
                         int saved = paramCount;
                         for (NodeList::iterator i = callback->begin(); i != callback->end(); ++i)
                         {
@@ -677,7 +676,7 @@ public:
                             }
                         }
                         paramCount = saved;
-                        asParam = false;
+                        asParam = "";
                         return;
                     }
                 }
