@@ -10,7 +10,7 @@ esidl2_SOURCES = es/ent.h \
 	src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
 	include/utf.h \
 	src/print.cpp src/cxx.cpp \
-	src/ent.cpp src/npapi.cpp \
+	src/ent.cpp \
 	include/expr.h include/string.h include/cplusplus.h
 
 esidl2-cxx.$(OBJEXT) : Makefile
