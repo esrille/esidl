@@ -45,8 +45,12 @@ protected:
 
     int paramCount;  // The number of parameters of the previously evaluated operation
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
-
     std::map<const ParamDcl*, const OpDcl*> callbacks;
+
+    // param mode saved context. XXX doesn't work if callback takes callbacks as arguments...
+    int savedParamCount;
+    const ParamDcl* savedVariadicParam;
+    std::map<const ParamDcl*, const OpDcl*> savedCallbacks;
 
     int getParamCount() const
     {
@@ -664,8 +668,7 @@ public:
                     }
                     if (function)
                     {
-                        asParam = node->getName();
-                        int saved = paramCount;
+                        paramMode(node->getName());
                         for (NodeList::iterator i = callback->begin(); i != callback->end(); ++i)
                         {
                             if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
@@ -675,8 +678,7 @@ public:
                                 break;
                             }
                         }
-                        paramCount = saved;
-                        asParam = "";
+                        paramMode();
                         return;
                     }
                 }
@@ -739,6 +741,22 @@ public:
             return 0;
         }
         return i->second;
+    }
+
+    void paramMode(const std::string name)
+    {
+        asParam = name;
+        savedParamCount = paramCount;
+        savedVariadicParam = variadicParam;
+        savedCallbacks = callbacks;
+    }
+
+    void paramMode()
+    {
+        asParam = "";
+        paramCount = savedParamCount;
+        variadicParam = savedVariadicParam;
+        callbacks = savedCallbacks;
     }
 };
 
