@@ -335,7 +335,7 @@ public:
         return 0;
     }
 
-    virtual bool compare(const char* str, const Node* scope) const
+    virtual int compare(const char* str, const Node* scope) const
     {
         return name.compare(str);
     }
@@ -573,12 +573,12 @@ public:
 
     Node* search(const Node* scope) const;
 
-    virtual bool compare(const char* str, const Node* scope) const
+    virtual int compare(const char* str, const Node* scope) const
     {
         Node* node = search(scope);
         if (!node)
         {
-            return false;
+            return *str;
         }
         return node->compare(str, node->getParent());
     }
@@ -1067,8 +1067,8 @@ public:
 
 class Member : public Node
 {
-    Node*           spec;
-    bool            type;
+    Node* spec;
+    bool  type;  // true if this is a typedef
 
 public:
     Member(std::string identifier, Node* spec = 0) :
@@ -1105,11 +1105,11 @@ public:
         this->type = type;
     }
 
-    virtual bool compare(const char* str, const Node* scope) const
+    virtual int compare(const char* str, const Node* scope) const
     {
         if (!type)
         {
-            return 0;
+            return *str;
         }
         return spec->compare(str, scope);
     }
