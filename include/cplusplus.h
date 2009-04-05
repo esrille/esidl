@@ -622,7 +622,7 @@ public:
 
         if (node->isInput())
         {
-            if (seq ||
+            if (seq && !seq->getSpec()->isInterface(currentNode) ||
                 spec->isGuid(node->getParent()) ||
                 spec->isString(node->getParent()) ||
                 spec->isWString(node->getParent()) ||
