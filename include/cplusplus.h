@@ -47,9 +47,14 @@ protected:
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
     std::map<const ParamDcl*, const OpDcl*> callbacks;
 
-    // param mode saved context. XXX doesn't work if callback takes callbacks as arguments...
+    // param mode saved context.
+    // XXX doesn't work if callback takes callbacks as arguments...
     struct
     {
+        int callbackStage;
+        int callbackCount;
+        int optionalStage;
+        int optionalCount;
         int paramCount;
         const ParamDcl* variadicParam;
         std::map<const ParamDcl*, const OpDcl*> callbacks;
@@ -585,7 +590,8 @@ public:
         {
             ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
             assert(param);
-            if (param->isOptional() || param->isVariadic())
+            if (asParam == "" &&
+                (param->isOptional() || param->isVariadic()))
             {
                 ++optionalCount;
                 if (optionalStage < optionalCount)
@@ -751,6 +757,10 @@ public:
     void paramMode(const std::string name)
     {
         asParam = name;
+        savedContext.callbackStage = callbackStage;
+        savedContext.callbackCount = callbackCount;
+        savedContext.optionalStage = optionalStage;
+        savedContext.optionalCount = optionalCount;
         savedContext.paramCount = paramCount;
         savedContext.variadicParam = variadicParam;
         savedContext.callbacks = callbacks;
@@ -759,6 +769,10 @@ public:
     void paramMode()
     {
         asParam = "";
+        callbackStage = savedContext.callbackStage;
+        callbackCount = savedContext.callbackCount;
+        optionalStage = savedContext.optionalStage;
+        optionalCount = savedContext.optionalCount;
         paramCount = savedContext.paramCount;
         variadicParam = savedContext.variadicParam;
         callbacks = savedContext.callbacks;
