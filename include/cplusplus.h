@@ -48,9 +48,12 @@ protected:
     std::map<const ParamDcl*, const OpDcl*> callbacks;
 
     // param mode saved context. XXX doesn't work if callback takes callbacks as arguments...
-    int savedParamCount;
-    const ParamDcl* savedVariadicParam;
-    std::map<const ParamDcl*, const OpDcl*> savedCallbacks;
+    struct
+    {
+        int paramCount;
+        const ParamDcl* variadicParam;
+        std::map<const ParamDcl*, const OpDcl*> callbacks;
+    } savedContext;
 
     int getParamCount() const
     {
@@ -748,17 +751,17 @@ public:
     void paramMode(const std::string name)
     {
         asParam = name;
-        savedParamCount = paramCount;
-        savedVariadicParam = variadicParam;
-        savedCallbacks = callbacks;
+        savedContext.paramCount = paramCount;
+        savedContext.variadicParam = variadicParam;
+        savedContext.callbacks = callbacks;
     }
 
     void paramMode()
     {
         asParam = "";
-        paramCount = savedParamCount;
-        variadicParam = savedVariadicParam;
-        callbacks = savedCallbacks;
+        paramCount = savedContext.paramCount;
+        variadicParam = savedContext.variadicParam;
+        callbacks = savedContext.callbacks;
     }
 };
 
