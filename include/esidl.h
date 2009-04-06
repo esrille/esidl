@@ -868,16 +868,24 @@ public:
               interface && !interface->isBaseObject();
               interface = interface->getSuper())
         {
+            if (interface->isLeaf())
+            {
+                continue;
+            }
             for (std::list<const Interface*>::const_iterator i = interface->getImplementedOn()->begin();
                 i != interface->getImplementedOn()->end();
                 ++i)
             {
+                if ((*i)->isLeaf())
+                {
+                    continue;
+                }
                 interfaceList->push_back(*i);
                 for (std::list<const Interface*>::const_iterator j = (*i)->getImplementedOn()->begin();
                     j != (*i)->getImplementedOn()->end();
                     ++j)
                 {
-                    if (*j != interface)
+                    if (*j != interface && !(*j)->isLeaf())
                     {
                         interfaceList->push_back(*j);
                     }
