@@ -657,28 +657,30 @@ public:
                 if (callback && (attr = callback->isCallback()) != 0)
                 {
                     bool function;
-                    if (attr == Interface::Callback)
+                    // In C++, acccept callback interface pointer even if [Callback=FunctionOnly].
+                    if (attr == Interface::Callback ||
+                        attr == Interface::CallbackIsFunctionOnly)
                     {
                         function = (1u << callbackCount) & callbackStage;
                         ++callbackCount;
                     }
-                    else
-                    {
-                        function = (attr == Interface::CallbackIsFunctionOnly);
-                    }
                     if (function)
                     {
+                        OpDcl* op = 0;
                         paramMode(node->getName());
                         for (NodeList::iterator i = callback->begin(); i != callback->end(); ++i)
                         {
-                            if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
+                            if (op = dynamic_cast<OpDcl*>(*i))
                             {
                                 CPlusPlus::at(op);
-                                callbacks.insert(std::pair<const ParamDcl*, const OpDcl*>(node, op));
                                 break;
                             }
                         }
                         paramMode();
+                        if (op)
+                        {
+                            callbacks.insert(std::pair<const ParamDcl*, const OpDcl*>(node, op));
+                        }
                         return;
                     }
                 }
