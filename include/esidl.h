@@ -478,7 +478,12 @@ public:
         return rank;
     }
 
-    virtual void setExtendedAttributes(NodeList* list)
+    void setRank(int r)
+    {
+        rank = r;
+    }
+
+    void setExtendedAttributes(NodeList* list)
     {
         assert(extendedAttributes == 0);
         extendedAttributes = list;
@@ -655,7 +660,6 @@ public:
     }
 
     virtual void add(Node* node);
-    virtual void setExtendedAttributes(NodeList* list);
 
     int getInterfaceCount() const
     {
@@ -757,7 +761,9 @@ public:
     }
 
     virtual void add(Node* node);
-    virtual void setExtendedAttributes(NodeList* list);
+    void processExtendedAttributes();
+    void processExtendedAttributes(OpDcl* op);
+    void processExtendedAttributes(Attribute* attr);
 
     virtual Node* search(const std::string& elem, size_t pos = 0) const
     {
@@ -868,24 +874,19 @@ public:
               interface && !interface->isBaseObject();
               interface = interface->getSuper())
         {
-            if (interface->isLeaf())
-            {
-                continue;
-            }
+            assert(!interface->isLeaf());
             for (std::list<const Interface*>::const_iterator i = interface->getImplementedOn()->begin();
                 i != interface->getImplementedOn()->end();
                 ++i)
             {
-                if ((*i)->isLeaf())
-                {
-                    continue;
-                }
+                assert(!(*i)->isLeaf());
                 interfaceList->push_back(*i);
                 for (std::list<const Interface*>::const_iterator j = (*i)->getImplementedOn()->begin();
                     j != (*i)->getImplementedOn()->end();
                     ++j)
                 {
-                    if (*j != interface && !(*j)->isLeaf())
+                    assert(!(*j)->isLeaf());
+                    if (*j != interface)
                     {
                         interfaceList->push_back(*j);
                     }
@@ -1217,7 +1218,7 @@ public:
         attr |= Stringifies;
     }
 
-    virtual void setExtendedAttributes(NodeList* list);
+    void processExtendedAttributes();
 
     uint32_t getAttr() const
     {
@@ -1315,7 +1316,7 @@ public:
     }
 
     virtual void add(Node* node);
-    virtual void setExtendedAttributes(NodeList* list);
+    void processExtendedAttributes();
 
     Node* getRaises() const
     {
@@ -1402,7 +1403,7 @@ public:
         return attr & Variadic;
     }
 
-    virtual void setExtendedAttributes(NodeList* list);
+    void processExtendedAttributes();
 
     virtual void accept(Visitor* visitor);
 };

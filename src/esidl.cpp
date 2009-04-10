@@ -200,30 +200,6 @@ void Interface::add(Node* node)
     {
         ++constCount;
     }
-    else if (OpDcl* op = dynamic_cast<OpDcl*>(node))
-    {
-        attr |= (op->getAttr() & (IndexMask | NameMask));
-        ++methodCount;
-        if (callable == op->getName())
-        {
-            op->setCallable();
-        }
-    }
-    else if (Attribute* attr = dynamic_cast<Attribute*>(node))
-    {
-        if (attr->isReadonly() && !attr->isPutForwards() && !attr->isReplaceable())
-        {
-            ++methodCount;
-        }
-        else
-        {
-            methodCount += 2;
-        }
-        if (stringifies == attr->getName())
-        {
-            attr->setStringifies();
-        }
-    }
     else if (Interface* interface = dynamic_cast<Interface*>(node))
     {
         if (node->getRank() == 1)
@@ -297,40 +273,14 @@ void OpDcl::adjustMethodCount()
     interface->addMethodCount(methodCount - 1);
 }
 
-void Module::setExtendedAttributes(NodeList* list)
+void Interface::processExtendedAttributes()
 {
-    if (!list)
-    {
-        return;
-    }
-    NodeList* attributes = new NodeList;
-
-    for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
-    {
-        if ((*i)->getName() == "ExceptionConsts")
-        {
-            attributes->push_back(*i);
-        }
-    }
-    delete list;
-    if (0 < attributes->size())
-    {
-        Node::setExtendedAttributes(attributes);
-    }
-    else
-    {
-        delete attributes;
-    }
-}
-
-void Interface::setExtendedAttributes(NodeList* list)
-{
+    NodeList* list = getExtendedAttributes();
     if (!list)
     {
         return;
     }
 
-    pushJavadoc();
     ScopedName* interfaceName;
     for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
@@ -378,6 +328,7 @@ void Interface::setExtendedAttributes(NodeList* list)
                     extends->add(name);
                 }
                 constructor = new Interface("Constructor", extends);
+                constructor->setRank(getRank());
                 add(constructor);
 
                 interfaceName = new ScopedName(getName());
@@ -428,12 +379,11 @@ void Interface::setExtendedAttributes(NodeList* list)
             }
         }
     }
-    popJavadoc();
-    Node::setExtendedAttributes(list);
 }
 
-void Attribute::setExtendedAttributes(NodeList* list)
+void Attribute::processExtendedAttributes()
 {
+    NodeList* list = getExtendedAttributes();
     if (!list)
     {
         return;
@@ -482,11 +432,11 @@ void Attribute::setExtendedAttributes(NodeList* list)
             }
         }
     }
-    Node::setExtendedAttributes(list);
 }
 
-void OpDcl::setExtendedAttributes(NodeList* list)
+void OpDcl::processExtendedAttributes()
 {
+    NodeList* list = getExtendedAttributes();
     if (!list)
     {
         return;
@@ -560,11 +510,11 @@ void OpDcl::setExtendedAttributes(NodeList* list)
             // ignore
         }
     }
-    Node::setExtendedAttributes(list);
 }
 
-void ParamDcl::setExtendedAttributes(NodeList* list)
+void ParamDcl::processExtendedAttributes()
 {
+    NodeList* list = getExtendedAttributes();
     if (!list)
     {
         return;
@@ -610,7 +560,6 @@ void ParamDcl::setExtendedAttributes(NodeList* list)
             }
         }
     }
-    Node::setExtendedAttributes(list);
 }
 
 Node* ScopedName::search(const Node* scope) const
@@ -690,6 +639,80 @@ std::string getIncludedName(const std::string& header)
     }
     return included + "_INCLUDED";
 }
+
+void Interface::processExtendedAttributes(OpDcl* op)
+{
+    attr |= (op->getAttr() & (IndexMask | NameMask));
+    ++methodCount;
+    if (callable == op->getName())
+    {
+        op->setCallable();
+    }
+}
+
+void Interface::processExtendedAttributes(Attribute* attr)
+{
+    if (attr->isReadonly() && !attr->isPutForwards() && !attr->isReplaceable())
+    {
+        ++methodCount;
+    }
+    else
+    {
+        methodCount += 2;
+    }
+    if (stringifies == attr->getName())
+    {
+        attr->setStringifies();
+    }
+}
+
+class ProcessExtendedAttributes : public Visitor
+{
+public:
+    virtual void at(const Node* node)
+    {
+        visitChildren(node);
+    }
+
+    virtual void at(const Interface* node)
+    {
+        const_cast<Interface*>(node)->processExtendedAttributes();
+        if (node->isLeaf())
+        {
+            return;
+        }
+        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
+        {
+            (*i)->accept(this);
+            if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
+            {
+                const_cast<Interface*>(node)->processExtendedAttributes(op);
+            }
+            else if (Attribute* attr = dynamic_cast<Attribute*>(*i))
+            {
+                const_cast<Interface*>(node)->processExtendedAttributes(attr);
+            }
+        }
+    }
+
+    virtual void at(const Attribute* node)
+    {
+        const_cast<Attribute*>(node)->processExtendedAttributes();
+        visitChildren(node);
+    }
+
+    virtual void at(const OpDcl* node)
+    {
+        const_cast<OpDcl*>(node)->processExtendedAttributes();
+        visitChildren(node);
+    }
+
+    virtual void at(const ParamDcl* node)
+    {
+        const_cast<ParamDcl*>(node)->processExtendedAttributes();
+        visitChildren(node);
+    }
+};
 
 class AdjustMethodCount : public Visitor
 {
@@ -773,6 +796,9 @@ int main(int argc, char* argv[])
     {
         return EXIT_FAILURE;
     }
+
+    ProcessExtendedAttributes processExtendedAttributes;
+    getSpecification()->accept(&processExtendedAttributes);
 
     AdjustMethodCount adjustMethodCount;
     getSpecification()->accept(&adjustMethodCount);
