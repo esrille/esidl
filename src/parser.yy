@@ -49,8 +49,6 @@ extern "C" int yywrap()
 
 %}
 
-%pure-parser
-
 %union
 {
     int                     attr;
@@ -62,7 +60,7 @@ extern "C" int yywrap()
 
 %{
 
-int yylex(YYSTYPE* yylval);
+int yylex();
 
 %}
 

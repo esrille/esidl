@@ -44,9 +44,6 @@
 
 extern "C" int yyparse(void);
 
-#undef YY_DECL
-#define YY_DECL int yylex(YYSTYPE* yylval)
-
 void yyerror(const char* str);
 
 extern "C" int yywrap();
@@ -143,52 +140,52 @@ wstring             { return WSTRING; }
 ">>"                { return OP_SHR; }
 
 {Identifier}        {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return IDENTIFIER;
                     }
 
 {DecimalIntegerLiteral} {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return INTEGER_LITERAL;
                     }
 
 {OctalIntegerLiteral}   {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return INTEGER_LITERAL;
                     }
 
 {HexIntegerLiteral} {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return INTEGER_LITERAL;
                     }
 
 '{SingleStringCharacter}'   {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return CHARACTER_LITERAL;
                     }
 
 L'{SingleStringCharacter}*' {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return WIDE_CHARACTER_LITERAL;
                     }
 
 {DecimalLiteral}    {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return FLOATING_PT_LITERAL;
                     }
 
 \"{DoubleStringCharacter}*\"    {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return STRING_LITERAL;
                     }
 
 L\"{DoubleStringCharacter}*\"   {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return WIDE_STRING_LITERAL;
                     }
 
 {FixedPointLiteral} {
-                        yylval->name = strdup(yytext);
+                        yylval.name = strdup(yytext);
                         return FIXED_PT_LITERAL;
                     }
 
@@ -197,7 +194,7 @@ L\"{DoubleStringCharacter}*\"   {
                         if (strncmp(yytext, "/**", 3) == 0)
                         {
                             /* Javadoc style comment */
-                            yylval->name = strdup(yytext);
+                            yylval.name = strdup(yytext);
                             return JAVADOC;
                         }
                     }
