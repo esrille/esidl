@@ -788,9 +788,11 @@ int main(int argc, char* argv[])
     try
     {
         yyin = stdin;
-        yyparse();
+        if (yyparse() != 0)
+        {
+            return EXIT_FAILURE;
+        }
         fclose(yyin);
-        printf("yyparse() ok.\n");
     }
     catch (...)
     {
