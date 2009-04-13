@@ -37,10 +37,7 @@ extern FILE* yyin;
 
 extern "C" int yyparse(void);
 
-void yyerror(const char* message)
-{
-    printf("error: %s\n", message);
-}
+void yyerror(const char* message);
 
 extern "C" int yywrap()
 {
@@ -48,6 +45,8 @@ extern "C" int yywrap()
 }
 
 %}
+
+%locations
 
 %union
 {
@@ -70,6 +69,7 @@ int yylex();
 %token CHAR
 %token CONST
 %token DOUBLE
+%token EOL
 %token EXCEPTION
 %token FALSE
 %token FIXED
@@ -983,6 +983,7 @@ op_dcl :
             OpDcl* op = static_cast<OpDcl*>(getCurrent());
             op->setRaises($7);
             setCurrent(op->getParent());
+            op->setLocation(&@4);
         }
     ;
 
@@ -1136,7 +1137,7 @@ exception_list :
     ;
 
 preprocessor :
-    POUND_SIGN INTEGER_LITERAL STRING_LITERAL INTEGER_LITERAL
+    POUND_SIGN INTEGER_LITERAL STRING_LITERAL INTEGER_LITERAL EOL
         {
             // # LINENUM FILENAME FLAGS
             // FLAGS: 1) new file 2) return
@@ -1150,11 +1151,12 @@ preprocessor :
                 Node::decLevel();
                 break;
             }
+            yylloc.last_line = atol($2);
             free($2);
             free($3);
             free($4);
         }
-    | POUND_SIGN INTEGER_LITERAL STRING_LITERAL INTEGER_LITERAL INTEGER_LITERAL INTEGER_LITERAL
+    | POUND_SIGN INTEGER_LITERAL STRING_LITERAL INTEGER_LITERAL INTEGER_LITERAL INTEGER_LITERAL EOL
         {
             // # LINENUM FILENAME FLAGS
             // FLAGS: 1) new file 2) return
@@ -1168,26 +1170,28 @@ preprocessor :
                 Node::decLevel();
                 break;
             }
+            yylloc.last_line = atol($2);
             free($2);
             free($3);
             free($4);
         }
-    | POUND_SIGN INTEGER_LITERAL STRING_LITERAL
+    | POUND_SIGN INTEGER_LITERAL STRING_LITERAL EOL
         {
             // # LINENUM FILENAME
             if (strcmp("1", $2) == 0)
             {
                 setFilename($3);
             }
+            yylloc.last_line = atol($2);
             free($2);
             free($3);
         }
-    | PRAGMA_ID scoped_name STRING_LITERAL
+    | PRAGMA_ID scoped_name STRING_LITERAL EOL
         {
             getCurrent()->add(new PragmaID($2, $3));
             free($3);
         }
-    | PRAGMA_ID scoped_name '=' STRING_LITERAL ';'
+    | PRAGMA_ID scoped_name '=' STRING_LITERAL ';' EOL
         {
             getCurrent()->add(new PragmaID($2, $4));
             free($4);

@@ -48,6 +48,15 @@ void yyerror(const char* str);
 
 extern "C" int yywrap();
 
+void stepLocation()
+{
+    yylloc.first_line = yylloc.last_line; 
+    yylloc.first_column = yylloc.last_column + 1;
+    yylloc.last_column += yyleng;
+}
+
+static bool poundMode = false;
+
 %}
 
 /* regular definitions */
@@ -95,96 +104,236 @@ PoundSign               ^{WhiteSpace}*#
 
 %%
 
-{WhiteSpace}        { /* No action, and no return */ }
-{LineTerminator}    { /* No action, and no return */ }
+{WhiteSpace}        {
+                        ++yylloc.last_column; 
+                    }
+{LineTerminator}    {
+                        if (*yytext == '\n')
+                        {
+                            ++yylloc.last_line;
+                            yylloc.last_column = 0;
+                            if (poundMode) 
+                            {
+                                poundMode = false;
+                                return EOL;
+                            }                        
+                        }
+                    }
 
-any                 { return ANY; }
-attribute           { return ATTRIBUTE; }
-boolean             { return BOOLEAN; }
-char                { return CHAR; }
-const               { return CONST; }
-double              { return DOUBLE; }
-DOMString           { return STRING; }
-exception           { return EXCEPTION; }
-FALSE               { return FALSE; }
-fixed               { return FIXED; }
-float               { return FLOAT; }
-getraises           { return GETRAISES; }
-in                  { return IN; }
-inout               { return INOUT; }
-interface           { return INTERFACE; }
-long                { return LONG; }
-module              { return MODULE; }
-native              { return NATIVE; }
-Object              { return OBJECT; }
-octet               { return OCTET; }
-oneway              { return ONEWAY; }
-out                 { return OUT; }
-raises              { return RAISES; }
-readonly            { return READONLY; }
-setraises           { return SETRAISES; }
-sequence            { return SEQUENCE; }
-short               { return SHORT; }
-string              { return STRING; }
-struct              { return STRUCT; }
-TRUE                { return TRUE; }
-typedef             { return TYPEDEF; }
-unsigned            { return UNSIGNED; }
-valuetype           { return VALUETYPE; }
-void                { return VOID; }
-wchar               { return WCHAR; }
-wstring             { return WSTRING; }
+any                 { 
+                        stepLocation();
+                        return ANY; 
+                    }
+attribute           { 
+                        stepLocation();
+                        return ATTRIBUTE; 
+                    }
+boolean             { 
+                        stepLocation();
+                        return BOOLEAN; 
+                    }
+char                { 
+                        stepLocation();
+                        return CHAR; 
+                    }
+const               { 
+                        stepLocation();
+                        return CONST; 
+                    }
+double              {
+                        stepLocation();
+                        return DOUBLE; 
+                    }
+DOMString           { 
+                        stepLocation();
+                        return STRING; 
+                    }
+exception           { 
+                        stepLocation();
+                        return EXCEPTION; 
+                    }
+FALSE               { 
+                        stepLocation();
+                        return FALSE; 
+                    }
+fixed               { 
+                        stepLocation();
+                        return FIXED; 
+                    }
+float               { 
+                        stepLocation();
+                        return FLOAT; 
+                    }
+getraises           { 
+                        stepLocation();
+                        return GETRAISES; 
+                    }
+in                  { 
+                        stepLocation();
+                        return IN; 
+                    }
+inout               { 
+                        stepLocation();
+                        return INOUT; 
+                    }
+interface           { 
+                        stepLocation();
+                        return INTERFACE; 
+                    }
+long                { 
+                        stepLocation();
+                        return LONG; 
+                    }
+module              { 
+                        stepLocation();
+                        return MODULE; 
+                    }
+native              { 
+                        stepLocation();
+                        return NATIVE; 
+                    }
+Object              { 
+                        stepLocation();
+                        return OBJECT; 
+                    }
+octet               { 
+                        stepLocation();
+                        return OCTET; 
+                    }
+oneway              { 
+                        stepLocation();
+                        return ONEWAY; 
+                    }
+out                 { 
+                        stepLocation();
+                        return OUT; 
+                    }
+raises              { 
+                        stepLocation();
+                        return RAISES;
+                    }
+readonly            { 
+                        stepLocation();
+                        return READONLY; 
+                    }
+setraises           { 
+                        stepLocation();
+                        return SETRAISES; 
+                    }
+sequence            { 
+                        stepLocation();
+                        return SEQUENCE; 
+                    }
+short               { 
+                        stepLocation();
+                        return SHORT; 
+                    }
+string              { 
+                        stepLocation();
+                        return STRING; 
+                    }
+struct              { 
+                        stepLocation();
+                        return STRUCT; 
+                    }
+TRUE                { 
+                        stepLocation();
+                        return TRUE; 
+                    }
+typedef             { 
+                        stepLocation();
+                        return TYPEDEF; 
+                    }
+unsigned            { 
+                        stepLocation();
+                        return UNSIGNED; 
+                    }
+valuetype           { 
+                        stepLocation();
+                        return VALUETYPE; 
+                    }
+void                { 
+                        stepLocation();
+                        return VOID; 
+                    }
+wchar               { 
+                        stepLocation();
+                        return WCHAR; 
+                    }
+wstring             { 
+                        stepLocation();
+                        return WSTRING; 
+                    }
 
-"::"                { return OP_SCOPE; }
-"<<"                { return OP_SHL; }
-">>"                { return OP_SHR; }
+"::"                { 
+                        stepLocation();
+                        return OP_SCOPE; 
+                    }
+"<<"                { 
+                        stepLocation();
+                        return OP_SHL; 
+                    }
+">>"                { 
+                        stepLocation();
+                        return OP_SHR; 
+                    }
 
 {Identifier}        {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return IDENTIFIER;
                     }
 
 {DecimalIntegerLiteral} {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return INTEGER_LITERAL;
                     }
 
 {OctalIntegerLiteral}   {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return INTEGER_LITERAL;
                     }
 
 {HexIntegerLiteral} {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return INTEGER_LITERAL;
                     }
 
 '{SingleStringCharacter}'   {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return CHARACTER_LITERAL;
                     }
 
 L'{SingleStringCharacter}*' {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return WIDE_CHARACTER_LITERAL;
                     }
 
 {DecimalLiteral}    {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return FLOATING_PT_LITERAL;
                     }
 
 \"{DoubleStringCharacter}*\"    {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return STRING_LITERAL;
                     }
 
 L\"{DoubleStringCharacter}*\"   {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return WIDE_STRING_LITERAL;
                     }
 
 {FixedPointLiteral} {
+                        stepLocation();
                         yylval.name = strdup(yytext);
                         return FIXED_PT_LITERAL;
                     }
@@ -197,6 +346,7 @@ L\"{DoubleStringCharacter}*\"   {
                             yylval.name = strdup(yytext);
                             return JAVADOC;
                         }
+                        /* TODO: Increment yylloc.last_line */
                     }
 
 {SingleLineComment} {
@@ -207,16 +357,25 @@ L\"{DoubleStringCharacter}*\"   {
                         {
                             c = yyinput();
                         } while (c != '\n' && c != '\r' && c != EOF);
+                        ++yylloc.last_line;
+                        yylloc.last_column = 0;
                     }
 
 {PoundSign}         {
+                        stepLocation();
+                        poundMode = true;
                         return POUND_SIGN;
                     }
 
 {PoundSign}pragma({WhiteSpace})+ID  {
+                        stepLocation();
+                        poundMode = true;
                         return PRAGMA_ID;
                     }
 
-.                   { return (int) yytext[0]; }
+.                   { 
+                        stepLocation();
+                        return (int) yytext[0]; 
+                    }
 
 %%

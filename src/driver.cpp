@@ -30,13 +30,17 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    char** argCpp = static_cast<char**>(malloc(sizeof(char*) * (argc + 1)));
+    char** argCpp = static_cast<char**>(malloc(sizeof(char*) * (argc + 2)));
     char** argIdl = static_cast<char**>(malloc(sizeof(char*) * (argc + 1)));
 
     argCpp[0] = "cpp";
     argIdl[0] = "esidl2";
     int optCpp = 1;
     int optIdl = 1;
+
+    // Use -C for cpp by default.
+    argCpp[optCpp++] = "-C";
+
     for (int i = 1; i < argc; ++i)
     {
         if (argv[i][0] == '-')

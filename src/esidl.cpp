@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "esidl.h"
+#include "parser.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -163,6 +164,22 @@ std::string getOutputFilename(const char* input, const char* suffix)
     }
 
     return filename;
+}
+
+void Node::setLocation(struct YYLTYPE* yylloc)
+{
+    firstLine = yylloc->first_line;
+    firstColumn = yylloc->first_column;
+    lastLine = yylloc->last_line;
+    lastColumn = yylloc->last_column;
+}
+
+void Node::setLocation(struct YYLTYPE* first, struct YYLTYPE* last)
+{
+    firstLine = first->first_line;
+    firstColumn = first->first_column;
+    lastLine = last->last_line;
+    lastColumn = last->last_column;
 }
 
 void Module::add(Node* node)
@@ -456,6 +473,10 @@ void OpDcl::processExtendedAttributes()
         else if (ext->getName() == "IndexGetter")
         {
             attr |= IndexGetter;
+            check(getParamCount() == 1,
+                  "[IndexGetter] MUST take a single argument.");
+            check(dynamic_cast<ParamDcl*>(*(begin()))->getSpec()->getName() == "unsigned long",
+                  "[IndexGetter] MUST take a single argument of type unsigned long.");
         }
         else if (ext->getName() == "IndexSetter")
         {
@@ -728,6 +749,14 @@ public:
     }
 };
 
+void yyerror(const char* message)
+{
+    fprintf(stderr, "%d.%d-%d.%d: %s\n",
+            yylloc.first_line, yylloc.first_column,
+            yylloc.last_line, yylloc.last_column,
+            message);
+}
+
 int main(int argc, char* argv[])
 {
     bool ent = false;
@@ -785,6 +814,8 @@ int main(int argc, char* argv[])
     setSpecification(node);
     setCurrent(node);
 
+    yylloc.first_line = yylloc.last_line = 1;
+    yylloc.first_column = yylloc.last_column = 0;
     try
     {
         yyin = stdin;

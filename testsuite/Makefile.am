@@ -5,9 +5,9 @@ TESTS =         1.idl  2.idl  3.idl  4.idl  5.idl  6.idl  7.idl         9.idl \
 	20.idl 21.idl 22.idl 23.idl 24.idl 25.idl 26.idl \
 	100.idl 101.idl 102.idl 103.idl 104.idl 105.idl 106.idl 107.idl 108.idl 109.idl \
 	110.idl \
-        201.idl
+        201.idl 202.idl
 
-XFAIL_TESTS = 201.idl
+XFAIL_TESTS = 201.idl 202.idl
 
 EXTRA_DIST = $(TESTS)
 

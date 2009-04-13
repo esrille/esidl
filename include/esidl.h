@@ -78,6 +78,11 @@ protected:
     std::string         javadoc;
     NodeList*           extendedAttributes;
 
+    int                 firstLine;
+    int                 firstColumn;
+    int                 lastLine;
+    int                 lastColumn;
+
     static int          level;          // current include level
     static const char*  baseObjectName; // default base object name
 
@@ -130,6 +135,21 @@ public:
     static const uint32_t Optional =                 0x00400000;
     // [Variadic]
     static const uint32_t Variadic =                 0x00800000;
+
+    void setLocation(struct YYLTYPE* yylloc);
+    void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);
+
+    bool check(bool cond, const char* message)
+    {
+        if (cond)
+        {
+            return true;
+        }
+        fprintf(stderr, "%d.%d-%d.%d: %s\n",
+                firstLine, firstColumn, lastLine, lastColumn, message);
+        exit(EXIT_FAILURE);
+        return false;
+    }
 
     Node() :
         parent(0),
