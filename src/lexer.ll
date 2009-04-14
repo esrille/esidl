@@ -34,8 +34,6 @@
 #include "esidl.h"
 #include "parser.h"
 
-// #define VERBOSE
-
 #ifndef VERBOSE
 #define PRINTF(...)     (__VA_ARGS__)
 #else
