@@ -346,7 +346,7 @@ public:
             {
                 spec->accept(this);
             }
-            write(" %s%s()", spec->isBoolean(node->getParent()) ? "is" : "get", cap.c_str());
+            write(" get%s()", cap.c_str());
         }
     }
 
