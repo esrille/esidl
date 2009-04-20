@@ -37,7 +37,7 @@ extern FILE* yyin;
 
 extern "C" int yyparse(void);
 
-void yyerror(const char* message);
+void yyerror(const char* message, ...);
 
 extern "C" int yywrap()
 {
@@ -380,6 +380,14 @@ interface_inheritance_spec :
     ':' scoped_name_list
         {
             $$ = $2;
+            for (NodeList::iterator i = $$->begin(); i != $$->end(); ++i)
+            {
+                if (!(*i)->isInterface(getCurrent()))
+                {
+                    yyerror("'%s' is not declared.", (*i)->getName().c_str());
+                    exit(EXIT_FAILURE);
+                }
+            }
         }
     ;
 

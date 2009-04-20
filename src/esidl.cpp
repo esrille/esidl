@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <limits.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "esidl.h"
@@ -749,12 +750,17 @@ public:
     }
 };
 
-void yyerror(const char* message)
+void yyerror(const char* message, ...)
 {
-    fprintf(stderr, "%d.%d-%d.%d: %s\n",
+    va_list ap;
+
+    va_start(ap, message);
+    fprintf(stderr, "%d.%d-%d.%d: ",
             yylloc.first_line, yylloc.first_column,
-            yylloc.last_line, yylloc.last_column,
-            message);
+            yylloc.last_line, yylloc.last_column);
+    vfprintf(stderr, message, ap);
+    fprintf(stderr, "\n");
+    va_end(ap);
 }
 
 int main(int argc, char* argv[])
