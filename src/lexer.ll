@@ -48,7 +48,7 @@ extern "C" int yywrap();
 
 void stepLocation()
 {
-    yylloc.first_line = yylloc.last_line; 
+    yylloc.first_line = yylloc.last_line;
     yylloc.first_column = yylloc.last_column + 1;
     yylloc.last_column += yyleng;
 }
@@ -103,177 +103,177 @@ PoundSign               ^{WhiteSpace}*#
 %%
 
 {WhiteSpace}        {
-                        ++yylloc.last_column; 
+                        ++yylloc.last_column;
                     }
 {LineTerminator}    {
                         if (*yytext == '\n')
                         {
                             ++yylloc.last_line;
                             yylloc.last_column = 0;
-                            if (poundMode) 
+                            if (poundMode)
                             {
                                 poundMode = false;
                                 return EOL;
-                            }                        
+                            }
                         }
                     }
 
-any                 { 
+any                 {
                         stepLocation();
-                        return ANY; 
+                        return ANY;
                     }
-attribute           { 
+attribute           {
                         stepLocation();
-                        return ATTRIBUTE; 
+                        return ATTRIBUTE;
                     }
-boolean             { 
+boolean             {
                         stepLocation();
-                        return BOOLEAN; 
+                        return BOOLEAN;
                     }
-char                { 
+char                {
                         stepLocation();
-                        return CHAR; 
+                        return CHAR;
                     }
-const               { 
+const               {
                         stepLocation();
-                        return CONST; 
+                        return CONST;
                     }
 double              {
                         stepLocation();
-                        return DOUBLE; 
+                        return DOUBLE;
                     }
-DOMString           { 
+DOMString           {
                         stepLocation();
-                        return STRING; 
+                        return STRING;
                     }
-exception           { 
+exception           {
                         stepLocation();
-                        return EXCEPTION; 
+                        return EXCEPTION;
                     }
-FALSE               { 
+FALSE               {
                         stepLocation();
-                        return FALSE; 
+                        return FALSE;
                     }
-fixed               { 
+fixed               {
                         stepLocation();
-                        return FIXED; 
+                        return FIXED;
                     }
-float               { 
+float               {
                         stepLocation();
-                        return FLOAT; 
+                        return FLOAT;
                     }
-getraises           { 
+getraises           {
                         stepLocation();
-                        return GETRAISES; 
+                        return GETRAISES;
                     }
-in                  { 
+in                  {
                         stepLocation();
-                        return IN; 
+                        return IN;
                     }
-inout               { 
+inout               {
                         stepLocation();
-                        return INOUT; 
+                        return INOUT;
                     }
-interface           { 
+interface           {
                         stepLocation();
-                        return INTERFACE; 
+                        return INTERFACE;
                     }
-long                { 
+long                {
                         stepLocation();
-                        return LONG; 
+                        return LONG;
                     }
-module              { 
+module              {
                         stepLocation();
-                        return MODULE; 
+                        return MODULE;
                     }
-native              { 
+native              {
                         stepLocation();
-                        return NATIVE; 
+                        return NATIVE;
                     }
-Object              { 
+Object              {
                         stepLocation();
-                        return OBJECT; 
+                        return OBJECT;
                     }
-octet               { 
+octet               {
                         stepLocation();
-                        return OCTET; 
+                        return OCTET;
                     }
-oneway              { 
+oneway              {
                         stepLocation();
-                        return ONEWAY; 
+                        return ONEWAY;
                     }
-out                 { 
+out                 {
                         stepLocation();
-                        return OUT; 
+                        return OUT;
                     }
-raises              { 
+raises              {
                         stepLocation();
                         return RAISES;
                     }
-readonly            { 
+readonly            {
                         stepLocation();
-                        return READONLY; 
+                        return READONLY;
                     }
-setraises           { 
+setraises           {
                         stepLocation();
-                        return SETRAISES; 
+                        return SETRAISES;
                     }
-sequence            { 
+sequence            {
                         stepLocation();
-                        return SEQUENCE; 
+                        return SEQUENCE;
                     }
-short               { 
+short               {
                         stepLocation();
-                        return SHORT; 
+                        return SHORT;
                     }
-string              { 
+string              {
                         stepLocation();
-                        return STRING; 
+                        return STRING;
                     }
-struct              { 
+struct              {
                         stepLocation();
-                        return STRUCT; 
+                        return STRUCT;
                     }
-TRUE                { 
+TRUE                {
                         stepLocation();
-                        return TRUE; 
+                        return TRUE;
                     }
-typedef             { 
+typedef             {
                         stepLocation();
-                        return TYPEDEF; 
+                        return TYPEDEF;
                     }
-unsigned            { 
+unsigned            {
                         stepLocation();
-                        return UNSIGNED; 
+                        return UNSIGNED;
                     }
-valuetype           { 
+valuetype           {
                         stepLocation();
-                        return VALUETYPE; 
+                        return VALUETYPE;
                     }
-void                { 
+void                {
                         stepLocation();
-                        return VOID; 
+                        return VOID;
                     }
-wchar               { 
+wchar               {
                         stepLocation();
-                        return WCHAR; 
+                        return WCHAR;
                     }
-wstring             { 
+wstring             {
                         stepLocation();
-                        return WSTRING; 
+                        return WSTRING;
                     }
 
-"::"                { 
+"::"                {
                         stepLocation();
-                        return OP_SCOPE; 
+                        return OP_SCOPE;
                     }
-"<<"                { 
+"<<"                {
                         stepLocation();
-                        return OP_SHL; 
+                        return OP_SHL;
                     }
-">>"                { 
+">>"                {
                         stepLocation();
-                        return OP_SHR; 
+                        return OP_SHR;
                     }
 
 {Identifier}        {
@@ -338,13 +338,24 @@ L\"{DoubleStringCharacter}*\"   {
 
 {MultiLineComment}  {
                         /* MultiLineComment */
+                        for (char* s = yytext; *s; ++s)
+                        {
+                            if (*s == '\n')
+                            {
+                                ++yylloc.last_line;
+                                yylloc.last_column = 0;
+                            }
+                            else
+                            {
+                                ++yylloc.last_column;
+                            }
+                        }
                         if (strncmp(yytext, "/**", 3) == 0)
                         {
                             /* Javadoc style comment */
                             yylval.name = strdup(yytext);
                             return JAVADOC;
                         }
-                        /* TODO: Increment yylloc.last_line */
                     }
 
 {SingleLineComment} {
@@ -371,9 +382,9 @@ L\"{DoubleStringCharacter}*\"   {
                         return PRAGMA_ID;
                     }
 
-.                   { 
+.                   {
                         stepLocation();
-                        return (int) yytext[0]; 
+                        return (int) yytext[0];
                     }
 
 %%
