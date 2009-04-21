@@ -419,7 +419,7 @@ public:
         } while (!dynamic_cast<const Module*>(parent));
         const Module* module = dynamic_cast<const Module*>(parent);
 
-        if (node->getRank() == 1)
+        if (node->getRank() == 1 && !node->isLeaf())
         {
             Ent::Module* entModule = reinterpret_cast<Ent::Module*>(image + module->getOffset());
             entModule->addInterface(node->getOffset());
@@ -436,7 +436,7 @@ public:
         }
 
         Interface* constructor = node->getConstructor();
-        if (1 < node->getRank())
+        if (1 < node->getRank() || node->isLeaf())
         {
             new(image + node->getOffset()) Ent::Interface(dict[node->getName()],
                                                           dict[node->getQualifiedName()],
