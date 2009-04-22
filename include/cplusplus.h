@@ -279,7 +279,14 @@ public:
         else
         {
             spec->accept(this);
-            write("*");
+            if (spec->isInterface(node->getParent()))
+            {
+                write("**");
+            }
+            else
+            {
+                write("*");
+            }
         }
     }
 

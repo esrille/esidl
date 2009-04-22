@@ -887,10 +887,12 @@ sequence_type :
     SEQUENCE '<' simple_type_spec ',' positive_int_const '>'
         {
             $$ = new SequenceType($3, $5);
+            $$->setParent(getCurrent());
         }
     | SEQUENCE '<' simple_type_spec '>'
         {
             $$ = new SequenceType($3);
+            $$->setParent(getCurrent());
         }
     ;
 
