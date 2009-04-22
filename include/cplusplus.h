@@ -25,6 +25,10 @@
 #include <string>
 #include "esidl.h"
 
+// Turn this on to use a function pointer rather than an interface pointer for
+// attributes of [Callback=FunctionOnly] interface.
+// #define USE_FUNCTION_ATTRIBUTE
+
 class CPlusPlus : public Visitor
 {
 protected:
@@ -335,6 +339,7 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
+#ifdef USE_FUNCTION_ATTRIBUTE
                 Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
                 uint32_t attr;
                 if (callback && (attr = callback->isCallback()) != 0)
@@ -358,6 +363,7 @@ public:
                         return;
                     }
                 }
+#endif // USE_FUNCTION_ATTRIBUTE
                 spec->accept(this);
                 write("*");
             }
@@ -436,6 +442,7 @@ public:
             write("void set%s(", cap.c_str());
             if (spec->isInterface(node->getParent()))
             {
+#ifdef USE_FUNCTION_ATTRIBUTE
                 Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
                 uint32_t attr;
                 if (callback && (attr = callback->isCallback()) != 0)
@@ -457,6 +464,7 @@ public:
                         return true;
                     }
                 }
+#endif  // USE_FUNCTION_ATTRIBUTE
                 spec->accept(this);
                 write("*");
             }
