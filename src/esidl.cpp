@@ -260,7 +260,7 @@ void OpDcl::adjustMethodCount()
             {
                 ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
                 assert(param);
-                if (param->isOptional() || param->isVariadic())
+                if (param->isOptional())
                 {
                     ++optionalCount;
                     if (optionalStage < optionalCount)

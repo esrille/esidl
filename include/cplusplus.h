@@ -634,8 +634,7 @@ public:
         {
             ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
             assert(param);
-            if (asParam == "" &&
-                (param->isOptional() || param->isVariadic()))
+            if (asParam == "" && param->isOptional())
             {
                 ++optionalCount;
                 if (optionalStage < optionalCount)
@@ -686,7 +685,12 @@ public:
             }
         }
 
-        if (seq)
+        if (node->isVariadic() && asParam == "")
+        {
+            seq->accept(this);
+            write(" %s = 0, int %sLength = 0", node->getName().c_str() , node->getName().c_str());
+        }
+        else if (seq)
         {
             seq->accept(this);
             write(" %s, int %sLength", node->getName().c_str() , node->getName().c_str());
