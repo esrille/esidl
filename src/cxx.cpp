@@ -87,11 +87,10 @@ public:
                     continue;
                 }
 
-                callbackStage = 0;
                 optionalStage = 0;
                 do
                 {
-                    optionalCount = 0;
+                    callbackStage = 0;
                     do
                     {
                         if (0 < count)
@@ -100,6 +99,7 @@ public:
                         }
 
                         callbackCount = 0;
+                        optionalCount = 0;
                         ++count;
                         writetab();
                         (*i)->accept(this);
