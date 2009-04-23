@@ -361,6 +361,54 @@ public:
     }
 };
 
+class Predeclaration : public Visitor
+{
+    FILE* file;
+
+public:
+    Predeclaration(FILE* file) :
+        file(file)
+    {
+    }
+
+    virtual void at(const Node* node)
+    {
+        if (1 < node->getRank())
+        {
+            return;
+        }
+        visitChildren(node);
+    }
+
+    virtual void at(const Module* node)
+    {
+        if (1 < node->getRank())
+        {
+            return;
+        }
+        if (0 < node->getName().size())
+        {
+            fprintf(file, "namespace %s\n", node->getName().c_str());
+            fprintf(file, "{\n");
+                visitChildren(node);
+            fprintf(file, "}\n");
+        }
+        else
+        {
+            visitChildren(node);
+        }
+    }
+
+    virtual void at(const Interface* node)
+    {
+        if (1 < node->getRank() || !node->isLeaf())
+        {
+            return;
+        }
+        fprintf(file, "    class %s;\n", node->getName().c_str());
+    }
+};
+
 void printCxx(const std::string& filename)
 {
     printf("# %s\n", filename.c_str());
@@ -378,6 +426,9 @@ void printCxx(const std::string& filename)
 
     Import import(file);
     getSpecification()->accept(&import);
+
+    Predeclaration predeclaration(file);
+    getSpecification()->accept(&predeclaration);
 
     Cxx cxx(file);
     getSpecification()->accept(&cxx);
