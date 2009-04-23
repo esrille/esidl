@@ -98,8 +98,8 @@ public:
                             write(";\n");
                         }
 
-                        callbackCount = 0;
                         optionalCount = 0;
+                        callbackCount = 0;
                         ++count;
                         writetab();
                         (*i)->accept(this);
