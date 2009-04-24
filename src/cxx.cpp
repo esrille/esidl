@@ -254,7 +254,7 @@ public:
     {
         if (node->getJavadoc().size())
         {
-            writeln("%s", node->getJavadoc().c_str());
+            write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
         write("static const ");
