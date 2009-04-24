@@ -382,7 +382,7 @@ public:
 
     virtual void at(const Module* node)
     {
-        if (1 < node->getRank())
+        if (!node->hasPredeclarations())
         {
             return;
         }

@@ -701,6 +701,8 @@ public:
         return moduleCount;
     }
 
+    bool hasPredeclarations() const;
+
     virtual void accept(Visitor* visitor);
 };
 

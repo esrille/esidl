@@ -183,6 +183,28 @@ void Node::setLocation(struct YYLTYPE* first, struct YYLTYPE* last)
     lastColumn = last->last_column;
 }
 
+bool Module::hasPredeclarations() const
+{
+    if (isLeaf())
+    {
+        return false;
+    }
+    for (NodeList::iterator i = begin(); i != end(); ++i)
+    {
+        const Interface* interface = dynamic_cast<const Interface*>(*i);
+        if (interface && 1 == interface->getRank() && interface->isLeaf())
+        {
+            return true;
+        }
+        const Module* module = dynamic_cast<const Module*>(*i);
+        if (module && module->hasPredeclarations())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Module::add(Node* node)
 {
     if (node->getRank() == 1)
@@ -843,8 +865,10 @@ int main(int argc, char* argv[])
     getSpecification()->accept(&adjustMethodCount);
 
     printf("-I %s\n", includePath);
+#ifdef VERBOSE
     printf("-----------------------------------\n");
     print();
+#endif
     printf("-----------------------------------\n");
     printCxx(getOutputFilename(getFilename(), "h"));
     printf("-----------------------------------\n");
