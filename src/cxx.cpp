@@ -328,10 +328,12 @@ public:
 class Import : public Visitor
 {
     FILE* file;
+    bool printed;
 
 public:
     Import(FILE* file) :
-        file(file)
+        file(file),
+        printed(false)
     {
     }
 
@@ -358,6 +360,12 @@ public:
         {
             fprintf(file, "#include \"%s\"\n", getOutputFilename(node->getName().c_str(), "h").c_str());
         }
+        printed = true;
+    }
+
+    bool hasPrinted() const
+    {
+        return printed;
     }
 };
 
@@ -391,7 +399,7 @@ public:
             fprintf(file, "namespace %s\n", node->getName().c_str());
             fprintf(file, "{\n");
                 visitChildren(node);
-            fprintf(file, "}\n");
+            fprintf(file, "}\n\n");
         }
         else
         {
@@ -426,6 +434,10 @@ void printCxx(const std::string& filename)
 
     Import import(file);
     getSpecification()->accept(&import);
+    if (import.hasPrinted())
+    {
+        fprintf(file, "\n");
+    }
 
     Predeclaration predeclaration(file);
     getSpecification()->accept(&predeclaration);
