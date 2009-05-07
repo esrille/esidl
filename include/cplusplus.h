@@ -26,8 +26,12 @@
 #include "esidl.h"
 
 // Turn this on to use a function pointer rather than an interface pointer for
-// attributes of [Callback=FunctionOnly] interface.
+// attributes of [Callback=FunctionOnly] interface types.
 // #define USE_FUNCTION_ATTRIBUTE
+
+// Turn this on to use a function pointer as well as an interface pointer for
+// parameters of [Callback] interface types.
+// #define USE_FUNCTION_CALLBACK
 
 class CPlusPlus : public Visitor
 {
@@ -39,8 +43,10 @@ protected:
     FILE* file;
     bool constructorMode;
     std::string asParam;
+#ifdef USE_FUNCTION_CALLBACK
     int callbackStage;
     int callbackCount;
+#endif
     int optionalStage;
     int optionalCount;
 
@@ -49,8 +55,9 @@ protected:
 
     int paramCount;  // The number of parameters of the previously evaluated operation
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
-    std::map<const ParamDcl*, const OpDcl*> callbacks;
 
+#ifdef USE_FUNCTION_CALLBACK
+    std::map<const ParamDcl*, const OpDcl*> callbacks;
     // param mode saved context.
     // XXX doesn't work if callback takes callbacks as arguments...
     struct
@@ -63,6 +70,7 @@ protected:
         const ParamDcl* variadicParam;
         std::map<const ParamDcl*, const OpDcl*> callbacks;
     } savedContext;
+#endif  // USE_FUNCTION_CALLBACK
 
     int getParamCount() const
     {
@@ -161,8 +169,10 @@ public:
         file(file),
         constructorMode(false),
         currentNode(getSpecification()),
+#ifdef USE_FUNCTION_CALLBACK
         callbackStage(0),
         callbackCount(0),
+#endif  // USE_FUNCTION_CALLBACK
         paramCount(0),
         variadicParam(0)
     {
@@ -490,8 +500,9 @@ public:
 
     virtual void at(const OpDcl* node)
     {
+#ifdef USE_FUNCTION_CALLBACK
         callbacks.clear();
-
+#endif  // USE_FUNCTION_CALLBACK
         if (asParam == "")
         {
             if (!constructorMode)
@@ -724,6 +735,7 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
+#ifdef USE_FUNCTION_CALLBACK
                 Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
                 uint32_t attr;
                 if (callback && (attr = callback->isCallback()) != 0)
@@ -756,6 +768,7 @@ public:
                         return;
                     }
                 }
+#endif  // USE_FUNCTION_CALLBACK
                 spec->accept(this);
                 write("*");
             }
@@ -807,6 +820,7 @@ public:
         return qualifiedName;
     }
 
+#ifdef USE_FUNCTION_CALLBACK
     const OpDcl* isCallback(const ParamDcl* param) const
     {
         std::map<const ParamDcl*, const OpDcl*>::const_iterator i = callbacks.find(param);
@@ -840,6 +854,7 @@ public:
         variadicParam = savedContext.variadicParam;
         callbacks = savedContext.callbacks;
     }
+#endif
 };
 
 #endif  // NINTENDO_ESIDL_CPLUSPLUS_H_INCLUDED
