@@ -53,19 +53,6 @@ Literal::operator char() const
     return s[0];
 }
 
-Literal::operator wchar_t() const
-{
-    if (name.compare(0, 2, "L'") != 0 || name[name.size() - 1] != '\'')
-    {
-        // syntax error
-    }
-
-    std::string s = unescape(name, 2, name.size() - 3);
-    uint32_t utf32 = 0;
-    utf8to32(s.c_str(), &utf32);
-    return static_cast<wchar_t>(utf32);
-}
-
 Literal::operator short() const
 {
     long long value = static_cast<long long>(*this);
@@ -511,27 +498,7 @@ public:
             node->getExp()->accept(&eval);
             printf("%c", eval.getValue());
         }
-        else if (type->getName() == "wchar")
-        {
-            EvalString<wchar_t> eval(node->getParent());
-
-            node->getExp()->accept(&eval);
-
-            char buf[10];
-            *utf32to8(eval.getValue(), buf) = 0;
-            printf("%s", buf);
-        }
         else if (type->getName() == "string")
-        {
-            EvalString<std::string> eval(node->getParent());
-
-            node->getExp()->accept(&eval);
-            printf("%s (%zd)", eval.getValue().c_str(), offset);
-
-            node->setValue(offset);
-            offset += eval.getValue().length() + 1;
-        }
-        else if (type->getName() == "wstring")
         {
             EvalString<std::string> eval(node->getParent());
 

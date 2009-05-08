@@ -667,22 +667,7 @@ public:
                 new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
             }
             break;
-        case Ent::SpecWChar:
-            {
-                EvalString<wchar_t> eval(node->getParent());
-                node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], static_cast<uint32_t>(eval.getValue()));
-            }
-            break;
         case Ent::SpecString:
-            {
-                EvalString<std::string> eval(node->getParent());
-                node->getExp()->accept(&eval);
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], node->getValue());
-                strcpy(reinterpret_cast<char*>(image + node->getValue()), eval.getValue().c_str());
-            }
-            break;
-        case Ent::SpecWString:
             {
                 EvalString<std::string> eval(node->getParent());
                 node->getExp()->accept(&eval);

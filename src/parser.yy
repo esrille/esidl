@@ -98,8 +98,6 @@ int yylex();
 %token UNSIGNED
 %token VALUETYPE
 %token VOID
-%token WCHAR
-%token WSTRING
 
 %token OP_SCOPE
 %token OP_SHL
@@ -110,10 +108,8 @@ int yylex();
 %token <name>       IDENTIFIER
 %token <name>       INTEGER_LITERAL
 %token <name>       CHARACTER_LITERAL
-%token <name>       WIDE_CHARACTER_LITERAL
 %token <name>       FLOATING_PT_LITERAL
 %token <name>       STRING_LITERAL
-%token <name>       WIDE_STRING_LITERAL
 %token <name>       FIXED_PT_LITERAL
 
 %type <node>        interface_inheritance_spec
@@ -139,13 +135,11 @@ int yylex();
 %type <node>        unsigned_long_int
 %type <node>        unsigned_longlong_int
 %type <node>        char_type
-%type <node>        wide_char_type
 %type <node>        boolean_type
 %type <node>        octet_type
 %type <node>        any_type
 %type <node>        sequence_type
 %type <node>        string_type
-%type <node>        wide_string_type
 %type <node>        array_declarator
 %type <node>        fixed_array_size_list
 %type <node>        fixed_array_size
@@ -461,11 +455,9 @@ const_dcl :
 const_type :
     integer_type
     | char_type
-    | wide_char_type
     | boolean_type
     | floating_pt_type
     | string_type
-    | wide_string_type
     | fixed_pt_const_type
     | scoped_name
     | octet_type
@@ -582,17 +574,7 @@ literal :
             $$ = new Literal($1);
             free($1);
         }
-    | WIDE_STRING_LITERAL
-        {
-            $$ = new Literal($1);
-            free($1);
-        }
     | CHARACTER_LITERAL
-        {
-            $$ = new Literal($1);
-            free($1);
-        }
-    | WIDE_CHARACTER_LITERAL
         {
             $$ = new Literal($1);
             free($1);
@@ -668,7 +650,6 @@ base_type_spec :
     floating_pt_type
     | integer_type
     | char_type
-    | wide_char_type
     | boolean_type
     | octet_type
     | any_type
@@ -678,7 +659,6 @@ base_type_spec :
 template_type_spec :
     sequence_type
     | string_type
-    | wide_string_type
     | fixed_pt_type
     ;
 
@@ -808,13 +788,6 @@ char_type :
         }
     ;
 
-wide_char_type :
-    WCHAR
-        {
-            $$ = new Type("wchar");
-        }
-    ;
-
 boolean_type :
     BOOLEAN
         {
@@ -903,17 +876,6 @@ string_type :
     | STRING
         {
             $$ = new Type("string");
-        }
-    ;
-
-wide_string_type :
-    WSTRING '<' positive_int_const '>'
-        {
-            $$ = new Type("wstring");   // XXX
-        }
-    | WSTRING
-        {
-            $$ = new Type("wstring");
         }
     ;
 
@@ -1062,7 +1024,6 @@ raises_expr :
 param_type_spec :
     base_type_spec
     | string_type
-    | wide_string_type
     | scoped_name
     ;
 

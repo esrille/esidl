@@ -1044,7 +1044,6 @@ public:
 
     operator bool() const;
     operator char() const;
-    operator wchar_t() const;
     operator short() const;
     operator int() const;
     operator long long() const;

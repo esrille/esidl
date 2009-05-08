@@ -12,9 +12,7 @@ module X
     const long double J = 3.45 * 2 / 2;
 
     const char K = 'A';
-    const wchar L = L'漢';
     const string M = "ABC";
-    const wstring N = L"漢字";
 
     const boolean O = TRUE | FALSE;
     const boolean P = TRUE & FALSE;

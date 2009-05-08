@@ -17,10 +17,6 @@ module A
 {
     interface I
     {
-        void op1(in wstring s) raises(E);
-        void op2(out wstring s) raises(E);
-        wstring op3() raises(E);
-
         void op4(in S s) raises(E);
         void op5(out S s) raises(E);
         S op6() raises(E);
