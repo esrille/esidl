@@ -790,6 +790,8 @@ int main(int argc, char* argv[])
     bool ent = false;
     bool npapi = false;
     bool isystem = false;
+    const char* namespaceName = 0;      // optional C++ namespace name to be used
+    const char* stringTypeName = "char*";   // C++ string type name to be used
 
     for (int i = 1; i < argc; ++i)
     {
@@ -830,10 +832,20 @@ int main(int argc, char* argv[])
             {
                 npapi = true;
             }
+            else if (strcmp(argv[i], "-namespace") == 0)
+            {
+                ++i;
+                namespaceName = argv[i];
+            }
             else if (strcmp(argv[i], "-object") == 0)
             {
                 ++i;
                 Node::setBaseObjectName(argv[i]);
+            }
+            else if (strcmp(argv[i], "-string") == 0)
+            {
+                ++i;
+                stringTypeName = argv[i];
             }
         }
     }
