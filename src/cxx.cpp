@@ -82,7 +82,7 @@ public:
             int count = 0;
             for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
             {
-                if (dynamic_cast<PragmaID*>(*i) || (*i)->isSequence(node) || (*i)->isNative(node))
+                if ((*i)->isSequence(node) || (*i)->isNative(node))
                 {
                     continue;
                 }
@@ -224,10 +224,6 @@ public:
         {
             write("%s", node->getName().c_str());
         }
-    }
-
-    virtual void at(const PragmaID* node)
-    {
     }
 
     virtual void at(const Member* node)

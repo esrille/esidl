@@ -208,13 +208,6 @@ public:
         at(static_cast<const Node*>(node));
     }
 
-    virtual void at(const PragmaID* node)
-    {
-        printf("#pragma ID ");
-        node->getScopedName()->accept(this);
-        printf(" %s", node->getID().c_str());
-    }
-
     virtual void at(const Member* node)
     {
         if (node->isTypedef())

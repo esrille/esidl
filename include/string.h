@@ -97,10 +97,6 @@ public:
     {
     }
 
-    virtual void at(const PragmaID* node)
-    {
-    }
-
     virtual void at(const Member* node)
     {
         at(static_cast<const Node*>(node));

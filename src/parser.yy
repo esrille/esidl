@@ -106,7 +106,6 @@ int yylex();
 %token OP_SHR
 
 %token POUND_SIGN
-%token PRAGMA_ID
 
 %token <name>       IDENTIFIER
 %token <name>       INTEGER_LITERAL
@@ -1195,16 +1194,6 @@ preprocessor :
             yylloc.last_line = atol($2);
             free($2);
             free($3);
-        }
-    | PRAGMA_ID scoped_name STRING_LITERAL EOL
-        {
-            getCurrent()->add(new PragmaID($2, $3));
-            free($3);
-        }
-    | PRAGMA_ID scoped_name '=' STRING_LITERAL ';' EOL
-        {
-            getCurrent()->add(new PragmaID($2, $4));
-            free($4);
         }
     ;
 

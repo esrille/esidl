@@ -41,7 +41,6 @@ class Node;
     class UnaryExpr;
     class GroupingExpression;
     class Literal;
-    class PragmaID;
     class Member;
         class ArrayDcl;
         class Attribute;
@@ -1061,41 +1060,6 @@ public:
     virtual void accept(Visitor* visitor);
 };
 
-class PragmaID : public Node
-{
-    Node*       scopedName;
-    std::string id;
-
-public:
-    PragmaID(Node* scopedName, std::string id) :
-        scopedName(scopedName),
-        id(id)
-    {
-        separator = "\n";
-
-        Node* node = static_cast<ScopedName*>(scopedName)->search(getCurrent());
-        assert(node);
-        node->getID() = id;
-    }
-
-    ~PragmaID()
-    {
-        delete scopedName;
-    }
-
-    Node* getScopedName() const
-    {
-        return scopedName;
-    }
-
-    const std::string& getID() const
-    {
-        return id;
-    }
-
-    virtual void accept(Visitor* visitor);
-};
-
 class Member : public Node
 {
     Node* spec;
@@ -1547,11 +1511,6 @@ public:
         at(static_cast<const Node*>(node));
     }
 
-    virtual void at(const PragmaID* node)
-    {
-        at(static_cast<const Node*>(node));
-    }
-
     virtual void at(const Member* node)
     {
         at(static_cast<const Node*>(node));
@@ -1662,11 +1621,6 @@ inline void GroupingExpression::accept(Visitor* visitor)
 }
 
 inline void Literal::accept(Visitor* visitor)
-{
-    visitor->at(this);
-}
-
-inline void PragmaID::accept(Visitor* visitor)
 {
     visitor->at(this);
 }

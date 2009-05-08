@@ -376,12 +376,6 @@ L\"{DoubleStringCharacter}*\"   {
                         return POUND_SIGN;
                     }
 
-{PoundSign}pragma({WhiteSpace})+ID  {
-                        stepLocation();
-                        poundMode = true;
-                        return PRAGMA_ID;
-                    }
-
 .                   {
                         stepLocation();
                         return (int) yytext[0];
