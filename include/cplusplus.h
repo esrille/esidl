@@ -40,7 +40,10 @@ protected:
 
     std::string indentString;
     std::string prefix;
+
     FILE* file;
+    std::string stringTypeName;
+
     bool constructorMode;
     std::string asParam;
 #ifdef USE_FUNCTION_CALLBACK
@@ -165,8 +168,9 @@ protected:
     }
 
 public:
-    CPlusPlus(FILE* file) :
+    CPlusPlus(FILE* file, const char* stringTypeName = "char*") :
         file(file),
+        stringTypeName(stringTypeName),
         constructorMode(false),
         currentNode(getSpecification()),
 #ifdef USE_FUNCTION_CALLBACK
@@ -252,7 +256,7 @@ public:
         }
         else if (node->getName() == "string")
         {
-            write("char*");
+            write(stringTypeName.c_str());
         }
         else if (node->getName() == "wstring")
         {
@@ -330,9 +334,7 @@ public:
         {
             write("const ", cap.c_str());
             spec->accept(this);
-            write(" get%s(", cap.c_str());
-            spec->accept(this);
-            write(" %s, int %sLength)", name.c_str(), name.c_str());
+            write(" get%s(void* %s, int %sLength)", cap.c_str(), name.c_str(), name.c_str());
         }
         else if (spec->isStruct(node->getParent()))
         {
@@ -560,8 +562,7 @@ public:
             {
                 write(" (*%s)(", node->getName().c_str());
             }
-            spec->accept(this);
-            write(" %s, int %sLength", name.c_str(), name.c_str());
+            write("void* %s, int %sLength", name.c_str(), name.c_str());
         }
         else if (spec->isStruct(node->getParent()))
         {

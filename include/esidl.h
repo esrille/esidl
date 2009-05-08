@@ -1661,7 +1661,7 @@ inline void ExtendedAttribute::accept(Visitor* visitor)
 }
 
 extern void print();
-extern void printCxx(const std::string& filename);
+extern void printCxx(const std::string& filename, const char* stringTypeName);
 extern void printEnt(const std::string& filename);
 extern void printNpapi(const char* idlFilename, bool isystem);
 

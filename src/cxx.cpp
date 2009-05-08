@@ -20,8 +20,8 @@
 class Cxx : public CPlusPlus
 {
 public:
-    Cxx(FILE* file) :
-        CPlusPlus(file)
+    Cxx(FILE* file, const char* stringTypeName = "char*") :
+        CPlusPlus(file, stringTypeName)
     {
     }
 
@@ -424,7 +424,7 @@ public:
     }
 };
 
-void printCxx(const std::string& filename)
+void printCxx(const std::string& filename, const char* stringTypeName)
 {
     printf("# %s\n", filename.c_str());
 
@@ -449,7 +449,7 @@ void printCxx(const std::string& filename)
     Predeclaration predeclaration(file);
     getSpecification()->accept(&predeclaration);
 
-    Cxx cxx(file);
+    Cxx cxx(file, stringTypeName);
     getSpecification()->accept(&cxx);
 
     fprintf(file, "#endif  // %s\n", included.c_str());

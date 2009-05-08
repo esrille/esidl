@@ -882,7 +882,7 @@ int main(int argc, char* argv[])
     print();
 #endif
     printf("-----------------------------------\n");
-    printCxx(getOutputFilename(getFilename(), "h"));
+    printCxx(getOutputFilename(getFilename(), "h"), stringTypeName);
     printf("-----------------------------------\n");
     if (ent)
     {
