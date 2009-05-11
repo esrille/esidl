@@ -1182,13 +1182,17 @@ class Attribute : public Member
 {
     bool readonly;
     uint32_t attr;
+    Node* getraises;
+    Node* setraises;
     std::string putForwards;
 
 public:
     Attribute(std::string identifier, Node* spec, bool readonly = false) :
         Member(identifier, spec),
         readonly(readonly),
-        attr(0)
+        attr(0),
+        getraises(0),
+        setraises(0)
     {
         separator = ";\n";
     }
@@ -1196,6 +1200,44 @@ public:
     bool isReadonly() const
     {
         return readonly;
+    }
+
+    Node* getGetRaises() const
+    {
+        return getraises;
+    }
+
+    void setGetRaises(Node* raises)
+    {
+        getraises = raises;
+    }
+
+    int getGetRaisesCount() const
+    {
+        if (getraises == 0)
+        {
+            return 0;
+        }
+        return getraises->getSize();
+    }
+
+    Node* getSetRaises() const
+    {
+        return setraises;
+    }
+
+    void setSetRaises(Node* raises)
+    {
+        setraises = raises;
+    }
+
+    int getSetRaisesCount() const
+    {
+        if (setraises == 0)
+        {
+            return 0;
+        }
+        return setraises->getSize();
     }
 
     void setStringifies()
@@ -1313,6 +1355,15 @@ public:
         this->raises = raises;
     }
 
+    int getRaisesCount() const
+    {
+        if (raises == 0)
+        {
+            return 0;
+        }
+        return raises->getSize();
+    }
+
     // Adjust methodCount for [Callback] and [Optional].
     // Need to be called after the source file is completely read.
     void adjustMethodCount();
@@ -1320,16 +1371,6 @@ public:
     int getParamCount() const
     {
         return paramCount;
-    }
-
-    int getRaiseCount() const
-    {
-        if (raises == 0)
-        {
-            return 0;
-        }
-
-        return raises->getSize();
     }
 
     uint32_t getAttr() const

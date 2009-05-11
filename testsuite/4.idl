@@ -3,6 +3,6 @@ module X
     interface Y
     {
         readonly attribute double X;
-        attribute double Y, Z;
+        attribute double Y;
     };
 };

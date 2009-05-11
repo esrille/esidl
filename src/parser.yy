@@ -163,6 +163,10 @@ int yylex();
 %type <node>        raises_expr
 %type <node>        param_type_spec
 
+%type <node>        get_excep_expr
+%type <node>        set_excep_expr
+%type <node>        exception_list
+
 %type <nodeList>    extended_attribute_opt
 %type <nodeList>    extended_attribute_list
 %type <nodeList>    extended_attributes
@@ -1047,63 +1051,54 @@ constr_forward_decl :
     ;
 
 readonly_attr_spec :
-    extended_attribute_opt READONLY ATTRIBUTE param_type_spec simple_declarator raises_expr
+    extended_attribute_opt READONLY ATTRIBUTE param_type_spec simple_declarator get_excep_expr set_excep_expr
         {
             Attribute* attr = new Attribute($5, $4, true);
             attr->setExtendedAttributes($1);
+            attr->setGetRaises($6);
+            attr->setSetRaises($7);
             getCurrent()->add(attr);
-        }
-    | extended_attribute_opt READONLY ATTRIBUTE param_type_spec simple_declarator_list
-        {
-            for (std::list<std::string>::iterator i = $5->begin();
-                 i != $5->end();
-                 ++i)
-            {
-                Attribute* attr = new Attribute(*i, $4, true);
-                attr->setExtendedAttributes($1);
-                getCurrent()->add(attr);
-            }
-            delete $5;
         }
     ;
 
 attr_spec :
-    extended_attribute_opt ATTRIBUTE param_type_spec simple_declarator attr_raises_expr
+    extended_attribute_opt ATTRIBUTE param_type_spec simple_declarator get_excep_expr set_excep_expr
         {
             Attribute* attr = new Attribute($4, $3);
             attr->setExtendedAttributes($1);
+            attr->setGetRaises($5);
+            attr->setSetRaises($6);
             getCurrent()->add(attr);
         }
-    | extended_attribute_opt ATTRIBUTE param_type_spec simple_declarator_list
-        {
-            for (std::list<std::string>::iterator i = $4->begin();
-                 i != $4->end();
-                 ++i)
-            {
-                Attribute* attr = new Attribute(*i, $3);
-                attr->setExtendedAttributes($1);
-                getCurrent()->add(attr);
-            }
-            delete $4;
-        }
-    ;
-
-attr_raises_expr :
-    get_excep_expr
-    | get_excep_expr set_excep_expr
-    | set_excep_expr
     ;
 
 get_excep_expr :
-    GETRAISES exception_list
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | GETRAISES exception_list
+        {
+            $$ = $2;
+        }
     ;
 
 set_excep_expr :
-    SETRAISES exception_list
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | SETRAISES exception_list
+        {
+            $$ = $2;
+        }
     ;
 
 exception_list :
     '(' scoped_name_list ')'
+        {
+            $$ = $2;
+        }
     ;
 
 preprocessor :

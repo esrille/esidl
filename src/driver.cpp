@@ -64,12 +64,11 @@ int main(int argc, char* argv[])
                 argCpp[optCpp++] = argv[i];
                 argIdl[optIdl++] = argv[i];
             }
-            else if (strcmp(argv[i], "-npapi") == 0 ||
-                     strcmp(argv[i], "-ent") == 0)
-            {
-                argIdl[optIdl++] = argv[i];
-            }
-            else if (strcmp(argv[i], "-debug") == 0)
+            else if (strcmp(argv[i], "-debug") == 0 ||
+                     strcmp(argv[i], "-ent") == 0 ||
+                     strcmp(argv[i], "-fexceptions") == 0 ||
+                     strcmp(argv[i], "-fno-exceptions") == 0 ||
+                     strcmp(argv[i], "-npapi") == 0)
             {
                 argIdl[optIdl++] = argv[i];
             }
@@ -79,19 +78,9 @@ int main(int argc, char* argv[])
                 ++i;
                 argCpp[optCpp++] = argv[i];
             }
-            else if (strcmp(argv[i], "-namespace") == 0)
-            {
-                argIdl[optIdl++] = argv[i];
-                ++i;
-                argIdl[optIdl++] = argv[i];
-            }
-            else if (strcmp(argv[i], "-object") == 0)
-            {
-                argIdl[optIdl++] = argv[i];
-                ++i;
-                argIdl[optIdl++] = argv[i];
-            }
-            else if (strcmp(argv[i], "-string") == 0)
+            else if (strcmp(argv[i], "-namespace") == 0 ||
+                     strcmp(argv[i], "-object") == 0 ||
+                     strcmp(argv[i], "-string") == 0)
             {
                 argIdl[optIdl++] = argv[i];
                 ++i;

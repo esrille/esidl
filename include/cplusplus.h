@@ -396,6 +396,12 @@ public:
             }
             write(" get%s()", cap.c_str());
         }
+        if (node->getGetRaises())
+        {
+            write(" throw(");
+            node->getGetRaises()->accept(this);
+            write(")");
+        }
     }
 
     bool setter(const Attribute* node)
@@ -496,6 +502,12 @@ public:
                 spec->accept(this);
             }
             write(" %s)", name.c_str());
+        }
+        if (node->getSetRaises())
+        {
+            write(" throw(");
+            node->getSetRaises()->accept(this);
+            write(")");
         }
         return true;
     }
