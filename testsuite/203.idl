@@ -1,0 +1,9 @@
+module X
+{
+  const long C = 10;
+
+  module C
+  {
+    const long D = 30;
+  };
+};

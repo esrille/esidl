@@ -234,7 +234,9 @@ module :
                 }
                 else
                 {
-                    fprintf(stderr, "Inv. module name '%s'\n", $3);
+                    fprintf(stderr, "%d.%d-%d.%d: '%s' is not a valid module name.\n",
+                            @2.first_line, @2.first_column, @2.last_line, @2.last_column,
+                            $3);
                     exit(EXIT_FAILURE);
                 }
             }
@@ -294,7 +296,9 @@ interface_header :
                     ScopedName* name = new ScopedName(base);
                     if (!name->search(getCurrent()))
                     {
-                        fprintf(stderr, "'%s' is not declared.\n", name->getName().c_str());
+                        fprintf(stderr, "%d.%d-%d.%d: '%s' is not declared.\n",
+                                @2.first_line, @2.first_column, @2.last_line, @2.last_column,
+                                name->getName().c_str());
                         exit(EXIT_FAILURE);
                     }
                     extends = new Node();
@@ -416,7 +420,9 @@ scoped_name :
             free($2);
             if (!name->search(getCurrent()))
             {
-                fprintf(stderr, "'%s' is not declared.\n", name->getName().c_str());
+                fprintf(stderr, "%d.%d-%d.%d: '%s' is not declared.\n",
+                        @1.first_line, @1.first_column, @2.last_line, @2.last_column,
+                        name->getName().c_str());
                 exit(EXIT_FAILURE);
             }
             $$ = name;
@@ -429,7 +435,9 @@ scoped_name :
             free($3);
             if (!name->search(getCurrent()))
             {
-                fprintf(stderr, "'%s' is not declared.\n", name->getName().c_str());
+                fprintf(stderr, "%d.%d-%d.%d: '%s' is not declared.\n",
+                        @1.first_line, @1.first_column, @3.last_line, @3.last_column,
+                        name->getName().c_str());
                 exit(EXIT_FAILURE);
             }
             $$ = name;
