@@ -43,6 +43,7 @@ protected:
 
     FILE* file;
     std::string stringTypeName;
+    bool useExceptions;
 
     bool constructorMode;
     std::string asParam;
@@ -168,9 +169,10 @@ protected:
     }
 
 public:
-    CPlusPlus(FILE* file, const char* stringTypeName = "char*") :
+    CPlusPlus(FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
         file(file),
         stringTypeName(stringTypeName),
+        useExceptions(useExceptions),
         constructorMode(false),
         currentNode(getSpecification()),
 #ifdef USE_FUNCTION_CALLBACK
@@ -396,7 +398,7 @@ public:
             }
             write(" get%s()", cap.c_str());
         }
-        if (node->getGetRaises())
+        if (useExceptions && node->getGetRaises())
         {
             write(" throw(");
             node->getGetRaises()->accept(this);
@@ -503,7 +505,7 @@ public:
             }
             write(" %s)", name.c_str());
         }
-        if (node->getSetRaises())
+        if (useExceptions && node->getSetRaises())
         {
             write(" throw(");
             node->getSetRaises()->accept(this);
@@ -690,7 +692,7 @@ public:
         }
 
         write(")");
-        if (node->getRaises())
+        if (useExceptions && node->getRaises())
         {
             write(" throw(");
             node->getRaises()->accept(this);

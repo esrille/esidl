@@ -790,6 +790,7 @@ int main(int argc, char* argv[])
     bool ent = false;
     bool npapi = false;
     bool isystem = false;
+    bool useExceptions = true;
     const char* namespaceName = 0;      // optional C++ namespace name to be used
     const char* stringTypeName = "char*";   // C++ string type name to be used
 
@@ -831,6 +832,14 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-npapi") == 0)
             {
                 npapi = true;
+            }
+            else if (strcmp(argv[i], "-fexceptions") == 0)
+            {
+                useExceptions = true;
+            }
+            else if (strcmp(argv[i], "-fno-exceptions") == 0)
+            {
+                useExceptions = false;
             }
             else if (strcmp(argv[i], "-namespace") == 0)
             {
@@ -876,13 +885,13 @@ int main(int argc, char* argv[])
     AdjustMethodCount adjustMethodCount;
     getSpecification()->accept(&adjustMethodCount);
 
-    printf("-I %s\n", includePath);
 #ifdef VERBOSE
+    printf("-I %s\n", includePath);
     printf("-----------------------------------\n");
     print();
 #endif
     printf("-----------------------------------\n");
-    printCxx(getOutputFilename(getFilename(), "h"), stringTypeName);
+    printCxx(getOutputFilename(getFilename(), "h"), stringTypeName, useExceptions);
     printf("-----------------------------------\n");
     if (ent)
     {
