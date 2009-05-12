@@ -723,13 +723,13 @@ public:
         assert(interface->type == Ent::TypeInterface);
 
         int methodNumber = 0;
-        callbackStage = 0;
         optionalStage = 0;
         do
         {
-            optionalCount = 0;
+            callbackStage = 0;
             do
             {
+                optionalCount = 0;
                 callbackCount = 0;
 
                 size_t offset = node->getOffset();
@@ -762,8 +762,9 @@ public:
                     }
 
                     Ent::Spec spec = getSpec(param->getSpec(), node);
-
-                    if (param->getSpec()->isInterface(node->getParent()))
+#ifdef USE_FUNCTION_CALLBACK
+                    if (param->getSpec()->isInterface(node->getParent()) &&
+                        dynamic_cast<ScopedName*>(param->getSpec()))  // param->getSpec() can be 'Object'
                     {
                         Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(param->getSpec())->search(node->getParent()));
                         uint32_t attr;
@@ -787,6 +788,7 @@ public:
                             }
                         }
                     }
+#endif  // USE_FUNCTION_CALLBACK
                     method->addParam(spec, dict[param->getName()], param->getAttr());
                     printf("  Param %s : %x\n", param->getName().c_str(), spec);
                 }

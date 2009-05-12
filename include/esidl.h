@@ -27,6 +27,14 @@
 #include <string>
 #include <vector>
 
+// Turn this on to use a function pointer rather than an interface pointer for
+// attributes of [Callback=FunctionOnly] interface types.
+// #define USE_FUNCTION_ATTRIBUTE
+
+// Turn this on to use a function pointer as well as an interface pointer for
+// parameters of [Callback] interface types.
+// #define USE_FUNCTION_CALLBACK
+
 class Node;
     class Include;
     class ScopedName;
