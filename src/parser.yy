@@ -286,15 +286,22 @@ interface_header :
     | INTERFACE IDENTIFIER
         {
             Node* extends = 0;
-            std::string qualifiedName = getCurrent()->getQualifiedName();
-            qualifiedName += "::";
-            qualifiedName += $2;
-            if (qualifiedName != Node::getBaseObjectName() &&
-                qualifiedName != "::Object")
+            if (strcmp($2, Node::getBaseObjectName()) == 0)
             {
-                ScopedName* name = new ScopedName(Node::getBaseObjectName());
-                extends = new Node();
-                extends->add(name);
+                assert($2[0] == ':' && $2[1] == ':');
+                strcpy($2, strrchr($2, ':') + 1);
+            }
+            else
+            {
+                std::string qualifiedName = getCurrent()->getQualifiedName();
+                qualifiedName += "::";
+                qualifiedName += $2;
+                if (qualifiedName != Node::getBaseObjectName())
+                {
+                    ScopedName* name = new ScopedName(Node::getBaseObjectName());
+                    extends = new Node();
+                    extends->add(name);
+                }
             }
             Interface* node = new Interface($2, extends);
             getCurrent()->add(node);
@@ -312,15 +319,22 @@ interface_header :
     | extended_attribute_list INTERFACE IDENTIFIER
         {
             Node* extends = 0;
-            std::string qualifiedName = getCurrent()->getQualifiedName();
-            qualifiedName += "::";
-            qualifiedName += $3;
-            if (qualifiedName != Node::getBaseObjectName() &&
-                qualifiedName != "::Object")
+            if (strcmp($3, Node::getBaseObjectName()) == 0)
             {
-                ScopedName* name = new ScopedName(Node::getBaseObjectName());
-                extends = new Node();
-                extends->add(name);
+                assert($3[0] == ':' && $3[1] == ':');
+                strcpy($3, strrchr($3, ':') + 1);
+            }
+            else
+            {
+                std::string qualifiedName = getCurrent()->getQualifiedName();
+                qualifiedName += "::";
+                qualifiedName += $3;
+                if (qualifiedName != Node::getBaseObjectName())
+                {
+                    ScopedName* name = new ScopedName(Node::getBaseObjectName());
+                    extends = new Node();
+                    extends->add(name);
+                }
             }
             Interface* node = new Interface($3, extends);
             getCurrent()->add(node);
