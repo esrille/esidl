@@ -48,7 +48,7 @@ namespace
 }
 
 int Node::level = 1;
-const char* Node::baseObjectName = 0;
+const char* Node::baseObjectName = "::Object";
 
 Node* getSpecification()
 {
@@ -883,6 +883,14 @@ int main(int argc, char* argv[])
     Module* node = new Module("");
     setSpecification(node);
     setCurrent(node);
+
+    if (strcmp(Node::getBaseObjectName(), "::Object") == 0)
+    {
+        // Manually install 'Object' interface forward declaration.
+        Interface* object = new Interface("Object", 0, true);
+        object->setRank(2);
+        getCurrent()->add(object);
+    }
 
     yylloc.first_line = yylloc.last_line = 1;
     yylloc.first_column = yylloc.last_column = 0;

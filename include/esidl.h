@@ -422,19 +422,9 @@ public:
         return compare("string", scope) == 0;
     }
 
-    virtual bool isWString(const Node* scope) const
-    {
-        return compare("wstring", scope) == 0;
-    }
-
-    virtual bool isGuid(const Node* scope) const
-    {
-        return compare("uuid", scope) == 0;
-    }
-
     virtual bool isInterface(const Node* scope) const
     {
-        return compare("Object", scope) == 0;
+        return false;
     }
 
     virtual bool isFloat(const Node* scope) const
@@ -558,11 +548,11 @@ public:
 
     bool isBaseObject() const
     {
-        if (name == "Object")
+        if (getQualifiedName() == "::Object")
         {
             return true;
         }
-        if (baseObjectName && getQualifiedName() == baseObjectName)
+        if (getQualifiedName() == baseObjectName)
         {
             return true;
         }

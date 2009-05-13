@@ -192,7 +192,8 @@ native              {
                     }
 Object              {
                         stepLocation();
-                        return OBJECT;
+                        yylval.name = strdup(Node::getBaseObjectName());
+                        return IDENTIFIER;
                     }
 octet               {
                         stepLocation();

@@ -157,7 +157,6 @@ int yylex();
 %type <node>        boolean_literal
 %type <node>        positive_int_const
 
-%type <node>        object_type
 %type <node>        op_type_spec
 %type <node>        raises_expr_opt
 %type <node>        raises_expr
@@ -287,23 +286,15 @@ interface_header :
     | INTERFACE IDENTIFIER
         {
             Node* extends = 0;
-            if (const char* base = Node::getBaseObjectName())
+            std::string qualifiedName = getCurrent()->getQualifiedName();
+            qualifiedName += "::";
+            qualifiedName += $2;
+            if (qualifiedName != Node::getBaseObjectName() &&
+                qualifiedName != "::Object")
             {
-                std::string qualifiedName = getCurrent()->getQualifiedName();
-                qualifiedName += "::";
-                qualifiedName += $2;
-                if (qualifiedName != base) {
-                    ScopedName* name = new ScopedName(base);
-                    if (!name->search(getCurrent()))
-                    {
-                        fprintf(stderr, "%d.%d-%d.%d: '%s' is not declared.\n",
-                                @2.first_line, @2.first_column, @2.last_line, @2.last_column,
-                                name->getName().c_str());
-                        exit(EXIT_FAILURE);
-                    }
-                    extends = new Node();
-                    extends->add(name);
-                }
+                ScopedName* name = new ScopedName(Node::getBaseObjectName());
+                extends = new Node();
+                extends->add(name);
             }
             Interface* node = new Interface($2, extends);
             getCurrent()->add(node);
@@ -321,14 +312,15 @@ interface_header :
     | extended_attribute_list INTERFACE IDENTIFIER
         {
             Node* extends = 0;
-            if (const char* base = Node::getBaseObjectName())
+            std::string qualifiedName = getCurrent()->getQualifiedName();
+            qualifiedName += "::";
+            qualifiedName += $3;
+            if (qualifiedName != Node::getBaseObjectName() &&
+                qualifiedName != "::Object")
             {
-                if (strcmp(base, $3) != 0) {
-                    ScopedName* name = new ScopedName(base);
-                    assert(name->search(getCurrent()));
-                    extends = new Node();
-                    extends->add(name);
-                }
+                ScopedName* name = new ScopedName(Node::getBaseObjectName());
+                extends = new Node();
+                extends->add(name);
             }
             Interface* node = new Interface($3, extends);
             getCurrent()->add(node);
@@ -665,7 +657,6 @@ base_type_spec :
     | boolean_type
     | octet_type
     | any_type
-    | object_type
     ;
 
 template_type_spec :
@@ -818,13 +809,6 @@ any_type :
     ANY
         {
             $$ = new Type("any");
-        }
-    ;
-
-object_type :
-    OBJECT
-        {
-            $$ = new Type("Object");
         }
     ;
 

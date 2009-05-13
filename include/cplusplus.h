@@ -185,9 +185,9 @@ public:
             if (resolved)
             {
                 name = resolved->getQualifiedName();
+                name = getInterfaceName(name);
                 name = getScopedName(moduleName, name);
             }
-            name = getInterfaceName(name);
             write("%s", name.c_str());
         }
         else
@@ -244,32 +244,9 @@ public:
         {
             write("Any");
         }
-        else if (node->getName() == "wchar")
-        {
-            write("wchar_t");
-        }
         else if (node->getName() == "string")
         {
             write(stringTypeName.c_str());
-        }
-        else if (node->getName() == "wstring")
-        {
-            write("wchar_t*");
-        }
-        else if (node->getName() == "Object")
-        {
-            if (const char* base = Node::getBaseObjectName())
-            {
-                write("%s", getScopedName(moduleName, base).c_str());
-            }
-            else
-            {
-                write("void");
-            }
-        }
-        else if (node->getName() == "uuid")
-        {
-            write("Guid&");
         }
         else
         {
@@ -324,7 +301,7 @@ public:
             seq->accept(this);
             write(" %s, int %sLength)", name.c_str(), name.c_str());
         }
-        else if (spec->isString(node->getParent()) || spec->isWString(node->getParent()))
+        else if (spec->isString(node->getParent()))
         {
             write("const ", cap.c_str());
             spec->accept(this);
@@ -438,7 +415,7 @@ public:
             seq->accept(this);
             write(" %s, int %sLength)", name.c_str(), name.c_str());
         }
-        else if (spec->isString(node->getParent()) || spec->isWString(node->getParent()))
+        else if (spec->isString(node->getParent()))
         {
             write("void set%s(const ", cap.c_str());
             spec->accept(this);
@@ -548,7 +525,7 @@ public:
             seq->accept(this);
             write(" %s, int %sLength", name.c_str(), name.c_str());
         }
-        else if (spec->isString(node->getParent()) || spec->isWString(node->getParent()))
+        else if (spec->isString(node->getParent()))
         {
             std::string name = spec->getName();
             size_t pos = name.rfind("::");
@@ -708,9 +685,7 @@ public:
         if (node->isInput())
         {
             if (seq && !seq->getSpec()->isInterface(currentNode) ||
-                spec->isGuid(node->getParent()) ||
                 spec->isString(node->getParent()) ||
-                spec->isWString(node->getParent()) ||
                 spec->isStruct(node->getParent()) ||
                 spec->isArray(node->getParent()))
             {
@@ -787,8 +762,7 @@ public:
             {
                 spec->accept(this);
             }
-            if (!spec->isString(node->getParent()) &&
-                !spec->isWString(node->getParent()))
+            if (!spec->isString(node->getParent()))
             {
                 if (!node->isInput())
                 {
@@ -813,7 +787,7 @@ public:
 
     static std::string getInterfaceName(std::string qualifiedName)
     {
-        if (qualifiedName == "Object")
+        if (qualifiedName == "::Object")
         {
             if (const char* base = Node::getBaseObjectName())
             {
