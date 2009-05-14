@@ -425,7 +425,7 @@ public:
     }
 };
 
-void printCxx(const std::string& filename, const char* stringTypeName, bool useExceptions, const char* namespaceName)
+void printCxx(const std::string& filename, const char* stringTypeName, bool useExceptions)
 {
     printf("# %s\n", filename.c_str());
 
