@@ -920,7 +920,7 @@ int main(int argc, char* argv[])
     print();
 #endif
     printf("-----------------------------------\n");
-    printCxx(getOutputFilename(getFilename(), "h"), stringTypeName, useExceptions);
+    printCxx(getOutputFilename(getFilename(), "h"), stringTypeName, useExceptions, namespaceName);
     printf("-----------------------------------\n");
     if (ent)
     {
