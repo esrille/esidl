@@ -92,6 +92,7 @@ protected:
 
     static int          level;          // current include level
     static const char*  baseObjectName; // default base object name
+    static const char*  namespaceName;  // flat namespace name if non zero
 
 public:
     // Attribute bits
@@ -557,6 +558,16 @@ public:
             return true;
         }
         return false;
+    }
+
+    static void setFlatNamespace(const char* name)
+    {
+        namespaceName = name;
+    }
+
+    static const char* getFlatNamespace()
+    {
+        return namespaceName ;
     }
 };
 

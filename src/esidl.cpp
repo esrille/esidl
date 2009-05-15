@@ -49,6 +49,7 @@ namespace
 
 int Node::level = 1;
 const char* Node::baseObjectName = "::Object";
+const char* Node::namespaceName;
 
 Node* getSpecification()
 {
@@ -812,7 +813,6 @@ int main(int argc, char* argv[])
     bool npapi = false;
     bool isystem = false;
     bool useExceptions = true;
-    const char* namespaceName = 0;      // optional C++ namespace name to be used
     const char* stringTypeName = "char*";   // C++ string type name to be used
 
     for (int i = 1; i < argc; ++i)
@@ -865,7 +865,7 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-namespace") == 0)
             {
                 ++i;
-                namespaceName = argv[i];
+                Node::setFlatNamespace(argv[i]);
             }
             else if (strcmp(argv[i], "-object") == 0)
             {
@@ -892,6 +892,13 @@ int main(int argc, char* argv[])
         getCurrent()->add(object);
     }
 
+    if (Node::getFlatNamespace())
+    {
+        Module* module = new Module(Node::getFlatNamespace());
+        getCurrent()->add(module);
+        setCurrent(module);
+    }
+
     yylloc.first_line = yylloc.last_line = 1;
     yylloc.first_column = yylloc.last_column = 0;
     try
@@ -906,6 +913,11 @@ int main(int argc, char* argv[])
     catch (...)
     {
         return EXIT_FAILURE;
+    }
+
+    if (Node::getFlatNamespace())
+    {
+        setCurrent(getCurrent()->getParent());
     }
 
     ProcessExtendedAttributes processExtendedAttributes;

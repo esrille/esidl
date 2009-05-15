@@ -447,8 +447,11 @@ void printCxx(const std::string& filename, const char* stringTypeName, bool useE
         fprintf(file, "\n");
     }
 
-    Predeclaration predeclaration(file);
-    getSpecification()->accept(&predeclaration);
+    if (!Node::getFlatNamespace())
+    {
+        Predeclaration predeclaration(file);
+        getSpecification()->accept(&predeclaration);
+    }
 
     Cxx cxx(file, stringTypeName, useExceptions);
     getSpecification()->accept(&cxx);

@@ -224,33 +224,39 @@ definition :
 module :
     extended_attribute_opt MODULE IDENTIFIER
         {
-            Node* node = getCurrent()->search($3);
-            if (node)
+            if (!Node::getFlatNamespace())
             {
-                if (Module* module = dynamic_cast<Module*>(node))
+                Node* node = getCurrent()->search($3);
+                if (node)
                 {
-                    setCurrent(module);
+                    if (Module* module = dynamic_cast<Module*>(node))
+                    {
+                        setCurrent(module);
+                    }
+                    else
+                    {
+                        fprintf(stderr, "%d.%d-%d.%d: '%s' is not a valid module name.\n",
+                                @2.first_line, @2.first_column, @2.last_line, @2.last_column,
+                                $3);
+                        exit(EXIT_FAILURE);
+                    }
                 }
                 else
                 {
-                    fprintf(stderr, "%d.%d-%d.%d: '%s' is not a valid module name.\n",
-                            @2.first_line, @2.first_column, @2.last_line, @2.last_column,
-                            $3);
-                    exit(EXIT_FAILURE);
+                    Module* module = new Module($3);
+                    module->setExtendedAttributes($1);
+                    getCurrent()->add(module);
+                    setCurrent(module);
                 }
-            }
-            else
-            {
-                Module* module = new Module($3);
-                module->setExtendedAttributes($1);
-                getCurrent()->add(module);
-                setCurrent(module);
             }
             free($3);
         }
     '{' definition_list '}'
         {
-            setCurrent(getCurrent()->getParent());
+            if (!Node::getFlatNamespace())
+            {
+                setCurrent(getCurrent()->getParent());
+            }
         }
     ;
 
@@ -263,6 +269,10 @@ interface_dcl :
     interface_header '{' interface_body '}'
         {
             setCurrent(getCurrent()->getParent());
+            if (Node::getFlatNamespace() && getCurrent() == getSpecification())
+            {
+                setCurrent(dynamic_cast<Module*>(getSpecification()->search(Node::getFlatNamespace())));
+            }
         }
     ;
 
@@ -304,6 +314,10 @@ interface_header :
                 }
             }
             Interface* node = new Interface($2, extends);
+            if (Node::getFlatNamespace() && !extends)
+            {
+                setCurrent(getSpecification());
+            }
             getCurrent()->add(node);
             setCurrent(node);
             free($2);
@@ -337,6 +351,10 @@ interface_header :
                 }
             }
             Interface* node = new Interface($3, extends);
+            if (Node::getFlatNamespace() && !extends)
+            {
+                setCurrent(getSpecification());
+            }
             getCurrent()->add(node);
             setCurrent(node);
             node->setExtendedAttributes($1);
@@ -421,9 +439,16 @@ scoped_name :
         }
     | OP_SCOPE IDENTIFIER
         {
-            ScopedName* name = new ScopedName("::");
-            name->getName() += $2;
-            free($2);
+            ScopedName* name;
+            if (Node::getFlatNamespace())
+            {
+                name = new ScopedName($2);
+            }
+            else
+            {
+                name = new ScopedName("::");
+                name->getName() += $2;
+            }
             if (!name->search(getCurrent()))
             {
                 fprintf(stderr, "%d.%d-%d.%d: '%s' is not declared.\n",
@@ -432,13 +457,20 @@ scoped_name :
                 exit(EXIT_FAILURE);
             }
             $$ = name;
+            free($2);
         }
     | scoped_name OP_SCOPE IDENTIFIER
         {
             ScopedName* name = static_cast<ScopedName*>($1);
-            name->getName() += "::";
-            name->getName() += $3;
-            free($3);
+            if (Node::getFlatNamespace())
+            {
+                name->getName() = $3;
+            }
+            else
+            {
+                name->getName() += "::";
+                name->getName() += $3;
+            }
             if (!name->search(getCurrent()))
             {
                 fprintf(stderr, "%d.%d-%d.%d: '%s' is not declared.\n",
@@ -447,6 +479,7 @@ scoped_name :
                 exit(EXIT_FAILURE);
             }
             $$ = name;
+            free($3);
         }
     ;
 
@@ -645,9 +678,15 @@ type_declarator :
             {
                 assert(dynamic_cast<Member*>(*i));
                 Member* m = static_cast<Member*>(*i);
-                m->setSpec($1);
-                m->setTypedef(true);
-                getCurrent()->add(m);
+                // In flat namespace mode, even a valid typedef can define a new type for the spec using the exactly same name.
+                if (dynamic_cast<ArrayDcl*>(m) ||
+                    !dynamic_cast<ScopedName*>($1) ||
+                    m->getQualifiedName() != $1->getQualifiedName())
+                {
+                    m->setSpec($1);
+                    m->setTypedef(true);
+                    getCurrent()->add(m);
+                }
             }
             delete $2;
         }
