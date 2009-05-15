@@ -127,7 +127,7 @@ public:
             writeln("static const char* iid()");
             writeln("{");
             indent();
-                writeln("static const char* name = \"%s\";",
+                writeln("static const char* const name = \"%s\";",
                         node->getQualifiedName().c_str());
                 writeln("return name;");
             unindent();
