@@ -53,21 +53,19 @@ Literal::operator char() const
     return s[0];
 }
 
-Literal::operator short() const
+Literal::operator int16_t() const
 {
-    long long value = static_cast<long long>(*this);
-    value = std::max(static_cast<long long>(SHRT_MIN), std::min(static_cast<long long>(SHRT_MAX), value));
-    return static_cast<short>(value);
+    int64_t value = static_cast<int64_t>(*this);
+    return static_cast<int16_t>(value);
 }
 
-Literal::operator int() const
+Literal::operator int32_t() const
 {
-    long long value = static_cast<long long>(*this);
-    value = std::max(static_cast<long long>(INT_MIN), std::min(static_cast<long long>(INT_MAX), value));
-    return static_cast<short>(value);
+    int64_t value = static_cast<int64_t>(*this);
+    return static_cast<int32_t>(value);
 }
 
-Literal::operator long long() const
+Literal::operator int64_t() const
 {
     const char* n = name.c_str();
     char* e;
@@ -76,31 +74,28 @@ Literal::operator long long() const
     {
         // syntax error
     }
-    return value;
+    return static_cast<int64_t>(value);
 }
 
 Literal::operator unsigned char() const
 {
-    unsigned long long value = static_cast<unsigned long long>(*this);
-    value = std::min(static_cast<unsigned long long>(UCHAR_MAX), value);
+    uint64_t value = static_cast<uint64_t>(*this);
     return static_cast<unsigned char>(value);
 }
 
-Literal::operator unsigned short() const
+Literal::operator uint16_t() const
 {
-    unsigned long long value = static_cast<unsigned long long>(*this);
-    value = std::min(static_cast<unsigned long long>(USHRT_MAX), value);
-    return static_cast<unsigned short>(value);
+    uint64_t value = static_cast<uint64_t>(*this);
+    return static_cast<uint16_t>(value);
 }
 
-Literal::operator unsigned int() const
+Literal::operator uint32_t() const
 {
-    unsigned long long value = static_cast<unsigned long long>(*this);
-    value = std::min(static_cast<unsigned long long>(UINT_MAX), value);
-    return static_cast<unsigned int>(value);
+    uint64_t value = static_cast<uint64_t>(*this);
+    return static_cast<uint32_t>(value);
 }
 
-Literal::operator unsigned long long() const
+Literal::operator uint64_t() const
 {
     const char* n = name.c_str();
     char* e;
@@ -109,7 +104,7 @@ Literal::operator unsigned long long() const
     {
         // syntax error
     }
-    return value;
+    return static_cast<uint64_t>(value);
 }
 
 Literal::operator float() const
@@ -434,14 +429,14 @@ public:
         }
         else if (type->getName() == "short")
         {
-            EvalInteger<short> eval(node->getParent());
+            EvalInteger<int16_t> eval(node->getParent());
 
             node->getExp()->accept(&eval);
             printf("%d", eval.getValue());
         }
         else if (type->getName() == "long")
         {
-            EvalInteger<int> eval(node->getParent());
+            EvalInteger<int32_t> eval(node->getParent());
 
             node->getExp()->accept(&eval);
             printf("%d", eval.getValue());
@@ -453,7 +448,7 @@ public:
             node->setValue(offset);
             offset += 8;
 
-            EvalInteger<long long> eval(node->getParent());
+            EvalInteger<int64_t> eval(node->getParent());
 
             node->getExp()->accept(&eval);
             printf("%lld (%lld)", eval.getValue(), node->getValue());
@@ -467,14 +462,14 @@ public:
         }
         else if (type->getName() == "unsigned short")
         {
-            EvalInteger<unsigned short> eval(node->getParent());
+            EvalInteger<uint16_t> eval(node->getParent());
 
             node->getExp()->accept(&eval);
             printf("%u", eval.getValue());
         }
         else if (type->getName() == "unsigned long")
         {
-            EvalInteger<unsigned int> eval(node->getParent());
+            EvalInteger<uint32_t> eval(node->getParent());
 
             node->getExp()->accept(&eval);
             printf("%u", eval.getValue());
@@ -486,7 +481,7 @@ public:
             node->setValue(offset);
             offset += 8;
 
-            EvalInteger<unsigned long long> eval(node->getParent());
+            EvalInteger<uint64_t> eval(node->getParent());
 
             node->getExp()->accept(&eval);
             printf("%llu %lld", eval.getValue(), node->getValue());

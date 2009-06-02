@@ -1053,13 +1053,13 @@ public:
 
     operator bool() const;
     operator char() const;
-    operator short() const;
-    operator int() const;
-    operator long long() const;
+    operator int16_t() const;
+    operator int32_t() const;
+    operator int64_t() const;
     operator unsigned char() const;
-    operator unsigned short() const;
-    operator unsigned int() const;
-    operator unsigned long long() const;
+    operator uint16_t() const;
+    operator uint32_t() const;
+    operator uint64_t() const;
     operator float() const;
     operator double() const;
     operator long double() const;
