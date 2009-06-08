@@ -810,6 +810,7 @@ void yyerror(const char* message, ...)
 int main(int argc, char* argv[])
 {
     bool ent = false;
+    bool skeleton = false;
     bool npapi = false;
     bool isystem = false;
     bool useExceptions = true;
@@ -849,6 +850,10 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-ent") == 0)
             {
                 ent = true;
+            }
+            else if (strcmp(argv[i], "-skeleton") == 0)
+            {
+                skeleton = true;
             }
             else if (strcmp(argv[i], "-npapi") == 0)
             {
@@ -937,6 +942,11 @@ int main(int argc, char* argv[])
     if (ent)
     {
         printEnt(getOutputFilename(getFilename(), "ent"));
+        printf("-----------------------------------\n");
+    }
+    if (skeleton)
+    {
+        printSkeleton(getFilename(), isystem);
         printf("-----------------------------------\n");
     }
     if (npapi)

@@ -10,7 +10,7 @@ esidl2_SOURCES = es/ent.h \
 	src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
 	include/utf.h \
 	src/print.cpp src/cxx.cpp \
-	src/ent.cpp \
+	src/ent.cpp src/skeleton.cpp \
 	include/expr.h include/string.h include/cplusplus.h
 
 esidl2-cxx.$(OBJEXT) : Makefile
@@ -32,3 +32,4 @@ clean-local:
 
 dist-hook:
 	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.h
+

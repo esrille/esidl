@@ -68,7 +68,8 @@ int main(int argc, char* argv[])
                      strcmp(argv[i], "-ent") == 0 ||
                      strcmp(argv[i], "-fexceptions") == 0 ||
                      strcmp(argv[i], "-fno-exceptions") == 0 ||
-                     strcmp(argv[i], "-npapi") == 0)
+                     strcmp(argv[i], "-npapi") == 0 ||
+                     strcmp(argv[i], "-skeleton") == 0)
             {
                 argIdl[optIdl++] = argv[i];
             }

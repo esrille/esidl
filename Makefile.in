@@ -54,7 +54,8 @@ esidl_OBJECTS = $(am_esidl_OBJECTS)
 esidl_LDADD = $(LDADD)
 am_esidl2_OBJECTS = esidl2-lexer.$(OBJEXT) esidl2-parser.$(OBJEXT) \
 	esidl2-esidl.$(OBJEXT) esidl2-print.$(OBJEXT) \
-	esidl2-cxx.$(OBJEXT) esidl2-ent.$(OBJEXT)
+	esidl2-cxx.$(OBJEXT) esidl2-ent.$(OBJEXT) \
+	esidl2-skeleton.$(OBJEXT)
 esidl2_OBJECTS = $(am_esidl2_OBJECTS)
 esidl2_LDADD = $(LDADD)
 esidl2_LINK = $(CXXLD) $(esidl2_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
@@ -197,7 +198,7 @@ esidl2_SOURCES = es/ent.h \
 	src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
 	include/utf.h \
 	src/print.cpp src/cxx.cpp \
-	src/ent.cpp \
+	src/ent.cpp src/skeleton.cpp \
 	include/expr.h include/string.h include/cplusplus.h
 
 esidl2_CXXFLAGS = -D YYERROR_VERBOSE
@@ -299,6 +300,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-lexer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-parser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-print.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl2-skeleton.Po@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -425,6 +427,20 @@ esidl2-ent.obj: src/ent.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/ent.cpp' object='esidl2-ent.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -c -o esidl2-ent.obj `if test -f 'src/ent.cpp'; then $(CYGPATH_W) 'src/ent.cpp'; else $(CYGPATH_W) '$(srcdir)/src/ent.cpp'; fi`
+
+esidl2-skeleton.o: src/skeleton.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -MT esidl2-skeleton.o -MD -MP -MF $(DEPDIR)/esidl2-skeleton.Tpo -c -o esidl2-skeleton.o `test -f 'src/skeleton.cpp' || echo '$(srcdir)/'`src/skeleton.cpp
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/esidl2-skeleton.Tpo $(DEPDIR)/esidl2-skeleton.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/skeleton.cpp' object='esidl2-skeleton.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -c -o esidl2-skeleton.o `test -f 'src/skeleton.cpp' || echo '$(srcdir)/'`src/skeleton.cpp
+
+esidl2-skeleton.obj: src/skeleton.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -MT esidl2-skeleton.obj -MD -MP -MF $(DEPDIR)/esidl2-skeleton.Tpo -c -o esidl2-skeleton.obj `if test -f 'src/skeleton.cpp'; then $(CYGPATH_W) 'src/skeleton.cpp'; else $(CYGPATH_W) '$(srcdir)/src/skeleton.cpp'; fi`
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/esidl2-skeleton.Tpo $(DEPDIR)/esidl2-skeleton.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/skeleton.cpp' object='esidl2-skeleton.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl2_CXXFLAGS) $(CXXFLAGS) -c -o esidl2-skeleton.obj `if test -f 'src/skeleton.cpp'; then $(CYGPATH_W) 'src/skeleton.cpp'; else $(CYGPATH_W) '$(srcdir)/src/skeleton.cpp'; fi`
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

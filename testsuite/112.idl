@@ -1,0 +1,11 @@
+// Test [ImplementedOn] as attribute
+
+interface X {
+    void s();
+};
+
+[ImplementedOn=X]
+interface Y {
+    void t();
+    attribute boolean u;
+};
