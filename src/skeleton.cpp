@@ -258,6 +258,12 @@ public:
             return;
         }
 
+        if (!node->getImplementedOn()->empty())
+        {
+            // An interface with ImplementedOn attribute won't need its own implementation.
+            return;
+        }
+
         std::string filename = idlFilename;
         int begin = filename.rfind(".");
         filename.insert(begin, getFileName(node->getName()));
