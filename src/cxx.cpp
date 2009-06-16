@@ -19,6 +19,23 @@
 
 class Cxx : public CPlusPlus
 {
+    void visitInterfaceElement(const Interface* interface, Node* element)
+    {
+        if (element->isSequence(interface) || element->isNative(interface))
+        {
+            return;
+        }
+        optionalStage = 0;
+        do
+        {
+            optionalCount = 0;
+            writetab();
+            element->accept(this);
+            write(";\n");
+            ++optionalStage;
+        } while (optionalStage <= optionalCount);
+    }
+
 public:
     Cxx(FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
         CPlusPlus(file, stringTypeName, useExceptions)
@@ -78,32 +95,21 @@ public:
             writeln("public:");
             indent();
 
-            // printChildren(node);
-            int count = 0;
             for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
             {
-                if ((*i)->isSequence(node) || (*i)->isNative(node))
-                {
-                    continue;
-                }
-
-                optionalStage = 0;
-                do
-                {
-                    if (0 < count)
-                    {
-                        write(";\n");
-                    }
-                    optionalCount = 0;
-                    ++count;
-                    writetab();
-                    (*i)->accept(this);
-                    ++optionalStage;
-                } while (optionalStage <= optionalCount);
+                visitInterfaceElement(node, *i);
             }
-            if (0 < count)
+
+            // Expand mixins
+            for (std::list<const Interface*>::const_iterator i = node->getMixins()->begin();
+                 i != node->getMixins()->end();
+                 ++i)
             {
-                write(";\n");
+                writeln("// %s", (*i)->getName().c_str());
+                for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+                {
+                    visitInterfaceElement(*i, *j);
+                }
             }
 
             writeln("static const char* iid()");
