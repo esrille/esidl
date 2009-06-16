@@ -760,7 +760,7 @@ class Interface : public Node
     int constCount;
     int methodCount;
     Interface* constructor;
-    std::list<const Interface*> implementedOn;
+    std::list<const Interface*> mixins;
     uint32_t attr;
     std::string callable;
     std::string stringifies;
@@ -875,9 +875,9 @@ public:
         return constructor;
     }
 
-    const std::list<const Interface*>* getImplementedOn() const
+    const std::list<const Interface*>* getMixins() const
     {
-        return &implementedOn;
+        return &mixins;
     }
 
     uint32_t getAttr() const
@@ -897,30 +897,21 @@ public:
 
     virtual void accept(Visitor* visitor);
 
-    void collectImplementedOn(std::list<const Interface*>* interfaceList) const
+    void collectMixins(std::list<const Interface*>* interfaceList) const
     {
         interfaceList->push_back(this);
         for (const Interface* interface = this;
-              interface && !interface->isBaseObject();
-              interface = interface->getSuper())
+             interface && !interface->isBaseObject();
+             interface = interface->getSuper())
         {
             assert(!interface->isLeaf());
-            for (std::list<const Interface*>::const_iterator i = interface->getImplementedOn()->begin();
-                i != interface->getImplementedOn()->end();
-                ++i)
+            for (std::list<const Interface*>::const_iterator i = interface->getMixins()->begin();
+                 i != interface->getMixins()->end();
+                 ++i)
             {
                 assert(!(*i)->isLeaf());
                 interfaceList->push_back(*i);
-                for (std::list<const Interface*>::const_iterator j = (*i)->getImplementedOn()->begin();
-                    j != (*i)->getImplementedOn()->end();
-                    ++j)
-                {
-                    assert(!(*j)->isLeaf());
-                    if (*j != interface)
-                    {
-                        interfaceList->push_back(*j);
-                    }
-                }
+                assert((*i)->getMixins()->empty());
             }
         }
     }

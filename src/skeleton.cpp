@@ -55,7 +55,7 @@ public:
         }
 
         std::list<const Interface*> interfaceList;
-        node->collectImplementedOn(&interfaceList);
+        node->collectMixins(&interfaceList);
 
         write("class %s_Impl : ", node->getName().c_str());
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
@@ -258,7 +258,7 @@ public:
             return;
         }
 
-        if (!node->getImplementedOn()->empty())
+        if (!node->getMixins()->empty())
         {
             // An interface with ImplementedOn attribute won't need its own implementation.
             return;

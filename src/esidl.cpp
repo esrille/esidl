@@ -415,8 +415,7 @@ void Interface::processExtendedAttributes()
                 Node* on = scopedName->search(getParent());
                 if (Interface* interface = dynamic_cast<Interface*>(on))
                 {
-                    implementedOn.push_back(interface);
-                    interface->implementedOn.push_back(this);
+                    interface->mixins.push_back(this);
                 }
             }
         }
