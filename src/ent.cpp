@@ -762,33 +762,6 @@ public:
                     }
 
                     Ent::Spec spec = getSpec(param->getSpec(), node);
-#ifdef USE_FUNCTION_CALLBACK
-                    if (param->getSpec()->isInterface(node->getParent()) &&
-                        dynamic_cast<ScopedName*>(param->getSpec()))  // param->getSpec() can be 'Object'
-                    {
-                        Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(param->getSpec())->search(node->getParent()));
-                        uint32_t attr;
-                        if (callback && (attr = callback->isCallback()) != 0)
-                        {
-                            bool function;
-                            if (attr == Interface::Callback)
-                            {
-                                function = (1u << callbackCount) & callbackStage;
-                                ++callbackCount;
-                            }
-                            else
-                            {
-                                function = (attr == Interface::CallbackIsFunctionOnly);
-                            }
-                            if (function)
-                            {
-                                method->addParam(Ent::SpecAny, dict[param->getName()], param->getAttr());
-                                printf("  Param %s : %x\n", param->getName().c_str(), Ent::SpecAny);
-                                continue;
-                            }
-                        }
-                    }
-#endif  // USE_FUNCTION_CALLBACK
                     method->addParam(spec, dict[param->getName()], param->getAttr());
                     printf("  Param %s : %x\n", param->getName().c_str(), spec);
                 }

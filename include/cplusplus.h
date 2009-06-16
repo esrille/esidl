@@ -39,10 +39,6 @@ protected:
 
     bool constructorMode;
     std::string asParam;
-#ifdef USE_FUNCTION_CALLBACK
-    int callbackStage;
-    int callbackCount;
-#endif
     int optionalStage;
     int optionalCount;
 
@@ -51,22 +47,6 @@ protected:
 
     int paramCount;  // The number of parameters of the previously evaluated operation
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
-
-#ifdef USE_FUNCTION_CALLBACK
-    std::map<const ParamDcl*, const OpDcl*> callbacks;
-    // param mode saved context.
-    // XXX doesn't work if callback takes callbacks as arguments...
-    struct
-    {
-        int callbackStage;
-        int callbackCount;
-        int optionalStage;
-        int optionalCount;
-        int paramCount;
-        const ParamDcl* variadicParam;
-        std::map<const ParamDcl*, const OpDcl*> callbacks;
-    } savedContext;
-#endif  // USE_FUNCTION_CALLBACK
 
     int getParamCount() const
     {
@@ -167,10 +147,6 @@ public:
         useExceptions(useExceptions),
         constructorMode(false),
         currentNode(getSpecification()),
-#ifdef USE_FUNCTION_CALLBACK
-        callbackStage(0),
-        callbackCount(0),
-#endif  // USE_FUNCTION_CALLBACK
         paramCount(0),
         variadicParam(0)
     {
@@ -485,9 +461,6 @@ public:
 
     virtual void at(const OpDcl* node)
     {
-#ifdef USE_FUNCTION_CALLBACK
-        callbacks.clear();
-#endif  // USE_FUNCTION_CALLBACK
         if (asParam == "")
         {
             if (!constructorMode)
@@ -717,40 +690,6 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
-#ifdef USE_FUNCTION_CALLBACK
-                Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
-                uint32_t attr;
-                if (callback && (attr = callback->isCallback()) != 0)
-                {
-                    bool function;
-                    // In C++, acccept callback interface pointer even if [Callback=FunctionOnly].
-                    if (attr == Interface::Callback ||
-                        attr == Interface::CallbackIsFunctionOnly)
-                    {
-                        function = (1u << callbackCount) & callbackStage;
-                        ++callbackCount;
-                    }
-                    if (function)
-                    {
-                        OpDcl* op = 0;
-                        paramMode(node->getName());
-                        for (NodeList::iterator i = callback->begin(); i != callback->end(); ++i)
-                        {
-                            if (op = dynamic_cast<OpDcl*>(*i))
-                            {
-                                CPlusPlus::at(op);
-                                break;
-                            }
-                        }
-                        paramMode();
-                        if (op)
-                        {
-                            callbacks.insert(std::pair<const ParamDcl*, const OpDcl*>(node, op));
-                        }
-                        return;
-                    }
-                }
-#endif  // USE_FUNCTION_CALLBACK
                 spec->accept(this);
                 write("*");
             }
@@ -800,42 +739,6 @@ public:
         }
         return qualifiedName;
     }
-
-#ifdef USE_FUNCTION_CALLBACK
-    const OpDcl* isCallback(const ParamDcl* param) const
-    {
-        std::map<const ParamDcl*, const OpDcl*>::const_iterator i = callbacks.find(param);
-        if (i == callbacks.end())
-        {
-            return 0;
-        }
-        return i->second;
-    }
-
-    void paramMode(const std::string name)
-    {
-        asParam = name;
-        savedContext.callbackStage = callbackStage;
-        savedContext.callbackCount = callbackCount;
-        savedContext.optionalStage = optionalStage;
-        savedContext.optionalCount = optionalCount;
-        savedContext.paramCount = paramCount;
-        savedContext.variadicParam = variadicParam;
-        savedContext.callbacks = callbacks;
-    }
-
-    void paramMode()
-    {
-        asParam = "";
-        callbackStage = savedContext.callbackStage;
-        callbackCount = savedContext.callbackCount;
-        optionalStage = savedContext.optionalStage;
-        optionalCount = savedContext.optionalCount;
-        paramCount = savedContext.paramCount;
-        variadicParam = savedContext.variadicParam;
-        callbacks = savedContext.callbacks;
-    }
-#endif
 };
 
 #endif  // NINTENDO_ESIDL_CPLUSPLUS_H_INCLUDED

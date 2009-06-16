@@ -90,23 +90,6 @@ public:
                 optionalStage = 0;
                 do
                 {
-#ifdef USE_FUNCTION_CALLBACK
-                    callbackStage = 0;
-                    do
-                    {
-                        if (0 < count)
-                        {
-                            write(";\n");
-                        }
-
-                        optionalCount = 0;
-                        callbackCount = 0;
-                        ++count;
-                        writetab();
-                        (*i)->accept(this);
-                        ++callbackStage;
-                    } while (callbackStage < (1u << callbackCount));
-#else  // USE_FUNCTION_CALLBACK
                     if (0 < count)
                     {
                         write(";\n");
@@ -115,7 +98,6 @@ public:
                     ++count;
                     writetab();
                     (*i)->accept(this);
-#endif  // USE_FUNCTION_CALLBACK
                     ++optionalStage;
                 } while (optionalStage <= optionalCount);
             }

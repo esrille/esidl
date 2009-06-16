@@ -272,43 +272,6 @@ void OpDcl::adjustMethodCount()
     do
     {
         optionalCount = 0;
-#ifdef USE_FUNCTION_CALLBACK
-        int callbackStage = 0;
-        int callbackCount;
-        do
-        {
-            callbackCount = 0;
-            ++methodCount;
-            int paramCount = 0;
-            for (NodeList::iterator i = begin(); i != end(); ++i)
-            {
-                ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
-                assert(param);
-                if (param->isOptional())
-                {
-                    ++optionalCount;
-                    if (optionalStage < optionalCount)
-                    {
-                        break;
-                    }
-                }
-
-                ++paramCount;
-
-                Node* spec = param->getSpec();
-                if (spec->isInterface(this) && dynamic_cast<ScopedName*>(spec))  // spec can be 'Object'
-                {
-                    Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(getParent()));
-                    if (callback && callback->isCallback() == Interface::Callback)
-                    {
-                        ++callbackCount;
-                    }
-                }
-            }
-            paramCounts.push_back(paramCount);
-            ++callbackStage;
-        } while (callbackStage < (1u << callbackCount));
-#else  // USE_FUNCTION_CALLBACK
         ++methodCount;
         int paramCount = 0;
         for (NodeList::iterator i = begin(); i != end(); ++i)
@@ -327,7 +290,6 @@ void OpDcl::adjustMethodCount()
 
         }
         paramCounts.push_back(paramCount);
-#endif  // USE_FUNCTION_CALLBACK
         ++optionalStage;
     } while (optionalStage <= optionalCount);
     Interface* interface = dynamic_cast<Interface*>(getParent());

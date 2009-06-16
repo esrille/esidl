@@ -132,19 +132,8 @@ public:
                         optionalStage = 0;
                         do
                         {
-#ifdef USE_FUNCTION_CALLBACK
-                            callbackStage = 0;
-                            do
-                            {
-                                optionalCount = 0;
-                                callbackCount = 0;
-                                op->accept(this);
-                                ++callbackStage;
-                            } while (callbackStage < (1u << callbackCount));
-#else  // USE_FUNCTION_CALLBACK
                             optionalCount = 0;
                             op->accept(this);
-#endif  // USE_FUNCTION_CALLBACK
                             ++optionalStage;
                         } while (optionalStage <= optionalCount);
                     }
