@@ -46,16 +46,19 @@ public:
     {
         if (node->getJavadoc().size())
         {
-            write("%s\n%s", node->getJavadoc().c_str(), indentString.c_str());
+            write("%s\n", node->getJavadoc().c_str());
+            writetab();
         }
         write("struct %s", node->getName().c_str());
         if (!node->isLeaf())
         {
-            write("\n%s{\n", indentString.c_str());
+            writeln("");
+            writeln("{");
             indent();
             printChildren(node);
             unindent();
-            write("%s}", indentString.c_str());
+            writetab();
+            write("}");
         }
     }
 
@@ -63,14 +66,17 @@ public:
     {
         if (node->getJavadoc().size())
         {
-            write("%s\n%s", node->getJavadoc().c_str(), indentString.c_str());
+            write("%s\n", node->getJavadoc().c_str());
+            writetab();
         }
         write("struct %s", node->getName().c_str());
-        write("\n%s{\n", indentString.c_str());
+        writeln("");
+        writeln("{");
         indent();
         printChildren(node);
         unindent();
-        write("%s}", indentString.c_str());
+        writetab();
+        write("}");
     }
 
     virtual void at(const Interface* node)

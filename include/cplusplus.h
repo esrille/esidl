@@ -24,16 +24,12 @@
 #include <map>
 #include <string>
 #include "esidl.h"
+#include "formatter.h"
 
-class CPlusPlus : public Visitor
+class CPlusPlus : public Visitor, public Formatter
 {
 protected:
-    static const int TabWidth = 4;
-
-    std::string indentString;
     std::string prefix;
-
-    FILE* file;
     std::string stringTypeName;
     bool useExceptions;
 
@@ -56,42 +52,6 @@ protected:
     const ParamDcl* getVariadic() const
     {
         return variadicParam;
-    }
-
-    void indent()
-    {
-        indentString += std::string(TabWidth, ' ');
-    }
-
-    void unindent()
-    {
-        indentString.erase(indentString.length() - TabWidth);
-    }
-
-    void write(const char* format, ...)
-    {
-        va_list ap;
-        va_start(ap, format);
-        vfprintf(file, format, ap);
-        va_end(ap);
-    }
-
-    void writetab()
-    {
-        write("%s", indentString.c_str());
-    }
-
-    void writeln(const char* format, ...)
-    {
-        if (*format)
-        {
-            writetab();
-        }
-        va_list ap;
-        va_start(ap, format);
-        vfprintf(file, format, ap);
-        va_end(ap);
-        write("\n");
     }
 
     void printChildren(const Node* node)
@@ -142,7 +102,7 @@ protected:
 
 public:
     CPlusPlus(FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
-        file(file),
+        Formatter(file),
         stringTypeName(stringTypeName),
         useExceptions(useExceptions),
         constructorMode(false),
