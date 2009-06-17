@@ -36,6 +36,13 @@ public:
     {
     }
 
+    Formatter(const Formatter* f) :
+        file(f->file),
+        tabWidth(f->tabWidth),
+        indentString(f->indentString)
+    {
+    }
+
     void indent()
     {
         indentString += std::string(tabWidth, ' ');
