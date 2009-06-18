@@ -5,11 +5,6 @@ module A
         long code;
     };
 
-    struct S
-    {
-        long data;
-    };
-
     typedef long D[4];
 };
 
@@ -17,24 +12,16 @@ module A
 {
     interface I
     {
-        void op4(in S s) raises(E);
-        void op5(out S s) raises(E);
-        S op6() raises(E);
-
         void op7(in any a) raises(E);
-        void op8(out any a) raises(E);
         any op9() raises(E);
 
         void op10(in D d);
-        void op11(out D d);
         D op12();
 
         void op13(in I i);
-        void op14(out I i);
         I op15();
 
         attribute string name;
-        attribute S data;
         attribute any option;
         attribute D misc;
         attribute I parent;

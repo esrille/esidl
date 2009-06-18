@@ -2,9 +2,6 @@ module X
 {
     interface Y
     {
-        long setSize(in long data);
-        long getSize(out long data);
-        long reset(inout long data, out long opt);
         long reset();
         attribute long size;
     };

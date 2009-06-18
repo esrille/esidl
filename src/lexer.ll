@@ -231,10 +231,6 @@ string              {
                         stepLocation();
                         return STRING;
                     }
-struct              {
-                        stepLocation();
-                        return STRUCT;
-                    }
 TRUE                {
                         stepLocation();
                         return TRUE;

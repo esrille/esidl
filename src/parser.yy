@@ -92,7 +92,6 @@ int yylex();
 %token SEQUENCE
 %token SHORT
 %token STRING
-%token STRUCT
 %token TRUE
 %token TYPEDEF
 %token UNSIGNED
@@ -660,13 +659,11 @@ positive_int_const :
 
 type_dcl :
     TYPEDEF type_declarator
-    | struct_type
     | NATIVE simple_declarator
         {
             NativeType* nt = new NativeType($2);
             getCurrent()->add(nt);
         }
-    | constr_forward_decl
     ;
 
 type_declarator :
@@ -694,7 +691,6 @@ type_declarator :
 
 type_spec :
     simple_type_spec
-    | struct_type
     ;
 
 simple_type_spec :
@@ -862,20 +858,6 @@ any_type :
     ANY
         {
             $$ = new Type("any");
-        }
-    ;
-
-struct_type :
-    STRUCT IDENTIFIER
-        {
-            StructType* st = new StructType($2);
-            getCurrent()->add(st);
-            setCurrent(st);
-            free($2);
-        }
-    '{' member_list '}'
-        {
-            setCurrent(getCurrent()->getParent());
         }
     ;
 
@@ -1084,14 +1066,6 @@ fixed_pt_const_type :
     FIXED
         {
             $$ = new Type("fixed");
-        }
-    ;
-
-constr_forward_decl :
-    STRUCT IDENTIFIER
-        {
-            getCurrent()->add(new StructType($2));
-            free($2);
         }
     ;
 

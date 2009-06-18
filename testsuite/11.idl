@@ -5,6 +5,6 @@ module A
 
     interface X
     {
-        void op(in S s, out T t);
+        void op(in S s, in T t);
     };
 };
