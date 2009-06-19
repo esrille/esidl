@@ -131,18 +131,6 @@ Literal::operator double() const
     return value;
 }
 
-Literal::operator long double() const
-{
-    const char* n = name.c_str();
-    char* e;
-    long double value = strtold(n, &e);
-    if (!e || *e != '\0')
-    {
-        // syntax error;
-    }
-    return value;
-}
-
 Literal::operator std::string() const
 {
     size_t pos = 0;
@@ -414,18 +402,6 @@ public:
 
             node->getExp()->accept(&eval);
             printf("%g (%lld)", eval.getValue(), node->getValue());
-        }
-        else if (type->getName() == "long double")
-        {
-            offset += 15;
-            offset &= ~15;
-            node->setValue(offset);
-            offset += 16;
-
-            EvalFloat<long double> eval(node->getParent());
-
-            node->getExp()->accept(&eval);
-            printf("%Lg (%lld)", eval.getValue(), node->getValue());
         }
         else if (type->getName() == "short")
         {

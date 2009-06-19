@@ -9,7 +9,6 @@ module X
     const unsigned long long G = 8 >> 1;
     const float H = 1.23 * 2 /2 - 1;
     const double I = 2.34 * 2 / 2 + 1;
-    const long double J = 3.45 * 2 / 2;
 
     const char K = 'A';
     const string M = "ABC";

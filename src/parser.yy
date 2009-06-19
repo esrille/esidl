@@ -768,10 +768,6 @@ floating_pt_type :
         {
             $$ = new Type("double");
         }
-    | LONG DOUBLE
-        {
-            $$ = new Type("long double");
-        }
     ;
 
 integer_type :

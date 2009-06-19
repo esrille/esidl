@@ -683,15 +683,6 @@ public:
                 *reinterpret_cast<double*>(image + node->getValue()) = eval.getValue();
             }
             break;
-        case Ent::SpecF128:
-            {
-                EvalFloat<long double> eval(node->getParent());
-                node->getExp()->accept(&eval);
-                long double value = eval.getValue();
-                new(image + node->getOffset()) Ent::Constant(spec, dict[node->getName()], node->getValue());
-                *reinterpret_cast<long double*>(image + node->getValue()) = eval.getValue();
-            }
-            break;
         case Ent::SpecChar:
             {
                 EvalString<char> eval(node->getParent());
@@ -796,7 +787,7 @@ const char* Emitter::specTable[] =
     "unsigned long long",   // SpecU64
     "float",                // SpecF32
     "double",               // SpecF64
-    "long double",          // SpecF128
+    "",                     // SpecF128
     "boolean",              // SpecBool
     "char",                 // SpecChar
     "wchar",                // SpecWChar

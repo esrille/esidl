@@ -114,7 +114,6 @@ void dumpConstant(const Header* header, const Constant* constant)
 
     switch (constant->spec)
     {
-    case Ent::SpecS8:
     case Ent::SpecS16:
     case Ent::SpecS32:
         printf("(%d)", constant->value);
@@ -139,27 +138,18 @@ void dumpConstant(const Header* header, const Constant* constant)
     case Ent::SpecF64:
         printf("(%g)", *reinterpret_cast<const double*>(reinterpret_cast<const uint8_t*>(header) + constant->value));
         break;
-    case Ent::SpecF128:
-        printf("(%Lg)", *reinterpret_cast<const long double*>(reinterpret_cast<const uint8_t*>(header) + constant->value));
-        break;
     case Ent::SpecChar:
         printf("(%c)", constant->value);
-        break;
-    case Ent::SpecWChar:
-        if (char* end = utf32to8(constant->value, utf8))
-        {
-            *end = '\0';
-            printf("(%s)", utf8);
-        }
         break;
     case Ent::SpecString:
         printf("(%s)", reinterpret_cast<const char*>(header) + constant->value);
         break;
+    case Ent::SpecS8:
+    case Ent::SpecF128:
+    case Ent::SpecWChar:
     case Ent::SpecWString:
-        printf("(%s)", reinterpret_cast<const char*>(header) + constant->value);
-        break;
     default:
-        fprintf(stderr, "Inv. const type.\n");
+        fprintf(stderr, "Inv. const type: %d\n", constant->spec);
         exit(EXIT_FAILURE);
         break;
     }

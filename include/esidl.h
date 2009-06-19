@@ -958,7 +958,7 @@ public:
 
     ~SequenceType()
     {
-        delete spec;
+        // delete spec;
         if (max)
         {
             delete max;
@@ -1053,7 +1053,6 @@ public:
     operator uint64_t() const;
     operator float() const;
     operator double() const;
-    operator long double() const;
     operator std::string() const;
 
     virtual void accept(Visitor* visitor);
