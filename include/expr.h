@@ -28,7 +28,7 @@
 #include "esidl.h"
 #include "utf.h"
 
-Literal::operator bool() const
+inline Literal::operator bool() const
 {
     if (name == "TRUE")
     {
@@ -42,7 +42,7 @@ Literal::operator bool() const
     // syntax error
 }
 
-Literal::operator char() const
+inline Literal::operator char() const
 {
     if (name[0] != '\'' || name[name.size() - 1] != '\'')
     {
@@ -53,19 +53,19 @@ Literal::operator char() const
     return s[0];
 }
 
-Literal::operator int16_t() const
+inline Literal::operator int16_t() const
 {
     int64_t value = static_cast<int64_t>(*this);
     return static_cast<int16_t>(value);
 }
 
-Literal::operator int32_t() const
+inline Literal::operator int32_t() const
 {
     int64_t value = static_cast<int64_t>(*this);
     return static_cast<int32_t>(value);
 }
 
-Literal::operator int64_t() const
+inline Literal::operator int64_t() const
 {
     const char* n = name.c_str();
     char* e;
@@ -77,25 +77,25 @@ Literal::operator int64_t() const
     return static_cast<int64_t>(value);
 }
 
-Literal::operator unsigned char() const
+inline Literal::operator unsigned char() const
 {
     uint64_t value = static_cast<uint64_t>(*this);
     return static_cast<unsigned char>(value);
 }
 
-Literal::operator uint16_t() const
+inline Literal::operator uint16_t() const
 {
     uint64_t value = static_cast<uint64_t>(*this);
     return static_cast<uint16_t>(value);
 }
 
-Literal::operator uint32_t() const
+inline Literal::operator uint32_t() const
 {
     uint64_t value = static_cast<uint64_t>(*this);
     return static_cast<uint32_t>(value);
 }
 
-Literal::operator uint64_t() const
+inline Literal::operator uint64_t() const
 {
     const char* n = name.c_str();
     char* e;
@@ -107,7 +107,7 @@ Literal::operator uint64_t() const
     return static_cast<uint64_t>(value);
 }
 
-Literal::operator float() const
+inline Literal::operator float() const
 {
     const char* n = name.c_str();
     char* e;
@@ -119,7 +119,7 @@ Literal::operator float() const
     return value;
 }
 
-Literal::operator double() const
+inline Literal::operator double() const
 {
     const char* n = name.c_str();
     char* e;
@@ -131,7 +131,7 @@ Literal::operator double() const
     return value;
 }
 
-Literal::operator std::string() const
+inline Literal::operator std::string() const
 {
     size_t pos = 0;
 
