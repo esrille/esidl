@@ -1,6 +1,6 @@
 TESTS_ENVIRONMENT = PATH=..:$(PATH) esidl -I$(srcdir) -ent -npapi -skeleton
 
-XFAIL_TESTS = 201.idl 202.idl 203.idl 204.idl
+XFAIL_TESTS = 201.idl 202.idl 203.idl 204.idl 205.idl
 
 TESTS = \
 	1.idl  2.idl  3.idl  4.idl  5.idl                7.idl \

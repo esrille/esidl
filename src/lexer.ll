@@ -87,7 +87,6 @@ HexEscapeSequence       x{HexDigit}{2}
 UnicodeEscapeSequence   u{HexDigit}{4}
 CharacterEscapeSequence {SingleEscapeCharacter}|{NonEscapeCharacter}
 EscapeSequence          {CharacterEscapeSequence}|0|{HexEscapeSequence}|{UnicodeEscapeSequence}
-SingleStringCharacter   ([^'\\\n\r]|\\{EscapeSequence})
 DoubleStringCharacter   ([^\"\\\n\r]|\\{EscapeSequence})
 IdentifierStart         ([A-Za-z$_]|{Lu}|{Ll}|{Unicode})
 IdentifierPart          ([0-9]|{IdentifierStart}|(\\{UnicodeEscapeSequence}))
@@ -129,10 +128,6 @@ attribute           {
 boolean             {
                         stepLocation();
                         return BOOLEAN;
-                    }
-char                {
-                        stepLocation();
-                        return CHAR;
                     }
 const               {
                         stepLocation();
@@ -287,12 +282,6 @@ void                {
                         stepLocation();
                         yylval.name = strdup(yytext);
                         return INTEGER_LITERAL;
-                    }
-
-'{SingleStringCharacter}'   {
-                        stepLocation();
-                        yylval.name = strdup(yytext);
-                        return CHARACTER_LITERAL;
                     }
 
 {DecimalLiteral}    {

@@ -1,0 +1,5 @@
+module X
+{
+    // 'char' is not supported in Web IDL.
+    const char K = 'A';
+};

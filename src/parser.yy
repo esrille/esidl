@@ -66,7 +66,6 @@ int yylex();
 %token ANY
 %token ATTRIBUTE
 %token BOOLEAN
-%token CHAR
 %token CONST
 %token DOUBLE
 %token EOL
@@ -106,7 +105,6 @@ int yylex();
 
 %token <name>       IDENTIFIER
 %token <name>       INTEGER_LITERAL
-%token <name>       CHARACTER_LITERAL
 %token <name>       FLOATING_PT_LITERAL
 %token <name>       STRING_LITERAL
 %token <name>       FIXED_PT_LITERAL
@@ -133,7 +131,6 @@ int yylex();
 %type <node>        unsigned_short_int
 %type <node>        unsigned_long_int
 %type <node>        unsigned_longlong_int
-%type <node>        char_type
 %type <node>        boolean_type
 %type <node>        octet_type
 %type <node>        any_type
@@ -504,7 +501,6 @@ const_dcl :
 
 const_type :
     integer_type
-    | char_type
     | boolean_type
     | floating_pt_type
     | string_type
@@ -624,11 +620,6 @@ literal :
             $$ = new Literal($1);
             free($1);
         }
-    | CHARACTER_LITERAL
-        {
-            $$ = new Literal($1);
-            free($1);
-        }
     | FIXED_PT_LITERAL
         {
             $$ = new Literal($1);
@@ -702,7 +693,6 @@ simple_type_spec :
 base_type_spec :
     floating_pt_type
     | integer_type
-    | char_type
     | boolean_type
     | octet_type
     | any_type
@@ -826,13 +816,6 @@ unsigned_longlong_int :
     UNSIGNED LONG LONG
         {
             $$ = new Type("unsigned long long");
-        }
-    ;
-
-char_type :
-    CHAR
-        {
-            $$ = new Type("char");
         }
     ;
 
