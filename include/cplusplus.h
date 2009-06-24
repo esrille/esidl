@@ -34,7 +34,6 @@ protected:
     bool useExceptions;
 
     bool constructorMode;
-    std::string asParam;
     int optionalStage;
     int optionalCount;
 
@@ -421,16 +420,13 @@ public:
 
     virtual void at(const OpDcl* node)
     {
-        if (asParam == "")
+        if (!constructorMode)
         {
-            if (!constructorMode)
-            {
-                write("virtual ");
-            }
-            else
-            {
-                write("static ");
-            }
+            write("virtual ");
+        }
+        else
+        {
+            write("static ");
         }
 
         bool needComma = true;  // true to write "," before the 1st parameter
@@ -447,14 +443,7 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             write("int");
-            if (asParam == "")
-            {
-                write(" %s(", node->getName().c_str());
-            }
-            else
-            {
-                write(" (*%s)(", node->getName().c_str());
-            }
+            write(" %s(", node->getName().c_str());
             seq->accept(this);
             write(" %s, int %sLength", name.c_str(), name.c_str());
         }
@@ -470,14 +459,7 @@ public:
 
             write("const ");
             spec->accept(this);
-            if (asParam == "")
-            {
-                write(" %s(", node->getName().c_str());
-            }
-            else
-            {
-                write(" (*%s)(", node->getName().c_str());
-            }
+            write(" %s(", node->getName().c_str());
             write("void* %s, int %sLength", name.c_str(), name.c_str());
         }
         else if (spec->isStruct(node->getParent()))
@@ -491,14 +473,7 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             write("void");
-            if (asParam == "")
-            {
-                write(" %s(", node->getName().c_str());
-            }
-            else
-            {
-                write(" (*%s)(", asParam.c_str());
-            }
+            write(" %s(", node->getName().c_str());
             spec->accept(this);
             write("* %s", name.c_str());
         }
@@ -513,14 +488,7 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             write("void");
-            if (asParam == "")
-            {
-                write(" %s(", node->getName().c_str());
-            }
-            else
-            {
-                write(" (*%s)(", node->getName().c_str());
-            }
+            write(" %s(", node->getName().c_str());
             spec->accept(this);
             write(" %s", name.c_str());
         }
@@ -535,14 +503,7 @@ public:
             name[0] = tolower(name[0]); // XXX
 
             spec->accept(this);
-            if (asParam == "")
-            {
-                write(" %s(", node->getName().c_str());
-            }
-            else
-            {
-                write(" (*%s)(", asParam.c_str());
-            }
+            write(" %s(", node->getName().c_str());
             write("void* %s, int %sLength", name.c_str(), name.c_str());
         }
         else
@@ -560,14 +521,7 @@ public:
             {
                 spec->accept(this);
             }
-            if (asParam == "")
-            {
-                write(" %s(", node->getName().c_str());
-            }
-            else
-            {
-                write(" (*%s)(", asParam.c_str());
-            }
+            write(" %s(", node->getName().c_str());
             needComma = false;
         }
 
@@ -577,7 +531,7 @@ public:
         {
             ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
             assert(param);
-            if (asParam == "" && param->isOptional())
+            if (param->isOptional())
             {
                 ++optionalCount;
                 if (optionalStage < optionalCount)
@@ -626,7 +580,7 @@ public:
             }
         }
 
-        if (node->isVariadic() && asParam == "")
+        if (node->isVariadic())
         {
             seq->accept(this);
             write(" %s = 0, int %sLength = 0", node->getName().c_str() , node->getName().c_str());
