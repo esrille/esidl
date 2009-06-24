@@ -168,6 +168,7 @@ public:
         case kDouble:
         case kString:
         case kAny:
+        case kPointer:
             return ++info;
         case kBoxedValueType:
         case kSequence:
