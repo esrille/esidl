@@ -16,6 +16,7 @@
  */
 
 #include "cplusplus.h"
+#include "info.h"
 
 class Cxx : public CPlusPlus
 {
@@ -127,6 +128,20 @@ public:
             unindent();
             writeln("}");
 
+            writeln("static const char* info()");
+            writeln("{");
+            indent();
+                writetab();
+                write("static const char* const info = ");
+                indent();
+                Info info(this, moduleName);
+                const_cast<Interface*>(node)->accept(&info);
+                write(";\n");
+                unindent();
+                writeln("return info;");
+            unindent();
+            writeln("}");
+
             if (Interface* constructor = node->getConstructor())
             {
                 // Process constructors.
@@ -223,7 +238,7 @@ public:
 
     virtual void at(const Member* node)
     {
-        if (node->isTypedef())
+        if (node->isTypedef(node->getParent()))
         {
             write("typedef ");
         }

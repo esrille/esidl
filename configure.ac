@@ -6,5 +6,5 @@ AC_PROG_YACC
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_LEX
-AC_CONFIG_FILES(Makefile testsuite/Makefile)
+AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile)
 AC_OUTPUT

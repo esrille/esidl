@@ -8,7 +8,7 @@ esidl_SOURCES = src/driver.cpp
 
 esidl2_SOURCES = es/ent.h \
 	src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
-	include/utf.h include/formatter.h \
+	include/utf.h include/formatter.h include/info.h include/reflect.h \
 	src/print.cpp src/cxx.cpp \
 	src/ent.cpp src/skeleton.cpp \
 	include/expr.h include/string.h include/cplusplus.h

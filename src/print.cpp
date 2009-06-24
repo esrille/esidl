@@ -210,7 +210,7 @@ public:
 
     virtual void at(const Member* node)
     {
-        if (node->isTypedef())
+        if (node->isTypedef(node->getParent()))
         {
             printf("typedef ");
         }

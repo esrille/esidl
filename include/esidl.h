@@ -438,6 +438,11 @@ public:
         return compare("double", scope) == 0;
     }
 
+    virtual Member* isTypedef(const Node* scope) const
+    {
+        return 0;
+    }
+
     virtual SequenceType* isSequence(const Node* scope)
     {
         return 0;
@@ -664,6 +669,16 @@ public:
             return 0;
         }
         return node->isArray(node->getParent());
+    }
+
+    virtual Member* isTypedef(const Node* scope) const
+    {
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
+        return node->isTypedef(node->getParent());
     }
 
     virtual void accept(Visitor* visitor);
@@ -1088,11 +1103,6 @@ public:
         spec = node;
     }
 
-    bool isTypedef() const
-    {
-        return type;
-    }
-
     void setTypedef(bool type)
     {
         this->type = type;
@@ -1150,6 +1160,11 @@ public:
             return 0;
         }
         return spec->isArray(scope);
+    }
+
+    virtual Member* isTypedef(const Node* scope) const
+    {
+        return type ? const_cast<Member*>(this) : 0;
     }
 
     virtual void accept(Visitor* visitor);

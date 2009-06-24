@@ -596,7 +596,7 @@ Node* ScopedName::search(const Node* scope) const
     {
         if (Member* member = dynamic_cast<Member*>(resolved))
         {
-            if (member->isTypedef() && !member->isArray(member->getParent()))
+            if (member->isTypedef(member->getParent()) && !member->isArray(member->getParent()))
             {
                 if (ScopedName* node = dynamic_cast<ScopedName*>(member->getSpec()))
                 {
