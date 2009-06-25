@@ -336,6 +336,10 @@ public:
                     write(");");
                     writeln("");
                 unindent();
+                writeln("else");
+                indent();
+                    writeln("return 0;");
+                unindent();
             unindent();
             writeln("}");
         }
