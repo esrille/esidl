@@ -324,7 +324,7 @@ public:
                 writeln("if (constructor)");
                 indent();
                     writetab();
-                    write("constructor->createInstance(");
+                    write("return constructor->createInstance(");
                     for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
                     {
                         if (i != node->begin())
