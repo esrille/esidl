@@ -93,8 +93,8 @@ public:
     static const char kExtends = 'X';
     static const char kConstant = 'C';
     static const char kOperation = 'F';
-    static const char kGetter = 'S';
-    static const char kSetter = 'G';
+    static const char kGetter = 'G';
+    static const char kSetter = 'S';
     static const char kConstructor = 'N';
     static const char kException = 'E';
     static const char kRaises = 'R';
@@ -469,7 +469,7 @@ public:
             // skip R
             while (*p == kRaises)
             {
-                p = skipName(p);
+                p = skipName(++p);
             }
             return p;
         }
