@@ -126,7 +126,6 @@ public:
             {
                 name = resolved->getQualifiedName();
                 name = getInterfaceName(name);
-                name = getScopedName(moduleName, name);
             }
             write("%zu%s", name.length(), name.c_str());
         }
@@ -285,6 +284,7 @@ public:
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
 
         write("%c1%c", Reflect::kSetter, Reflect::kVoid);
+        writeName(node);
         if (seq)
         {
             seq->accept(this);
@@ -297,7 +297,6 @@ public:
         {
             spec->accept(this);
         }
-        writeName(node);
 
         if (node->getSetRaises())
         {
@@ -456,15 +455,12 @@ public:
                 Node* resolved = resolve(currentNode, name);
                 assert(resolved);
                 name = resolved->getQualifiedName();
-                if (name != Node::getBaseObjectName())
-                {
-                    write("\n");
-                    writetab();
-                    write("\"%c", Reflect::kExtends);
-                    name = getInterfaceName(name);
-                    write("%zu%s", name.length(), name.c_str());
-                    write("\"");
-                }
+                write("\n");
+                writetab();
+                write("\"%c", Reflect::kExtends);
+                name = getInterfaceName(name);
+                write("%zu%s", name.length(), name.c_str());
+                write("\"");
             }
         }
 
