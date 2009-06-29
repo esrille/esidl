@@ -67,5 +67,9 @@ int main()
     {
         return 1;
     }
+    if (!testMethod("F1v8setFocusp5focus", Reflect::kOperation, Reflect::kVoid, "setFocus", 1))
+    {
+        return 1;
+    }
     return 0;
 }

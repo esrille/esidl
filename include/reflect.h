@@ -123,6 +123,7 @@ public:
         case kSequence:
         case kVariadic:
         case kArray:
+        case kPointer:
             return true;
         default:
             return false;
