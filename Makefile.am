@@ -22,10 +22,8 @@ entdump_SOURCES = src/entdump.cpp
 AM_YFLAGS = -d -v -t
 
 AM_CPPFLAGS = \
-	-I$(srcdir)/include \
-	-I$(srcdir)/src \
-	-I- \
-	-I$(srcdir)
+	-iquote $(srcdir)/include \
+	-iquote $(srcdir)/src
 
 clean-local:
 	-rm -f $(BUILT_SOURCES) parser.output

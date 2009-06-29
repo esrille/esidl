@@ -176,7 +176,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = \
-	-I $(srcdir)/../../include
+	-iquote $(srcdir)/../../include
 
 param_SOURCES = param.cpp 
 method_SOURCES = method.cpp

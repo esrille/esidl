@@ -236,10 +236,8 @@ esidl2_CXXFLAGS = -D YYERROR_VERBOSE
 entdump_SOURCES = src/entdump.cpp
 AM_YFLAGS = -d -v -t
 AM_CPPFLAGS = \
-	-I$(srcdir)/include \
-	-I$(srcdir)/src \
-	-I- \
-	-I$(srcdir)
+	-iquote $(srcdir)/include \
+	-iquote $(srcdir)/src
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive

@@ -1,5 +1,5 @@
 AM_CPPFLAGS = \
-	-I $(srcdir)/../../include
+	-iquote $(srcdir)/../../include
 
 TESTS = param method constant interface sequence array
 
