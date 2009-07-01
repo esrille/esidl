@@ -186,18 +186,6 @@ public:
         }
     }
 
-    virtual void at(const NativeType* node)
-    {
-        if (node->getName() == "void_pointer")
-        {
-            write("void*");
-        }
-        else
-        {
-            write("%s", node->getName().c_str());
-        }
-    }
-
     virtual void at(const BinaryExpr* node)
     {
         node->getLeft()->accept(this);

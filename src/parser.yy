@@ -75,7 +75,6 @@ int yylex();
 %token FLOAT
 %token GETRAISES
 %token IN
-%token INOUT
 %token INTERFACE
 %token LONG
 %token MODULE
@@ -84,7 +83,6 @@ int yylex();
 %token OBJECT
 %token OCTET
 %token ONEWAY
-%token OUT
 %token RAISES
 %token READONLY
 %token SETRAISES
@@ -503,7 +501,6 @@ const_type :
     integer_type
     | boolean_type
     | floating_pt_type
-    | string_type
     | fixed_pt_const_type
     | scoped_name
     | octet_type
@@ -1002,17 +999,13 @@ param_dcl :
     ;
 
 param_attribute :
-    IN
+    /* empty */
         {
             $$ = ParamDcl::AttrIn;
         }
-    | OUT
+    | IN
         {
-            $$ = ParamDcl::AttrOut;
-        }
-    | INOUT
-        {
-            $$ = ParamDcl::AttrInOut;
+            $$ = ParamDcl::AttrIn;
         }
     ;
 

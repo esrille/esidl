@@ -664,7 +664,12 @@ std::string getIncludedName(const std::string& header)
             included[i] = '_';
         }
     }
-    return included + "_INCLUDED";
+    included += "_INCLUDED";
+    if (isdigit(included[0]))
+    {
+        included = "NO" + included;
+    }
+    return included;
 }
 
 void Interface::processExtendedAttributes(OpDcl* op)
@@ -772,7 +777,7 @@ int main(int argc, char* argv[])
 {
     bool ent = false;
     bool skeleton = false;
-    bool npapi = false;
+    bool generic = false;
     bool isystem = false;
     bool useExceptions = true;
     const char* stringTypeName = "char*";   // C++ string type name to be used
@@ -816,9 +821,9 @@ int main(int argc, char* argv[])
             {
                 skeleton = true;
             }
-            else if (strcmp(argv[i], "-npapi") == 0)
+            else if (strcmp(argv[i], "-template") == 0)
             {
-                npapi = true;
+                generic = true;
             }
             else if (strcmp(argv[i], "-fexceptions") == 0)
             {
@@ -910,18 +915,13 @@ int main(int argc, char* argv[])
         printSkeleton(getFilename(), isystem);
         printf("-----------------------------------\n");
     }
-    if (npapi)
+    if (generic)
     {
-        printNpapi(getFilename(), isystem);
+        printTemplate(getFilename(), stringTypeName, useExceptions, isystem);
         printf("-----------------------------------\n");
     }
 
     delete node;
 
     return EXIT_SUCCESS;
-}
-
-void printNpapi(const char* idlFilename, bool isystem) __attribute__ ((weak));
-void printNpapi(const char* idlFilename, bool isystem)
-{
 }

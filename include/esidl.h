@@ -1718,7 +1718,7 @@ extern void print();
 extern void printCxx(const std::string& filename, const char* stringTypeName, bool useExceptions);
 extern void printEnt(const std::string& filename);
 extern void printSkeleton(const char* idlFilename, bool isystem);
-extern void printNpapi(const char* idlFilename, bool isystem);
+extern void printTemplate(const char* idlFilename, const char* stringTypeName, bool useExceptions, bool isystem);
 
 extern std::string getOutputFilename(const char* input, const char* suffix);
 extern std::string getIncludedName(const std::string& header);

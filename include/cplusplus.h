@@ -99,6 +99,18 @@ protected:
         currentNode = saved;
     }
 
+    std::string getBufferName(const Node* spec)
+    {
+        std::string name = spec->getName();
+        size_t pos = name.rfind("::");
+        if (pos != std::string::npos)
+        {
+            name = name.substr(pos + 2);
+        }
+        name[0] = tolower(name[0]);
+        return name;
+    }
+
 public:
     CPlusPlus(FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
         Formatter(file),
@@ -221,13 +233,7 @@ public:
             spec = &replaceable;
         }
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-        std::string name = node->getName();
-        size_t pos = name.rfind("::");
-        if (pos != std::string::npos)
-        {
-            name = name.substr(pos + 2);
-        }
-        name[0] = tolower(name[0]); // XXX
+        std::string name = getBufferName(node);
 
         write("virtual ");
         if (seq)
@@ -241,12 +247,6 @@ public:
             write("const ", cap.c_str());
             spec->accept(this);
             write(" get%s(void* %s, int %sLength)", cap.c_str(), name.c_str(), name.c_str());
-        }
-        else if (spec->isStruct(node->getParent()))
-        {
-            write("void get%s(", cap.c_str());
-            spec->accept(this);
-            write("* %s)", name.c_str());
         }
         else if (spec->isArray(node->getParent()))
         {
@@ -334,13 +334,7 @@ public:
             spec = forwards->getSpec();
         }
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-        std::string name = node->getName();
-        size_t pos = name.rfind("::");
-        if (pos != std::string::npos)
-        {
-            name = name.substr(pos + 2);
-        }
-        name[0] = tolower(name[0]); // XXX
+        std::string name = getBufferName(node);
 
         // setter
         write("virtual ");
@@ -355,12 +349,6 @@ public:
             write("void set%s(const ", cap.c_str());
             spec->accept(this);
             write(" %s)", name.c_str());
-        }
-        else if (spec->isStruct(node->getParent()))
-        {
-            write("void set%s(const ", cap.c_str());
-            spec->accept(this);
-            write("* %s)", name.c_str());
         }
         else if (spec->isArray(node->getParent()) || spec->isAny(node->getParent()))
         {
@@ -434,13 +422,7 @@ public:
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         if (seq)
         {
-            std::string name = spec->getName();
-            size_t pos = name.rfind("::");
-            if (pos != std::string::npos)
-            {
-                name = name.substr(pos + 2);
-            }
-            name[0] = tolower(name[0]); // XXX
+            std::string name = getBufferName(spec);
 
             write("int");
             write(" %s(", node->getName().c_str());
@@ -449,43 +431,16 @@ public:
         }
         else if (spec->isString(node->getParent()))
         {
-            std::string name = spec->getName();
-            size_t pos = name.rfind("::");
-            if (pos != std::string::npos)
-            {
-                name = name.substr(pos + 2);
-            }
-            name[0] = tolower(name[0]); // XXX
+            std::string name = getBufferName(spec);
 
             write("const ");
             spec->accept(this);
             write(" %s(", node->getName().c_str());
             write("void* %s, int %sLength", name.c_str(), name.c_str());
         }
-        else if (spec->isStruct(node->getParent()))
-        {
-            std::string name = spec->getName();
-            size_t pos = name.rfind("::");
-            if (pos != std::string::npos)
-            {
-                name = name.substr(pos + 2);
-            }
-            name[0] = tolower(name[0]); // XXX
-
-            write("void");
-            write(" %s(", node->getName().c_str());
-            spec->accept(this);
-            write("* %s", name.c_str());
-        }
         else if (spec->isArray(node->getParent()))
         {
-            std::string name = spec->getName();
-            size_t pos = name.rfind("::");
-            if (pos != std::string::npos)
-            {
-                name = name.substr(pos + 2);
-            }
-            name[0] = tolower(name[0]); // XXX
+            std::string name = getBufferName(spec);
 
             write("void");
             write(" %s(", node->getName().c_str());
@@ -494,13 +449,7 @@ public:
         }
         else if (spec->isAny(node->getParent()))
         {
-            std::string name = spec->getName();
-            size_t pos = name.rfind("::");
-            if (pos != std::string::npos)
-            {
-                name = name.substr(pos + 2);
-            }
-            name[0] = tolower(name[0]); // XXX
+            std::string name = getBufferName(spec);
 
             spec->accept(this);
             write(" %s(", node->getName().c_str());
@@ -569,15 +518,11 @@ public:
             seq = &variadicSequence;
         }
 
-        if (node->isInput())
+        if (seq && !seq->getSpec()->isInterface(currentNode) ||
+            spec->isString(node->getParent()) ||
+            spec->isArray(node->getParent()))
         {
-            if (seq && !seq->getSpec()->isInterface(currentNode) ||
-                spec->isString(node->getParent()) ||
-                spec->isStruct(node->getParent()) ||
-                spec->isArray(node->getParent()))
-            {
-                write("const ");
-            }
+            write("const ");
         }
 
         if (node->isVariadic())
@@ -589,11 +534,6 @@ public:
         {
             seq->accept(this);
             write(" %s, int %sLength", node->getName().c_str() , node->getName().c_str());
-        }
-        else if (spec->isStruct(node->getParent()))
-        {
-            spec->accept(this);
-            write("* %s", node->getName().c_str());
         }
         else if (spec->isArray(node->getParent()))
         {
@@ -615,22 +555,7 @@ public:
             {
                 spec->accept(this);
             }
-            if (!spec->isString(node->getParent()))
-            {
-                if (!node->isInput())
-                {
-                    write("*");
-                }
-                write(" %s", node->getName().c_str());
-            }
-            else
-            {
-                write(" %s", node->getName().c_str());
-                if (!node->isInput())
-                {
-                    write(", int %sLength", node->getName().c_str());
-                }
-            }
+            write(" %s", node->getName().c_str());
         }
     }
 
@@ -652,6 +577,18 @@ public:
             }
         }
         return qualifiedName;
+    }
+
+    virtual void at(const NativeType* node)
+    {
+        if (node->getName() == "void_pointer")
+        {
+            write("void*");
+        }
+        else
+        {
+            write("%s", node->getName().c_str());
+        }
     }
 };
 

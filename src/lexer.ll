@@ -165,10 +165,6 @@ in                  {
                         stepLocation();
                         return IN;
                     }
-inout               {
-                        stepLocation();
-                        return INOUT;
-                    }
 interface           {
                         stepLocation();
                         return INTERFACE;
@@ -197,10 +193,6 @@ octet               {
 oneway              {
                         stepLocation();
                         return ONEWAY;
-                    }
-out                 {
-                        stepLocation();
-                        return OUT;
                     }
 raises              {
                         stepLocation();

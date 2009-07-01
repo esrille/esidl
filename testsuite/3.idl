@@ -15,8 +15,6 @@ module X
         const float H = 1.23 * 2 /2 - 1;
         const double I = 2.34 * 2 / 2 + 1;
 
-        const string M = "ABC";
-
         const boolean O = TRUE | FALSE;
         const boolean P = TRUE & FALSE;
         const boolean Q = TRUE ^ FALSE;
