@@ -1259,6 +1259,11 @@ public:
         attr |= Stringifies;
     }
 
+    bool isStringifies() const
+    {
+        return attr & Stringifies;
+    }
+
     void processExtendedAttributes();
 
     uint32_t getAttr() const

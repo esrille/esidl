@@ -22,6 +22,11 @@
 bool testMethod(const char* info, char type, char returnType, const char* name, unsigned paramCount)
 {
     Reflect::Method method(info);
+    printf("[%s %s %s %s]\n",
+           method.isSpecialGetter() ? "getter" : "",
+           method.isSpecialSetter() ? "setter" : "",
+           method.isSpecialCreator() ? "creator" : "",
+           method.isSpecialDeleter() ? "deleter" : "");
     printf("%c %c '%s' %d",
            method.getType(), method.getReturnType().getType(), method.getName().c_str(),
            method.getParameterCount());
@@ -49,6 +54,10 @@ bool testMethod(const char* info, char type, char returnType, const char* name, 
     return true;
 }
 
+bool testSpecial(const char* info)
+{
+}
+
 int main()
 {
     if (!testMethod("F0v3foo", Reflect::kOperation, Reflect::kVoid, "foo", 0))
@@ -68,6 +77,31 @@ int main()
         return 1;
     }
     if (!testMethod("F1v8setFocusp5focus", Reflect::kOperation, Reflect::kVoid, "setFocus", 1))
+    {
+        return 1;
+    }
+
+    if (!testMethod("Fg1A10getByIndexm5index", Reflect::kOperation, Reflect::kAny, "getByIndex", 1))
+    {
+        return 1;
+    }
+    if (!testMethod("Fs2v10setByIndexm5indexA5value", Reflect::kOperation, Reflect::kVoid, "setByIndex", 2))
+    {
+        return 1;
+    }
+    if (!testMethod("Fd1v13removeByIndexm5index", Reflect::kOperation, Reflect::kVoid, "removeByIndex", 1))
+    {
+        return 1;
+    }
+    if (!testMethod("Fg1A3getD4name", Reflect::kOperation, Reflect::kAny, "get", 1))
+    {
+        return 1;
+    }
+    if (!testMethod("Fs2v3setD4nameA5value", Reflect::kOperation, Reflect::kVoid, "set", 2))
+    {
+        return 1;
+    }
+    if (!testMethod("Fd1v6removeD4name", Reflect::kOperation, Reflect::kVoid, "remove", 1))
     {
         return 1;
     }

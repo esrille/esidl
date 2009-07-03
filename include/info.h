@@ -233,7 +233,13 @@ public:
         }
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
 
-        write("%c0", Reflect::kGetter);
+        write("%c", Reflect::kGetter);
+        if (node->isStringifies())
+        {
+            write("%c", Reflect::kSpecialStringifier);
+        }
+        write("0");
+
         if (seq)
         {
             seq->accept(this);
@@ -340,6 +346,24 @@ public:
         {
             write("%c", Reflect::kOperation);
         }
+
+        if (node->getAttr() & (OpDcl::IndexGetter | OpDcl::NameGetter))
+        {
+            write("%c", Reflect::kSpecialGetter);
+        }
+        else if (node->getAttr() & (OpDcl::IndexSetter | OpDcl::NameSetter))
+        {
+            write("%c", Reflect::kSpecialSetter);
+        }
+        else if (node->getAttr() & (OpDcl::IndexCreator | OpDcl::NameCreator))
+        {
+            write("%c", Reflect::kSpecialCreator);
+        }
+        else if (node->getAttr() & (OpDcl::IndexDeleter | OpDcl::NameDeleter))
+        {
+            write("%c", Reflect::kSpecialDeleter);
+        }
+
         write("%u", node->getParamCount(optionalStage));
 
         Node* spec = getSpec(node);

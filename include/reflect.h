@@ -35,11 +35,20 @@
  *    [ operation, setter, getter, constructor, constant ]*
  *
  *  extends -> X name
- *  operation -> F digits type name (type name)* raises*   // digits represent the # of parameters
- *  setter -> S 1 v name type raises*
- *  getter -> G 0 type name raises*
+ *  operation -> F special* digits type name (type name)* raises*   // digits represent the # of parameters
+ *  setter -> S special* 1 v name type raises*
+ *  getter -> G special* 0 type name raises*
  *  constructor -> N digits type name (type name)* raises* // digits represent the # of parameters
  *  constant  -> C name value ws  // value represents a double value parseable by strtold()
+ *
+ *  special ->
+ *    g: getter
+ *    s: setter
+ *    c: creator
+ *    d: deleter
+ *    f: caller
+ *    t: stringifier
+ *    o: omittable
  *
  *  type ->
  *    A: any
@@ -98,9 +107,20 @@ public:
     static const char kConstructor = 'N';
     static const char kException = 'E';
     static const char kRaises = 'R';
+    // Special
+    static const char kSpecialGetter = 'g';
+    static const char kSpecialSetter = 's';
+    static const char kSpecialCreator = 'c';
+    static const char kSpecialDeleter = 'd';
+    static const char kSpecialCaller = 'f';
+    static const char kSpecialStringifier = 't';
+    static const char kSpecialOmittable = 'o';
+
     // Obsolete
     static const char kArray = 'Y';
     static const char kPointer = 'p';
+
+    class Interface;
 
     static bool isParam(const char* info)
     {
@@ -307,6 +327,67 @@ public:
         {
             return (getType() == kString) ? true : false;
         }
+
+        /**
+         * Gets the size of this type.
+         */
+        int getSize() const
+        {
+            switch (getType())
+            {
+            case kVoid:
+                return 0;
+            case kBoolean:
+                return sizeof(bool);
+            case kOctet:
+                return sizeof(uint8_t);
+            case kShort:
+            case kUnsignedShort:
+                return sizeof(uint16_t);
+            case kLong:
+            case kUnsignedLong:
+                return sizeof(uint32_t);
+            case kLongLong:
+            case kUnsignedLongLong:
+                return sizeof(uint64_t);
+            case kFloat:
+                return sizeof(float);
+            case kDouble:
+                return sizeof(double);
+            case kPointer:
+            case kObject:
+                return sizeof(void*);
+            case kArray:
+                {
+                    Array a(info);
+                    return a.getType().getSize() * a.getRank();
+                }
+                break;
+            case kSequence:
+                {
+                    Sequence seq(info);
+                    return seq.getType().getSize();
+                }
+                break;
+            case kBoxedValueType:
+            default:
+                return 0;
+            }
+        }
+
+        /**
+         * Gets the interface of this type.
+         */
+        const std::string getQualifiedName() const
+        {
+            if (!isObject())
+            {
+                return "";
+            }
+            unsigned length;
+            const char* name = skipDigits(info + 1, &length);
+            return std::string(name, length);
+        }
     };
 
     /**
@@ -425,7 +506,7 @@ public:
          */
         const std::string getName() const
         {
-            const char* name = skipType(skipDigits(info + 1));
+            const char* name = skipType(skipDigits(skipSpecial(info + 1)));
             unsigned length;
             name = skipDigits(name, &length);
             return std::string(name, length);
@@ -436,7 +517,7 @@ public:
          */
         Type getReturnType() const
         {
-            return Type(skipDigits(info + 1));
+            return Type(skipDigits(skipSpecial(info + 1)));
         }
 
         /**
@@ -445,7 +526,7 @@ public:
         unsigned getParameterCount() const
         {
             unsigned paramCount;
-            skipDigits(info + 1, &paramCount);
+            skipDigits(skipSpecial(info + 1), &paramCount);
             return paramCount;
         }
 
@@ -454,12 +535,12 @@ public:
          */
         Parameter listParameter() const
         {
-            return Parameter(skipDigits(info + 1));
+            return Parameter(skipDigits(skipSpecial(info + 1)));
         }
 
         static const char* skip(const char* info)
         {
-            const char* p = info + 1;
+            const char* p = skipSpecial(info + 1);
             unsigned count;
             p = skipDigits(p, &count);
             ++count;  // for name
@@ -470,32 +551,66 @@ public:
             // skip R
             while (*p == kRaises)
             {
-                p = skipName(++p);
+                p = skipName(p + 1);
             }
             return p;
         }
 
-#if 0
-        bool isIndexGetter() const
+        static const char* skipSpecial(const char* info)
         {
-            return method->isIndexGetter();
+            while (*info && !std::isdigit(*info))
+            {
+                ++info;
+            }
+            return info;
         }
 
-        bool isIndexSetter() const
+        bool hasSpecial(char special) const
         {
-            return method->isIndexSetter();
+            for (const char* p = info + 1; *p && !std::isdigit(*p); ++p)
+            {
+                if (*p == special)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
-        bool isNameGetter() const
+        bool isSpecialGetter() const
         {
-            return method->isNameGetter();
+            return hasSpecial(kSpecialGetter);
         }
 
-        bool isNameSetter() const
+        bool isSpecialSetter() const
         {
-            return method->isNameSetter();
+            return hasSpecial(kSpecialSetter);
         }
-#endif
+
+        bool isSpecialCreator() const
+        {
+            return hasSpecial(kSpecialCreator);
+        }
+
+        bool isSpecialDeleter() const
+        {
+            return hasSpecial(kSpecialDeleter);
+        }
+
+        bool isSpecialCaller() const
+        {
+            return hasSpecial(kSpecialCaller);
+        }
+
+        bool isSpecialStringifier() const
+        {
+            return hasSpecial(kSpecialStringifier);
+        }
+
+        bool isSpecialOmittable() const
+        {
+            return hasSpecial(kSpecialOmittable);
+        }
     };
 
     /**
@@ -567,6 +682,7 @@ public:
         int methodCount;
         int constantCount;
         int constructorCount;
+        int inheritedMethodCount;
 
         static const char* step(const char* info)
         {
@@ -598,7 +714,11 @@ public:
          */
         Interface() :
             info(0),
-            qualifiedName(0)
+            qualifiedName(0),
+            methodCount(0),
+            constantCount(0),
+            constructorCount(0),
+            inheritedMethodCount(0)
         {
         }
 
@@ -612,7 +732,8 @@ public:
             qualifiedName(qualifiedName),
             methodCount(0),
             constantCount(0),
-            constructorCount(0)
+            constructorCount(0),
+            inheritedMethodCount(0)
         {
             // TODO: Validate info and qualifiedName
             const char* p = info;
@@ -662,7 +783,11 @@ public:
          */
         Interface(const Interface& interface) :
             info(interface.info),
-            qualifiedName(interface.qualifiedName)
+            qualifiedName(interface.qualifiedName),
+            methodCount(interface.methodCount),
+            constantCount(interface.constantCount),
+            constructorCount(interface.constructorCount),
+            inheritedMethodCount(interface.inheritedMethodCount)
         {
         }
 
@@ -710,6 +835,16 @@ public:
             unsigned length;
             super = skipDigits(super + 1, &length);
             return std::string(super, length);
+        }
+
+        const char* getQualifiedSuperName(unsigned* length) const
+        {
+            const char* super = skipName(info + 1);
+            if (*super != kExtends)
+            {
+                return 0;
+            }
+            return skipDigits(super + 1, length);
         }
 
         /**
@@ -806,6 +941,20 @@ public:
                 p = step(p);
             }
             return Method();
+        }
+
+        /**
+         * Gets the number of methods in this interface.
+         * @return the method count excluding super class methods.
+         */
+        unsigned getInheritedMethodCount() const
+        {
+            return inheritedMethodCount;
+        }
+
+        void setInheritedMethodCount(unsigned count)
+        {
+            inheritedMethodCount = count;
         }
     };
 
