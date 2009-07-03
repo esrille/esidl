@@ -54,10 +54,6 @@ bool testMethod(const char* info, char type, char returnType, const char* name, 
     return true;
 }
 
-bool testSpecial(const char* info)
-{
-}
-
 int main()
 {
     if (!testMethod("F0v3foo", Reflect::kOperation, Reflect::kVoid, "foo", 0))
