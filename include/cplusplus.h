@@ -111,6 +111,11 @@ protected:
         return name;
     }
 
+    bool hasCustomStringType() const
+    {
+        return stringTypeName != "char*";
+    }
+
 public:
     CPlusPlus(FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
         Formatter(file),
@@ -242,7 +247,7 @@ public:
             seq->accept(this);
             write(" %s, int %sLength)", name.c_str(), name.c_str());
         }
-        else if (spec->isString(node->getParent()))
+        else if (!hasCustomStringType() && spec->isString(node->getParent()))
         {
             write("const ", cap.c_str());
             spec->accept(this);
@@ -429,7 +434,7 @@ public:
             seq->accept(this);
             write(" %s, int %sLength", name.c_str(), name.c_str());
         }
-        else if (spec->isString(node->getParent()))
+        else if (!hasCustomStringType() && spec->isString(node->getParent()))
         {
             std::string name = getBufferName(spec);
 
