@@ -71,7 +71,7 @@ public:
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList);
 
-        write("template<class O, Any invoke(O, unsigned, unsigned, Any*)>\n");
+        write("template<class O, Any invoke(O&, unsigned, unsigned, Any*)>\n");
         writetab();
         write("class %s_Proxy : public Proxy_Impl<O", node->getName().c_str());
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
@@ -231,6 +231,14 @@ public:
                 writeln("return invoke(this->object, %u, %u, param);",
                         methodNumber, paramCount);
             }
+            else if (spec->isInterface(node))
+            {
+                writetab();
+                write("return static_cast<");
+                writeSpec(node);
+                write(">(static_cast<Object*>(invoke(this->object, %u, %u, param)));\n",
+                      methodNumber, paramCount);
+            }
             else
             {
                 writetab();
@@ -381,6 +389,14 @@ public:
             {
                 writeln("return invoke(this->object, %u, %u, param);",
                         methodNumber, paramCount);
+            }
+            else if (spec->isInterface(node))
+            {
+                writetab();
+                write("return static_cast<");
+                writeSpec(node);
+                write(">(static_cast<Object*>(invoke(this->object, %u, %u, param)));\n",
+                      methodNumber, paramCount);
             }
             else
             {
