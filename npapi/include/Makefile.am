@@ -47,7 +47,7 @@ EXTRA_DIST = \
 	w3c/COPYRIGHT.html
 
 clean-local:
-	rm -rf *.h w3c
+	rm -rf object.h w3c
 
 dist-hook:
 	rm -rf $(distdir)/object.h $(distdir)/w3c/*.h
