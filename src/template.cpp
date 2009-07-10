@@ -169,6 +169,14 @@ public:
         }
         currentNode = node;
 
+        // createInstance
+        writeln("static %s* createInstance(O object)", node->getName().c_str());
+        writeln("{");
+        indent();
+            writeln("return new %s_Proxy(object);", node->getName().c_str());
+        unindent();
+        writeln("}");
+
         unindent();
         writetab();
         write("}");

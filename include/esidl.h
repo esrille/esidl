@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef NINTENDO_ESIDL_H_INCLUDED
-#define NINTENDO_ESIDL_H_INCLUDED
+#ifndef ESIDL_H_INCLUDED
+#define ESIDL_H_INCLUDED
 
 #include <assert.h>
 #include <string.h>
@@ -1732,4 +1732,4 @@ extern Node* resolve(const Node* scope, std::string name);
 
 extern std::string getScopedName(std::string moduleName, std::string absoluteName);
 
-#endif  // NINTENDO_ESIDL_H_INCLUDED
+#endif  // ESIDL_H_INCLUDED

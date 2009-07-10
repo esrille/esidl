@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef GOOGLE_ESIDL_INFO_H_INCLUDED
-#define GOOGLE_ESIDL_INFO_H_INCLUDED
+#ifndef ESIDL_INFO_H_INCLUDED
+#define ESIDL_INFO_H_INCLUDED
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -633,4 +633,4 @@ public:
     }
 };
 
-#endif  // GOOGLE_ESIDL_INFO_H_INCLUDED
+#endif  // ESIDL_INFO_H_INCLUDED

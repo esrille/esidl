@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef NINTENDO_ESIDL_CPLUSPLUS_H_INCLUDED
-#define NINTENDO_ESIDL_CPLUSPLUS_H_INCLUDED
+#ifndef ESIDL_CPLUSPLUS_H_INCLUDED
+#define ESIDL_CPLUSPLUS_H_INCLUDED
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -597,4 +597,4 @@ public:
     }
 };
 
-#endif  // NINTENDO_ESIDL_CPLUSPLUS_H_INCLUDED
+#endif  // ESIDL_CPLUSPLUS_H_INCLUDED

@@ -21,7 +21,7 @@
 #include <new>
 #include <es/ent.h>
 #include "esidl.h"
-#include "string.h"
+#include "stringOffsetter.h"
 #include "expr.h"
 
 class TypeOffsetter : public Visitor

@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef NINTENDO_ESIDL_STRING_H_INCLUDED
-#define NINTENDO_ESIDL_STRING_H_INCLUDED
+#ifndef ESIDL_STRING_H_INCLUDED
+#define ESIDL_STRING_H_INCLUDED
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -113,4 +113,4 @@ public:
     }
 };
 
-#endif  // NINTENDO_ESIDL_STRING_H_INCLUDED
+#endif  // ESIDL_STRING_H_INCLUDED

@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef NINTENDO_ESIDL_FORMATTER_H_INCLUDED
-#define NINTENDO_ESIDL_FORMATTER_H_INCLUDED
+#ifndef ESIDL_FORMATTER_H_INCLUDED
+#define ESIDL_FORMATTER_H_INCLUDED
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -80,4 +80,4 @@ public:
     }
 };
 
-#endif  // NINTENDO_ESIDL_FORMATTER_H_INCLUDED
+#endif  // ESIDL_FORMATTER_H_INCLUDED

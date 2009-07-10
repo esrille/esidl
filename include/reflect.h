@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef GOOGLE_ESIDL_REFLECT_H_INCLUDED
-#define GOOGLE_ESIDL_REFLECT_H_INCLUDED
+#ifndef ESIDL_REFLECT_H_INCLUDED
+#define ESIDL_REFLECT_H_INCLUDED
 
 #include <cctype>
 #include <cstring>
@@ -115,6 +115,11 @@ public:
     static const char kSpecialCaller = 'f';
     static const char kSpecialStringifier = 't';
     static const char kSpecialOmittable = 'o';
+
+    static const char kUndefinedIsNull = 'n';
+    static const char kUndefinedIsEmpty = 'e';
+    static const char kNullIsNull = 'N';
+    static const char kNullIsEmpty = 'E';
 
     // Obsolete
     static const char kArray = 'Y';
@@ -1049,5 +1054,5 @@ public:
     };
 };
 
-#endif  // #ifndef GOOGLE_ESIDL_REFLECT_H_INCLUDED
+#endif  // ESIDL_REFLECT_H_INCLUDED
 

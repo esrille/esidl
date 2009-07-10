@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef NINTENDO_ESIDL_UTF_H_INCLUDED
-#define NINTENDO_ESIDL_UTF_H_INCLUDED
+#ifndef ESIDL_UTF_H_INCLUDED
+#define ESIDL_UTF_H_INCLUDED
 
 #include <ctype.h>
 #include <string>
@@ -242,4 +242,4 @@ inline std::string unescape(const std::string s, size_t pos, size_t n)
     return value;
 }
 
-#endif  // NINTENDO_ESIDL_UTF_H_INCLUDED
+#endif  // ESIDL_UTF_H_INCLUDED

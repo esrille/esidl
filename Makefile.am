@@ -1,4 +1,4 @@
-SUBDIRS = . testsuite
+SUBDIRS = . testsuite npapi
 
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 
@@ -11,7 +11,7 @@ esidl2_SOURCES = es/ent.h \
 	include/utf.h include/formatter.h include/info.h include/reflect.h \
 	src/print.cpp src/cxx.cpp \
 	src/ent.cpp src/skeleton.cpp src/template.cpp \
-	include/expr.h include/string.h include/cplusplus.h
+	include/expr.h include/stringOffsetter.h include/cplusplus.h
 
 esidl2-cxx.$(OBJEXT) : Makefile
 
@@ -26,7 +26,7 @@ AM_CPPFLAGS = \
 	-iquote $(srcdir)/src
 
 clean-local:
-	-rm -f $(BUILT_SOURCES) parser.output
+	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
 
 dist-hook:
 	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.h
