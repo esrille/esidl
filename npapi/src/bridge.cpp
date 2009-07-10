@@ -28,6 +28,7 @@ namespace
 // Map from interfaceName to constructors.
 std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
 std::map<const std::string, NPObject* (*)(NPP npp, Object* object)> stubConstructorMap;
+std::map<const std::string, Reflect::Interface> metaDataMap;
 
 bool isStub(const NPObject* object)
 {
@@ -234,6 +235,24 @@ void addProxyConstructor(const std::string interfaceName, Object* (*createProxy)
 void addStubConstructor(const std::string interfaceName, NPObject* (*createStub)(NPP npp, Object* object))
 {
     stubConstructorMap[interfaceName] = createStub;
+}
+
+void addInterfaceData(const char* iid, const char* info)
+{
+    metaDataMap[std::string(iid)] = Reflect::Interface(info, iid);
+}
+
+Reflect::Interface* getInterfaceData(const std::string className)
+{
+    std::map<std::string, Reflect::Interface>::iterator i;
+
+    std::string interfaceName = "::es::" + className;
+    i = metaDataMap.find(interfaceName);
+    if (i == metaDataMap.end())
+    {
+        return 0;
+    }
+    return &((*i).second);
 }
 
 NPObject* createStub(NPP npp, const char* interfaceName, Object* object)

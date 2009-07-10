@@ -27,6 +27,7 @@ using std::strlen;  // for STRINGZ_TO_NPVARIANT
 
 #include "object.h"
 #include "any.h"
+#include "reflect.h"
 
 class ProxyObject
 {
@@ -171,5 +172,8 @@ NPObject* createStub(NPP npp, const char* interfaceName, Object* object);
 Object* createProxy(NPP npp, NPObject* object);
 
 Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any* paramArray);
+
+void addInterfaceData(const char* iid, const char* info);
+Reflect::Interface* getInterfaceData(const std::string interfaceName);
 
 #endif  // ESIDL_ESNPAPI_H_INCLUDED

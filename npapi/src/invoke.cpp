@@ -22,12 +22,6 @@
 #include "proxyImpl.h"
 #include "w3c/html5.h"
 
-Reflect::Interface getInterface(const std::string& interfaceName)
-{
-    // TODO: This is a dummy impl.
-    return Reflect::Interface(es::CanvasRenderingContext2D::info(), es::CanvasRenderingContext2D::iid());
-}
-
 namespace
 {
 
@@ -53,8 +47,8 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
     void* buffer;   // TODO for sequence
     size_t length;  // TODO for sequence
 
-    Reflect::Interface interface = getInterface(object.getInterfaceName());
-    Reflect::Method method = interface.getMethod(methodNumber);
+    Reflect::Interface* interface = getInterfaceData(object.getInterfaceName());
+    Reflect::Method method = interface->getMethod(methodNumber);
     Reflect::Type type = method.getReturnType();
 
     printf("invoke %s %p\n", method.getName().c_str(), object.getNPObject());
