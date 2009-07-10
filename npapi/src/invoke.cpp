@@ -19,9 +19,6 @@
 #include "esnpapi.h"
 #include "reflect.h"
 
-#include "proxyImpl.h"
-#include "w3c/html5.h"
-
 namespace
 {
 
