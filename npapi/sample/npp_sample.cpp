@@ -31,6 +31,11 @@ NPError NPP_Initialize()
 {
     printf("%s\n", __func__);
 
+    addInterfaceData(es::HTMLCanvasElement::iid(),
+                     es::HTMLCanvasElement::info());
+    addProxyConstructor(es::HTMLCanvasElement::iid(),
+                        reinterpret_cast<Object* (*)(ProxyObject)>(es::HTMLCanvasElement_Proxy<ProxyObject, invoke>::createInstance));
+
     addInterfaceData(es::CanvasRenderingContext2D::iid(),
                      es::CanvasRenderingContext2D::info());
     addProxyConstructor(es::CanvasRenderingContext2D::iid(),

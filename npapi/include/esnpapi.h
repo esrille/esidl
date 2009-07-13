@@ -73,12 +73,7 @@ public:
     unsigned int release()
     {
         NPN_ReleaseObject(object);
-        if (--count == 0)
-        {
-            delete this;
-            return 0;
-        }
-        return count;
+        return --count;
     }
 };
 

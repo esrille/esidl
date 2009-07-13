@@ -25,8 +25,14 @@
 namespace
 {
 
-void drawCharts(es::CanvasRenderingContext2D* context)
+void drawCharts(es::HTMLCanvasElement* canvas)
 {
+    es::CanvasRenderingContext2D* context = dynamic_cast<es::CanvasRenderingContext2D*>(canvas->getContext("2d"));
+    if (!context)
+    {
+        return;
+    }
+
     context->setFillStyle("white");
     context->fillRect(0, 0, 1024, 768);
 
@@ -115,6 +121,8 @@ void drawCharts(es::CanvasRenderingContext2D* context)
     context->lineTo(cx, cy);
     context->closePath();
     context->fill();
+
+    context->release();
 }
 
 }  // namespace
@@ -140,27 +148,9 @@ void PluginInstance::test()
         NPN_Invoke(npp, NPVARIANT_TO_OBJECT(document), NPN_GetStringIdentifier("getElementById"), &name, 1, &canvas);
         if (NPVARIANT_IS_OBJECT(canvas))
         {
-            NPVariant context;
-            VOID_TO_NPVARIANT(context);
-            STRINGZ_TO_NPVARIANT("2d", name);
-            NPN_Invoke(npp, NPVARIANT_TO_OBJECT(canvas), NPN_GetStringIdentifier("getContext"), &name, 1, &context);
-            if (NPVARIANT_IS_OBJECT(context))
-            {
-                std::string interfaceName = getInterfaceName(npp, NPVARIANT_TO_OBJECT(context));
-                printf("'%s'\n", interfaceName.c_str());
-                STRINGZ_TO_NPVARIANT("red", name);
-                NPN_SetProperty(npp, NPVARIANT_TO_OBJECT(context), NPN_GetStringIdentifier("fillStyle"), &name);
-
-                NPVariant rect[4];
-                DOUBLE_TO_NPVARIANT(0.0, rect[0]);
-                DOUBLE_TO_NPVARIANT(0.0, rect[1]);
-                DOUBLE_TO_NPVARIANT(1024.0, rect[2]);
-                DOUBLE_TO_NPVARIANT(768.0, rect[3]);
-                NPN_Invoke(npp, NPVARIANT_TO_OBJECT(context), NPN_GetStringIdentifier("fillRect"), rect, 4, &name);
-
-                drawCharts(static_cast<es::CanvasRenderingContext2D*>(createProxy(npp, NPVARIANT_TO_OBJECT(context))));
-            }
-            NPN_ReleaseVariantValue(&context);
+            std::string interfaceName = getInterfaceName(npp, NPVARIANT_TO_OBJECT(canvas));
+            printf("'%s'\n", interfaceName.c_str());
+            drawCharts(static_cast<es::HTMLCanvasElement*>(createProxy(npp, NPVARIANT_TO_OBJECT(canvas))));
         }
         NPN_ReleaseVariantValue(&canvas);
     }
