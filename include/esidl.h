@@ -344,35 +344,9 @@ public:
         return separator;
     }
 
-    virtual Node* search(const std::string& elem, size_t pos = 0) const
-    {
-        if (elem.size() <= pos)
-        {
-            return const_cast<Node*>(this);
-        }
-
-        if (!children)
-        {
-            return 0;
-        }
-
-        size_t n = elem.find("::", pos);
-        assert(n != 0);
-        if (n == std::string::npos)
-        {
-            n = elem.size();
-        }
-        for (NodeList::reverse_iterator i = children->rbegin();
-             i != children->rend();
-             ++i)
-        {
-            if ((*i)->getName().compare(0, (*i)->getName().size(), elem, pos, n - pos) == 0)
-            {
-                return (*i)->search(elem, n + 2);
-            }
-        }
-        return 0;
-    }
+    // If there is an interface definition as well as interface forward declaration,
+    // search() must return the interface definition.
+    virtual Node* search(const std::string& elem, size_t pos = 0) const;
 
     virtual int compare(const char* str, const Node* scope) const
     {

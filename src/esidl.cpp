@@ -593,6 +593,44 @@ void ParamDcl::processExtendedAttributes()
     }
 }
 
+Node* Node::search(const std::string& elem, size_t pos) const
+{
+    if (elem.size() <= pos)
+    {
+        return const_cast<Node*>(this);
+    }
+
+    if (!children)
+    {
+        return 0;
+    }
+
+    Interface* forwardDecl = 0;
+
+    size_t n = elem.find("::", pos);
+    assert(n != 0);
+    if (n == std::string::npos)
+    {
+        n = elem.size();
+    }
+    for (NodeList::reverse_iterator i = children->rbegin();
+            i != children->rend();
+            ++i)
+    {
+        if ((*i)->getName().compare(0, (*i)->getName().size(), elem, pos, n - pos) == 0)
+        {
+            Interface* interface = dynamic_cast<Interface*>(*i);
+            if (interface && interface->isLeaf() && elem.size() <= n)
+            {
+                forwardDecl = interface;
+                continue;
+            }
+            return (*i)->search(elem, n + 2);
+        }
+    }
+    return forwardDecl;
+}
+
 Node* ScopedName::search(const Node* scope) const
 {
     Node* resolved = resolve(scope, name);
