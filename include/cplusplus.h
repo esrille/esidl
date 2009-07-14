@@ -29,6 +29,8 @@
 class CPlusPlus : public Visitor, public Formatter
 {
 protected:
+    const char* source;
+
     std::string prefix;
     std::string stringTypeName;
     bool useExceptions;
@@ -66,7 +68,7 @@ protected:
         int count = 0;
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
-            if (1 < (*i)->getRank())
+            if (!(*i)->isDefinedIn(source))
             {
                 continue;
             }
@@ -117,8 +119,9 @@ protected:
     }
 
 public:
-    CPlusPlus(FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
+    CPlusPlus(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
         Formatter(file),
+        source(source),
         stringTypeName(stringTypeName),
         useExceptions(useExceptions),
         constructorMode(false),

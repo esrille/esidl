@@ -56,14 +56,14 @@ class TemplateVisitor : public CPlusPlus
     }
 
 public:
-    TemplateVisitor(FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
-        CPlusPlus(file, stringTypeName, useExceptions)
+    TemplateVisitor(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
+        CPlusPlus(source, file, stringTypeName, useExceptions)
     {
     }
 
     virtual void at(const Interface* node)
     {
-        if (1 < node->getRank() || node->isLeaf() || node->isBaseObject())
+        if (!node->isDefinedIn(source) || node->isLeaf() || node->isBaseObject())
         {
             return;
         }
@@ -430,9 +430,9 @@ public:
     }
 };
 
-void printTemplate(const char* idlFilename, const char* stringTypeName, bool useExceptions, bool isystem)
+void printTemplate(const char* source, const char* stringTypeName, bool useExceptions, bool isystem)
 {
-    std::string filename = getOutputFilename(idlFilename, "template.h");
+    std::string filename = getOutputFilename(source, "template.h");
     printf("# %s\n", filename.c_str());
 
     FILE* file = fopen(filename.c_str(), "w");
@@ -447,7 +447,7 @@ void printTemplate(const char* idlFilename, const char* stringTypeName, bool use
     fprintf(file, "#define %s\n\n", included.c_str());
 
     // TODO: include header files here
-    std::string header = getOutputFilename(idlFilename, "h");
+    std::string header = getOutputFilename(source, "h");
     if (isystem)
     {
         fprintf(file, "#include <%s>\n\n", header.c_str());
@@ -457,7 +457,7 @@ void printTemplate(const char* idlFilename, const char* stringTypeName, bool use
         fprintf(file, "#include \"%s\"\n\n", header.c_str());
     }
 
-    TemplateVisitor visitor(file, stringTypeName, useExceptions);
+    TemplateVisitor visitor(source, file, stringTypeName, useExceptions);
     getSpecification()->accept(&visitor);
 
     fprintf(file, "#endif  // %s\n", included.c_str());

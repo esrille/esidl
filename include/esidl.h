@@ -65,8 +65,9 @@ Node* setSpecification(Node* node);
 Node* getCurrent();
 Node* setCurrent(const Node* node);
 
+const std::string getFilename();
 void setFilename(const char* name);
-char* getFilename();
+
 std::string& getJavadoc();
 void setJavadoc(const char* doc);
 std::string& popJavadoc();
@@ -85,6 +86,7 @@ protected:
     std::string         javadoc;
     NodeList*           extendedAttributes;
 
+    const std::string   source;         // source IDL filename
     int                 firstLine;
     int                 firstColumn;
     int                 lastLine;
@@ -165,6 +167,7 @@ public:
         separator(", "),
         offset(0),
         extendedAttributes(0),
+        source(getFilename()),
         rank(level)
     {
     }
@@ -176,6 +179,7 @@ public:
         separator(", "),
         offset(0),
         extendedAttributes(0),
+        source(getFilename()),
         rank(level)
     {
     }
@@ -185,6 +189,7 @@ public:
         separator(", "),
         offset(0),
         extendedAttributes(0),
+        source(getFilename()),
         rank(level)
     {
         setChildren(children);
@@ -196,6 +201,7 @@ public:
         separator(", "),
         offset(0),
         extendedAttributes(0),
+        source(getFilename()),
         rank(level)
     {
         setChildren(children);
@@ -225,6 +231,11 @@ public:
                 delete attr;
             }
         }
+    }
+
+    const std::string& getSource() const
+    {
+        return source;
     }
 
     Node* getParent() const
@@ -504,6 +515,11 @@ public:
     void setRank(int r)
     {
         rank = r;
+    }
+
+    bool isDefinedIn(const char* source) const
+    {
+        return getRank() == 1 && (getSource() == source || getSource() == "");
     }
 
     void setExtendedAttributes(NodeList* list)
@@ -1720,16 +1736,26 @@ inline void ExtendedAttribute::accept(Visitor* visitor)
 }
 
 extern void print();
-extern void printCxx(const std::string& filename, const char* stringTypeName, bool useExceptions);
-extern void printEnt(const std::string& filename);
-extern void printSkeleton(const char* idlFilename, bool isystem);
-extern void printTemplate(const char* idlFilename, const char* stringTypeName, bool useExceptions, bool isystem);
+extern void printCxx(const char* source, const char* stringTypeName, bool useExceptions);
+extern void printSkeleton(const char* source, bool isystem);
+extern void printTemplate(const char* source, const char* stringTypeName, bool useExceptions, bool isystem);
 
-extern std::string getOutputFilename(const char* input, const char* suffix);
+extern std::string getOutputFilename(std::string, const char* suffix);
 extern std::string getIncludedName(const std::string& header);
 
 extern Node* resolve(const Node* scope, std::string name);
 
 extern std::string getScopedName(std::string moduleName, std::string absoluteName);
+
+extern const char* getIncludePath();
+extern void setIncludePath(const char* path);
+
+extern int input(const char* filename, int fd,
+                 bool isystem, bool useExceptions, const char* stringTypeName);
+
+extern int output(const char* filename,
+           bool isystem, bool useExceptions, const char* stringTypeName,
+           bool skeleton,
+           bool generic);
 
 #endif  // ESIDL_H_INCLUDED

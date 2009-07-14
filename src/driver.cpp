@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+#include "esidl.h"
+
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <assert.h>
@@ -30,16 +32,22 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
+    // Construct cpp options
     const char** argCpp = static_cast<const char**>(malloc(sizeof(char*) * (argc + 2)));
-    const char** argIdl = static_cast<const char**>(malloc(sizeof(char*) * (argc + 1)));
+    if (!argCpp)
+    {
+        return EXIT_FAILURE;
+    }
 
-    argCpp[0] = "cpp";
-    argIdl[0] = "esidl2";
-    int optCpp = 1;
-    int optIdl = 1;
+    int optCpp = 0;
+    argCpp[optCpp++] = "cpp";
+    argCpp[optCpp++] = "-C";  // Use -C for cpp by default.
 
-    // Use -C for cpp by default.
-    argCpp[optCpp++] = "-C";
+    bool skeleton = false;
+    bool generic = false;
+    bool isystem = false;
+    bool useExceptions = true;
+    const char* stringTypeName = "char*";   // C++ string type name to be used
 
     for (int i = 1; i < argc; ++i)
     {
@@ -48,30 +56,24 @@ int main(int argc, char* argv[])
             if (argv[i][1] == 'I')
             {
                 argCpp[optCpp++] = argv[i];
-                argIdl[optIdl++] = argv[i];
                 if (argv[i][2] == '\0')
                 {
                     ++i;
                     argCpp[optCpp++] = argv[i];
-                    argIdl[optIdl++] = argv[i];
+                    setIncludePath(argv[i]);
+                }
+                else
+                {
+                    setIncludePath(&argv[i][2]);
                 }
             }
-            else if (strcmp(argv[i], "-isystem") == 0)
+            else if (strcmp(argv[i], "-fexceptions") == 0)
             {
-                argCpp[optCpp++] = argv[i];
-                argIdl[optIdl++] = argv[i];
-                ++i;
-                argCpp[optCpp++] = argv[i];
-                argIdl[optIdl++] = argv[i];
+                useExceptions = true;
             }
-            else if (strcmp(argv[i], "-debug") == 0 ||
-                     strcmp(argv[i], "-ent") == 0 ||
-                     strcmp(argv[i], "-fexceptions") == 0 ||
-                     strcmp(argv[i], "-fno-exceptions") == 0 ||
-                     strcmp(argv[i], "-template") == 0 ||
-                     strcmp(argv[i], "-skeleton") == 0)
+            else if (strcmp(argv[i], "-fno-exceptions") == 0)
             {
-                argIdl[optIdl++] = argv[i];
+                useExceptions = false;
             }
             else if (strcmp(argv[i], "-include") == 0)
             {
@@ -79,26 +81,63 @@ int main(int argc, char* argv[])
                 ++i;
                 argCpp[optCpp++] = argv[i];
             }
-            else if (strcmp(argv[i], "-namespace") == 0 ||
-                     strcmp(argv[i], "-object") == 0 ||
-                     strcmp(argv[i], "-string") == 0)
-            {
-                argIdl[optIdl++] = argv[i];
-                ++i;
-                argIdl[optIdl++] = argv[i];
-            }
-            else
+            else if (strcmp(argv[i], "-isystem") == 0)
             {
                 argCpp[optCpp++] = argv[i];
+                ++i;
+                argCpp[optCpp++] = argv[i];
+                setIncludePath(argv[i]);
+                isystem = true;
+            }
+            else if (strcmp(argv[i], "-namespace") == 0)
+            {
+                ++i;
+                Node::setFlatNamespace(argv[i]);
+            }
+            else if (strcmp(argv[i], "-object") == 0)
+            {
+                ++i;
+                Node::setBaseObjectName(argv[i]);
+            }
+            else if (strcmp(argv[i], "-template") == 0)
+            {
+                generic = true;
+            }
+            else if (strcmp(argv[i], "-skeleton") == 0)
+            {
+                skeleton = true;
+            }
+            else if (strcmp(argv[i], "-string") == 0)
+            {
+                ++i;
+                stringTypeName = argv[i];
             }
         }
     }
-
     argCpp[optCpp + 1] = 0;
-    argIdl[optIdl] = 0;
 
+    // Set up the global module
+    Module* node = new Module("");
+    setSpecification(node);
+    setCurrent(node);
+
+    if (strcmp(Node::getBaseObjectName(), "::Object") == 0)
+    {
+        // Manually install 'Object' interface forward declaration.
+        Interface* object = new Interface("Object", 0, true);
+        object->setRank(2);
+        getCurrent()->add(object);
+    }
+
+    if (Node::getFlatNamespace())
+    {
+        Module* module = new Module(Node::getFlatNamespace());
+        getCurrent()->add(module);
+        setCurrent(module);
+    }
+
+    // Load IDL files at once through cpp
     int result = EXIT_SUCCESS;
-
     for (int i = 1; i < argc; ++i)
     {
         if (argv[i][0] == '-')
@@ -116,35 +155,29 @@ int main(int argc, char* argv[])
         }
 
         argCpp[optCpp] = argv[i];
+        int stream[2];
+        pipe(stream);
         pid_t id = fork();
         if (id == 0)
         {
-            int stream[2];
-            pipe(stream);
-
-            if (fork() == 0)
-            {
-                // Child process - execute cpp
-                close(1);
-                dup(stream[1]);
-                close(stream[0]);
-                close(stream[1]);
-                execvp(argCpp[0], const_cast<char**>(argCpp));
-                break;
-            }
-            else
-            {
-                // Parent process - execute esidl2
-                close(0);
-                dup(stream[0]);
-                close(stream[0]);
-                close(stream[1]);
-                execvp(argIdl[0], const_cast<char**>(argIdl));
-                break;
-            }
+            // Child process - execute cpp
+            close(1);
+            dup(stream[1]);
+            close(stream[0]);
+            close(stream[1]);
+            execvp(argCpp[0], const_cast<char**>(argCpp));
+            return EXIT_FAILURE;
         }
         else if (0 < id)
         {
+            // Parent process - process an IDL file
+            close(stream[1]);
+            if (input(argv[i], stream[0], isystem, useExceptions, stringTypeName) != EXIT_SUCCESS)
+            {
+                return EXIT_FAILURE;
+            }
+            close(stream[0]);
+
             int status;
             while (wait(&status) != id)
             {
@@ -165,6 +198,35 @@ int main(int argc, char* argv[])
         {
             return EXIT_FAILURE;
         }
+    }
+    if (result != EXIT_SUCCESS)
+    {
+        return result;
+    }
+
+    // Generate outputs
+    if (Node::getFlatNamespace())
+    {
+        setCurrent(getCurrent()->getParent());
+    }
+
+    for (int i = 1; i < argc; ++i)
+    {
+        if (argv[i][0] == '-')
+        {
+            if (strcmp(argv[i], "-I") == 0 ||
+                strcmp(argv[i], "-include") == 0 ||
+                strcmp(argv[i], "-isystem") == 0 ||
+                strcmp(argv[i], "-namespace") == 0 ||
+                strcmp(argv[i], "-object") == 0 ||
+                strcmp(argv[i], "-string") == 0)
+            {
+                ++i;
+            }
+            continue;
+        }
+        result = output(argv[i], isystem, useExceptions, stringTypeName,
+                        skeleton, generic);
     }
 
     return result;

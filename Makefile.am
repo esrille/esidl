@@ -2,22 +2,26 @@ SUBDIRS = . testsuite npapi
 
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 
-bin_PROGRAMS = esidl esidl2 entdump
+bin_PROGRAMS = esidl
 
-esidl_SOURCES = src/driver.cpp
+esidl_SOURCES = \
+	include/cplusplus.h\
+	include/esidl.h \
+	include/expr.h \
+	include/formatter.h \
+	include/info.h \
+	include/reflect.h \
+	include/utf.h \
+	src/cxx.cpp \
+	src/driver.cpp \
+	src/esidl.cpp \
+	src/lexer.ll \
+	src/parser.yy \
+	src/print.cpp \
+	src/skeleton.cpp \
+	src/template.cpp
 
-esidl2_SOURCES = es/ent.h \
-	src/lexer.ll src/parser.yy src/esidl.cpp include/esidl.h \
-	include/utf.h include/formatter.h include/info.h include/reflect.h \
-	src/print.cpp src/cxx.cpp \
-	src/ent.cpp src/skeleton.cpp src/template.cpp \
-	include/expr.h include/stringOffsetter.h include/cplusplus.h
-
-esidl2-cxx.$(OBJEXT) : Makefile
-
-esidl2_CXXFLAGS = -D YYERROR_VERBOSE
-
-entdump_SOURCES = src/entdump.cpp
+esidl_CXXFLAGS = -D YYERROR_VERBOSE
 
 AM_YFLAGS = -d -v -t
 

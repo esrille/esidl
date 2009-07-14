@@ -210,7 +210,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = . runtime
-TESTS_ENVIRONMENT = PATH=..:$(PATH) esidl -I$(srcdir) -ent -skeleton -template
+TESTS_ENVIRONMENT = PATH=..:$(PATH) esidl -I$(srcdir) -template
 XFAIL_TESTS = 201.idl 202.idl 203.idl 204.idl 205.idl
 TESTS = \
 	       1.idl  2.idl  3.idl  4.idl  5.idl  6.idl  7.idl  8.idl \

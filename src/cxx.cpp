@@ -38,8 +38,8 @@ class Cxx : public CPlusPlus
     }
 
 public:
-    Cxx(FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
-        CPlusPlus(file, stringTypeName, useExceptions)
+    Cxx(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
+        CPlusPlus(source, file, stringTypeName, useExceptions)
     {
     }
 
@@ -336,11 +336,13 @@ public:
 
 class Import : public Visitor
 {
+    const char* source;
     FILE* file;
     bool printed;
 
 public:
-    Import(FILE* file) :
+    Import(const char* source, FILE* file) :
+        source(source),
         file(file),
         printed(false)
     {
@@ -348,16 +350,12 @@ public:
 
     virtual void at(const Node* node)
     {
-        if (1 < node->getRank())
-        {
-            return;
-        }
         visitChildren(node);
     }
 
     virtual void at(const Include* node)
     {
-        if (1 < node->getRank())
+        if (!node->isDefinedIn(source))
         {
             return;
         }
@@ -380,17 +378,19 @@ public:
 
 class Predeclaration : public Visitor
 {
+    const char* source;
     FILE* file;
 
 public:
-    Predeclaration(FILE* file) :
+    Predeclaration(const char* source, FILE* file) :
+        source(source),
         file(file)
     {
     }
 
     virtual void at(const Node* node)
     {
-        if (1 < node->getRank())
+        if (!node->isDefinedIn(source))
         {
             return;
         }
@@ -418,7 +418,7 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if (1 < node->getRank() || !node->isLeaf())
+        if (!node->isDefinedIn(source) || !node->isLeaf())
         {
             return;
         }
@@ -426,8 +426,9 @@ public:
     }
 };
 
-void printCxx(const std::string& filename, const char* stringTypeName, bool useExceptions)
+void printCxx(const char* source, const char* stringTypeName, bool useExceptions)
 {
+    const std::string filename = getOutputFilename(source, "h");
     printf("# %s\n", filename.c_str());
 
     FILE* file = fopen(filename.c_str(), "w");
@@ -441,7 +442,7 @@ void printCxx(const std::string& filename, const char* stringTypeName, bool useE
     fprintf(file, "#ifndef %s\n", included.c_str());
     fprintf(file, "#define %s\n\n", included.c_str());
 
-    Import import(file);
+    Import import(source, file);
     getSpecification()->accept(&import);
     if (import.hasPrinted())
     {
@@ -450,11 +451,11 @@ void printCxx(const std::string& filename, const char* stringTypeName, bool useE
 
     if (!Node::getFlatNamespace())
     {
-        Predeclaration predeclaration(file);
+        Predeclaration predeclaration(source, file);
         getSpecification()->accept(&predeclaration);
     }
 
-    Cxx cxx(file, stringTypeName, useExceptions);
+    Cxx cxx(source, file, stringTypeName, useExceptions);
     getSpecification()->accept(&cxx);
 
     fprintf(file, "#endif  // %s\n", included.c_str());

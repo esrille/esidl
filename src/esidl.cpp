@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+#include "esidl.h"
+#include "parser.h"
+
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -22,8 +25,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "esidl.h"
-#include "parser.h"
+#include <string>
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,8 +43,8 @@ namespace
 {
     Node* specification;
     Node* current;          // Current name space
-    char  filename[PATH_MAX + 1];
-    char* includePath;
+    std::string filename;
+    const char* includePath;
     std::string javadoc;
     std::string savedJavadoc;
 }
@@ -63,6 +65,16 @@ Node* setSpecification(Node* node)
     return prev;
 }
 
+const char* getIncludePath()
+{
+    return includePath;
+}
+
+void setIncludePath(const char* path)
+{
+    includePath = path;
+}
+
 Node* getCurrent()
 {
     return current;
@@ -75,23 +87,17 @@ Node* setCurrent(const Node* node)
     return prev;
 }
 
-char* getFilename()
+const std::string getFilename()
 {
     return filename;
 }
 
 void setFilename(const char* name)
 {
-    if (*name == '"')
+    filename = name;
+    if (filename[0] == '"')
     {
-        size_t len = strlen(name) - 2;
-        assert(len < PATH_MAX);
-        memmove(filename, name + 1, len);
-        filename[len] = '\0';
-    }
-    else
-    {
-        strncpy(filename, name, PATH_MAX);
+        filename = filename.substr(1, filename.length() - 2);
     }
 }
 
@@ -117,10 +123,8 @@ void pushJavadoc()
     setJavadoc(0);
 }
 
-std::string getOutputFilename(const char* input, const char* suffix)
+std::string getOutputFilename(std::string filename, const char* suffix)
 {
-    std::string filename(input);
-
     int begin = filename.rfind(".");
     int end   = filename.size();
     if (0 <= begin)
@@ -133,12 +137,12 @@ std::string getOutputFilename(const char* input, const char* suffix)
         filename += suffix;
     }
 
-    if (includePath)
+    if (getIncludePath())
     {
-        int pos = filename.find(includePath);
+        int pos = filename.find(getIncludePath());
         if (pos == 0)
         {
-            filename.replace(pos, strlen(includePath) + 1, "");
+            filename.replace(pos, strlen(getIncludePath()) + 1, "");
         }
         else
         {
@@ -773,122 +777,24 @@ void yyerror(const char* message, ...)
     va_end(ap);
 }
 
-int main(int argc, char* argv[])
+int input(const char* filename, int fd,
+          bool isystem,
+          bool useExceptions,
+          const char* stringTypeName)
 {
-    bool ent = false;
-    bool skeleton = false;
-    bool generic = false;
-    bool isystem = false;
-    bool useExceptions = true;
-    const char* stringTypeName = "char*";   // C++ string type name to be used
-
-    for (int i = 1; i < argc; ++i)
-    {
-        if (argv[i][0] == '-')
-        {
-            if (argv[i][1] == 'I')
-            {
-                if (argv[i][2])
-                {
-                    includePath = &argv[i][2];
-                }
-                else
-                {
-                    ++i;
-                    includePath = argv[i];
-                }
-            }
-            else if (strcmp(argv[i], "-isystem") == 0)
-            {
-                ++i;
-                includePath = argv[i];
-                isystem = true;
-            }
-            else if (strcmp(argv[i], "-debug") == 0)
-            {
-                bool stop = true;
-                while (stop)
-                {
-                    fprintf(stderr, ".");
-                    sleep(1);
-                }
-            }
-            else if (strcmp(argv[i], "-ent") == 0)
-            {
-                ent = true;
-            }
-            else if (strcmp(argv[i], "-skeleton") == 0)
-            {
-                skeleton = true;
-            }
-            else if (strcmp(argv[i], "-template") == 0)
-            {
-                generic = true;
-            }
-            else if (strcmp(argv[i], "-fexceptions") == 0)
-            {
-                useExceptions = true;
-            }
-            else if (strcmp(argv[i], "-fno-exceptions") == 0)
-            {
-                useExceptions = false;
-            }
-            else if (strcmp(argv[i], "-namespace") == 0)
-            {
-                ++i;
-                Node::setFlatNamespace(argv[i]);
-            }
-            else if (strcmp(argv[i], "-object") == 0)
-            {
-                ++i;
-                Node::setBaseObjectName(argv[i]);
-            }
-            else if (strcmp(argv[i], "-string") == 0)
-            {
-                ++i;
-                stringTypeName = argv[i];
-            }
-        }
-    }
-
-    Module* node = new Module("");
-    setSpecification(node);
-    setCurrent(node);
-
-    if (strcmp(Node::getBaseObjectName(), "::Object") == 0)
-    {
-        // Manually install 'Object' interface forward declaration.
-        Interface* object = new Interface("Object", 0, true);
-        object->setRank(2);
-        getCurrent()->add(object);
-    }
-
-    if (Node::getFlatNamespace())
-    {
-        Module* module = new Module(Node::getFlatNamespace());
-        getCurrent()->add(module);
-        setCurrent(module);
-    }
-
     yylloc.first_line = yylloc.last_line = 1;
     yylloc.first_column = yylloc.last_column = 0;
     try
     {
-        yyin = stdin;
+        yyin = fdopen(fd, "r");
         if (yyparse() != 0)
         {
             return EXIT_FAILURE;
         }
-        fclose(yyin);
     }
     catch (...)
     {
         return EXIT_FAILURE;
-    }
-
-    if (Node::getFlatNamespace())
-    {
-        setCurrent(getCurrent()->getParent());
     }
 
     ProcessExtendedAttributes processExtendedAttributes;
@@ -897,31 +803,24 @@ int main(int argc, char* argv[])
     AdjustMethodCount adjustMethodCount;
     getSpecification()->accept(&adjustMethodCount);
 
-#ifdef VERBOSE
-    printf("-I %s\n", includePath);
-    printf("-----------------------------------\n");
-    print();
-#endif
-    printf("-----------------------------------\n");
-    printCxx(getOutputFilename(getFilename(), "h"), stringTypeName, useExceptions);
-    printf("-----------------------------------\n");
-    if (ent)
-    {
-        printEnt(getOutputFilename(getFilename(), "ent"));
-        printf("-----------------------------------\n");
-    }
+    return EXIT_SUCCESS;
+}
+
+int output(const char* filename,
+           bool isystem,
+           bool useExceptions,
+           const char* stringTypeName,
+           bool skeleton,
+           bool generic)
+{
+    printCxx(filename, stringTypeName, useExceptions);
     if (skeleton)
     {
-        printSkeleton(getFilename(), isystem);
-        printf("-----------------------------------\n");
+        printSkeleton(filename, isystem);
     }
     if (generic)
     {
-        printTemplate(getFilename(), stringTypeName, useExceptions, isystem);
-        printf("-----------------------------------\n");
+        printTemplate(filename, stringTypeName, useExceptions, isystem);
     }
-
-    delete node;
-
     return EXIT_SUCCESS;
 }

@@ -42,14 +42,14 @@ std::string getFileName(const std::string& name)
 class SkeletonImpl : public CPlusPlus
 {
 public:
-    SkeletonImpl(FILE* file) :
-        CPlusPlus(file)
+    SkeletonImpl(const char* source, FILE* file) :
+        CPlusPlus(source, file)
     {
     }
 
     virtual void at(const Interface* node)
     {
-        if (1 < node->getRank() || node->isLeaf() || node->isBaseObject())
+        if (!node->isDefinedIn(source) || node->isLeaf() || node->isBaseObject())
         {
             return;
         }
@@ -204,21 +204,21 @@ public:
 
 class SkeletonVisitor : public Visitor
 {
-    const char* idlFilename;
+    const char* source;
     bool isystem;
 
     std::string moduleName;
 
 public:
-    SkeletonVisitor(const char* idlFilename, bool isystem) :
-        idlFilename(idlFilename),
+    SkeletonVisitor(const char* source, bool isystem) :
+        source(source),
         isystem(isystem)
     {
     }
 
     virtual void at(const Node* node)
     {
-        if (1 < node->getRank())
+        if (!node->isDefinedIn(source))
         {
             return;
         }
@@ -242,7 +242,7 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if (1 < node->getRank() || node->isLeaf())
+        if (!node->isDefinedIn(source) || node->isLeaf())
         {
             return;
         }
@@ -253,7 +253,7 @@ public:
             return;
         }
 
-        std::string filename = idlFilename;
+        std::string filename = source;
         int begin = filename.rfind(".");
         filename.insert(begin, getFileName(node->getName()));
         filename.insert(begin, "_");
@@ -273,11 +273,11 @@ public:
 
         if (isystem)
         {
-            fprintf(file, "#include <%s>\n\n", getOutputFilename(idlFilename, "h").c_str());
+            fprintf(file, "#include <%s>\n\n", getOutputFilename(source, "h").c_str());
         }
         else
         {
-            fprintf(file, "#include \"%s\"\n\n", getOutputFilename(idlFilename, "h").c_str());
+            fprintf(file, "#include \"%s\"\n\n", getOutputFilename(source, "h").c_str());
         }
 
         size_t pos = 0;
@@ -289,7 +289,7 @@ public:
             pos += 2;
         }
 
-        SkeletonImpl SkeletonImpl(file);
+        SkeletonImpl SkeletonImpl(source, file);
         SkeletonImpl.at(node);
         fprintf(file, ";\n");
 
@@ -307,8 +307,8 @@ public:
     }
 };
 
-void printSkeleton(const char* idlFilename, bool isystem)
+void printSkeleton(const char* source, bool isystem)
 {
-    SkeletonVisitor visitor(idlFilename, isystem);
+    SkeletonVisitor visitor(source, isystem);
     getSpecification()->accept(&visitor);
 }
