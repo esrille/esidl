@@ -88,15 +88,16 @@ public:
             writetab();
         }
         write("class %s", node->getName().c_str());
-        if (node->getExtends())
-        {
-            write(" : ");
-            prefix = "public ";
-            node->getExtends()->accept(this);
-            prefix = "";
-        }
         if (!node->isLeaf())
         {
+            if (node->getExtends())
+            {
+                write(" : ");
+                prefix = "public ";
+                node->getExtends()->accept(this);
+                prefix = "";
+            }
+
             writeln("");
             writeln("{");
             writeln("public:");
@@ -175,14 +176,14 @@ public:
             unindent();
             writetab();
             write("}");
-        }
 
-        if (node->getConstructor())
-        {
-            write(";\n\n");
-            writetab();
-            write("%s::Constructor* %s::constructor __attribute__((weak))",
-                  node->getName().c_str(), node->getName().c_str());
+            if (node->getConstructor())
+            {
+                write(";\n\n");
+                writetab();
+                write("%s::Constructor* %s::constructor __attribute__((weak))",
+                    node->getName().c_str(), node->getName().c_str());
+            }
         }
     }
 
