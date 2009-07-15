@@ -43,7 +43,6 @@ namespace
 {
     Node* specification;
     Node* current;          // Current name space
-    std::string filename;
     const char* includePath;
     std::string javadoc;
     std::string savedJavadoc;
@@ -85,20 +84,6 @@ Node* setCurrent(const Node* node)
     Node* prev = current;
     current = const_cast<Node*>(node);
     return prev;
-}
-
-const std::string getFilename()
-{
-    return filename;
-}
-
-void setFilename(const char* name)
-{
-    filename = name;
-    if (filename[0] == '"')
-    {
-        filename = filename.substr(1, filename.length() - 2);
-    }
 }
 
 std::string& getJavadoc()
@@ -740,68 +725,6 @@ void Interface::processExtendedAttributes(Attribute* attr)
     }
 }
 
-class ProcessExtendedAttributes : public Visitor
-{
-public:
-    virtual void at(const Node* node)
-    {
-        visitChildren(node);
-    }
-
-    virtual void at(const Interface* node)
-    {
-        const_cast<Interface*>(node)->processExtendedAttributes();
-        if (node->isLeaf())
-        {
-            return;
-        }
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            (*i)->accept(this);
-            if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
-            {
-                const_cast<Interface*>(node)->processExtendedAttributes(op);
-            }
-            else if (Attribute* attr = dynamic_cast<Attribute*>(*i))
-            {
-                const_cast<Interface*>(node)->processExtendedAttributes(attr);
-            }
-        }
-    }
-
-    virtual void at(const Attribute* node)
-    {
-        const_cast<Attribute*>(node)->processExtendedAttributes();
-        visitChildren(node);
-    }
-
-    virtual void at(const OpDcl* node)
-    {
-        const_cast<OpDcl*>(node)->processExtendedAttributes();
-        visitChildren(node);
-    }
-
-    virtual void at(const ParamDcl* node)
-    {
-        const_cast<ParamDcl*>(node)->processExtendedAttributes();
-        visitChildren(node);
-    }
-};
-
-class AdjustMethodCount : public Visitor
-{
-public:
-    virtual void at(const Node* node)
-    {
-        visitChildren(node);
-    }
-
-    virtual void at(const OpDcl* node)
-    {
-        const_cast<OpDcl*>(node)->adjustMethodCount();
-    }
-};
-
 void yyerror(const char* message, ...)
 {
     va_list ap;
@@ -815,7 +738,7 @@ void yyerror(const char* message, ...)
     va_end(ap);
 }
 
-int input(const char* filename, int fd,
+int input(int fd,
           bool isystem,
           bool useExceptions,
           const char* stringTypeName)
@@ -834,12 +757,6 @@ int input(const char* filename, int fd,
     {
         return EXIT_FAILURE;
     }
-
-    ProcessExtendedAttributes processExtendedAttributes;
-    getSpecification()->accept(&processExtendedAttributes);
-
-    AdjustMethodCount adjustMethodCount;
-    getSpecification()->accept(&adjustMethodCount);
 
     return EXIT_SUCCESS;
 }

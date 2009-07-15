@@ -9,7 +9,7 @@ AC_PROG_CC
 AM_PROG_AS
 AC_PROG_LEX
 AM_PROG_LIBTOOL
-AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile npapi/Makefile npapi/include/Makefile npapi/sample/Makefile)
+AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile npapi/Makefile npapi/include/Makefile npapi/include/w3c/Makefile npapi/sample/Makefile)
 
 case ${target} in
   i[[34567]]86-*-*)

@@ -404,7 +404,7 @@ interface_inheritance_spec :
                 if (!(*i)->isInterface(getCurrent()))
                 {
                     yyerror("'%s' is not declared.", (*i)->getName().c_str());
-                    exit(EXIT_FAILURE);
+                    // exit(EXIT_FAILURE);
                 }
             }
         }
@@ -448,7 +448,7 @@ scoped_name :
                 fprintf(stderr, "%d.%d-%d.%d: '%s' is not declared.\n",
                         @1.first_line, @1.first_column, @2.last_line, @2.last_column,
                         name->getName().c_str());
-                exit(EXIT_FAILURE);
+                // exit(EXIT_FAILURE);
             }
             $$ = name;
             free($2);
@@ -470,7 +470,7 @@ scoped_name :
                 fprintf(stderr, "%d.%d-%d.%d: '%s' is not declared.\n",
                         @1.first_line, @1.first_column, @3.last_line, @3.last_column,
                         name->getName().c_str());
-                exit(EXIT_FAILURE);
+                // exit(EXIT_FAILURE);
             }
             $$ = name;
             free($3);
@@ -1101,10 +1101,10 @@ preprocessor :
             {
             case 1: // New file
                 getCurrent()->add(new Include($3));
-                Node::incLevel();
+                setFilename($3);
                 break;
             case 2: // Return
-                Node::decLevel();
+                setFilename($3);
                 break;
             }
             yylloc.last_line = atol($2);
@@ -1120,10 +1120,10 @@ preprocessor :
             {
             case 1: // New file
                 getCurrent()->add(new Include($3, strcmp("3", $5) == 0));
-                Node::incLevel();
+                setFilename($3);
                 break;
             case 2: // Return
-                Node::decLevel();
+                setFilename($3);
                 break;
             }
             yylloc.last_line = atol($2);
@@ -1141,6 +1141,16 @@ preprocessor :
             yylloc.last_line = atol($2);
             free($2);
             free($3);
+        }
+    | POUND_SIGN IDENTIFIER IDENTIFIER STRING_LITERAL EOL
+        {
+            if (strcmp($2, "pragma") == 0 && strcmp($3, "source") == 0)
+            {
+                setBaseFilename($4);
+            }
+            free($2);
+            free($3);
+            free($4);
         }
     ;
 

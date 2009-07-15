@@ -27,6 +27,11 @@
 #include <string>
 #include <vector>
 
+const std::string getBaseFilename();
+void setBaseFilename(const char* name);
+const std::string getFilename();
+void setFilename(const char* name);
+
 // Turn this on to use a function pointer rather than an interface pointer for
 // attributes of [Callback=FunctionOnly] interface types.
 // #define USE_FUNCTION_ATTRIBUTE
@@ -64,9 +69,6 @@ Node* getSpecification();
 Node* setSpecification(Node* node);
 Node* getCurrent();
 Node* setCurrent(const Node* node);
-
-const std::string getFilename();
-void setFilename(const char* name);
 
 std::string& getJavadoc();
 void setJavadoc(const char* doc);
@@ -1709,6 +1711,68 @@ inline void ExtendedAttribute::accept(Visitor* visitor)
     visitor->at(this);
 }
 
+class ProcessExtendedAttributes : public Visitor
+{
+public:
+    virtual void at(const Node* node)
+    {
+        visitChildren(node);
+    }
+
+    virtual void at(const Interface* node)
+    {
+        const_cast<Interface*>(node)->processExtendedAttributes();
+        if (node->isLeaf())
+        {
+            return;
+        }
+        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
+        {
+            (*i)->accept(this);
+            if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
+            {
+                const_cast<Interface*>(node)->processExtendedAttributes(op);
+            }
+            else if (Attribute* attr = dynamic_cast<Attribute*>(*i))
+            {
+                const_cast<Interface*>(node)->processExtendedAttributes(attr);
+            }
+        }
+    }
+
+    virtual void at(const Attribute* node)
+    {
+        const_cast<Attribute*>(node)->processExtendedAttributes();
+        visitChildren(node);
+    }
+
+    virtual void at(const OpDcl* node)
+    {
+        const_cast<OpDcl*>(node)->processExtendedAttributes();
+        visitChildren(node);
+    }
+
+    virtual void at(const ParamDcl* node)
+    {
+        const_cast<ParamDcl*>(node)->processExtendedAttributes();
+        visitChildren(node);
+    }
+};
+
+class AdjustMethodCount : public Visitor
+{
+public:
+    virtual void at(const Node* node)
+    {
+        visitChildren(node);
+    }
+
+    virtual void at(const OpDcl* node)
+    {
+        const_cast<OpDcl*>(node)->adjustMethodCount();
+    }
+};
+
 extern void print();
 extern void printCxx(const char* source, const char* stringTypeName, bool useExceptions);
 extern void printSkeleton(const char* source, bool isystem);
@@ -1724,7 +1788,7 @@ extern std::string getScopedName(std::string moduleName, std::string absoluteNam
 extern const char* getIncludePath();
 extern void setIncludePath(const char* path);
 
-extern int input(const char* filename, int fd,
+extern int input(int fd,
                  bool isystem, bool useExceptions, const char* stringTypeName);
 
 extern int output(const char* filename,

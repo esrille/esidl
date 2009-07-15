@@ -477,7 +477,11 @@ public:
             {
                 std::string name = (*i)->getName();
                 Node* resolved = resolve(currentNode, name);
-                assert(resolved);
+                if (!resolved)
+                {
+                    // TODO: Print an error message.
+                    exit(EXIT_FAILURE);
+                }
                 name = resolved->getQualifiedName();
                 write("\n");
                 writetab();

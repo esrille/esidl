@@ -20412,7 +20412,7 @@ LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 
 
 
-ac_config_files="$ac_config_files Makefile testsuite/Makefile testsuite/runtime/Makefile npapi/Makefile npapi/include/Makefile npapi/sample/Makefile"
+ac_config_files="$ac_config_files Makefile testsuite/Makefile testsuite/runtime/Makefile npapi/Makefile npapi/include/Makefile npapi/include/w3c/Makefile npapi/sample/Makefile"
 
 
 case ${target} in
@@ -21121,6 +21121,7 @@ do
     "testsuite/runtime/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/runtime/Makefile" ;;
     "npapi/Makefile") CONFIG_FILES="$CONFIG_FILES npapi/Makefile" ;;
     "npapi/include/Makefile") CONFIG_FILES="$CONFIG_FILES npapi/include/Makefile" ;;
+    "npapi/include/w3c/Makefile") CONFIG_FILES="$CONFIG_FILES npapi/include/w3c/Makefile" ;;
     "npapi/sample/Makefile") CONFIG_FILES="$CONFIG_FILES npapi/sample/Makefile" ;;
 
   *) { { $as_echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5

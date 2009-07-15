@@ -4,6 +4,7 @@ AM_CPPFLAGS = \
 	-fPIC -fshort-wchar \
 	-I $(srcdir) \
 	-I ../include \
+	-I ../include/w3c \
 	-I $(srcdir)/../include \
 	-I $(srcdir)/../../include \
 	-DXP_UNIX
