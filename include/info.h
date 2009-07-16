@@ -492,6 +492,26 @@ public:
             }
         }
 
+        for (std::list<const Interface*>::const_iterator i = node->getMixins()->begin();
+             i != node->getMixins()->end();
+             ++i)
+        {
+            std::string name = (*i)->getName();
+            Node* resolved = resolve(currentNode, name);
+            if (!resolved)
+            {
+                // TODO: Print an error message.
+                exit(EXIT_FAILURE);
+            }
+            name = resolved->getQualifiedName();
+            write("\n");
+            writetab();
+            write("\"%c", Reflect::kImplements);
+            name = getInterfaceName(name);
+            write("%zu%s", name.length(), name.c_str());
+            write("\"");
+        }
+
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
             visitInterfaceElement(node, *i);

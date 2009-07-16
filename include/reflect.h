@@ -32,9 +32,11 @@
  *  interface ->
  *    I name
  *    extends*
+ *    implements*
  *    [ operation, setter, getter, constructor, constant ]*
  *
  *  extends -> X name
+ *  implements -> M name
  *  operation -> F special* digits type name (type name)* raises*   // digits represent the # of parameters
  *  setter -> S special* 1 v name type raises*
  *  getter -> G special* 0 type name raises*
@@ -100,6 +102,7 @@ public:
     // Misc.
     static const char kInterface = 'I';
     static const char kExtends = 'X';
+    static const char kImplements = 'M';
     static const char kConstant = 'C';
     static const char kOperation = 'F';
     static const char kGetter = 'G';
@@ -699,6 +702,7 @@ public:
             {
             case kInterface:
             case kExtends:
+            case kImplements:
                 info = skipName(++info);
                 break;
             case kConstant:
@@ -745,7 +749,7 @@ public:
             // skip I
             p = skipName(++p);
             // skip X
-            while (*p == kExtends)
+            while (*p == kExtends || *p == kImplements)
             {
                 p = skipName(++p);
             }
