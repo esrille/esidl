@@ -147,6 +147,8 @@ public:
     static const uint32_t Optional =                 0x00400000;
     // [Variadic]
     static const uint32_t Variadic =                 0x00800000;
+    // [ImplementedOn]
+    static const uint32_t ImplementedOn =            0x01000000;
 
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);

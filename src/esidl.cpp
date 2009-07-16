@@ -361,6 +361,7 @@ void Interface::processExtendedAttributes()
         }
         else if (ext->getName() == "ImplementedOn")
         {
+            attr |= ImplementedOn;
             if (ScopedName* scopedName = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
                 Node* on = scopedName->search(getParent());

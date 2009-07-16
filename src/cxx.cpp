@@ -82,6 +82,10 @@ public:
 
     virtual void at(const Interface* node)
     {
+        if (node->getAttr() & Interface::ImplementedOn)
+        {
+            return;
+        }
         if (node->getJavadoc().size())
         {
             write("%s\n", node->getJavadoc().c_str());

@@ -63,6 +63,10 @@ public:
 
     virtual void at(const Interface* node)
     {
+        if (node->getAttr() & Interface::ImplementedOn)
+        {
+            return;
+        }
         if (!node->isDefinedIn(source) || node->isLeaf() || node->isBaseObject())
         {
             return;
@@ -74,12 +78,7 @@ public:
         write("template<class O, Any invoke(O&, unsigned, unsigned, Any*)>\n");
         writetab();
         write("class %s_Proxy : public Proxy_Impl<O", node->getName().c_str());
-        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
-             i != interfaceList.end();
-             ++i)
-        {
-            write(", %s", getScopedName(moduleName, (*i)->getQualifiedName()).c_str());
-        }
+        write(", %s", node->getName().c_str());
         write(">\n");
 
         writeln("{");
@@ -122,12 +121,7 @@ public:
         indent();
             writetab();
             write("Proxy_Impl<O");
-            for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
-                i != interfaceList.end();
-                ++i)
-            {
-                write(", %s", getScopedName(moduleName, (*i)->getQualifiedName()).c_str());
-            }
+            write(", %s", node->getName().c_str());
             write(">(object)\n");
         unindent();
         writeln("{");

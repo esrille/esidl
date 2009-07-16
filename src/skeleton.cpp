@@ -57,19 +57,7 @@ public:
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList);
 
-        write("class %s_Impl : ", node->getName().c_str());
-        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
-             i != interfaceList.end();
-             ++i)
-        {
-            if (i != interfaceList.begin())
-            {
-                write(", ");
-            }
-            write("public %s", getScopedName(moduleName, (*i)->getQualifiedName()).c_str());
-        }
-        write("\n");
-
+        writeln("class %s_Impl : public %s", node->getName().c_str(), node->getName().c_str());
         writeln("{");
         indent();
 
@@ -242,14 +230,13 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if (!node->isDefinedIn(source) || node->isLeaf())
-        {
-            return;
-        }
-
-        if (!node->getMixins()->empty())
+        if (node->getAttr() & Interface::ImplementedOn)
         {
             // An interface with ImplementedOn attribute won't need its own implementation.
+            return;
+        }
+        if (!node->isDefinedIn(source) || node->isLeaf())
+        {
             return;
         }
 
