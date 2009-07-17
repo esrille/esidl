@@ -25,11 +25,21 @@
 namespace
 {
 
-void drawCharts(es::HTMLCanvasElement* canvas)
+void drawCharts(es::HTMLDocument* document)
 {
+    std::string title = document->getTitle();
+    printf("title = %s\n", title.c_str());
+
+    es::HTMLCanvasElement* canvas = dynamic_cast<es::HTMLCanvasElement*>(document->getElementById("canvas"));
+    if (!canvas)
+    {
+        return;
+    }
+
     es::CanvasRenderingContext2D* context = dynamic_cast<es::CanvasRenderingContext2D*>(canvas->getContext("2d"));
     if (!context)
     {
+        canvas->release();
         return;
     }
 
@@ -123,6 +133,7 @@ void drawCharts(es::HTMLCanvasElement* canvas)
     context->fill();
 
     context->release();
+    canvas->release();
 }
 
 }  // namespace
@@ -134,25 +145,9 @@ void PluginInstance::test()
     NPN_GetProperty(npp, window, NPN_GetStringIdentifier("document"), &document);
     if (NPVARIANT_IS_OBJECT(document))
     {
-        NPVariant name;
-        NPN_GetProperty(npp, NPVARIANT_TO_OBJECT(document), NPN_GetStringIdentifier("title"), &name);
-        if (NPVARIANT_IS_STRING(name))
-        {
-            printf("title = %.*s\n", NPVARIANT_TO_STRING(name).utf8length, NPVARIANT_TO_STRING(name).utf8characters);
-            NPN_ReleaseVariantValue(&name);
-        }
-
-        STRINGZ_TO_NPVARIANT("canvas", name);
-        NPVariant canvas;
-        VOID_TO_NPVARIANT(canvas);
-        NPN_Invoke(npp, NPVARIANT_TO_OBJECT(document), NPN_GetStringIdentifier("getElementById"), &name, 1, &canvas);
-        if (NPVARIANT_IS_OBJECT(canvas))
-        {
-            std::string interfaceName = getInterfaceName(npp, NPVARIANT_TO_OBJECT(canvas));
-            printf("'%s'\n", interfaceName.c_str());
-            drawCharts(static_cast<es::HTMLCanvasElement*>(createProxy(npp, NPVARIANT_TO_OBJECT(canvas))));
-        }
-        NPN_ReleaseVariantValue(&canvas);
+        std::string interfaceName = getInterfaceName(npp, NPVARIANT_TO_OBJECT(document));
+        printf("'%s'\n", interfaceName.c_str());
+        drawCharts(static_cast<es::HTMLDocument*>(createProxy(npp, NPVARIANT_TO_OBJECT(document))));
     }
     NPN_ReleaseVariantValue(&document);
 }

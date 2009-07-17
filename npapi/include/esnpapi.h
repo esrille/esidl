@@ -170,5 +170,6 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
 
 void addInterfaceData(const char* iid, const char* info);
 Reflect::Interface* getInterfaceData(const std::string interfaceName);
+Reflect::Interface* getInterfaceData(const char* iid);
 
 #endif  // ESIDL_ESNPAPI_H_INCLUDED

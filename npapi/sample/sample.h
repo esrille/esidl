@@ -28,11 +28,12 @@ namespace es
     class Range;
     class Location;
     class Selection;
-    class HTMLDocument;
+    class Document;
     class HTMLElement;
     class HTMLCollection;
     class Window;
     typedef Window WindowProxy;
+    typedef Document HTMLDocument;
 }
 
 class PluginInstance

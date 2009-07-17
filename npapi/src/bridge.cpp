@@ -237,11 +237,6 @@ void addStubConstructor(const std::string interfaceName, NPObject* (*createStub)
     stubConstructorMap[interfaceName] = createStub;
 }
 
-void addInterfaceData(const char* iid, const char* info)
-{
-    metaDataMap[std::string(iid)] = Reflect::Interface(info, iid);
-}
-
 Reflect::Interface* getInterfaceData(const std::string className)
 {
     std::map<std::string, Reflect::Interface>::iterator i;
@@ -253,6 +248,45 @@ Reflect::Interface* getInterfaceData(const std::string className)
         return 0;
     }
     return &((*i).second);
+}
+
+Reflect::Interface* getInterfaceData(const char* iid)
+{
+    std::map<std::string, Reflect::Interface>::iterator i;
+
+    i = metaDataMap.find(iid);
+    if (i == metaDataMap.end())
+    {
+        return 0;
+    }
+    return &((*i).second);
+}
+
+void addInterfaceData(const char* iid, const char* info)
+{
+    metaDataMap[std::string(iid)] = Reflect::Interface(info, iid);
+
+    unsigned inheritedMethodCount = 0;
+    Reflect::Interface* interface = getInterfaceData(iid);
+    Reflect::Interface* super = interface;
+    while (super)
+    {
+        std::string superName = super->getQualifiedSuperName();
+        if (superName == "")
+        {
+            break;
+        }
+        super = getInterfaceData(superName.c_str());
+        if (super)
+        {
+            inheritedMethodCount += super->getMethodCount();
+        }
+    }
+    if (interface)
+    {
+        interface->setInheritedMethodCount(inheritedMethodCount);
+    }
+    printf("%s %d\n", iid, inheritedMethodCount);
 }
 
 NPObject* createStub(NPP npp, const char* interfaceName, Object* object)
@@ -369,7 +403,7 @@ double convertToDouble(const NPVariant* variant)
     return static_cast<double>(toNumber(variant));
 }
 
-std::string converttoString(NPP npp, const NPVariant* variant, unsigned attribute)
+std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribute)
 {
   return toString(npp, variant, attribute);
 }

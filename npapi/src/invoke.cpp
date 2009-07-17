@@ -45,10 +45,32 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
     size_t length;  // TODO for sequence
 
     Reflect::Interface* interface = getInterfaceData(object.getInterfaceName());
+    while (interface)
+    {
+        if (interface->getInheritedMethodCount() <= methodNumber)
+        {
+            methodNumber -= interface->getInheritedMethodCount();
+            break;
+        }
+        else
+        {
+            std::string name = interface->getQualifiedSuperName();
+            if (name == "")
+            {
+                return Any();
+            }
+            interface = getInterfaceData(name.c_str());
+        }
+    }
+    if (!interface)
+    {
+        return Any();
+    }
+
     Reflect::Method method = interface->getMethod(methodNumber);
     Reflect::Type type = method.getReturnType();
 
-    printf("invoke %s %p\n", method.getName().c_str(), object.getNPObject());
+    printf("invoke %s::%s %p\n", interface->getName().c_str(), method.getName().c_str(), object.getNPObject());
 
     NPIdentifier id;
     NPVariant result;

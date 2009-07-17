@@ -72,47 +72,12 @@ public:
             return;
         }
 
-        std::list<const Interface*> interfaceList;
-        node->collectMixins(&interfaceList);
-
         write("template<class O, Any invoke(O&, unsigned, unsigned, Any*)>\n");
         writetab();
         write("class %s_Proxy : public Proxy_Impl<O", node->getName().c_str());
         write(", %s", node->getName().c_str());
         write(">\n");
-
         writeln("{");
-        indent();
-
-        std::set<std::string> idSet;
-        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
-             i != interfaceList.end();
-             ++i)
-        {
-            for (const Interface* interface = *i;
-                 interface && !interface->isBaseObject();
-                 interface = interface->getSuper())
-            {
-                for (NodeList::iterator i = interface->begin(); i != interface->end(); ++i)
-                {
-                    if (Attribute* attr = dynamic_cast<Attribute*>(*i))
-                    {
-                        idSet.insert(attr->getName());
-                    }
-                    else if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
-                    {
-                        if ((interface->getAttr() & Interface::NoIndexingOperations) &&
-                            (op->getAttr() & (OpDcl::IndexMask | OpDcl::NameMask)))
-                        {
-                            continue;
-                        }
-                        idSet.insert(op->getName());
-                    }
-                }
-            }
-        }
-
-        unindent();
         writeln("public:");
         indent();
 
@@ -132,32 +97,33 @@ public:
         writeln("{");
         writeln("}");
 
+        std::list<const Interface*> interfaceList;
+        node->collectMixins(&interfaceList);
         methodNumber = 0;
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
              i != interfaceList.end();
              ++i)
         {
-            for (const Interface* interface = *i;
-                 interface && !interface->isLeaf();
-                 interface = interface->getSuper())
+            if (!((*i)->getAttr() & Interface::ImplementedOn))
             {
-                currentNode = interface;
-                for (NodeList::iterator i = interface->begin(); i != interface->end(); ++i)
+                currentNode = *i;
+            }
+            writeln("// %s", (*i)->getName().c_str());
+            for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+            {
+                if (Attribute* attr = dynamic_cast<Attribute*>(*j))
                 {
-                    if (Attribute* attr = dynamic_cast<Attribute*>(*i))
+                    attr->accept(this);
+                }
+                else if (OpDcl* op = dynamic_cast<OpDcl*>(*j))
+                {
+                    optionalStage = 0;
+                    do
                     {
-                        attr->accept(this);
-                    }
-                    else if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
-                    {
-                        optionalStage = 0;
-                        do
-                        {
-                            optionalCount = 0;
-                            op->accept(this);
-                            ++optionalStage;
-                        } while (optionalStage <= optionalCount);
-                    }
+                        optionalCount = 0;
+                        op->accept(this);
+                        ++optionalStage;
+                    } while (optionalStage <= optionalCount);
                 }
             }
         }

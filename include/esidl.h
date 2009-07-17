@@ -908,20 +908,19 @@ public:
 
     void collectMixins(std::list<const Interface*>* interfaceList) const
     {
-        interfaceList->push_back(this);
         for (const Interface* interface = this;
              interface && !interface->isBaseObject();
              interface = interface->getSuper())
         {
-            assert(!interface->isLeaf());
-            for (std::list<const Interface*>::const_iterator i = interface->getMixins()->begin();
-                 i != interface->getMixins()->end();
-                 ++i)
+            for (std::list<const Interface*>::const_reverse_iterator i = interface->getMixins()->rbegin();
+                i != interface->getMixins()->rend();
+                ++i)
             {
                 assert(!(*i)->isLeaf());
-                interfaceList->push_back(*i);
                 assert((*i)->getMixins()->empty());
+                interfaceList->push_front(*i);
             }
+            interfaceList->push_front(interface);
         }
     }
 };
