@@ -272,31 +272,6 @@ public:
         {
             if (spec->isInterface(node->getParent()))
             {
-#ifdef USE_FUNCTION_ATTRIBUTE
-                Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
-                uint32_t attr;
-                if (callback && (attr = callback->isCallback()) != 0)
-                {
-                    if (attr == Interface::CallbackIsFunctionOnly)
-                    {
-                        std::string getterName = "get";
-                        getterName += cap + "()";
-
-                        OpDcl* op = 0;
-                        paramMode(getterName);
-                        for (NodeList::iterator i = callback->begin(); i != callback->end(); ++i)
-                        {
-                            if (op = dynamic_cast<OpDcl*>(*i))
-                            {
-                                CPlusPlus::at(op);
-                                break;
-                            }
-                        }
-                        paramMode();
-                        return;
-                    }
-                }
-#endif // USE_FUNCTION_ATTRIBUTE
                 spec->accept(this);
                 write("*");
             }
@@ -369,29 +344,6 @@ public:
             write("void set%s(", cap.c_str());
             if (spec->isInterface(node->getParent()))
             {
-#ifdef USE_FUNCTION_ATTRIBUTE
-                Interface* callback = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
-                uint32_t attr;
-                if (callback && (attr = callback->isCallback()) != 0)
-                {
-                    if (attr == Interface::CallbackIsFunctionOnly)
-                    {
-                        OpDcl* op = 0;
-                        paramMode(name.c_str());
-                        for (NodeList::iterator i = callback->begin(); i != callback->end(); ++i)
-                        {
-                            if (op = dynamic_cast<OpDcl*>(*i))
-                            {
-                                CPlusPlus::at(op);
-                                break;
-                            }
-                        }
-                        paramMode();
-                        write(")");
-                        return true;
-                    }
-                }
-#endif  // USE_FUNCTION_ATTRIBUTE
                 spec->accept(this);
                 write("*");
             }
