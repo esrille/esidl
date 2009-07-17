@@ -43,26 +43,6 @@ public:
     {
     }
 
-    virtual void at(const StructType* node)
-    {
-        if (node->getJavadoc().size())
-        {
-            write("%s\n", node->getJavadoc().c_str());
-            writetab();
-        }
-        write("struct %s", node->getName().c_str());
-        if (!node->isLeaf())
-        {
-            writeln("");
-            writeln("{");
-            indent();
-            printChildren(node);
-            unindent();
-            writetab();
-            write("}");
-        }
-    }
-
     virtual void at(const ExceptDcl* node)
     {
         if (node->getJavadoc().size())
@@ -235,16 +215,8 @@ public:
         {
             write("typedef ");
         }
-        if (node->isInterface(node->getParent()))
-        {
-            node->getSpec()->accept(this);
-            write(" %s", node->getName().c_str());
-        }
-        else
-        {
-            node->getSpec()->accept(this);
-            write(" %s", node->getName().c_str());
-        }
+        node->getSpec()->accept(this);
+        write(" %s", node->getName().c_str());
     }
 
     virtual void at(const ArrayDcl* node)
