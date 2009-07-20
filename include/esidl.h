@@ -73,8 +73,6 @@ protected:
     Node*               parent;
     NodeList*           children;
     std::string         name;
-    mutable std::string separator;
-    std::string         id;
     mutable size_t      offset;
     int                 rank;
     std::string         javadoc;
@@ -160,7 +158,6 @@ public:
     Node() :
         parent(0),
         children(0),
-        separator(", "),
         offset(0),
         extendedAttributes(0),
         source(getFilename()),
@@ -172,7 +169,6 @@ public:
         parent(0),
         name(name),
         children(0),
-        separator(", "),
         offset(0),
         extendedAttributes(0),
         source(getFilename()),
@@ -182,7 +178,6 @@ public:
 
     Node(NodeList* children) :
         parent(0),
-        separator(", "),
         offset(0),
         extendedAttributes(0),
         source(getFilename()),
@@ -194,7 +189,6 @@ public:
     Node(std::string name, NodeList* children) :
         parent(0),
         name(name),
-        separator(", "),
         offset(0),
         extendedAttributes(0),
         source(getFilename()),
@@ -330,16 +324,6 @@ public:
         return name;
     }
 
-    void setSeparator(const char* s) const
-    {
-        separator = s;
-    }
-
-    const std::string& getSeparator() const
-    {
-        return separator;
-    }
-
     // If there is an interface definition as well as interface forward declaration,
     // search() must return the interface definition.
     virtual Node* search(const std::string& elem, size_t pos = 0) const;
@@ -442,16 +426,6 @@ public:
     virtual NativeType* isNative(const Node* scope)
     {
         return 0;
-    }
-
-    std::string& getID()
-    {
-        return id;
-    }
-
-    const std::string& getID() const
-    {
-        return id;
     }
 
     size_t getOffset() const
@@ -571,8 +545,6 @@ public:
         Node(identifier),
         system(system)
     {
-        separator = "\n";
-
         if (name[0] == '"')
         {
             name = name.substr(1, name.size() - 2);
@@ -683,7 +655,6 @@ public:
         constCount(0),
         moduleCount(0)
     {
-        separator = "\n";
         rank = 1;   // 'cause namespace is open.
         javadoc = ::getJavadoc();
     }
@@ -724,7 +695,6 @@ public:
         Node(identifier),
         memberCount(0)
     {
-        separator = ";\n";
         javadoc = ::getJavadoc();
     }
 
@@ -775,7 +745,6 @@ public:
         constructor(0),
         attr(0)
     {
-        separator = ";\n";
         if (!forward)
         {
             children = new NodeList;
@@ -951,6 +920,7 @@ class SequenceType : public Node
 
 public:
     SequenceType(Node* spec, Node* max = 0) :
+        Node("seqence"),  // Default name
         spec(spec),
         max(max)
     {
@@ -1069,7 +1039,6 @@ public:
         spec(spec),
         type(false)
     {
-        separator = ";\n";
         javadoc = ::getJavadoc();
     }
 
@@ -1193,7 +1162,6 @@ public:
         getraises(0),
         setraises(0)
     {
-        separator = ";\n";
     }
 
     bool isReadonly() const
@@ -1284,7 +1252,6 @@ public:
         Member(identifier, spec),
         exp(exp)
     {
-        separator = ";\n";
     }
 
     ~ConstDcl()
@@ -1342,7 +1309,6 @@ public:
         attr(0),
         methodCount(1)
     {
-        separator = ";\n";
         children = new NodeList;
     }
 
@@ -1410,7 +1376,6 @@ public:
         Member(identifier, spec),
         attr(attr)
     {
-        separator = ", ";
     }
 
     uint32_t getAttr() const

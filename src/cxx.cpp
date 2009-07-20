@@ -30,9 +30,7 @@ class Cxx : public CPlusPlus
         do
         {
             optionalCount = 0;
-            writetab();
             element->accept(this);
-            write(";\n");
             ++optionalStage;
         } while (optionalStage <= optionalCount);
     }
@@ -45,6 +43,7 @@ public:
 
     virtual void at(const ExceptDcl* node)
     {
+        writetab();
         if (node->getJavadoc().size())
         {
             write("%s\n", node->getJavadoc().c_str());
@@ -56,8 +55,7 @@ public:
         indent();
         printChildren(node);
         unindent();
-        writetab();
-        write("}");
+        writeln("};");
     }
 
     virtual void at(const Interface* node)
@@ -66,22 +64,34 @@ public:
         {
             return;
         }
+        writetab();
         if (node->getJavadoc().size())
         {
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
-        write("class %s", node->getName().c_str());
-        if (!node->isLeaf())
+        if (node->isLeaf())
         {
+            write("class %s;\n", node->getName().c_str());
+        }
+        else
+        {
+            write("class %s", node->getName().c_str());
             if (node->getExtends())
             {
                 write(" : ");
-                prefix = "public ";
-                node->getExtends()->accept(this);
-                prefix = "";
+                for (NodeList::iterator i = node->getExtends()->begin();
+                     i != node->getExtends()->end();
+                     ++i)
+                {
+                    if (i != node->getExtends()->begin())
+                    {
+                        write(", ");
+                    }
+                    write("public ");
+                    (*i)->accept(this);
+                }
             }
-
             writeln("");
             writeln("{");
             writeln("public:");
@@ -158,15 +168,14 @@ public:
             }
 
             unindent();
-            writetab();
-            write("}");
+            writeln("};");
 
             if (node->getConstructor())
             {
-                write(";\n\n");
-                writetab();
-                write("%s::Constructor* %s::constructor __attribute__((weak))",
-                    node->getName().c_str(), node->getName().c_str());
+                writeln("");
+                // TODO: Control the use of GCC extensions.
+                writeln("%s::Constructor* %s::constructor __attribute__((weak));",
+                        node->getName().c_str(), node->getName().c_str());
             }
         }
     }
@@ -211,42 +220,55 @@ public:
 
     virtual void at(const Member* node)
     {
+        writetab();
+        if (node->isTypedef(node->getParent()))
+        {
+            write("typedef ");
+        }
+        node->getSpec()->accept(this);
+        write(" %s;\n", node->getName().c_str());
+    }
+
+    virtual void at(const ArrayDcl* node)
+    {
+        assert(!node->isLeaf());
+        writetab();
         if (node->isTypedef(node->getParent()))
         {
             write("typedef ");
         }
         node->getSpec()->accept(this);
         write(" %s", node->getName().c_str());
-    }
-
-    virtual void at(const ArrayDcl* node)
-    {
-        assert(!node->isLeaf());
-
-        at(static_cast<const Member*>(node));
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
             write("[");
             (*i)->accept(this);
             write("]");
         }
+        if (node->isTypedef(node->getParent()))
+        {
+            write(";\n");
+        }
     }
 
     virtual void at(const ConstDcl* node)
     {
+        writetab();
         if (node->getJavadoc().size())
         {
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
         write("static const ");
-        at(static_cast<const Member*>(node));
-        write(" = ");
+        node->getSpec()->accept(this);
+        write(" %s = ", node->getName().c_str());
         node->getExp()->accept(this);
+        write(";\n");
     }
 
     virtual void at(const Attribute* node)
     {
+        writetab();
         if (node->getJavadoc().size())
         {
             write("%s\n", node->getJavadoc().c_str());
@@ -255,20 +277,20 @@ public:
 
         // getter
         CPlusPlus::getter(node);
-        write(" = 0");
+        write(" = 0;\n");
 
         if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
         {
             // setter
-            write(";\n");
             writetab();
             CPlusPlus::setter(node);
-            write(" = 0");
+            write(" = 0;\n");
         }
     }
 
     virtual void at(const OpDcl* node)
     {
+        writetab();
         if (node->getJavadoc().size())
         {
             write("%s\n", node->getJavadoc().c_str());
@@ -308,6 +330,7 @@ public:
             unindent();
             writeln("}");
         }
+        write(";\n");
     }
 };
 

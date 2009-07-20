@@ -72,7 +72,7 @@ public:
             return;
         }
 
-        write("template<class O, Any invoke(O&, unsigned, unsigned, Any*)>\n");
+        writeln("template<class O, Any invoke(O&, unsigned, unsigned, Any*)>");
         writetab();
         write("class %s_Proxy : public Proxy_Impl<O", node->getName().c_str());
         write(", %s", node->getName().c_str());
@@ -138,8 +138,7 @@ public:
         writeln("}");
 
         unindent();
-        writetab();
-        write("}");
+        writeln("};");
     }
 
     virtual void at(const Attribute* node)

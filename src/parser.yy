@@ -137,7 +137,6 @@ int yylex();
 %type <node>        array_declarator
 %type <node>        fixed_array_size_list
 %type <node>        fixed_array_size
-%type <node>        fixed_pt_const_type
 %type <node>        const_exp
 %type <node>        or_expr
 %type <node>        xor_expr
@@ -154,7 +153,6 @@ int yylex();
 %type <node>        op_type_spec
 %type <node>        raises_expr_opt
 %type <node>        raises_expr
-%type <node>        param_type_spec
 
 %type <node>        get_excep_expr
 %type <node>        set_excep_expr
@@ -501,7 +499,6 @@ const_type :
     integer_type
     | boolean_type
     | floating_pt_type
-    | fixed_pt_const_type
     | scoped_name
     | octet_type
     ;
@@ -698,7 +695,6 @@ base_type_spec :
 template_type_spec :
     sequence_type
     | string_type
-    | fixed_pt_type
     ;
 
 declarators :
@@ -876,11 +872,7 @@ sequence_type :
     ;
 
 string_type :
-    STRING '<' positive_int_const '>'
-        {
-            $$ = new Type("string");    // XXX
-        }
-    | STRING
+    STRING
         {
             $$ = new Type("string");
         }
@@ -971,7 +963,7 @@ op_attribute_opt :
     ;
 
 op_type_spec :
-    param_type_spec
+    simple_type_spec
     | VOID
         {
             $$ = new Type("void");
@@ -989,7 +981,7 @@ param_dcl_list :
     ;
 
 param_dcl :
-    extended_attribute_opt param_attribute param_type_spec simple_declarator
+    extended_attribute_opt param_attribute simple_type_spec simple_declarator
         {
             ParamDcl* param = new ParamDcl($4, $3, $2);
             param->setExtendedAttributes($1);
@@ -1024,25 +1016,8 @@ raises_expr :
         }
     ;
 
-param_type_spec :
-    base_type_spec
-    | string_type
-    | scoped_name
-    ;
-
-fixed_pt_type :
-    FIXED '<' positive_int_const ',' positive_int_const '>'
-    ;
-
-fixed_pt_const_type :
-    FIXED
-        {
-            $$ = new Type("fixed");
-        }
-    ;
-
 readonly_attr_spec :
-    extended_attribute_opt READONLY ATTRIBUTE param_type_spec simple_declarator get_excep_expr set_excep_expr
+    extended_attribute_opt READONLY ATTRIBUTE simple_type_spec simple_declarator get_excep_expr set_excep_expr
         {
             Attribute* attr = new Attribute($5, $4, true);
             attr->setExtendedAttributes($1);
@@ -1053,7 +1028,7 @@ readonly_attr_spec :
     ;
 
 attr_spec :
-    extended_attribute_opt ATTRIBUTE param_type_spec simple_declarator get_excep_expr set_excep_expr
+    extended_attribute_opt ATTRIBUTE simple_type_spec simple_declarator get_excep_expr set_excep_expr
         {
             Attribute* attr = new Attribute($4, $3);
             attr->setExtendedAttributes($1);

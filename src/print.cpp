@@ -30,28 +30,9 @@ class Print : public Visitor
         {
             return;
         }
-
-        std::string separator;
-        bool br;
-        int count = 0;
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
-            if (0 < count)
-            {
-                printf("%s", separator.c_str());
-            }
-            separator = (*i)->getSeparator();
-            br = (separator[separator.size() - 1] == '\n') ? true : false;
-            if (br)
-            {
-                printf("%s", indent.c_str());
-            }
             (*i)->accept(this);
-            ++count;
-        }
-        if (0 < count && br)
-        {
-            printf("%s", separator.c_str());
         }
     }
 
@@ -63,18 +44,12 @@ class Print : public Visitor
         }
 
         const NodeList* attrlist = node->getExtendedAttributes();
-        std::string separator;
         int count = 0;
         printf("[");
         for (NodeList::const_iterator i = attrlist->begin();
              i != attrlist->end();
              ++i)
         {
-            if (0 < count)
-            {
-                printf("%s", separator.c_str());
-            }
-            separator = (*i)->getSeparator();
             (*i)->accept(this);
             ++count;
         }

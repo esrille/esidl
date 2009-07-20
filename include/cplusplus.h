@@ -31,7 +31,6 @@ class CPlusPlus : public Visitor, public Formatter
 protected:
     const char* source;
 
-    std::string prefix;
     std::string stringTypeName;
     bool useExceptions;
 
@@ -55,7 +54,7 @@ protected:
         return variadicParam;
     }
 
-    void printChildren(const Node* node)
+    void printChildren(const Node* node, const char* separater = 0)
     {
         if (node->isLeaf())
         {
@@ -63,9 +62,6 @@ protected:
         }
 
         const Node* saved = currentNode;
-        std::string separator;
-        bool br;
-        int count = 0;
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
             if (!(*i)->isDefinedIn(source))
@@ -76,27 +72,12 @@ protected:
             {
                 continue;
             }
-            if (0 < count)
+            if (separater && i != node->begin())
             {
-                write("%s", separator.c_str());
-            }
-            separator = (*i)->getSeparator();
-            br = (separator[separator.size() - 1] == '\n') ? true : false;
-            if (br)
-            {
-                writetab();
-            }
-            if (0 < prefix.size())
-            {
-                write("%s", prefix.c_str());
+                write("%s", separater);
             }
             currentNode = (*i);
             (*i)->accept(this);
-            ++count;
-        }
-        if (br && 0 < count)
-        {
-            write("%s", separator.c_str());
         }
         currentNode = saved;
     }
@@ -168,8 +149,7 @@ public:
                 printChildren(node);
                 moduleName.erase(moduleName.size() - node->getName().size() - 2);
             unindent();
-            writetab();
-            write("}");
+            writeln("}");
         }
         else
         {
@@ -288,7 +268,7 @@ public:
         if (useExceptions && node->getGetRaises())
         {
             write(" throw(");
-            node->getGetRaises()->accept(this);
+            printChildren(node->getGetRaises(), ", ");
             write(")");
         }
     }
@@ -360,7 +340,7 @@ public:
         if (useExceptions && node->getSetRaises())
         {
             write(" throw(");
-            node->getSetRaises()->accept(this);
+            printChildren(node->getSetRaises(), ", ");
             write(")");
         }
         return true;
@@ -460,7 +440,7 @@ public:
         if (useExceptions && node->getRaises())
         {
             write(" throw(");
-            node->getRaises()->accept(this);
+            printChildren(node->getRaises(), ", ");
             write(")");
         }
     }
