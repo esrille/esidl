@@ -145,7 +145,6 @@ public:
                      i != constructor->end();
                      ++i)
                 {
-                    writetab();
                     (*i)->accept(this);
                 }
                 constructorMode = false;
@@ -172,7 +171,6 @@ public:
 
             if (node->getConstructor())
             {
-                writeln("");
                 // TODO: Control the use of GCC extensions.
                 writeln("%s::Constructor* %s::constructor __attribute__((weak));",
                         node->getName().c_str(), node->getName().c_str());
@@ -301,7 +299,7 @@ public:
 
         if (!constructorMode)
         {
-            write(" = 0");
+            write(" = 0;\n");
         }
         else
         {
@@ -330,7 +328,6 @@ public:
             unindent();
             writeln("}");
         }
-        write(";\n");
     }
 };
 
