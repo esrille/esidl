@@ -22,11 +22,12 @@
 bool testMethod(const char* info, char type, char returnType, const char* name, unsigned paramCount)
 {
     Reflect::Method method(info);
-    printf("[%s %s %s %s]\n",
+    printf("[%s %s %s %s %s]\n",
            method.isSpecialGetter() ? "getter" : "",
            method.isSpecialSetter() ? "setter" : "",
            method.isSpecialCreator() ? "creator" : "",
-           method.isSpecialDeleter() ? "deleter" : "");
+           method.isSpecialDeleter() ? "deleter" : "",
+           method.isVariadic() ? "variadic" : "");
     printf("%c %c '%s' %d",
            method.getType(), method.getReturnType().getType(), method.getName().c_str(),
            method.getParameterCount());
@@ -98,6 +99,10 @@ int main()
         return 1;
     }
     if (!testMethod("Fd1v6removeD4name", Reflect::kOperation, Reflect::kVoid, "remove", 1))
+    {
+        return 1;
+    }
+    if (!testMethod("FV1v12intersectionl4ints", Reflect::kOperation, Reflect::kVoid, "intersection", 1))
     {
         return 1;
     }

@@ -51,6 +51,7 @@
  *    f: caller
  *    t: stringifier
  *    o: omittable
+ *    V: variadic
  *
  *  type ->
  *    A: any
@@ -58,7 +59,6 @@
  *    Q type: sequence<type>
  *    O name: Object
  *    B type: Boxed valuetype
- *    V type: [Variadic] in type
  *    v: void
  *    b: boolean
  *    h: octet
@@ -149,7 +149,6 @@ public:
         case kObject:
         case kBoxedValueType:
         case kSequence:
-        case kVariadic:
         case kArray:
         case kPointer:
             return true;
@@ -201,7 +200,6 @@ public:
             return ++info;
         case kBoxedValueType:
         case kSequence:
-        case kVariadic:
             return skipType(++info);
         case kObject:
             return skipName(++info);
@@ -618,6 +616,11 @@ public:
         bool isSpecialOmittable() const
         {
             return hasSpecial(kSpecialOmittable);
+        }
+
+        bool isVariadic() const
+        {
+            return hasSpecial(kVariadic);
         }
     };
 

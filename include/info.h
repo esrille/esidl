@@ -364,6 +364,16 @@ public:
             write("%c", Reflect::kSpecialDeleter);
         }
 
+        NodeList::reverse_iterator last = node->rbegin();
+        if (last != node->rend())
+        {
+            const ParamDcl* param = dynamic_cast<const ParamDcl*>(*last);
+            if (param && param->isVariadic())
+            {
+                write("%c", Reflect::kVariadic);
+            }
+        }
+
         write("%u", node->getParamCount(optionalStage));
 
         Node* spec = getSpec(node);
@@ -406,11 +416,6 @@ public:
         if (seq)
         {
             seq->accept(this);
-        }
-        else if (node->isVariadic())
-        {
-            write("%c", Reflect::kVariadic);
-            spec->accept(this);
         }
         else if (spec->isStruct(node->getParent()))
         {
