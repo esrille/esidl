@@ -178,7 +178,7 @@ public:
             if (hasBuffer)
             {
                 std::string name = getBufferName(node);
-                writeln("param[%u] = %s;", anyIndex, name.c_str());
+                writeln("param[%u] = reinterpret_cast<intptr_t>(%s);", anyIndex, name.c_str());
                 ++anyIndex;
                 if (!spec->isArray(node))
                 {
@@ -248,11 +248,16 @@ public:
             writeln("Any param[%u];", paramCount);
             unsigned anyIndex = 1;
             std::string name = getBufferName(node);
-            writeln("param[%u] = %s;", anyIndex, name.c_str());
-            ++anyIndex;
             if (spec->isSequence(node))
             {
+                writeln("param[%u] = reinterpret_cast<intptr_t>(%s);", anyIndex, name.c_str());
+                ++anyIndex;
                 writeln("param[%u] = %sLength;", anyIndex, name.c_str());
+                ++anyIndex;
+            }
+            else
+            {
+                writeln("param[%u] = %s;", anyIndex, name.c_str());
                 ++anyIndex;
             }
 
@@ -320,7 +325,7 @@ public:
             if (hasBuffer)
             {
                 std::string name = getBufferName(spec);
-                writeln("param[%u] = %s;", anyIndex, name.c_str());
+                writeln("param[%u] = reinterpret_cast<intptr_t>(%s);", anyIndex, name.c_str());
                 ++anyIndex;
                 if (!spec->isArray(node))
                 {
@@ -336,11 +341,16 @@ public:
                 ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
                 assert(param);
                 Node* paramSpec = param->getSpec();
-                writeln("param[%u] = %s;", anyIndex, param->getName().c_str());
-                ++anyIndex;
                 if (param->isVariadic() || paramSpec->isSequence(node))
                 {
+                    writeln("param[%u] = reinterpret_cast<intptr_t>(%s);", anyIndex, param->getName().c_str());
+                    ++anyIndex;
                     writeln("param[%u] = %sLength;", anyIndex, param->getName().c_str());
+                    ++anyIndex;
+                }
+                else
+                {
+                    writeln("param[%u] = %s;", anyIndex, param->getName().c_str());
                     ++anyIndex;
                 }
             }
