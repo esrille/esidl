@@ -30,6 +30,22 @@ void drawCharts(es::HTMLDocument* document)
     std::string title = document->getTitle();
     printf("title = %s\n", title.c_str());
 
+    es::Element* element = document->createElement("div");
+    if (element)
+    {
+        if (es::Node* node = document->createTextNode("hello, world."))
+        {
+            element->appendChild(node);
+            node->release();
+        }
+        if (es::HTMLElement* body = document->getBody())
+        {
+            body->appendChild(element);
+            body->release();
+        }
+        element->release();
+    }
+
     es::HTMLCanvasElement* canvas = dynamic_cast<es::HTMLCanvasElement*>(document->getElementById("canvas"));
     if (!canvas)
     {

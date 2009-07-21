@@ -37,6 +37,16 @@ NPError NPP_Initialize()
     addProxyConstructor(es::Node::iid(),
                         reinterpret_cast<Object* (*)(ProxyObject)>(es::Node_Proxy<ProxyObject, invoke>::createInstance));
 
+    addInterfaceData(es::CharacterData::iid(),
+                     es::CharacterData::info());
+    addProxyConstructor(es::CharacterData::iid(),
+                        reinterpret_cast<Object* (*)(ProxyObject)>(es::CharacterData_Proxy<ProxyObject, invoke>::createInstance));
+
+    addInterfaceData(es::Text::iid(),
+                     es::Text::info());
+    addProxyConstructor(es::Text::iid(),
+                        reinterpret_cast<Object* (*)(ProxyObject)>(es::Text_Proxy<ProxyObject, invoke>::createInstance));
+
     addInterfaceData(es::Document::iid(),
                      es::Document::info());
     addProxyConstructor(es::Document::iid(),
@@ -57,6 +67,16 @@ NPError NPP_Initialize()
                      es::HTMLElement::info());
     addProxyConstructor(es::HTMLElement::iid(),
                         reinterpret_cast<Object* (*)(ProxyObject)>(es::HTMLElement_Proxy<ProxyObject, invoke>::createInstance));
+
+    addInterfaceData(es::HTMLBodyElement::iid(),
+                     es::HTMLBodyElement::info());
+    addProxyConstructor(es::HTMLBodyElement::iid(),
+                        reinterpret_cast<Object* (*)(ProxyObject)>(es::HTMLBodyElement_Proxy<ProxyObject, invoke>::createInstance));
+
+    addInterfaceData(es::HTMLDivElement::iid(),
+                     es::HTMLDivElement::info());
+    addProxyConstructor(es::HTMLDivElement::iid(),
+                        reinterpret_cast<Object* (*)(ProxyObject)>(es::HTMLDivElement_Proxy<ProxyObject, invoke>::createInstance));
 
     addInterfaceData(es::HTMLCanvasElement::iid(),
                      es::HTMLCanvasElement::info());
