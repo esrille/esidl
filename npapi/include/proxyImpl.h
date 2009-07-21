@@ -19,31 +19,48 @@
 
 #include <stdint.h>
 
-template<class O, class I>
-class Proxy_Impl1 : public I
+template<class O>
+class Proxy_Base
 {
 protected:
     O object;
 public:
-    Proxy_Impl1(O object) :
+    Proxy_Base(O object) :
         object(object)
+    {
+    }
+    virtual ~Proxy_Base()
+    {
+        object.release();
+    }
+    O* getObject()
+    {
+        return &object;
+    }
+};
+
+template<class O, class I>
+class Proxy_Impl1 : public I, public Proxy_Base<O>
+{
+public:
+    Proxy_Impl1(O object) :
+        Proxy_Base<O>(object)
     {
     }
     virtual ~Proxy_Impl1()
     {
-        object.release();
     }
     virtual std::string getInterfaceName()
     {
-        return object.getInterfaceName();
+        return this->object.getInterfaceName();
     }
     virtual unsigned int retain()
     {
-        return object.retain();
+        return this->object.retain();
     }
     virtual unsigned int release()
     {
-        unsigned int count = object.release();
+        unsigned int count = this->object.release();
         if (count == 0)
         {
             delete this;
@@ -53,30 +70,29 @@ public:
 };
 
 template<class O, class I, class J>
-class Proxy_Impl2 : public I, public J
+class Proxy_Impl2 : public I, public J, public Proxy_Base<O>
 {
 protected:
     O object;
 public:
     Proxy_Impl2(O object) :
-        object(object)
+        Proxy_Base<O>(object)
     {
     }
     virtual ~Proxy_Impl2()
     {
-        object.release();
     }
     virtual std::string getInterfaceName()
     {
-        return object.getInterfaceName();
+        return this->object.getInterfaceName();
     }
     virtual unsigned int retain()
     {
-        return object.retain();
+        return this->object.retain();
     }
     virtual unsigned int release()
     {
-        unsigned int count = object.release();
+        unsigned int count = this->object.release();
         if (count == 0)
         {
             delete this;
@@ -86,30 +102,29 @@ public:
 };
 
 template<class O, class I, class J, class K>
-class Proxy_Impl3 : public I, public J, public K
+class Proxy_Impl3 : public I, public J, public K, public Proxy_Base<O>
 {
 protected:
     O object;
 public:
     Proxy_Impl3(O object) :
-        object(object)
+        Proxy_Base<O>(object)
     {
     }
     virtual ~Proxy_Impl3()
     {
-        object.release();
     }
     virtual std::string getInterfaceName()
     {
-        return object.getInterfaceName();
+        return this->object.getInterfaceName();
     }
     virtual unsigned int retain()
     {
-        return object.retain();
+        return this->object.retain();
     }
     virtual unsigned int release()
     {
-        unsigned int count = object.release();
+        unsigned int count = this->object.release();
         if (count == 0)
         {
             delete this;
@@ -119,30 +134,29 @@ public:
 };
 
 template<class O, class I, class J, class K, class L>
-class Proxy_Impl4 : public I, public J, public K, public L
+class Proxy_Impl4 : public I, public J, public K, public L, public Proxy_Base<O>
 {
 protected:
     O object;
 public:
     Proxy_Impl4(O object) :
-        object(object)
+        Proxy_Base<O>(object)
     {
     }
     virtual ~Proxy_Impl4()
     {
-        object.release();
     }
     virtual std::string getInterfaceName()
     {
-        return object.getInterfaceName();
+        return this->object.getInterfaceName();
     }
     virtual unsigned int retain()
     {
-        return object.retain();
+        return this->object.retain();
     }
     virtual unsigned int release()
     {
-        unsigned int count = object.release();
+        unsigned int count = this->object.release();
         if (count == 0)
         {
             delete this;

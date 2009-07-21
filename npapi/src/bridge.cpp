@@ -16,6 +16,7 @@
 
 #include "esnpapi.h"
 #include "reflect.h"
+#include "proxyImpl.h"
 
 #include <algorithm>
 #include <map>
@@ -581,7 +582,6 @@ void convertToVariant(NPP npp, const std::string& value, NPVariant* variant)
     STRINGN_TO_NPVARIANT(value.c_str(), value.length(), *variant);
 }
 
-// Creates a stub NPObject from 'any' and set it to 'variant'.
 void convertToVariant(NPP npp, Object* value, NPVariant* variant)
 {
     if (!value)
@@ -589,9 +589,16 @@ void convertToVariant(NPP npp, Object* value, NPVariant* variant)
         NULL_TO_NPVARIANT(*variant);
         return;
     }
-    std::string interfaceName = value->getInterfaceName();
-    NPObject* object = createStub(npp, interfaceName.c_str(), value);
-    OBJECT_TO_NPVARIANT(object, *variant);
+    if (Proxy_Base<ProxyObject>* proxy = dynamic_cast<Proxy_Base<ProxyObject>*>(value))
+    {
+        OBJECT_TO_NPVARIANT(proxy->getObject()->getNPObject(), *variant);
+    }
+    else
+    {
+        std::string interfaceName = value->getInterfaceName();
+        NPObject* object = createStub(npp, interfaceName.c_str(), value);
+        OBJECT_TO_NPVARIANT(object, *variant);
+    }
 }
 
 void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
