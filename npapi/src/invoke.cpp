@@ -113,11 +113,148 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
     }
     else
     {
-        unsigned variantCount = paramCount - 1;
+        unsigned variadicCount = 0;
+        if (method.isVariadic())
+        {
+            variadicCount = static_cast<unsigned>(paramArray[paramCount - 1]);
+            paramCount -= 2;
+        }
+        unsigned variantCount = paramCount - 1 + variadicCount;
         NPVariant variantArray[variantCount];
         for (int i = 1; i < paramCount; ++i)
         {
             convertToVariant(object.getNPP(), paramArray[i], &variantArray[i - 1]);
+        }
+        if (0 < variadicCount)
+        {
+            Reflect::Parameter param = method.listParameter();
+            for (int i = 0; i < method.getParameterCount(); ++i)
+            {
+                param.next();
+            }
+            switch (param.getType().getType())
+            {
+            case Reflect::kBoolean:
+            {
+                const bool* variadic = reinterpret_cast<const bool*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kOctet:
+            {
+                const uint8_t* variadic = reinterpret_cast<const uint8_t*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kShort:
+            {
+                const int16_t* variadic = reinterpret_cast<const int16_t*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kUnsignedShort:
+            {
+                const uint16_t* variadic = reinterpret_cast<const uint16_t*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kLong:
+            {
+                const int32_t* variadic = reinterpret_cast<const int32_t*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kUnsignedLong:
+            {
+                const uint32_t* variadic = reinterpret_cast<const uint32_t*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kLongLong:
+            {
+                const int64_t* variadic = reinterpret_cast<const int64_t*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kUnsignedLongLong:
+            {
+                const uint64_t* variadic = reinterpret_cast<const uint64_t*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kFloat:
+            {
+                const float* variadic = reinterpret_cast<const float*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kDouble:
+            {
+                const double* variadic = reinterpret_cast<const double*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kString:
+            {
+                const std::string* variadic = reinterpret_cast<const std::string*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kAny:
+            {
+                const Any* variadic = reinterpret_cast<const Any*>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            case Reflect::kObject:
+            {
+                Object** variadic = reinterpret_cast<Object**>(static_cast<intptr_t>(paramArray[paramCount]));
+                for (int i = paramCount - 1; i < variantCount; ++i)
+                {
+                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                }
+                break;
+            }
+            default:
+                // TODO: Are we going to support non-simple types with variadic?
+                break;
+            }
         }
         id = NPN_GetStringIdentifier(method.getName().c_str());
         if (NPN_Invoke(object.getNPP(), object.getNPObject(), id, variantArray, variantCount, &result))
