@@ -1,8 +1,6 @@
 interface Stream
 {
-    typedef sequence<octet> Buf;
-
-    Buf read();
-    long write(in Buf buf);
-    attribute Buf data;
+    sequence<octet> read();
+    long write(in sequence<octet> buf);
+    attribute sequence<octet> data;
 };

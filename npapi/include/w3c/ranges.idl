@@ -26,11 +26,11 @@ module ranges
   // Introduced in DOM Level 2:
   exception RangeException {
     unsigned short   code;
-  };
-  // RangeExceptionCode
-  const unsigned short      BAD_BOUNDARYPOINTS_ERR         = 1;
-  const unsigned short      INVALID_NODE_TYPE_ERR          = 2;
 
+    // RangeExceptionCode
+    const unsigned short      BAD_BOUNDARYPOINTS_ERR         = 1;
+    const unsigned short      INVALID_NODE_TYPE_ERR          = 2;
+  };
 
   // Introduced in DOM Level 2:
   interface Range {

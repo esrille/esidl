@@ -92,8 +92,6 @@ IdentifierStart         ([A-Za-z$_]|{Lu}|{Ll}|{Unicode})
 IdentifierPart          ([0-9]|{IdentifierStart}|(\\{UnicodeEscapeSequence}))
 Identifier              {IdentifierStart}{IdentifierPart}*
 
-FixedPointLiteral       (({DecimalIntegerLiteral}\.[0-9]*)|(\.[0-9]+)|({DecimalIntegerLiteral}))[dD]
-
 MultiLineComment        \/\*(([^*])|(\*[^/]))*\*\/
 SingleLineComment       \/\/
 
@@ -148,10 +146,6 @@ exception           {
 FALSE               {
                         stepLocation();
                         return FALSE;
-                    }
-fixed               {
-                        stepLocation();
-                        return FIXED;
                     }
 float               {
                         stepLocation();
@@ -286,12 +280,6 @@ void                {
                         stepLocation();
                         yylval.name = strdup(yytext);
                         return STRING_LITERAL;
-                    }
-
-{FixedPointLiteral} {
-                        stepLocation();
-                        yylval.name = strdup(yytext);
-                        return FIXED_PT_LITERAL;
                     }
 
 {MultiLineComment}  {

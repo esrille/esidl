@@ -731,7 +731,8 @@ void yyerror(const char* message, ...)
     va_list ap;
 
     va_start(ap, message);
-    fprintf(stderr, "%d.%d-%d.%d: ",
+    fprintf(stderr, "%s %d.%d-%d.%d: ",
+            getFilename().c_str(),
             yylloc.first_line, yylloc.first_column,
             yylloc.last_line, yylloc.last_column);
     vfprintf(stderr, message, ap);

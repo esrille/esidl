@@ -1,7 +1,6 @@
 module X
 {
     typedef boolean S;
-    const S T = TRUE;
 
     interface Y
     {
@@ -20,9 +19,7 @@ module X
         const boolean Q = TRUE ^ FALSE;
         const boolean R = P & Q;
 
-        typedef S U;
-
-        const U V = FALSE;
+        const S V = FALSE;
         const double PI = 3.14159256358979;
     };
 };

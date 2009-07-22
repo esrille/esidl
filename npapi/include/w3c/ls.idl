@@ -44,11 +44,11 @@ module ls
 
   exception LSException {
     unsigned short   code;
-  };
-  // LSExceptionCode
-  const unsigned short      PARSE_ERR                      = 81;
-  const unsigned short      SERIALIZE_ERR                  = 82;
 
+    // LSExceptionCode
+    const unsigned short      PARSE_ERR                      = 81;
+    const unsigned short      SERIALIZE_ERR                  = 82;
+  };
 
   interface DOMImplementationLS {
 

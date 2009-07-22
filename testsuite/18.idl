@@ -1,6 +1,10 @@
-interface I
+module X
 {
     typedef boolean B;
-    attribute boolean on;
-    attribute B off;
+
+    interface I
+    {
+        attribute boolean on;
+        attribute B off;
+    };
 };
