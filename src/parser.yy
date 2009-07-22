@@ -172,7 +172,7 @@ int yylex();
 %type <name>        UnaryOperator
 %type <node>        Preprocessor
 %type <node>        ConstType
-%type <node>        declarator
+%type <node>        Declarator
 %type <node>        array_declarator
 %type <node>        fixed_array_size_list
 %type <node>        fixed_array_size
@@ -376,7 +376,7 @@ ExceptionMembers :
     ;
 
 Typedef :
-    TYPEDEF Type declarator ';'
+    TYPEDEF Type Declarator ';'
         {
             Member* m = static_cast<Member*>($3);
             // In flat namespace mode, even a valid typedef can define a new type for the spec using the exactly same name.
@@ -388,7 +388,7 @@ Typedef :
             }
             $$ = m;
         }
-    | NATIVE IDENTIFIER ';'
+    | NATIVE IDENTIFIER ';'  /* Note 'native' is not supported in Web IDL */
         {
             NativeType* nativeType = new NativeType($2);
             getCurrent()->add(nativeType);
@@ -413,6 +413,9 @@ ConstType :
     | OctetType
     ;
 
+/* Note in Web IDL, ConstExpr is just a literal.
+ * The support for the expressions are the ES extensions.
+ */
 ConstExpr :
     OrExpr
     ;
@@ -590,10 +593,10 @@ Operation :
             setCurrent(op);
             free($2);
         }
-    parameter_dcls Raises ';'
+    '(' ArgumentList ')' Raises ';'
         {
             OpDcl* op = static_cast<OpDcl*>(getCurrent());
-            op->setRaises($5);
+            op->setRaises($7);
             setCurrent(op->getParent());
             $$ = op;
         }
@@ -617,14 +620,14 @@ ExceptionList :
         }
     ;
 
-parameter_dcls :
-    '(' ArgumentList ')'
-    | '(' ')'
+ArgumentList :
+    /* empty */
+    | Argument Arguments
     ;
 
-ArgumentList :
-    Argument
-    | ArgumentList ',' Argument
+Arguments :
+    /* empty */
+    | ',' Argument Arguments
     ;
 
 Argument :
@@ -928,13 +931,17 @@ extended_attribute_details :
         }
     ;
 
+parameter_dcls :
+    '(' ArgumentList ')'
+    ;
+
 /* ES extensions */
 
 positive_int_const :
     ConstExpr
     ;
 
-declarator :
+Declarator :
     IDENTIFIER
         {
             $$ = new Member($1);
