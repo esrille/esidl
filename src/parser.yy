@@ -119,8 +119,6 @@ int yylex();
 
 %type <node>        InterfaceMember
 %type <node>        Attribute
-%type <node>        readonly_attr_spec
-%type <node>        attr_spec
 %type <node>        Operation
 
 %type <node>        ExceptionMember
@@ -129,14 +127,13 @@ int yylex();
 %type <node>        InterfaceInheritance
 %type <node>        ScopedNameList
 %type <node>        ScopedName
-%type <node>        const_type
+%type <node>        ConstType
 %type <node>        declarator
 
-%type <node>        type_spec
+%type <node>        Type
 %type <node>        base_type_spec
-%type <node>        template_type_spec
 
-%type <node>        floating_pt_type
+%type <node>        FloatType
 %type <node>        integer_type
 %type <node>        signed_int
 %type <node>        signed_short_int
@@ -146,34 +143,33 @@ int yylex();
 %type <node>        unsigned_short_int
 %type <node>        unsigned_long_int
 %type <node>        unsigned_longlong_int
-%type <node>        boolean_type
-%type <node>        octet_type
-%type <node>        any_type
-%type <node>        sequence_type
-%type <node>        string_type
+%type <node>        BooleanType
+%type <node>        OctetType
+%type <node>        AnyType
+%type <node>        SequenceType
+%type <node>        StringType
 %type <node>        array_declarator
 %type <node>        fixed_array_size_list
 %type <node>        fixed_array_size
-%type <node>        const_exp
-%type <node>        or_expr
-%type <node>        xor_expr
-%type <node>        and_expr
-%type <node>        shift_expr
-%type <node>        add_expr
-%type <node>        mult_expr
-%type <node>        unary_expr
-%type <node>        primary_expr
+%type <node>        ConstExpr
+%type <node>        OrExpr
+%type <node>        XorExpr
+%type <node>        AndExpr
+%type <node>        ShiftExpr
+%type <node>        AddExpr
+%type <node>        MultExpr
+%type <node>        UnaryExpr
+%type <node>        PrimaryExpr
 %type <node>        literal
-%type <node>        boolean_literal
+%type <node>        BooleanLiteral
 %type <node>        positive_int_const
 
-%type <node>        op_type_spec
-%type <node>        raises_expr_opt
-%type <node>        raises_expr
+%type <node>        ReturnType
+%type <node>        Raises
 
-%type <node>        get_excep_expr
-%type <node>        set_excep_expr
-%type <node>        exception_list
+%type <node>        GetRaises
+%type <node>        SetRaises
+%type <node>        ExceptionList
 
 %type <nodeList>    ExtendedAttributeList
 %type <nodeList>    extended_attribute_list
@@ -181,9 +177,10 @@ int yylex();
 %type <node>        extended_attribute
 %type <node>        extended_attribute_details
 
-%type <name>        unary_operator
+%type <name>        UnaryOperator
 
-%type <attr>        param_attribute
+%type <attr>        In
+%type <attr>        ReadOnly
 
 %token <name>       JAVADOC
 %type <name>        JavaDoc
@@ -404,7 +401,7 @@ ScopedName :
     ;
 
 Const :
-    CONST const_type IDENTIFIER '=' const_exp ';'
+    CONST ConstType IDENTIFIER '=' ConstExpr ';'
         {
             ConstDcl* constDcl = new ConstDcl($2, $3, $5);
             getCurrent()->add(constDcl);
@@ -412,91 +409,91 @@ Const :
         }
     ;
 
-const_type :
+ConstType :
     integer_type
-    | boolean_type
-    | floating_pt_type
+    | BooleanType
+    | FloatType
     | ScopedName
-    | octet_type
+    | OctetType
     ;
 
-const_exp :
-    or_expr
+ConstExpr :
+    OrExpr
     ;
 
-or_expr :
-    xor_expr
-    | or_expr '|' xor_expr
+OrExpr :
+    XorExpr
+    | OrExpr '|' XorExpr
         {
             $$ = new BinaryExpr("|", $1, $3);
         }
     ;
 
-xor_expr :
-    and_expr
-    | xor_expr '^' and_expr
+XorExpr :
+    AndExpr
+    | XorExpr '^' AndExpr
         {
             $$ = new BinaryExpr("^", $1, $3);
         }
     ;
 
-and_expr :
-    shift_expr
-    | and_expr '&' shift_expr
+AndExpr :
+    ShiftExpr
+    | AndExpr '&' ShiftExpr
         {
             $$ = new BinaryExpr("&", $1, $3);
         }
     ;
 
-shift_expr :
-    add_expr
-    | shift_expr OP_SHR add_expr
+ShiftExpr :
+    AddExpr
+    | ShiftExpr OP_SHR AddExpr
         {
             $$ = new BinaryExpr(">>", $1, $3);
         }
-    | shift_expr OP_SHL add_expr
+    | ShiftExpr OP_SHL AddExpr
         {
             $$ = new BinaryExpr("<<", $1, $3);
         }
     ;
 
-add_expr :
-    mult_expr
-    | add_expr '+' mult_expr
+AddExpr :
+    MultExpr
+    | AddExpr '+' MultExpr
         {
             $$ = new BinaryExpr("+", $1, $3);
         }
-    | add_expr '-' mult_expr
+    | AddExpr '-' MultExpr
         {
             $$ = new BinaryExpr("-", $1, $3);
         }
     ;
 
-mult_expr :
-    unary_expr
-    | mult_expr '*' unary_expr
+MultExpr :
+    UnaryExpr
+    | MultExpr '*' UnaryExpr
         {
             $$ = new BinaryExpr("*", $1, $3);
         }
-    | mult_expr '/' unary_expr
+    | MultExpr '/' UnaryExpr
         {
             $$ = new BinaryExpr("/", $1, $3);
         }
-    | mult_expr '%' unary_expr
+    | MultExpr '%' UnaryExpr
         {
             $$ = new BinaryExpr("%", $1, $3);
         }
     ;
 
-unary_expr :
-    unary_operator primary_expr
+UnaryExpr :
+    UnaryOperator PrimaryExpr
         {
             $$ = new UnaryExpr($1, $2);
         }
-    | primary_expr
+    | PrimaryExpr
     ;
 
-unary_operator :
+UnaryOperator :
     '-'
         {
             $$ = "-";
@@ -511,10 +508,10 @@ unary_operator :
         }
     ;
 
-primary_expr :
+PrimaryExpr :
     ScopedName
     | literal
-    | '(' const_exp ')'
+    | '(' ConstExpr ')'
         {
             $$ = new GroupingExpression($2);
         }
@@ -531,10 +528,10 @@ literal :
             $$ = new Literal($1);
             free($1);
         }
-    | boolean_literal
+    | BooleanLiteral
     ;
 
-boolean_literal :
+BooleanLiteral :
     TRUE
         {
             $$ = new Literal("TRUE");
@@ -546,11 +543,11 @@ boolean_literal :
     ;
 
 positive_int_const :
-    const_exp
+    ConstExpr
     ;
 
 Typedef :
-    TYPEDEF type_spec declarator ';'
+    TYPEDEF Type declarator ';'
         {
             Member* m = static_cast<Member*>($3);
             // In flat namespace mode, even a valid typedef can define a new type for the spec using the exactly same name.
@@ -570,23 +567,19 @@ Typedef :
         }
     ;
 
-type_spec :
+Type :
     base_type_spec
-    | template_type_spec
     | ScopedName
+    | AnyType
     ;
 
 base_type_spec :
-    floating_pt_type
-    | integer_type
-    | boolean_type
-    | octet_type
-    | any_type
-    ;
-
-template_type_spec :
-    sequence_type
-    | string_type
+    integer_type
+    | BooleanType
+    | OctetType
+    | FloatType
+    | StringType
+    | SequenceType
     ;
 
 declarator :
@@ -598,7 +591,7 @@ declarator :
     | array_declarator
     ;
 
-floating_pt_type :
+FloatType :
     FLOAT
         {
             $$ = new Type("float");
@@ -668,21 +661,21 @@ unsigned_longlong_int :
         }
     ;
 
-boolean_type :
+BooleanType :
     BOOLEAN
         {
             $$ = new Type("boolean");
         }
     ;
 
-octet_type :
+OctetType :
     OCTET
         {
             $$ = new Type("octet");
         }
     ;
 
-any_type :
+AnyType :
     ANY
         {
             $$ = new Type("any");
@@ -713,7 +706,7 @@ ExceptionMember :
     ;
 
 ExceptionField :
-    type_spec IDENTIFIER ';'
+    Type IDENTIFIER ';'
         {
             Member* m = new Member($2);
             free($2);
@@ -723,20 +716,20 @@ ExceptionField :
         }
     ;
 
-sequence_type :
-    SEQUENCE '<' type_spec ',' positive_int_const '>'
+SequenceType :
+    SEQUENCE '<' Type ',' positive_int_const '>'
         {
             $$ = new SequenceType($3, $5);
             $$->setParent(getCurrent());
         }
-    | SEQUENCE '<' type_spec '>'
+    | SEQUENCE '<' Type '>'
         {
             $$ = new SequenceType($3);
             $$->setParent(getCurrent());
         }
     ;
 
-string_type :
+StringType :
     STRING
         {
             $$ = new Type("string");
@@ -772,11 +765,6 @@ fixed_array_size :
         }
     ;
 
-Attribute :
-    readonly_attr_spec
-    | attr_spec
-    ;
-
 Exception :
     EXCEPTION IDENTIFIER
         {
@@ -793,14 +781,14 @@ Exception :
     ;
 
 Operation :
-    op_type_spec IDENTIFIER
+    ReturnType IDENTIFIER
         {
             OpDcl* op = new OpDcl($2, $1);
             getCurrent()->add(op);
             setCurrent(op);
             free($2);
         }
-    parameter_dcls raises_expr_opt ';'
+    parameter_dcls Raises ';'
         {
             OpDcl* op = static_cast<OpDcl*>(getCurrent());
             op->setRaises($5);
@@ -809,8 +797,8 @@ Operation :
         }
     ;
 
-op_type_spec :
-    type_spec
+ReturnType :
+    Type
     | VOID
         {
             $$ = new Type("void");
@@ -818,17 +806,17 @@ op_type_spec :
     ;
 
 parameter_dcls :
-    '(' param_dcl_list ')'
+    '(' ArgumentList ')'
     | '(' ')'
     ;
 
-param_dcl_list :
-    param_dcl
-    | param_dcl_list ',' param_dcl
+ArgumentList :
+    Argument
+    | ArgumentList ',' Argument
     ;
 
-param_dcl :
-    ExtendedAttributeList param_attribute type_spec IDENTIFIER
+Argument :
+    ExtendedAttributeList In Type IDENTIFIER
         {
             ParamDcl* param = new ParamDcl($4, $3, $2);
             param->setExtendedAttributes($1);
@@ -837,7 +825,7 @@ param_dcl :
         }
     ;
 
-param_attribute :
+In :
     /* empty */
         {
             $$ = ParamDcl::AttrIn;
@@ -848,25 +836,21 @@ param_attribute :
         }
     ;
 
-raises_expr_opt :
+Raises :
     /* empty */
         {
             $$ = 0;
         }
-    | raises_expr
-    ;
-
-raises_expr :
-    RAISES '(' ScopedNameList ')'
+    | RAISES ExceptionList
         {
-            $$ = $3;
+            $$ = $2;
         }
     ;
 
-readonly_attr_spec :
-    READONLY ATTRIBUTE type_spec IDENTIFIER get_excep_expr set_excep_expr ';'
+Attribute :
+    ReadOnly ATTRIBUTE Type IDENTIFIER GetRaises SetRaises ';'
         {
-            Attribute* attr = new Attribute($4, $3, true);
+            Attribute* attr = new Attribute($4, $3, $1);
             attr->setGetRaises($5);
             attr->setSetRaises($6);
             getCurrent()->add(attr);
@@ -874,40 +858,40 @@ readonly_attr_spec :
         }
     ;
 
-attr_spec :
-    ATTRIBUTE type_spec IDENTIFIER get_excep_expr set_excep_expr ';'
+ReadOnly :
+    /* empty */
         {
-            Attribute* attr = new Attribute($3, $2);
-            attr->setGetRaises($4);
-            attr->setSetRaises($5);
-            getCurrent()->add(attr);
-            $$ = attr;
+            $$ = false;
+        }
+    | READONLY
+        {
+            $$ = true;
         }
     ;
 
-get_excep_expr :
+GetRaises :
     /* empty */
         {
             $$ = 0;
         }
-    | GETRAISES exception_list
+    | GETRAISES ExceptionList
         {
             $$ = $2;
         }
     ;
 
-set_excep_expr :
+SetRaises :
     /* empty */
         {
             $$ = 0;
         }
-    | SETRAISES exception_list
+    | SETRAISES ExceptionList
         {
             $$ = $2;
         }
     ;
 
-exception_list :
+ExceptionList :
     '(' ScopedNameList ')'
         {
             $$ = $2;
