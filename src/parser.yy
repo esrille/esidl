@@ -133,8 +133,7 @@ int yylex();
 %type <node>        ExceptionMember
 %type <node>        ExceptionField
 %type <nodeList>    ExtendedAttributeList
-%type <nodeList>    extended_attribute_list
-%type <nodeList>    extended_attributes
+%type <nodeList>    ExtendedAttributes
 %type <node>        Type
 %type <node>        base_type_spec
 %type <node>        FloatType
@@ -155,8 +154,11 @@ int yylex();
 %type <node>        ReturnType
 %type <node>        ScopedNameList
 %type <node>        ScopedName
-%type <node>        extended_attribute
-%type <node>        extended_attribute_details
+%type <node>        ExtendedAttribute
+%type <node>        ExtendedAttributeNoArg
+%type <node>        ExtendedAttributeArgList
+%type <node>        ExtendedAttributeNamedArgList
+%type <node>        ExtendedAttributeScopedName
 
 /* ES extensions */
 %type <node>        InterfaceDcl
@@ -666,31 +668,59 @@ ExtendedAttributeList :
         {
             $$ = 0;
         }
-    | extended_attribute_list
-    ;
-
-extended_attribute_list :
+    |
         {
             pushJavadoc();
         }
-    '[' extended_attributes ']'
+    '[' JavaDoc
+        {
+            setJavadoc($3);
+            free($3);
+        }
+    ExtendedAttribute ExtendedAttributes ']'
         {
             popJavadoc();
-            $$ = $3;
+            if ($6)
+            {
+                $$ = $6;
+            }
+            else
+            {
+                $$ = new NodeList;
+            }
+            $$->push_front($5);
         }
     ;
 
-extended_attributes :
-    extended_attribute
+ExtendedAttributes :
+    /* empty */
         {
-            $$ = new NodeList;
-            $$->push_back($1);
+            $$ = 0;
         }
-    | extended_attributes ',' extended_attribute
+    | ',' JavaDoc
         {
-            $1->push_back($3);
-            $$ = $1;
+            setJavadoc($2);
+            free($2);
         }
+    ExtendedAttribute ExtendedAttributes
+        {
+            if ($5)
+            {
+                $$ = $5;
+            }
+            else
+            {
+                $$ = new NodeList;
+            }
+            $$->push_front($4);
+        }
+    ;
+
+ExtendedAttribute :
+    ExtendedAttributeNoArg
+    | ExtendedAttributeArgList
+    | ExtendedAttributeNamedArgList
+    | ExtendedAttributeScopedName
     ;
 
 Type :
@@ -879,44 +909,17 @@ ScopedName :
         }
     ;
 
-extended_attribute :
-    JavaDoc
+ExtendedAttributeNoArg :
+    IDENTIFIER
         {
-            setJavadoc($1);
+            $$ = new ExtendedAttribute($1, 0);
             free($1);
-        }
-    IDENTIFIER extended_attribute_details
-        {
-            $$ = new ExtendedAttribute($3, $4);
-            free($3);
             setJavadoc(0);
         }
     ;
 
-extended_attribute_details :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | '=' ScopedName
-        {
-            $$ = $2;
-        }
-    | '=' IDENTIFIER
-        {
-            $<node>$ = getCurrent();
-            OpDcl* op = new OpDcl($2, 0);
-            // We need to set parent for op here. Otherwise, some names cannot be resolved.
-            op->setParent(getCurrent());
-            setCurrent(op);
-            free($2);
-        }
-    parameter_dcls
-        {
-            $$ = getCurrent();
-            setCurrent($<node>3);
-        }
-    |
+ExtendedAttributeArgList :
+    IDENTIFIER
         {
             $<node>$ = getCurrent();
             OpDcl* op = new OpDcl("", 0);
@@ -924,15 +927,41 @@ extended_attribute_details :
             op->setParent(getCurrent());
             setCurrent(op);
         }
-    parameter_dcls
+    '(' ArgumentList ')'
         {
-            $$ = getCurrent();
-            setCurrent($<node>1);
+            $$ = new ExtendedAttribute($1, getCurrent());
+            setCurrent($<node>2);
+            free($1);
+            setJavadoc(0);
         }
     ;
 
-parameter_dcls :
+ExtendedAttributeNamedArgList :
+    IDENTIFIER '=' IDENTIFIER
+        {
+            $<node>$ = getCurrent();
+            OpDcl* op = new OpDcl($3, 0);
+            // We need to set parent for op here. Otherwise, some names cannot be resolved.
+            op->setParent(getCurrent());
+            setCurrent(op);
+            free($3);
+        }
     '(' ArgumentList ')'
+        {
+            $$ = new ExtendedAttribute($1, getCurrent());
+            setCurrent($<node>4);
+            free($1);
+            setJavadoc(0);
+        }
+    ;
+
+ExtendedAttributeScopedName :
+    IDENTIFIER '=' ScopedName
+        {
+            $$ = new ExtendedAttribute($1, $3);
+            free($1);
+            setJavadoc(0);
+        }
     ;
 
 /* ES extensions */
