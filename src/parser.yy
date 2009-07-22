@@ -21,6 +21,11 @@
  *
  * W3C,
  * Web IDL,
+ * W3C Editor’s Draft 10 July 2009.
+ * http://dev.w3.org/2006/webapi/WebIDL/
+ *
+ * W3C,
+ * Web IDL,
  * W3C Working Draft 19 December 2008.
  * http://www.w3.org/TR/WebIDL/
  *
@@ -104,35 +109,34 @@ int yylex();
 %token <name>       INTEGER_LITERAL
 %token <name>       FLOATING_PT_LITERAL
 %token <name>       STRING_LITERAL
+%token <name>       JAVADOC
 
 %type <node>        Definition
 %type <node>        Module
 %type <node>        Interface
+%type <node>        InterfaceInheritance
+%type <node>        InterfaceMember
 %type <node>        Exception
 %type <node>        Typedef
 /* %type <node>        ImplementsStatement */
-%type <node>        Preprocessor
 %type <node>        Const
-
-%type <node>        InterfaceDcl
-%type <node>        ForwardDcl
-
-%type <node>        InterfaceMember
+%type <node>        ConstExpr
+%type <node>        Literal
+%type <node>        BooleanLiteral
 %type <node>        Attribute
+%type <attr>        ReadOnly
+%type <node>        GetRaises
+%type <node>        SetRaises
 %type <node>        Operation
-
+%type <node>        Raises
+%type <node>        ExceptionList
 %type <node>        ExceptionMember
 %type <node>        ExceptionField
-
-%type <node>        InterfaceInheritance
-%type <node>        ScopedNameList
-%type <node>        ScopedName
-%type <node>        ConstType
-%type <node>        declarator
-
+%type <nodeList>    ExtendedAttributeList
+%type <nodeList>    extended_attribute_list
+%type <nodeList>    extended_attributes
 %type <node>        Type
 %type <node>        base_type_spec
-
 %type <node>        FloatType
 %type <node>        integer_type
 %type <node>        signed_int
@@ -148,10 +152,15 @@ int yylex();
 %type <node>        AnyType
 %type <node>        SequenceType
 %type <node>        StringType
-%type <node>        array_declarator
-%type <node>        fixed_array_size_list
-%type <node>        fixed_array_size
-%type <node>        ConstExpr
+%type <node>        ReturnType
+%type <node>        ScopedNameList
+%type <node>        ScopedName
+%type <node>        extended_attribute
+%type <node>        extended_attribute_details
+
+/* ES extensions */
+%type <node>        InterfaceDcl
+%type <node>        ForwardDcl
 %type <node>        OrExpr
 %type <node>        XorExpr
 %type <node>        AndExpr
@@ -160,29 +169,14 @@ int yylex();
 %type <node>        MultExpr
 %type <node>        UnaryExpr
 %type <node>        PrimaryExpr
-%type <node>        literal
-%type <node>        BooleanLiteral
-%type <node>        positive_int_const
-
-%type <node>        ReturnType
-%type <node>        Raises
-
-%type <node>        GetRaises
-%type <node>        SetRaises
-%type <node>        ExceptionList
-
-%type <nodeList>    ExtendedAttributeList
-%type <nodeList>    extended_attribute_list
-%type <nodeList>    extended_attributes
-%type <node>        extended_attribute
-%type <node>        extended_attribute_details
-
 %type <name>        UnaryOperator
-
-%type <attr>        In
-%type <attr>        ReadOnly
-
-%token <name>       JAVADOC
+%type <node>        Preprocessor
+%type <node>        ConstType
+%type <node>        declarator
+%type <node>        array_declarator
+%type <node>        fixed_array_size_list
+%type <node>        fixed_array_size
+%type <node>        positive_int_const
 %type <name>        JavaDoc
 
 %%
@@ -312,6 +306,17 @@ Interface :
         }
     ;
 
+InterfaceInheritance :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | ':' ScopedNameList
+        {
+            $$ = $2;
+        }
+    ;
+
 InterfaceMembers :
     /* empty */
     | JavaDoc
@@ -337,66 +342,57 @@ InterfaceMember :
     | Preprocessor
     ;
 
-InterfaceInheritance :
-    /* empty */
+Exception :
+    EXCEPTION IDENTIFIER
         {
-            $$ = 0;
-        }
-    | ':' ScopedNameList
-        {
-            $$ = $2;
-        }
-    ;
-
-ScopedNameList :
-    ScopedName
-        {
-            $$ = new Node();
-            $$->add($1);
-        }
-    | ScopedName ',' ScopedNameList
-        {
-            $3->add($1);
-            $$ = $3;
-        }
-    ;
-
-ScopedName :
-    IDENTIFIER
-        {
-            ScopedName* name = new ScopedName($1);
-            free($1);
-            $$ = name;
-        }
-    | OP_SCOPE IDENTIFIER
-        {
-            ScopedName* name;
-            if (Node::getFlatNamespace())
-            {
-                name = new ScopedName($2);
-            }
-            else
-            {
-                name = new ScopedName("::");
-                name->getName() += $2;
-            }
-            $$ = name;
+            ExceptDcl* exc = new ExceptDcl($2);
+            getCurrent()->add(exc);
+            setCurrent(exc);
             free($2);
         }
-    | ScopedName OP_SCOPE IDENTIFIER
+    '{' ExceptionMembers '}' ';'
         {
-            ScopedName* name = static_cast<ScopedName*>($1);
-            if (Node::getFlatNamespace())
+            $$ = getCurrent();
+            setCurrent(getCurrent()->getParent());
+        }
+    ;
+
+ExceptionMembers :
+    /* empty */
+    | JavaDoc
+        {
+            setJavadoc($1);
+            free($1);
+        }
+    ExtendedAttributeList ExceptionMember
+        {
+            if ($4)
             {
-                name->getName() = $3;
+                $4->setExtendedAttributes($3);
             }
-            else
+            setJavadoc(0);
+        }
+    ExceptionMembers
+    ;
+
+Typedef :
+    TYPEDEF Type declarator ';'
+        {
+            Member* m = static_cast<Member*>($3);
+            // In flat namespace mode, even a valid typedef can define a new type for the spec using the exactly same name.
+            if (dynamic_cast<ArrayDcl*>(m) || !dynamic_cast<ScopedName*>($2) || m->getQualifiedName() != $2->getQualifiedName())
             {
-                name->getName() += "::";
-                name->getName() += $3;
+                m->setSpec($2);
+                m->setTypedef(true);
+                getCurrent()->add(m);
             }
-            $$ = name;
-            free($3);
+            $$ = m;
+        }
+    | NATIVE IDENTIFIER ';'
+        {
+            NativeType* nativeType = new NativeType($2);
+            getCurrent()->add(nativeType);
+            $$ = nativeType;
         }
     ;
 
@@ -510,14 +506,14 @@ UnaryOperator :
 
 PrimaryExpr :
     ScopedName
-    | literal
+    | Literal
     | '(' ConstExpr ')'
         {
             $$ = new GroupingExpression($2);
         }
     ;
 
-literal :
+Literal :
     INTEGER_LITERAL
         {
             $$ = new Literal($1);
@@ -542,28 +538,155 @@ BooleanLiteral :
         }
     ;
 
-positive_int_const :
-    ConstExpr
+Attribute :
+    ReadOnly ATTRIBUTE Type IDENTIFIER GetRaises SetRaises ';'
+        {
+            Attribute* attr = new Attribute($4, $3, $1);
+            attr->setGetRaises($5);
+            attr->setSetRaises($6);
+            getCurrent()->add(attr);
+            $$ = attr;
+        }
     ;
 
-Typedef :
-    TYPEDEF Type declarator ';'
+ReadOnly :
+    /* empty */
         {
-            Member* m = static_cast<Member*>($3);
-            // In flat namespace mode, even a valid typedef can define a new type for the spec using the exactly same name.
-            if (dynamic_cast<ArrayDcl*>(m) || !dynamic_cast<ScopedName*>($2) || m->getQualifiedName() != $2->getQualifiedName())
-            {
-                m->setSpec($2);
-                m->setTypedef(true);
-                getCurrent()->add(m);
-            }
+            $$ = false;
+        }
+    | READONLY
+        {
+            $$ = true;
+        }
+    ;
+
+GetRaises :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | GETRAISES ExceptionList
+        {
+            $$ = $2;
+        }
+    ;
+
+SetRaises :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | SETRAISES ExceptionList
+        {
+            $$ = $2;
+        }
+    ;
+
+Operation :
+    ReturnType IDENTIFIER
+        {
+            OpDcl* op = new OpDcl($2, $1);
+            getCurrent()->add(op);
+            setCurrent(op);
+            free($2);
+        }
+    parameter_dcls Raises ';'
+        {
+            OpDcl* op = static_cast<OpDcl*>(getCurrent());
+            op->setRaises($5);
+            setCurrent(op->getParent());
+            $$ = op;
+        }
+    ;
+
+Raises :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | RAISES ExceptionList
+        {
+            $$ = $2;
+        }
+    ;
+
+ExceptionList :
+    '(' ScopedNameList ')'
+        {
+            $$ = $2;
+        }
+    ;
+
+parameter_dcls :
+    '(' ArgumentList ')'
+    | '(' ')'
+    ;
+
+ArgumentList :
+    Argument
+    | ArgumentList ',' Argument
+    ;
+
+Argument :
+    ExtendedAttributeList In Type IDENTIFIER
+        {
+            ParamDcl* param = new ParamDcl($4, $3, ParamDcl::AttrIn);
+            param->setExtendedAttributes($1);
+            getCurrent()->add(param);
+            free($4);
+        }
+    ;
+
+In :
+    /* empty */
+    | IN
+    ;
+
+ExceptionMember :
+    Const
+    | ExceptionField
+    ;
+
+ExceptionField :
+    Type IDENTIFIER ';'
+        {
+            Member* m = new Member($2);
+            free($2);
+            m->setSpec($1);
+            getCurrent()->add(m);
             $$ = m;
         }
-    | NATIVE IDENTIFIER ';'
+    ;
+
+ExtendedAttributeList :
+    /* empty */
         {
-            NativeType* nativeType = new NativeType($2);
-            getCurrent()->add(nativeType);
-            $$ = nativeType;
+            $$ = 0;
+        }
+    | extended_attribute_list
+    ;
+
+extended_attribute_list :
+        {
+            pushJavadoc();
+        }
+    '[' extended_attributes ']'
+        {
+            popJavadoc();
+            $$ = $3;
+        }
+    ;
+
+extended_attributes :
+    extended_attribute
+        {
+            $$ = new NodeList;
+            $$->push_back($1);
+        }
+    | extended_attributes ',' extended_attribute
+        {
+            $1->push_back($3);
+            $$ = $1;
         }
     ;
 
@@ -580,15 +703,6 @@ base_type_spec :
     | FloatType
     | StringType
     | SequenceType
-    ;
-
-declarator :
-    IDENTIFIER
-        {
-            $$ = new Member($1);
-            free($1);
-        }
-    | array_declarator
     ;
 
 FloatType :
@@ -682,40 +796,6 @@ AnyType :
         }
     ;
 
-ExceptionMembers :
-    /* empty */
-    | JavaDoc
-        {
-            setJavadoc($1);
-            free($1);
-        }
-    ExtendedAttributeList ExceptionMember
-        {
-            if ($4)
-            {
-                $4->setExtendedAttributes($3);
-            }
-            setJavadoc(0);
-        }
-    ExceptionMembers
-    ;
-
-ExceptionMember :
-    Const
-    | ExceptionField
-    ;
-
-ExceptionField :
-    Type IDENTIFIER ';'
-        {
-            Member* m = new Member($2);
-            free($2);
-            m->setSpec($1);
-            getCurrent()->add(m);
-            $$ = m;
-        }
-    ;
-
 SequenceType :
     SEQUENCE '<' Type ',' positive_int_const '>'
         {
@@ -734,6 +814,133 @@ StringType :
         {
             $$ = new Type("string");
         }
+    ;
+
+ReturnType :
+    Type
+    | VOID
+        {
+            $$ = new Type("void");
+        }
+    ;
+
+ScopedNameList :
+    ScopedName
+        {
+            $$ = new Node();
+            $$->add($1);
+        }
+    | ScopedName ',' ScopedNameList
+        {
+            $3->add($1);
+            $$ = $3;
+        }
+    ;
+
+ScopedName :
+    IDENTIFIER
+        {
+            ScopedName* name = new ScopedName($1);
+            free($1);
+            $$ = name;
+        }
+    | OP_SCOPE IDENTIFIER
+        {
+            ScopedName* name;
+            if (Node::getFlatNamespace())
+            {
+                name = new ScopedName($2);
+            }
+            else
+            {
+                name = new ScopedName("::");
+                name->getName() += $2;
+            }
+            $$ = name;
+            free($2);
+        }
+    | ScopedName OP_SCOPE IDENTIFIER
+        {
+            ScopedName* name = static_cast<ScopedName*>($1);
+            if (Node::getFlatNamespace())
+            {
+                name->getName() = $3;
+            }
+            else
+            {
+                name->getName() += "::";
+                name->getName() += $3;
+            }
+            $$ = name;
+            free($3);
+        }
+    ;
+
+extended_attribute :
+    JavaDoc
+        {
+            setJavadoc($1);
+            free($1);
+        }
+    IDENTIFIER extended_attribute_details
+        {
+            $$ = new ExtendedAttribute($3, $4);
+            free($3);
+            setJavadoc(0);
+        }
+    ;
+
+extended_attribute_details :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | '=' ScopedName
+        {
+            $$ = $2;
+        }
+    | '=' IDENTIFIER
+        {
+            $<node>$ = getCurrent();
+            OpDcl* op = new OpDcl($2, 0);
+            // We need to set parent for op here. Otherwise, some names cannot be resolved.
+            op->setParent(getCurrent());
+            setCurrent(op);
+            free($2);
+        }
+    parameter_dcls
+        {
+            $$ = getCurrent();
+            setCurrent($<node>3);
+        }
+    |
+        {
+            $<node>$ = getCurrent();
+            OpDcl* op = new OpDcl("", 0);
+            // We need to set parent for op here. Otherwise, some names cannot be resolved.
+            op->setParent(getCurrent());
+            setCurrent(op);
+        }
+    parameter_dcls
+        {
+            $$ = getCurrent();
+            setCurrent($<node>1);
+        }
+    ;
+
+/* ES extensions */
+
+positive_int_const :
+    ConstExpr
+    ;
+
+declarator :
+    IDENTIFIER
+        {
+            $$ = new Member($1);
+            free($1);
+        }
+    | array_declarator
     ;
 
 array_declarator :
@@ -760,139 +967,6 @@ fixed_array_size_list :
 
 fixed_array_size :
     '[' positive_int_const ']'
-        {
-            $$ = $2;
-        }
-    ;
-
-Exception :
-    EXCEPTION IDENTIFIER
-        {
-            ExceptDcl* exc = new ExceptDcl($2);
-            getCurrent()->add(exc);
-            setCurrent(exc);
-            free($2);
-        }
-    '{' ExceptionMembers '}' ';'
-        {
-            $$ = getCurrent();
-            setCurrent(getCurrent()->getParent());
-        }
-    ;
-
-Operation :
-    ReturnType IDENTIFIER
-        {
-            OpDcl* op = new OpDcl($2, $1);
-            getCurrent()->add(op);
-            setCurrent(op);
-            free($2);
-        }
-    parameter_dcls Raises ';'
-        {
-            OpDcl* op = static_cast<OpDcl*>(getCurrent());
-            op->setRaises($5);
-            setCurrent(op->getParent());
-            $$ = op;
-        }
-    ;
-
-ReturnType :
-    Type
-    | VOID
-        {
-            $$ = new Type("void");
-        }
-    ;
-
-parameter_dcls :
-    '(' ArgumentList ')'
-    | '(' ')'
-    ;
-
-ArgumentList :
-    Argument
-    | ArgumentList ',' Argument
-    ;
-
-Argument :
-    ExtendedAttributeList In Type IDENTIFIER
-        {
-            ParamDcl* param = new ParamDcl($4, $3, $2);
-            param->setExtendedAttributes($1);
-            getCurrent()->add(param);
-            free($4);
-        }
-    ;
-
-In :
-    /* empty */
-        {
-            $$ = ParamDcl::AttrIn;
-        }
-    | IN
-        {
-            $$ = ParamDcl::AttrIn;
-        }
-    ;
-
-Raises :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | RAISES ExceptionList
-        {
-            $$ = $2;
-        }
-    ;
-
-Attribute :
-    ReadOnly ATTRIBUTE Type IDENTIFIER GetRaises SetRaises ';'
-        {
-            Attribute* attr = new Attribute($4, $3, $1);
-            attr->setGetRaises($5);
-            attr->setSetRaises($6);
-            getCurrent()->add(attr);
-            $$ = attr;
-        }
-    ;
-
-ReadOnly :
-    /* empty */
-        {
-            $$ = false;
-        }
-    | READONLY
-        {
-            $$ = true;
-        }
-    ;
-
-GetRaises :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | GETRAISES ExceptionList
-        {
-            $$ = $2;
-        }
-    ;
-
-SetRaises :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | SETRAISES ExceptionList
-        {
-            $$ = $2;
-        }
-    ;
-
-ExceptionList :
-    '(' ScopedNameList ')'
         {
             $$ = $2;
         }
@@ -970,88 +1044,4 @@ JavaDoc :
             $$ = 0;
         }
     | JAVADOC
-    ;
-
-ExtendedAttributeList :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | extended_attribute_list
-    ;
-
-extended_attribute_list :
-        {
-            pushJavadoc();
-        }
-    '[' extended_attributes ']'
-        {
-            popJavadoc();
-            $$ = $3;
-        }
-    ;
-
-extended_attributes :
-    extended_attribute
-        {
-            $$ = new NodeList;
-            $$->push_back($1);
-        }
-    | extended_attributes ',' extended_attribute
-        {
-            $1->push_back($3);
-            $$ = $1;
-        }
-    ;
-
-extended_attribute :
-    JavaDoc
-        {
-            setJavadoc($1);
-            free($1);
-        }
-    IDENTIFIER extended_attribute_details
-        {
-            $$ = new ExtendedAttribute($3, $4);
-            free($3);
-            setJavadoc(0);
-        }
-    ;
-
-extended_attribute_details :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | '=' ScopedName
-        {
-            $$ = $2;
-        }
-    | '=' IDENTIFIER
-        {
-            $<node>$ = getCurrent();
-            OpDcl* op = new OpDcl($2, 0);
-            // We need to set parent for op here. Otherwise, some names cannot be resolved.
-            op->setParent(getCurrent());
-            setCurrent(op);
-            free($2);
-        }
-    parameter_dcls
-        {
-            $$ = getCurrent();
-            setCurrent($<node>3);
-        }
-    |
-        {
-            $<node>$ = getCurrent();
-            OpDcl* op = new OpDcl("", 0);
-            // We need to set parent for op here. Otherwise, some names cannot be resolved.
-            op->setParent(getCurrent());
-            setCurrent(op);
-        }
-    parameter_dcls
-        {
-            $$ = getCurrent();
-            setCurrent($<node>1);
-        }
     ;
