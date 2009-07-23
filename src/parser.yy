@@ -135,17 +135,11 @@ int yylex();
 %type <nodeList>    ExtendedAttributeList
 %type <nodeList>    ExtendedAttributes
 %type <node>        Type
-%type <node>        base_type_spec
+%type <node>        NullableType
 %type <node>        FloatType
-%type <node>        integer_type
-%type <node>        signed_int
-%type <node>        signed_short_int
-%type <node>        signed_long_int
-%type <node>        signed_longlong_int
-%type <node>        unsigned_int
-%type <node>        unsigned_short_int
-%type <node>        unsigned_long_int
-%type <node>        unsigned_longlong_int
+%type <node>        UnsignedIntegerType
+%type <node>        IntegerType
+%type <attr>        OptionalLong
 %type <node>        BooleanType
 %type <node>        OctetType
 %type <node>        AnyType
@@ -716,13 +710,13 @@ ExtendedAttribute :
     ;
 
 Type :
-    base_type_spec
-    | ScopedName
+    NullableType
+    | ScopedName  /* Note in esidl, "object" is treated as a ScopedName. */
     | AnyType
     ;
 
-base_type_spec :
-    integer_type
+NullableType :
+    UnsignedIntegerType
     | BooleanType
     | OctetType
     | FloatType
@@ -741,62 +735,34 @@ FloatType :
         }
     ;
 
-integer_type :
-    signed_int
-    | unsigned_int
+UnsignedIntegerType :
+    IntegerType
+    | UNSIGNED IntegerType
+        {
+            $2->getName() = "unsigned " + $2->getName();
+            $$ = $2;
+        }
     ;
 
-signed_int :
-    signed_short_int
-    | signed_long_int
-    | signed_longlong_int
-    ;
-
-signed_short_int :
+IntegerType :
     SHORT
         {
             $$ = new Type("short");
         }
-    ;
-
-signed_long_int :
-    LONG
+    | LONG OptionalLong
         {
-            $$ = new Type("long");
+            $$ = new Type($2 ? "long long" : "long");
         }
     ;
 
-signed_longlong_int :
-    LONG LONG
+OptionalLong :
+    /* empty */
         {
-            $$ = new Type("long long");
+            $$ = false;
         }
-    ;
-
-unsigned_int :
-    unsigned_short_int
-    | unsigned_long_int
-    | unsigned_longlong_int
-    ;
-
-unsigned_short_int :
-    UNSIGNED SHORT
+    | LONG
         {
-            $$ = new Type("unsigned short");
-        }
-    ;
-
-unsigned_long_int :
-    UNSIGNED LONG
-        {
-            $$ = new Type("unsigned long");
-        }
-    ;
-
-unsigned_longlong_int :
-    UNSIGNED LONG LONG
-        {
-            $$ = new Type("unsigned long long");
+            $$ = true;
         }
     ;
 
@@ -851,7 +817,7 @@ ReturnType :
 
 /* ConstType will be added in the future spec. */
 ConstType :
-    integer_type
+    UnsignedIntegerType
     | BooleanType
     | FloatType
     | ScopedName
