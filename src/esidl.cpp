@@ -544,10 +544,6 @@ void ParamDcl::processExtendedAttributes()
         {
             attr |= Optional;
         }
-        else if (ext->getName() == "Variadic")
-        {
-            attr |= Variadic;
-        }
         else if (ext->getName() == "Null")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))

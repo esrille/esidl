@@ -1,7 +1,7 @@
-// Test [Variadic]
+// Test variadic operations
 interface IntegerSet {
   readonly attribute unsigned long cardinality;
 
-  void _union([Variadic] in long ints);
-  void intersection([Variadic] in long ints);
+  void _union(in long... ints);
+  void intersection(in long... ints);
 };

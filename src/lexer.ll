@@ -245,6 +245,10 @@ void                {
                         stepLocation();
                         return OP_SHR;
                     }
+"..."                {
+                        stepLocation();
+                        return ELLIPSIS;
+                    }
 
 {Identifier}        {
                         stepLocation();

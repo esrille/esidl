@@ -143,8 +143,8 @@ module html5 {
     HTMLDocument open([Optional] in DOMString type, [Optional] in DOMString replace);
     WindowProxy open(in DOMString url, in DOMString name, in DOMString features, [Optional] in boolean replace);
     void close();
-    void write([Variadic] in DOMString text);
-    void writeln([Variadic] in DOMString text);
+    void write(in DOMString... text);
+    void writeln(in DOMString... text);
 
     // user interaction
     Selection getSelection();
@@ -471,7 +471,7 @@ module html5 {
              attribute unsigned long width;
              attribute unsigned long height;
 
-    DOMString toDataURL([Optional] in DOMString type, [Variadic] in any args);
+    DOMString toDataURL([Optional] in DOMString type, in any... args);
 
     Object getContext(in DOMString contextId);
   };
@@ -1076,7 +1076,7 @@ module html5 {
 
   [Callback=FunctionOnly, NoInterfaceObject]
   interface Function {
-    any call([Variadic] in any arguments);
+    any call(in any... arguments);
   };
 
   [NoInterfaceObject, ImplementedOn=Window, XXX] interface WindowModal {
@@ -1251,11 +1251,11 @@ module html5 {
 
   [NoInterfaceObject, ImplementedOn=Window] interface WindowTimers {
     // timers
-    long setTimeout(in TimeoutHandler handler, in long timeout, [Variadic] in any arguments);
+    long setTimeout(in TimeoutHandler handler, in long timeout, in any... arguments);
     long setTimeout(in DOMString code, in long timeout);
     long setTimeout(in DOMString code, in long timeout, in DOMString language);
     void clearTimeout(in long handle);
-    long setInterval(in TimeoutHandler handler, in long timeout, [Variadic] in any arguments);
+    long setInterval(in TimeoutHandler handler, in long timeout, in any... arguments);
     long setInterval(in DOMString code, in long timeout);
     long setInterval(in DOMString code, in long timeout, in DOMString language);
     void clearInterval(in long handle);
@@ -1263,7 +1263,7 @@ module html5 {
 
   [Callback=FunctionOnly, NoInterfaceObject]
   interface TimeoutHandler {
-    void handleEvent([Variadic] in any args);
+    void handleEvent(in any... args);
   };
 
   [NoInterfaceObject, ImplementedOn=AbstractView] interface MediaModeAbstractView {

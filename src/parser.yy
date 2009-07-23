@@ -74,6 +74,7 @@ int yylex();
 %token CONST
 %token DOUBLE
 %token EOL
+%token ELLIPSIS
 %token EXCEPTION
 %token FALSE
 %token FLOAT
@@ -130,6 +131,7 @@ int yylex();
 %type <node>        Operation
 %type <node>        Raises
 %type <node>        ExceptionList
+%type <attr>        Ellipsis
 %type <node>        ExceptionMember
 %type <node>        ExceptionField
 %type <nodeList>    ExtendedAttributeList
@@ -608,18 +610,29 @@ Arguments :
     ;
 
 Argument :
-    ExtendedAttributeList In Type IDENTIFIER
+    ExtendedAttributeList In Type Ellipsis IDENTIFIER
         {
-            ParamDcl* param = new ParamDcl($4, $3, ParamDcl::AttrIn);
+            ParamDcl* param = new ParamDcl($5, $3, ParamDcl::AttrIn | $4);
             param->setExtendedAttributes($1);
             getCurrent()->add(param);
-            free($4);
+            free($5);
         }
     ;
 
 In :
     /* empty */
     | IN
+    ;
+
+Ellipsis :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | ELLIPSIS
+        {
+            $$ = ParamDcl::Variadic;
+        }
     ;
 
 ExceptionMember :
