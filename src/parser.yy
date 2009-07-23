@@ -152,6 +152,7 @@ int yylex();
 %type <node>        SequenceType
 %type <node>        StringType
 %type <node>        ReturnType
+%type <node>        ConstType
 %type <node>        ScopedNameList
 %type <node>        ScopedName
 %type <node>        ExtendedAttribute
@@ -173,7 +174,6 @@ int yylex();
 %type <node>        PrimaryExpr
 %type <name>        UnaryOperator
 %type <node>        Preprocessor
-%type <node>        ConstType
 %type <node>        Declarator
 %type <node>        array_declarator
 %type <node>        fixed_array_size_list
@@ -405,14 +405,6 @@ Const :
             getCurrent()->add(constDcl);
             $$ = constDcl;
         }
-    ;
-
-ConstType :
-    integer_type
-    | BooleanType
-    | FloatType
-    | ScopedName
-    | OctetType
     ;
 
 /* Note in Web IDL, ConstExpr is just a literal.
@@ -855,6 +847,15 @@ ReturnType :
         {
             $$ = new Type("void");
         }
+    ;
+
+/* ConstType will be added in the future spec. */
+ConstType :
+    integer_type
+    | BooleanType
+    | FloatType
+    | ScopedName
+    | OctetType
     ;
 
 ScopedNameList :
