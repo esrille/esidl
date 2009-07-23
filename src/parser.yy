@@ -151,7 +151,11 @@ int yylex();
 %type <node>        ReturnType
 %type <node>        ConstType
 %type <node>        ScopedNameList
+%type <node>        ScopedNames
 %type <node>        ScopedName
+%type <node>        AbsoluteScopedName
+%type <node>        RelativeScopedName
+%type <node>        ScopedNameParts
 %type <node>        ExtendedAttribute
 %type <node>        ExtendedAttributeNoArg
 %type <node>        ExtendedAttributeArgList
@@ -839,56 +843,140 @@ ConstType :
     ;
 
 ScopedNameList :
-    ScopedName
+    ScopedName ScopedNames
         {
-            $$ = new Node();
-            $$->add($1);
+            if ($2)
+            {
+                $$ = $2;
+            }
+            else
+            {
+                $$ = new Node();
+            }
+            $$->addFront($1);
         }
-    | ScopedName ',' ScopedNameList
+
+ScopedNames :
+    /* empty */
         {
-            $3->add($1);
-            $$ = $3;
+            $$ = 0;
         }
-    ;
+    | ',' ScopedName ScopedNames
+        {
+            if ($3)
+            {
+                $$ = $3;
+            }
+            else
+            {
+                $$ = new Node();
+            }
+            $$->addFront($2);
+        }
 
 ScopedName :
-    IDENTIFIER
+    AbsoluteScopedName
+    | RelativeScopedName
+
+AbsoluteScopedName :
+    OP_SCOPE IDENTIFIER ScopedNameParts
         {
-            ScopedName* name = new ScopedName($1);
-            free($1);
-            $$ = name;
-        }
-    | OP_SCOPE IDENTIFIER
-        {
-            ScopedName* name;
-            if (Node::getFlatNamespace())
+            if (!Node::getFlatNamespace())
             {
-                name = new ScopedName($2);
+                if (!$3)
+                {
+                    ScopedName* name = new ScopedName("::");
+                    name->getName() += $2;
+                    $$ = name;
+                }
+                else
+                {
+                    ScopedName* name = static_cast<ScopedName*>($3);
+                    name->getName() = $2 + name->getName();
+                    name->getName() = "::" + name->getName();
+                    $$ = name;
+                }
             }
             else
             {
-                name = new ScopedName("::");
-                name->getName() += $2;
+                if ($3)
+                {
+                    $$ = $3;
+                }
+                else
+                {
+                    $$ = new ScopedName($2);
+                }
             }
-            $$ = name;
             free($2);
         }
-    | ScopedName OP_SCOPE IDENTIFIER
+
+RelativeScopedName :
+    IDENTIFIER ScopedNameParts
         {
-            ScopedName* name = static_cast<ScopedName*>($1);
-            if (Node::getFlatNamespace())
+            if (!Node::getFlatNamespace())
             {
-                name->getName() = $3;
+                if (!$2)
+                {
+                    $$ = new ScopedName($1);
+                }
+                else
+                {
+                    ScopedName* name = static_cast<ScopedName*>($2);
+                    name->getName() = $1 + name->getName();
+                    $$ = name;
+                }
             }
             else
             {
-                name->getName() += "::";
-                name->getName() += $3;
+                if ($2)
+                {
+                    $$ = $2;
+                }
+                else
+                {
+                    $$ = new ScopedName($1);
+                }
             }
-            $$ = name;
-            free($3);
+            free($1);
         }
-    ;
+
+ScopedNameParts :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | OP_SCOPE IDENTIFIER ScopedNameParts
+        {
+            if (!Node::getFlatNamespace())
+            {
+                if (!$3)
+                {
+                    ScopedName* name = new ScopedName("::");
+                    name->getName() += $2;
+                    $$ = name;
+                }
+                else
+                {
+                    ScopedName* name = static_cast<ScopedName*>($3);
+                    name->getName() = $2 + name->getName();
+                    name->getName() = "::" + name->getName();
+                    $$ = name;
+                }
+            }
+            else
+            {
+                if ($3)
+                {
+                    $$ = $3;
+                }
+                else
+                {
+                    $$ = new ScopedName($2);
+                }
+            }
+            free($2);
+        }
 
 ExtendedAttributeNoArg :
     IDENTIFIER

@@ -263,6 +263,16 @@ public:
         node->setParent(this);
     }
 
+    virtual void addFront(Node* node)
+    {
+        if (children == 0)
+        {
+            children = new NodeList;
+        }
+        children->push_front(node);
+        node->setParent(this);
+    }
+
     void remove(Node* node)
     {
         assert(children);

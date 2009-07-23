@@ -10,6 +10,6 @@ module A
     };
 };
 
-interface Z : A::X, A::Y
+interface Z : A::X, ::A::Y
 {
 };
