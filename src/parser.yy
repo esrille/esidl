@@ -247,17 +247,6 @@ InterfaceDcl :
     | ForwardDcl
     ;
 
-/* Note the forward declaration is not supported in Web IDL */
-ForwardDcl :
-    INTERFACE IDENTIFIER ';'
-        {
-            Interface* node = new Interface($2, 0, true);
-            getCurrent()->add(node);
-            free($2);
-            $$ = node;
-        }
-    ;
-
 Interface :
     INTERFACE IDENTIFIER InterfaceInheritance
         {
@@ -932,6 +921,17 @@ ExtendedAttributeScopedName :
     ;
 
 /* ES extensions */
+
+/* Note the forward declaration is dropped in Web IDL */
+ForwardDcl :
+    INTERFACE IDENTIFIER ';'
+        {
+            Interface* node = new Interface($2, 0, true);
+            getCurrent()->add(node);
+            free($2);
+            $$ = node;
+        }
+    ;
 
 positive_int_const :
     ConstExpr
