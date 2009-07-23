@@ -540,11 +540,7 @@ void ParamDcl::processExtendedAttributes()
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
         assert(ext);
-        if (ext->getName() == "Optional")
-        {
-            attr |= Optional;
-        }
-        else if (ext->getName() == "Null")
+        if (ext->getName() == "Null")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {

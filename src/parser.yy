@@ -87,7 +87,7 @@ int yylex();
 %token NATIVE
 %token OBJECT
 %token OCTET
-%token ONEWAY
+%token OPTIONAL
 %token RAISES
 %token READONLY
 %token SETRAISES
@@ -131,6 +131,7 @@ int yylex();
 %type <node>        Operation
 %type <node>        Raises
 %type <node>        ExceptionList
+%type <attr>        Optional
 %type <attr>        Ellipsis
 %type <node>        ExceptionMember
 %type <node>        ExceptionField
@@ -610,18 +611,29 @@ Arguments :
     ;
 
 Argument :
-    ExtendedAttributeList In Type Ellipsis IDENTIFIER
+    ExtendedAttributeList In Optional Type Ellipsis IDENTIFIER
         {
-            ParamDcl* param = new ParamDcl($5, $3, ParamDcl::AttrIn | $4);
+            ParamDcl* param = new ParamDcl($6, $4, ParamDcl::AttrIn | $3 | $5);
             param->setExtendedAttributes($1);
             getCurrent()->add(param);
-            free($5);
+            free($6);
         }
     ;
 
 In :
     /* empty */
     | IN
+    ;
+
+Optional :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | OPTIONAL
+        {
+            $$ = ParamDcl::Optional;
+        }
     ;
 
 Ellipsis :

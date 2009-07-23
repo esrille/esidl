@@ -184,9 +184,9 @@ octet               {
                         stepLocation();
                         return OCTET;
                     }
-oneway              {
+optional            {
                         stepLocation();
-                        return ONEWAY;
+                        return OPTIONAL;
                     }
 raises              {
                         stepLocation();

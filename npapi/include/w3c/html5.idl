@@ -92,7 +92,7 @@ module html5 {
              attribute unsigned long length;
     [IndexGetter] HTMLOptionElement item(in unsigned long index);
     [NameGetter] Object namedItem(in DOMString name);
-    void add(in HTMLElement element, [Optional] in HTMLElement before);
+    void add(in HTMLElement element, in optional HTMLElement before);
     void add(in HTMLElement element, in long before);
     void remove(in long index);
   };
@@ -140,8 +140,8 @@ module html5 {
 
     // dynamic markup insertion
              attribute DOMString innerHTML;
-    HTMLDocument open([Optional] in DOMString type, [Optional] in DOMString replace);
-    WindowProxy open(in DOMString url, in DOMString name, in DOMString features, [Optional] in boolean replace);
+    HTMLDocument open(in optional DOMString type, in optional DOMString replace);
+    WindowProxy open(in DOMString url, in DOMString name, in DOMString features, in optional boolean replace);
     void close();
     void write(in DOMString... text);
     void writeln(in DOMString... text);
@@ -471,7 +471,7 @@ module html5 {
              attribute unsigned long width;
              attribute unsigned long height;
 
-    DOMString toDataURL([Optional] in DOMString type, in any... args);
+    DOMString toDataURL(in optional DOMString type, in any... args);
 
     Object getContext(in DOMString contextId);
   };
@@ -540,22 +540,22 @@ module html5 {
              attribute DOMString font; // (default 10px sans-serif)
              attribute DOMString textAlign; // "start", "end", "left", "right", "center" (default: "start")
              attribute DOMString textBaseline; // "top", "hanging", "middle", "alphabetic", "ideographic", "bottom" (default: "alphabetic")
-    void fillText(in DOMString text, in float x, in float y, [Optional] in float maxWidth);
-    void strokeText(in DOMString text, in float x, in float y, [Optional] in float maxWidth);
+    void fillText(in DOMString text, in float x, in float y, in optional float maxWidth);
+    void strokeText(in DOMString text, in float x, in float y, in optional float maxWidth);
     TextMetrics measureText(in DOMString text);
 
     // drawing images
-    void drawImage(in HTMLImageElement image, in float dx, in float dy, [Optional] in float dw, in float dh);
+    void drawImage(in HTMLImageElement image, in float dx, in float dy, in optional float dw, in float dh);
     void drawImage(in HTMLImageElement image, in float sx, in float sy, in float sw, in float sh, in float dx, in float dy, in float dw, in float dh);
-    void drawImage(in HTMLCanvasElement image, in float dx, in float dy, [Optional] in float dw, in float dh);
+    void drawImage(in HTMLCanvasElement image, in float dx, in float dy, in optional float dw, in float dh);
     void drawImage(in HTMLCanvasElement image, in float sx, in float sy, in float sw, in float sh, in float dx, in float dy, in float dw, in float dh);
-    void drawImage(in HTMLVideoElement image, in float dx, in float dy, [Optional] in float dw, in float dh);
+    void drawImage(in HTMLVideoElement image, in float dx, in float dy, in optional float dw, in float dh);
     void drawImage(in HTMLVideoElement image, in float sx, in float sy, in float sw, in float sh, in float dx, in float dy, in float dw, in float dh);
 
     // pixel manipulation
     ImageData createImageData(in float sw, in float sh);
     ImageData getImageData(in float sx, in float sy, in float sw, in float sh);
-    void putImageData(in ImageData imagedata, in float dx, in float dy, [Optional] in float dirtyX, in float dirtyY, in float dirtyWidth, in float dirtyHeight);
+    void putImageData(in ImageData imagedata, in float dx, in float dy, in optional float dirtyX, in float dirtyY, in float dirtyWidth, in float dirtyHeight);
   };
 
   interface CanvasGradient {
@@ -615,7 +615,7 @@ module html5 {
     readonly attribute HTMLCollection tBodies;
     HTMLElement createTBody();
     readonly attribute HTMLCollection rows;
-    HTMLElement insertRow([Optional] in long index);
+    HTMLElement insertRow(in optional long index);
     void deleteRow(in long index);
   };
 
@@ -629,7 +629,7 @@ module html5 {
 
   interface HTMLTableSectionElement : HTMLElement {
     readonly attribute HTMLCollection rows;
-    HTMLElement insertRow([Optional] in long index);
+    HTMLElement insertRow(in optional long index);
     void deleteRow(in long index);
   };
 
@@ -637,7 +637,7 @@ module html5 {
     readonly attribute long rowIndex;
     readonly attribute long sectionRowIndex;
     readonly attribute HTMLCollection cells;
-    HTMLElement insertCell([Optional] in long index);
+    HTMLElement insertCell(in optional long index);
     void deleteCell(in long index);
   };
 
@@ -791,7 +791,7 @@ module html5 {
              attribute unsigned long length;
     [IndexGetter] any item(in unsigned long index);
     [NameGetter] any namedItem(in DOMString name);
-    void add(in HTMLElement element, [Optional] in HTMLElement before);
+    void add(in HTMLElement element, in optional HTMLElement before);
     void add(in HTMLElement element, in long before);
     void remove(in long index);
 
@@ -1010,7 +1010,7 @@ module html5 {
     [Replaceable] readonly attribute WindowProxy opener;
     readonly attribute WindowProxy parent;
     readonly attribute Element frameElement;
-    WindowProxy open([Optional] in DOMString url, [Optional] in DOMString target, [Optional] in DOMString features, [Optional] in DOMString replace);
+    WindowProxy open(in optional DOMString url, in optional DOMString target, in optional DOMString features, in optional DOMString replace);
 
     // the user agent
     readonly attribute Navigator navigator;
@@ -1022,9 +1022,9 @@ module html5 {
     // user prompts
     void alert(in DOMString message);
     boolean confirm(in DOMString message);
-    DOMString prompt(in DOMString message, [Optional] in DOMString defaultValue);
+    DOMString prompt(in DOMString message, in optional DOMString defaultValue);
     void print();
-    any showModalDialog(in DOMString url, [Optional] in any argument);
+    any showModalDialog(in DOMString url, in optional any argument);
 
     // cross-document messaging
     void postMessage(in any message, in DOMString targetOrigin);
@@ -1135,10 +1135,10 @@ module html5 {
 
   interface History {
     readonly attribute long length;
-    void go([Optional] in long delta);
+    void go(in optional long delta);
     void back();
     void forward();
-    void pushState(in any data, in DOMString title, [Optional] in DOMString url);
+    void pushState(in any data, in DOMString title, in optional DOMString url);
     void clearState();
   };
 
@@ -1200,7 +1200,7 @@ module html5 {
              attribute DOMString dropEffect;
              attribute DOMString effectAllowed;
     readonly attribute DOMStringList types;
-    void clearData([Optional] in DOMString format);
+    void clearData(in optional DOMString format);
     void setData(in DOMString format, in DOMString data);
     DOMString getData(in DOMString format);
     void setDragImage(in Element image, in long x, in long y);
@@ -1241,7 +1241,7 @@ module html5 {
 
   interface MessagePort {
     readonly attribute boolean active;
-    void postMessage(in any message, [Optional] in MessagePortArray ports);
+    void postMessage(in any message, in optional MessagePortArray ports);
     void start();
     void close();
 
