@@ -74,7 +74,7 @@ module events
   };
 
   // Introduced in DOM Level 2:
-  [ImplementedOn=Node]
+  Node implements EventTarget;
   interface EventTarget {
     void               addEventListener(in DOMString type,
                                         in EventListener listener,

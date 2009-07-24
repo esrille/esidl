@@ -286,6 +286,14 @@ void OpDcl::adjustMethodCount()
     interface->addMethodCount(methodCount - 1);
 }
 
+void Implements::resolve()
+{
+    Interface* interface = dynamic_cast<Interface*>(getFirst()->search(getParent()));
+    Interface* mixin = dynamic_cast<Interface*>(getSecond()->search(getParent()));
+    assert(interface && mixin);
+    interface->implements(mixin);
+}
+
 void Interface::processExtendedAttributes()
 {
     NodeList* list = getExtendedAttributes();
@@ -354,18 +362,6 @@ void Interface::processExtendedAttributes()
                 op = new OpDcl("createInstance", interfaceName);
             }
             constructor->add(op);
-        }
-        else if (ext->getName() == "ImplementedOn")
-        {
-            attr |= ImplementedOn;
-            if (ScopedName* scopedName = dynamic_cast<ScopedName*>(ext->getDetails()))
-            {
-                Node* on = scopedName->search(getParent());
-                if (Interface* interface = dynamic_cast<Interface*>(on))
-                {
-                    interface->mixins.push_back(this);
-                }
-            }
         }
     }
 }

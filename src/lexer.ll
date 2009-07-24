@@ -171,6 +171,10 @@ getter              {
                         stepLocation();
                         return GETTER;
                     }
+implements          {
+                        stepLocation();
+                        return IMPLEMENTS;
+                    }
 in                  {
                         stepLocation();
                         return IN;

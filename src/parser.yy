@@ -83,6 +83,7 @@ int yylex();
 %token FLOAT
 %token GETRAISES
 %token GETTER
+%token IMPLEMENTS
 %token IN
 %token INTERFACE
 %token LONG
@@ -124,7 +125,7 @@ int yylex();
 %type <node>        InterfaceMember
 %type <node>        Exception
 %type <node>        Typedef
-/* %type <node>        ImplementsStatement */
+%type <node>        ImplementsStatement
 %type <node>        Const
 %type <node>        ConstExpr
 %type <node>        Literal
@@ -219,6 +220,7 @@ Definition :
     | InterfaceDcl
     | Exception
     | Typedef
+    | ImplementsStatement
     | Preprocessor
     ;
 
@@ -396,6 +398,15 @@ Typedef :
             NativeType* nativeType = new NativeType($2);
             getCurrent()->add(nativeType);
             $$ = nativeType;
+        }
+    ;
+
+ImplementsStatement :
+    ScopedName IMPLEMENTS ScopedName ';'
+        {
+            Implements* implements = new Implements(static_cast<ScopedName*>($1), static_cast<ScopedName*>($3));
+            getCurrent()->add(implements);
+            $$ = implements;
         }
     ;
 

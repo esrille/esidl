@@ -1,10 +1,11 @@
-// Test [ImplementedOn] as attribute
+// Test implements as attribute
 
 interface X {
     void s();
 };
 
-[ImplementedOn=X]
+X implements Y;
+
 interface Y {
     void t();
     attribute boolean u;

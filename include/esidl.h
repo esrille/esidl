@@ -38,6 +38,7 @@ class Node;
     class Module;
     class StructType;
     class ExceptDcl;
+    class Implements;
     class Interface;
     class Type;
     class NativeType;
@@ -738,6 +739,31 @@ public:
     virtual void accept(Visitor* visitor);
 };
 
+class Implements : public Node
+{
+    ScopedName* first;
+    ScopedName* second;
+public:
+    Implements(ScopedName* first, ScopedName* second) :
+        first(first),
+        second(second)
+    {
+    }
+
+    ScopedName* getFirst()
+    {
+        return first;
+    }
+    ScopedName* getSecond()
+    {
+        return second;
+    }
+
+    void resolve();
+
+    virtual void accept(Visitor* visitor);
+};
+
 class Interface : public Node
 {
     Node* extends;
@@ -865,6 +891,12 @@ public:
     }
 
     virtual void accept(Visitor* visitor);
+
+    void implements(Interface* mixin)
+    {
+        mixin->setAttr(mixin->getAttr() | ImplementedOn);
+        mixins.push_back(mixin);
+    }
 
     void collectMixins(std::list<const Interface*>* interfaceList) const
     {
@@ -1443,6 +1475,10 @@ public:
         at(static_cast<const StructType*>(node));
     }
 
+    virtual void at(const Implements* node)
+    {
+    }
+
     virtual void at(const Interface* node)
     {
         at(static_cast<const Node*>(node));
@@ -1553,6 +1589,11 @@ inline void ExceptDcl::accept(Visitor* visitor)
     Node* prev = setCurrent(this);
     visitor->at(this);
     setCurrent(prev);
+}
+
+inline void Implements::accept(Visitor* visitor)
+{
+    visitor->at(this);
 }
 
 inline void Interface::accept(Visitor* visitor)
@@ -1686,6 +1727,11 @@ public:
     virtual void at(const Node* node)
     {
         visitChildren(node);
+    }
+
+    virtual void at(const Implements* node)
+    {
+        const_cast<Implements*>(node)->resolve();
     }
 
     virtual void at(const OpDcl* node)

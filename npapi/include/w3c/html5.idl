@@ -107,7 +107,8 @@ module html5 {
   [NameCreator, NameDeleter, NameGetter, NameSetter]
   interface DOMStringMap {};
 
-  [NameGetter=OverrideBuiltins, ImplementedOn=Document]
+  Document implements HTMLDocument;
+  [NameGetter=OverrideBuiltins]
   interface HTMLDocument {
     // resource metadata management
     [PutForwards=href] readonly attribute Location location;
@@ -1075,7 +1076,8 @@ module html5 {
     any call(in any... arguments);
   };
 
-  [NoInterfaceObject, ImplementedOn=Window, XXX] interface WindowModal {
+  Window implements WindowModal;
+  [NoInterfaceObject,  XXX] interface WindowModal {
     readonly attribute any dialogArguments;
              attribute DOMString returnValue;
   };
@@ -1084,18 +1086,21 @@ module html5 {
     // objects implementing this interface also implement the interfaces given below
   };
 
-  [NoInterfaceObject, ImplementedOn=Navigator] interface NavigatorID {
+  Navigator implements NavigatorID;
+  [NoInterfaceObject] interface NavigatorID {
     readonly attribute DOMString appName;
     readonly attribute DOMString appVersion;
     readonly attribute DOMString platform;
     readonly attribute DOMString userAgent;
   };
 
-  [NoInterfaceObject, ImplementedOn=Navigator] interface NavigatorOnLine {
+  Navigator implements NavigatorOnLine;
+  [NoInterfaceObject] interface NavigatorOnLine {
     readonly attribute boolean onLine;
   };
 
-  [NoInterfaceObject, ImplementedOn=Navigator] interface NavigatorAbilities {
+  Navigator implements NavigatorAbilities;
+  [NoInterfaceObject] interface NavigatorAbilities {
     // content handler registration
     void registerProtocolHandler(in DOMString protocol, in DOMString url, in DOMString title);
     void registerContentHandler(in DOMString mimeType, in DOMString url, in DOMString title);
@@ -1246,7 +1251,8 @@ module html5 {
              attribute Function onmessage;
   };
 
-  [NoInterfaceObject, ImplementedOn=Window] interface WindowTimers {
+  Window implements WindowTimers;
+  [NoInterfaceObject] interface WindowTimers {
     // timers
     long setTimeout(in TimeoutHandler handler, in long timeout, in any... arguments);
     long setTimeout(in DOMString code, in long timeout);
@@ -1263,7 +1269,8 @@ module html5 {
     void handleEvent(in any... args);
   };
 
-  [NoInterfaceObject, ImplementedOn=AbstractView] interface MediaModeAbstractView {
+  AbstractView implements MediaModeAbstractView;
+  [NoInterfaceObject] interface MediaModeAbstractView {
     readonly attribute DOMString mediaMode;
   };
 
