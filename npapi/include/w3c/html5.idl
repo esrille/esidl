@@ -94,7 +94,8 @@ module html5 {
     void remove(in long index);
   };
 
-  [Stringifies] interface DOMTokenList {
+  interface DOMTokenList {
+    stringifier;
     readonly attribute unsigned long length;
     getter DOMString item(in unsigned long index);
     boolean has(in DOMString token);
@@ -290,8 +291,8 @@ module html5 {
              attribute long value;
   };
 
-  [Stringifies=href] interface HTMLAnchorElement : HTMLElement {
-             attribute DOMString href;
+  interface HTMLAnchorElement : HTMLElement {
+             stringifier attribute DOMString href;
              attribute DOMString target;
              attribute DOMString ping;
              attribute DOMString rel;
@@ -1166,7 +1167,8 @@ module html5 {
              attribute DOMString returnValue;
   };
 
-  [Stringifies] interface Selection {
+  interface Selection {
+    stringifier;
     readonly attribute Node anchorNode;
     readonly attribute long anchorOffset;
     readonly attribute Node focusNode;

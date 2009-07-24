@@ -367,18 +367,6 @@ void Interface::processExtendedAttributes()
                 }
             }
         }
-        else if (ext->getName() == "Stringifies")
-        {
-            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
-            {
-                assert(stringifies == "");
-                stringifies = name->getName();
-            }
-            else
-            {
-                // TODO: Add custom toString() attribute
-            }
-        }
     }
 }
 
@@ -389,6 +377,7 @@ void Attribute::processExtendedAttributes()
     {
         return;
     }
+    uint32_t attr = getAttr();
     for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
@@ -433,6 +422,7 @@ void Attribute::processExtendedAttributes()
             }
         }
     }
+    setAttr(attr);
 }
 
 void OpDcl::processExtendedAttributes()
@@ -442,6 +432,7 @@ void OpDcl::processExtendedAttributes()
     {
         return;
     }
+    uint32_t attr = getAttr();
     for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
@@ -479,6 +470,7 @@ void OpDcl::processExtendedAttributes()
             // ignore
         }
     }
+    setAttr(attr);
 }
 
 void ParamDcl::processExtendedAttributes()
@@ -488,6 +480,7 @@ void ParamDcl::processExtendedAttributes()
     {
         return;
     }
+    uint32_t attr = getAttr();
     for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
@@ -521,6 +514,7 @@ void ParamDcl::processExtendedAttributes()
             }
         }
     }
+    setAttr(attr);
 }
 
 Node* Node::search(const std::string& elem, size_t pos) const
@@ -659,10 +653,6 @@ void Interface::processExtendedAttributes(Attribute* attr)
     else
     {
         methodCount += 2;
-    }
-    if (stringifies == attr->getName())
-    {
-        attr->setStringifier();
     }
 }
 

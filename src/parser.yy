@@ -99,6 +99,7 @@ int yylex();
 %token SEQUENCE
 %token SHORT
 %token STRING
+%token STRINGIFIER
 %token TRUE
 %token TYPEDEF
 %token UNSIGNED
@@ -128,6 +129,8 @@ int yylex();
 %type <node>        ConstExpr
 %type <node>        Literal
 %type <node>        BooleanLiteral
+%type <node>        AttributeOrOperation
+%type <node>        StringifierAttributeOrOperation
 %type <node>        Attribute
 %type <attr>        ReadOnly
 %type <node>        GetRaises
@@ -136,6 +139,7 @@ int yylex();
 %type <attr>        OmittableSpecials
 %type <attr>        Specials
 %type <node>        OperationRest
+%type <name>        OptionalIdentifier
 %type <node>        Raises
 %type <node>        ExceptionList
 %type <attr>        Optional
@@ -336,8 +340,7 @@ InterfaceMembers :
 
 InterfaceMember :
     Const
-    | Attribute
-    | Operation
+    | AttributeOrOperation
     | Preprocessor
     ;
 
@@ -532,6 +535,32 @@ BooleanLiteral :
         }
     ;
 
+AttributeOrOperation :
+    STRINGIFIER StringifierAttributeOrOperation
+        {
+            if ($2)
+            {
+                Member* m = static_cast<Member*>($2);
+                uint32_t attr = m->getAttr();
+                attr |= Member::Stringifier;
+                m->setAttr(attr);
+            }
+            /* TODO: else mark Interface::Stringifier */
+            $$ = $2;
+        }
+    | Attribute
+    | Operation
+    ;
+
+StringifierAttributeOrOperation :
+    Attribute
+    | OperationRest
+    | ';'
+        {
+            $$ = 0;
+        }
+    ;
+
 Attribute :
     ReadOnly ATTRIBUTE Type IDENTIFIER GetRaises SetRaises ';'
         {
@@ -656,9 +685,9 @@ Specials :
     ;
 
 OperationRest :
-    ReturnType IDENTIFIER
+    ReturnType OptionalIdentifier
         {
-            OpDcl* op = new OpDcl($2, $1);
+            OpDcl* op = new OpDcl($2 ? $2 : "", $1);
             getCurrent()->add(op);
             setCurrent(op);
             free($2);
@@ -668,8 +697,24 @@ OperationRest :
             OpDcl* op = static_cast<OpDcl*>(getCurrent());
             op->setRaises($7);
             setCurrent(op->getParent());
-            $$ = op;
+            if ($2)
+            {
+                $$ = op;
+            }
+            else
+            {
+                $$ = 0;
+                getCurrent()->remove(op);
+            }
         }
+    ;
+
+OptionalIdentifier :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | IDENTIFIER
     ;
 
 Raises :

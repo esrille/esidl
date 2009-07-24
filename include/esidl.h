@@ -730,8 +730,6 @@ class Interface : public Node
     Interface* constructor;
     std::list<const Interface*> mixins;
     uint32_t attr;
-    std::string callable;
-    std::string stringifies;
 
 public:
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
@@ -855,11 +853,6 @@ public:
     uint32_t isCallback() const
     {
         return (attr & CallbackMask);
-    }
-
-    std::string getCallable() const
-    {
-        return callable;
     }
 
     virtual void accept(Visitor* visitor);
@@ -1027,14 +1020,16 @@ public:
 
 class Member : public Node
 {
-    Node* spec;
-    bool  type;  // true if this is a typedef
+    Node*    spec;
+    bool     type;  // true if this is a typedef
+    uint32_t attr;
 
 public:
-    Member(std::string identifier, Node* spec = 0) :
+    Member(std::string identifier, Node* spec = 0, uint32_t attr = 0) :
         Node(identifier),
         spec(spec),
-        type(false)
+        type(false),
+        attr(attr)
     {
         javadoc = ::getJavadoc();
     }
@@ -1118,6 +1113,16 @@ public:
         return type ? const_cast<Member*>(this) : 0;
     }
 
+    uint32_t getAttr() const
+    {
+        return attr;
+    }
+
+    void setAttr(uint32_t attr)
+    {
+        this->attr = attr;
+    }
+
     virtual void accept(Visitor* visitor);
 };
 
@@ -1146,16 +1151,14 @@ public:
 class Attribute : public Member
 {
     bool readonly;
-    uint32_t attr;
     Node* getraises;
     Node* setraises;
     std::string putForwards;
 
 public:
     Attribute(std::string identifier, Node* spec, bool readonly = false) :
-        Member(identifier, spec),
+        Member(identifier, spec, 0),
         readonly(readonly),
-        attr(0),
         getraises(0),
         setraises(0)
     {
@@ -1204,26 +1207,16 @@ public:
         return setraises->getSize();
     }
 
-    void setStringifier()
-    {
-        attr |= Stringifier;
-    }
-
     bool isStringifier() const
     {
-        return attr & Stringifier;
+        return getAttr() & Stringifier;
     }
 
     void processExtendedAttributes();
 
-    uint32_t getAttr() const
-    {
-        return attr;
-    }
-
     bool isReplaceable() const
     {
-        return attr & Replaceable;
+        return getAttr() & Replaceable;
     }
 
     bool isPutForwards() const
@@ -1294,16 +1287,14 @@ class OpDcl : public Member
 {
     Node* raises;
     int paramCount;
-    uint32_t attr;
     int methodCount;
     std::vector<int> paramCounts;  // for each method
 
 public:
     OpDcl(std::string identifier, Node* spec) :
-        Member(identifier, spec),
+        Member(identifier, spec, 0),
         raises(0),
         paramCount(0),
-        attr(0),
         methodCount(1)
     {
         children = new NodeList;
@@ -1340,16 +1331,6 @@ public:
         return paramCount;
     }
 
-    uint32_t getAttr() const
-    {
-        return attr;
-    }
-
-    void setAttr(uint32_t attr)
-    {
-        this->attr = attr;
-    }
-
     int getMethodCount() const
     {
         return methodCount;
@@ -1366,33 +1347,20 @@ public:
 
 class ParamDcl : public Member
 {
-    uint32_t attr;
-
 public:
     ParamDcl(std::string identifier, Node* spec, uint32_t attr) :
-        Member(identifier, spec),
-        attr(attr)
+        Member(identifier, spec, attr)
     {
-    }
-
-    uint32_t getAttr() const
-    {
-        return attr;
-    }
-
-    bool isInput() const
-    {
-        return (attr & AttrMask) == AttrIn;
     }
 
     bool isOptional() const
     {
-        return attr & Optional;
+        return getAttr() & Optional;
     }
 
     bool isVariadic() const
     {
-        return attr & Variadic;
+        return getAttr() & Variadic;
     }
 
     void processExtendedAttributes();

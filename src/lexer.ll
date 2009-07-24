@@ -236,6 +236,10 @@ string              {
                         stepLocation();
                         return STRING;
                     }
+stringifier         {
+                        stepLocation();
+                        return STRINGIFIER;
+                    }
 true                {
                         stepLocation();
                         return TRUE;
