@@ -14,12 +14,12 @@ module X
         const float H = 1.23 * 2 /2 - 1;
         const double I = 2.34 * 2 / 2 + 1;
 
-        const boolean O = TRUE | FALSE;
-        const boolean P = TRUE & FALSE;
-        const boolean Q = TRUE ^ FALSE;
+        const boolean O = true | false;
+        const boolean P = true & false;
+        const boolean Q = true ^ false;
         const boolean R = P & Q;
 
-        const S V = FALSE;
+        const S V = false;
         const double PI = 3.14159256358979;
     };
 };

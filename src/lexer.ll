@@ -143,7 +143,7 @@ exception           {
                         stepLocation();
                         return EXCEPTION;
                     }
-FALSE               {
+false               {
                         stepLocation();
                         return FALSE;
                     }
@@ -212,7 +212,7 @@ string              {
                         stepLocation();
                         return STRING;
                     }
-TRUE                {
+true                {
                         stepLocation();
                         return TRUE;
                     }

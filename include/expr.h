@@ -30,11 +30,11 @@
 
 inline Literal::operator bool() const
 {
-    if (name == "TRUE")
+    if (name == "true")
     {
         return true;
     }
-    else if (name == "FALSE")
+    else if (name == "false")
     {
         return false;
     }

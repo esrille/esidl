@@ -517,11 +517,11 @@ Literal :
 BooleanLiteral :
     TRUE
         {
-            $$ = new Literal("TRUE");
+            $$ = new Literal("true");
         }
     | FALSE
         {
-            $$ = new Literal("FALSE");
+            $$ = new Literal("false");
         }
     ;
 

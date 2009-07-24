@@ -202,18 +202,7 @@ public:
 
     virtual void at(const Literal* node)
     {
-        if (node->getName() == "TRUE")
-        {
-            write("true");
-        }
-        else if (node->getName() == "FALSE")
-        {
-            write("false");
-        }
-        else
-        {
-            write("%s", node->getName().c_str());
-        }
+        write("%s", node->getName().c_str());
     }
 
     virtual void at(const Member* node)
