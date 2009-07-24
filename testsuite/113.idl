@@ -15,7 +15,7 @@ interface StudentA {
 [Constructor]
 interface StudentB {
   attribute unsigned long id;
-  attribute DOMString familyName;
+  attribute DOMString? familyName;
   attribute DOMString givenName;
 
   stringifier DOMString ();

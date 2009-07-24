@@ -70,6 +70,7 @@ void pushJavadoc();
 class Node
 {
 protected:
+    uint32_t            attr;
     Node*               parent;
     NodeList*           children;
     std::string         name;
@@ -105,6 +106,7 @@ public:
     static const uint32_t Stringifier =              0x00000080;
     static const uint32_t Omittable =                0x00000100;
     static const uint32_t Variadic =                 0x00000200;
+    static const uint32_t Nullable =                 0x00000400;
     // [Callback]
     static const uint32_t CallbackMask =             0x00001800;
     static const uint32_t Callback =                 0x00001800;
@@ -143,6 +145,7 @@ public:
     }
 
     Node() :
+        attr(0),
         parent(0),
         children(0),
         offset(0),
@@ -153,6 +156,7 @@ public:
     }
 
     Node(std::string name) :
+        attr(0),
         parent(0),
         name(name),
         children(0),
@@ -164,6 +168,7 @@ public:
     }
 
     Node(NodeList* children) :
+        attr(0),
         parent(0),
         offset(0),
         extendedAttributes(0),
@@ -174,6 +179,7 @@ public:
     }
 
     Node(std::string name, NodeList* children) :
+        attr(0),
         parent(0),
         name(name),
         offset(0),
@@ -213,6 +219,16 @@ public:
     const std::string& getSource() const
     {
         return source;
+    }
+
+    uint32_t getAttr() const
+    {
+        return attr;
+    }
+
+    void setAttr(uint32_t attr)
+    {
+        this->attr = attr;
     }
 
     Node* getParent() const
@@ -729,7 +745,6 @@ class Interface : public Node
     int methodCount;
     Interface* constructor;
     std::list<const Interface*> mixins;
-    uint32_t attr;
 
 public:
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
@@ -737,8 +752,7 @@ public:
         extends(extends),
         constCount(0),
         methodCount(0),
-        constructor(0),
-        attr(0)
+        constructor(0)
     {
         if (!forward)
         {
@@ -845,14 +859,9 @@ public:
         return &mixins;
     }
 
-    uint32_t getAttr() const
-    {
-        return attr;
-    }
-
     uint32_t isCallback() const
     {
-        return (attr & CallbackMask);
+        return (getAttr() & CallbackMask);
     }
 
     virtual void accept(Visitor* visitor);
@@ -1020,18 +1029,17 @@ public:
 
 class Member : public Node
 {
-    Node*    spec;
-    bool     type;  // true if this is a typedef
-    uint32_t attr;
+    Node* spec;
+    bool  type;  // true if this is a typedef
 
 public:
     Member(std::string identifier, Node* spec = 0, uint32_t attr = 0) :
         Node(identifier),
         spec(spec),
-        type(false),
-        attr(attr)
+        type(false)
     {
         javadoc = ::getJavadoc();
+        setAttr(attr);
     }
 
     ~Member()
@@ -1111,16 +1119,6 @@ public:
     virtual Member* isTypedef(const Node* scope) const
     {
         return type ? const_cast<Member*>(this) : 0;
-    }
-
-    uint32_t getAttr() const
-    {
-        return attr;
-    }
-
-    void setAttr(uint32_t attr)
-    {
-        this->attr = attr;
     }
 
     virtual void accept(Visitor* visitor);

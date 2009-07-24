@@ -142,6 +142,10 @@ public:
 
     virtual void at(const Type* node)
     {
+        if (node->getAttr() & Node::Nullable)
+        {
+            write("%c", Reflect::kNullable);
+        }
         if (node->getName() == "void")
         {
             write("%c", Reflect::kVoid);
@@ -218,6 +222,10 @@ public:
 
     virtual void at(const SequenceType* node)
     {
+        if (node->getAttr() & Node::Nullable)
+        {
+            write("%c", Reflect::kNullable);
+        }
         write("%c", Reflect::kSequence);
         Node* spec = node->getSpec();
         spec->accept(this);

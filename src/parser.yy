@@ -150,6 +150,7 @@ int yylex();
 %type <nodeList>    ExtendedAttributes
 %type <node>        Type
 %type <node>        NullableType
+%type <attr>        Nullable
 %type <node>        FloatType
 %type <node>        UnsignedIntegerType
 %type <node>        IntegerType
@@ -865,12 +866,36 @@ Type :
     ;
 
 NullableType :
-    UnsignedIntegerType
-    | BooleanType
-    | OctetType
-    | FloatType
-    | StringType
-    | SequenceType
+    UnsignedIntegerType Nullable
+        {
+            $1->setAttr($1->getAttr() | $2);
+            $$ = $1;
+        }
+    | BooleanType Nullable
+        {
+            $1->setAttr($1->getAttr() | $2);
+            $$ = $1;
+        }
+    | OctetType Nullable
+        {
+            $1->setAttr($1->getAttr() | $2);
+            $$ = $1;
+        }
+    | FloatType Nullable
+        {
+            $1->setAttr($1->getAttr() | $2);
+            $$ = $1;
+        }
+    | StringType Nullable
+        {
+            $1->setAttr($1->getAttr() | $2);
+            $$ = $1;
+        }
+    | SequenceType Nullable
+        {
+            $1->setAttr($1->getAttr() | $2);
+            $$ = $1;
+        }
     ;
 
 FloatType :
@@ -953,6 +978,17 @@ StringType :
     STRING
         {
             $$ = new Type("string");
+        }
+    ;
+
+Nullable :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | '?'
+        {
+            $$ = Node::Nullable;
         }
     ;
 
