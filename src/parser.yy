@@ -133,6 +133,9 @@ int yylex();
 %type <node>        GetRaises
 %type <node>        SetRaises
 %type <node>        Operation
+%type <attr>        OmittableSpecials
+%type <attr>        Specials
+%type <node>        OperationRest
 %type <node>        Raises
 %type <node>        ExceptionList
 %type <attr>        Optional
@@ -574,6 +577,85 @@ SetRaises :
     ;
 
 Operation :
+    OmittableSpecials OperationRest
+        {
+            OpDcl* op = static_cast<OpDcl*>($2);
+            uint32_t attr = op->getAttr();
+            /* TODO: Check attr is valid */
+            if (($1 & OpDcl::IndexGetter) || ($1 & OpDcl::IndexDeleter))
+            {
+                op->check(op->getParamCount() == 1,
+                          "Getters and deleters MUST be declared to take a single argument.");
+            }
+            if (($1 & OpDcl::IndexCreator) || ($1 & OpDcl::IndexSetter))
+            {
+                op->check(op->getParamCount() == 2,
+                          "Setters and creators MUST be declared to take two arguments.");
+            }
+            if ($1 & OpDcl::IndexMask)
+            {
+                Node* spec = dynamic_cast<ParamDcl*>(*(op->begin()))->getSpec();
+                op->check(spec->getName() == "unsigned long" || spec->getName() == "string",
+                          "The first argument MUST be an unsigned long or a DOMString.");
+            }
+            attr |= $1;
+            op->setAttr(attr);
+            $$ = $2;
+        }
+    ;
+
+OmittableSpecials :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | OMITTABLE Specials
+        {
+            $$ = OpDcl::Omittable | $2;
+        }
+    | Specials
+    ;
+
+Specials :
+    GETTER
+        {
+            $$ = OpDcl::IndexGetter;
+        }
+    | SETTER
+        {
+            $$ = OpDcl::IndexSetter;
+        }
+    | CREATOR
+        {
+            $$ = OpDcl::IndexCreator;
+        }
+    | SETTER CREATOR
+        {
+            $$ = OpDcl::IndexSetter | OpDcl::IndexCreator;
+        }
+    | CREATOR SETTER
+        {
+            $$ = OpDcl::IndexSetter | OpDcl::IndexCreator;
+        }
+    | DELETER
+        {
+            $$ = OpDcl::IndexDeleter;
+        }
+    | CALLER
+        {
+            $$ = OpDcl::Caller;
+        }
+    | CALLER GETTER
+        {
+            $$ = OpDcl::Caller | OpDcl::IndexGetter;
+        }
+    | GETTER CALLER
+        {
+            $$ = OpDcl::Caller | OpDcl::IndexGetter;
+        }
+    ;
+
+OperationRest :
     ReturnType IDENTIFIER
         {
             OpDcl* op = new OpDcl($2, $1);

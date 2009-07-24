@@ -95,23 +95,16 @@ public:
     static const uint32_t AttrGetter =               0x00000001;
     static const uint32_t AttrSetter =               0x00000002;
     static const uint32_t AttrIn =                   0x00000000;
-    static const uint32_t AttrOut =                  0x00000001;
-    static const uint32_t AttrInOut =                0x00000002;
-    // Extended attribute bits
-    // [IndexCreator], [IndexDeleter], [IndexGetter] and [IndexSetter]
+    // Special attribute bits
     static const uint32_t IndexMask =                0x0000003c;
     static const uint32_t IndexCreator =             0x00000004;
     static const uint32_t IndexDeleter =             0x00000008;
     static const uint32_t IndexGetter =              0x00000010;
     static const uint32_t IndexSetter =              0x00000020;
-    // [NameCreator], [NameDeleter], [NameGetter] and [NameSetter]
-    static const uint32_t NameMask =                 0x000003c0;
-    static const uint32_t NameCreator =              0x00000040;
-    static const uint32_t NameDeleter =              0x00000080;
-    static const uint32_t NameGetter =               0x00000100;
-    static const uint32_t NameSetter =               0x00000200;
-    // [NoIndexingOperations]
-    static const uint32_t NoIndexingOperations =     0x00000400;
+    static const uint32_t Caller =                   0x00000040;
+    static const uint32_t Stringifier =              0x00000080;
+    static const uint32_t Omittable =                0x00000100;
+    static const uint32_t Variadic =                 0x00000200;
     // [Callback]
     static const uint32_t CallbackMask =             0x00001800;
     static const uint32_t Callback =                 0x00001800;
@@ -127,16 +120,10 @@ public:
     // [Undefined]
     static const uint32_t UndefinedIsEmpty =         0x00020000;
     static const uint32_t UndefinedIsNull =          0x00040000;
-    // [Stringifies]
-    static const uint32_t Stringifies =              0x00080000;
     // [Replaceable]
     static const uint32_t Replaceable =              0x00100000;
-    // [Callable]
-    static const uint32_t Callable =                 0x00200000;
     // [Optional]
     static const uint32_t Optional =                 0x00400000;
-    // [Variadic]
-    static const uint32_t Variadic =                 0x00800000;
     // [ImplementedOn]
     static const uint32_t ImplementedOn =            0x01000000;
 
@@ -1217,14 +1204,14 @@ public:
         return setraises->getSize();
     }
 
-    void setStringifies()
+    void setStringifier()
     {
-        attr |= Stringifies;
+        attr |= Stringifier;
     }
 
-    bool isStringifies() const
+    bool isStringifier() const
     {
-        return attr & Stringifies;
+        return attr & Stringifier;
     }
 
     void processExtendedAttributes();
@@ -1358,9 +1345,9 @@ public:
         return attr;
     }
 
-    void setCallable()
+    void setAttr(uint32_t attr)
     {
-        attr |= Callable;
+        this->attr = attr;
     }
 
     int getMethodCount() const

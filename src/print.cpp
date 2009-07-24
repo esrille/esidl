@@ -249,18 +249,6 @@ public:
 
     virtual void at(const ParamDcl* node)
     {
-        switch (node->getAttr() & ParamDcl::AttrMask)
-        {
-        case ParamDcl::AttrIn:
-            printf("in ");
-            break;
-        case ParamDcl::AttrOut:
-            printf("out ");
-            break;
-        case ParamDcl::AttrInOut:
-            printf("inout ");
-            break;
-        }
         at(static_cast<const Member*>(node));
     }
 

@@ -299,11 +299,7 @@ void Interface::processExtendedAttributes()
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
         assert(ext);
-        if (ext->getName() == "NoIndexingOperations")
-        {
-            attr |= NoIndexingOperations;
-        }
-        else if (ext->getName() == "Callback")
+        if (ext->getName() == "Callback")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
@@ -369,14 +365,6 @@ void Interface::processExtendedAttributes()
                 {
                     interface->mixins.push_back(this);
                 }
-            }
-        }
-        else if (ext->getName() == "Callable")
-        {
-            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
-            {
-                assert(callable == "");
-                callable = name->getName();
             }
         }
         else if (ext->getName() == "Stringifies")
@@ -458,43 +446,7 @@ void OpDcl::processExtendedAttributes()
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
         assert(ext);
-        if (ext->getName() == "IndexCreator")
-        {
-            attr |= IndexCreator;
-        }
-        else if (ext->getName() == "IndexDeleter")
-        {
-            attr |= IndexDeleter;
-        }
-        else if (ext->getName() == "IndexGetter")
-        {
-            attr |= IndexGetter;
-            check(getParamCount() == 1,
-                  "[IndexGetter] MUST take a single argument.");
-            check(dynamic_cast<ParamDcl*>(*(begin()))->getSpec()->getName() == "unsigned long",
-                  "[IndexGetter] MUST take a single argument of type unsigned long.");
-        }
-        else if (ext->getName() == "IndexSetter")
-        {
-            attr |= IndexSetter;
-        }
-        else if (ext->getName() == "NameCreator")
-        {
-            attr |= NameCreator;
-        }
-        else if (ext->getName() == "NameDeleter")
-        {
-            attr |= NameDeleter;
-        }
-        else if (ext->getName() == "NameGetter")
-        {
-            attr |= NameGetter;
-        }
-        else if (ext->getName() == "NameSetter")
-        {
-            attr |= NameSetter;
-        }
-        else if (ext->getName() == "Null")
+        if (ext->getName() == "Null")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
@@ -694,12 +646,8 @@ std::string getIncludedName(const std::string& header)
 
 void Interface::processExtendedAttributes(OpDcl* op)
 {
-    attr |= (op->getAttr() & (IndexMask | NameMask));
+    attr |= (op->getAttr() & IndexMask);
     ++methodCount;
-    if (callable == op->getName())
-    {
-        op->setCallable();
-    }
 }
 
 void Interface::processExtendedAttributes(Attribute* attr)
@@ -714,7 +662,7 @@ void Interface::processExtendedAttributes(Attribute* attr)
     }
     if (stringifies == attr->getName())
     {
-        attr->setStringifies();
+        attr->setStringifier();
     }
 }
 

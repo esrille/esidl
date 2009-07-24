@@ -73,25 +73,22 @@ module html5 {
   typedef any Date;
   typedef Window WindowProxy;
 
-  [Callable=namedItem]
   interface HTMLCollection {
     readonly attribute unsigned long length;
-    [IndexGetter] Element item(in unsigned long index);
-    [NameGetter] Element namedItem(in DOMString name);
+    getter Element item(in unsigned long index);
+    caller getter Element namedItem(in DOMString name);
   };
 
-  [Callable=namedItem]
   interface HTMLFormControlsCollection {
     readonly attribute unsigned long length;
-    [IndexGetter] HTMLElement item(in unsigned long index);
-    [NameGetter] Object namedItem(in DOMString name);
+    getter HTMLElement item(in unsigned long index);
+    caller getter Object namedItem(in DOMString name);
   };
 
-  [Callable=namedItem]
   interface HTMLOptionsCollection {
              attribute unsigned long length;
-    [IndexGetter] HTMLOptionElement item(in unsigned long index);
-    [NameGetter] Object namedItem(in DOMString name);
+    getter HTMLOptionElement item(in unsigned long index);
+    caller getter Object namedItem(in DOMString name);
     void add(in HTMLElement element, in optional HTMLElement before);
     void add(in HTMLElement element, in long before);
     void remove(in long index);
@@ -99,7 +96,7 @@ module html5 {
 
   [Stringifies] interface DOMTokenList {
     readonly attribute unsigned long length;
-    [IndexGetter] DOMString item(in unsigned long index);
+    getter DOMString item(in unsigned long index);
     boolean has(in DOMString token);
     void add(in DOMString token);
     void remove(in DOMString token);
@@ -654,7 +651,6 @@ module html5 {
              attribute DOMString scope;
   };
 
-  [Callable=namedItem]
   interface HTMLFormElement : HTMLElement {
              attribute DOMString acceptCharset;
              attribute DOMString action;
@@ -667,8 +663,8 @@ module html5 {
 
     readonly attribute HTMLFormControlsCollection elements;
     readonly attribute long length;
-    [IndexGetter] any item(in unsigned long index);
-    [NameGetter=OverrideBuiltins] any namedItem(in DOMString name);
+    getter any item(in unsigned long index);
+    [OverrideBuiltins] caller getter any namedItem(in DOMString name);
 
     void submit();
     void reset();
@@ -776,7 +772,6 @@ module html5 {
     readonly attribute NodeList labels;
   };
 
-  [Callable=namedItem]
   interface HTMLSelectElement : HTMLElement {
              attribute boolean autofocus;
              attribute boolean disabled;
@@ -789,8 +784,8 @@ module html5 {
 
     readonly attribute HTMLOptionsCollection options;
              attribute unsigned long length;
-    [IndexGetter] any item(in unsigned long index);
-    [NameGetter] any namedItem(in DOMString name);
+    getter any item(in unsigned long index);
+    caller getter any namedItem(in DOMString name);
     void add(in HTMLElement element, in optional HTMLElement before);
     void add(in HTMLElement element, in long before);
     void remove(in long index);
@@ -936,7 +931,7 @@ module html5 {
 
   interface DataGridSelection {
     readonly attribute unsigned long length;
-    [IndexGetter] RowSpecification item(in unsigned long index);
+    getter RowSpecification item(in unsigned long index);
     boolean isSelected(in RowSpecification row);
     void setSelected(in RowSpecification row, in boolean selected);
 
@@ -1209,7 +1204,7 @@ module html5 {
 
   interface UndoManager {
     readonly attribute unsigned long length;
-    [IndexGetter] any item(in unsigned long index);
+    getter any item(in unsigned long index);
     readonly attribute unsigned long position;
     unsigned long add(in any data, in DOMString title);
     void remove(in unsigned long index);

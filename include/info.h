@@ -234,7 +234,7 @@ public:
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
 
         write("%c", Reflect::kGetter);
-        if (node->isStringifies())
+        if (node->isStringifier())
         {
             write("%c", Reflect::kSpecialStringifier);
         }
@@ -347,21 +347,34 @@ public:
             write("%c", Reflect::kOperation);
         }
 
-        if (node->getAttr() & (OpDcl::IndexGetter | OpDcl::NameGetter))
+        if (node->getAttr() & OpDcl::Omittable)
+        {
+            write("%c", Reflect::kSpecialOmittable);
+        }
+
+        if (node->getAttr() & OpDcl::IndexGetter)
         {
             write("%c", Reflect::kSpecialGetter);
         }
-        else if (node->getAttr() & (OpDcl::IndexSetter | OpDcl::NameSetter))
+        if (node->getAttr() & OpDcl::IndexSetter)
         {
             write("%c", Reflect::kSpecialSetter);
         }
-        else if (node->getAttr() & (OpDcl::IndexCreator | OpDcl::NameCreator))
+        if (node->getAttr() & OpDcl::IndexCreator)
         {
             write("%c", Reflect::kSpecialCreator);
         }
-        else if (node->getAttr() & (OpDcl::IndexDeleter | OpDcl::NameDeleter))
+        if (node->getAttr() & OpDcl::IndexDeleter)
         {
             write("%c", Reflect::kSpecialDeleter);
+        }
+        if (node->getAttr() & OpDcl::Caller)
+        {
+            write("%c", Reflect::kSpecialCaller);
+        }
+        if (node->getAttr() & OpDcl::Stringifier)
+        {
+            write("%c", Reflect::kSpecialStringifier);
         }
 
         NodeList::reverse_iterator last = node->rbegin();

@@ -78,8 +78,7 @@ public:
                     }
                     else if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
                     {
-                        if ((interface->getAttr() & Interface::NoIndexingOperations) &&
-                            (op->getAttr() & (OpDcl::IndexMask | OpDcl::NameMask)))
+                        if ((op->getAttr() & OpDcl::IndexMask) && (op->getAttr() & OpDcl::Omittable))
                         {
                             continue;
                         }

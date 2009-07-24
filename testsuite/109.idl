@@ -1,7 +1,6 @@
-// Test [NoIndexingOperations]
-[NoIndexingOperations]
 interface Dictionary {
-  unsigned long getNumberOfEntries();
-  [NameGetter] DOMString lookUpEntry(in DOMString key);
-  [NameSetter] void setEntry(in DOMString key, in DOMString value);
+  readonly attribute unsigned long propertyCount;
+
+  omittable getter float getProperty(in DOMString propertyName);
+  omittable setter void setProperty(in DOMString propertyName, in float propertyValue);
 };
