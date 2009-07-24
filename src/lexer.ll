@@ -127,9 +127,21 @@ boolean             {
                         stepLocation();
                         return BOOLEAN;
                     }
+caller              {
+                        stepLocation();
+                        return CALLER;
+                    }
 const               {
                         stepLocation();
                         return CONST;
+                    }
+creator             {
+                        stepLocation();
+                        return CREATOR;
+                    }
+deleter             {
+                        stepLocation();
+                        return DELETER;
                     }
 double              {
                         stepLocation();
@@ -154,6 +166,10 @@ float               {
 getraises           {
                         stepLocation();
                         return GETRAISES;
+                    }
+getter              {
+                        stepLocation();
+                        return GETTER;
                     }
 in                  {
                         stepLocation();
@@ -184,6 +200,10 @@ octet               {
                         stepLocation();
                         return OCTET;
                     }
+omittable           {
+                        stepLocation();
+                        return OMITTABLE;
+                    }
 optional            {
                         stepLocation();
                         return OPTIONAL;
@@ -196,13 +216,17 @@ readonly            {
                         stepLocation();
                         return READONLY;
                     }
+sequence            {
+                        stepLocation();
+                        return SEQUENCE;
+                    }
 setraises           {
                         stepLocation();
                         return SETRAISES;
                     }
-sequence            {
+setter              {
                         stepLocation();
-                        return SEQUENCE;
+                        return SETTER;
                     }
 short               {
                         stepLocation();
@@ -224,10 +248,6 @@ unsigned            {
                         stepLocation();
                         return UNSIGNED;
                     }
-valuetype           {
-                        stepLocation();
-                        return VALUETYPE;
-                    }
 void                {
                         stepLocation();
                         return VOID;
@@ -245,7 +265,7 @@ void                {
                         stepLocation();
                         return OP_SHR;
                     }
-"..."                {
+"..."               {
                         stepLocation();
                         return ELLIPSIS;
                     }
