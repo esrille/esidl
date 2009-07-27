@@ -88,9 +88,7 @@ UnicodeEscapeSequence   u{HexDigit}{4}
 CharacterEscapeSequence {SingleEscapeCharacter}|{NonEscapeCharacter}
 EscapeSequence          {CharacterEscapeSequence}|0|{HexEscapeSequence}|{UnicodeEscapeSequence}
 DoubleStringCharacter   ([^\"\\\n\r]|\\{EscapeSequence})
-IdentifierStart         ([A-Za-z$_]|{Lu}|{Ll}|{Unicode})
-IdentifierPart          ([0-9]|{IdentifierStart}|(\\{UnicodeEscapeSequence}))
-Identifier              {IdentifierStart}{IdentifierPart}*
+Identifier              [A-Z_a-z][0-9A-Z_a-z]*
 
 MultiLineComment        \/\*(([^*])|(\*[^/]))*\*\/
 SingleLineComment       \/\/
