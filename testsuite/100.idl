@@ -1,11 +1,9 @@
-// Test [Null], [Undefined]
+// Test [TreatNullAs], [TreatUndefinedAs]
 interface X {
-  [Null=Null] attribute string x;
-  [Null=Empty] attribute string y;
-  [Undefined=Null] attribute string u;
-  [Undefined=Empty] attribute string v;
-  void a([Null=Null] in string s);
-  void b([Null=Empty] in string s);
-  void c([Undefined=Null] in string s);
-  void d([Undefined=Empty] in string s);
+  [TreatNullAs=EmptyString] attribute DOMString y;
+  [TreatUndefinedAs=Null] attribute DOMString u;
+  [TreatUndefinedAs=Empty] attribute DOMString v;
+  void b([TreatNullAs=EmptyString] in DOMString s);
+  void c([TreatUndefinedAs=Null] in DOMString s);
+  void d([TreatUndefinedAs=EmptyString] in DOMString s);
 };

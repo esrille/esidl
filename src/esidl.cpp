@@ -383,25 +383,21 @@ void Attribute::processExtendedAttributes()
         {
             attr |= Replaceable;
         }
-        else if (ext->getName() == "Null")
+        else if (ext->getName() == "TreatNullAs")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
-                if (name->getName() == "Empty")
+                if (name->getName() == "EmptyString")
                 {
                     attr |= NullIsEmpty;
                 }
-                else if (name->getName() == "Null")
-                {
-                    attr |= NullIsNull;
-                }
             }
         }
-        else if (ext->getName() == "Undefined")
+        else if (ext->getName() == "TreatUndefinedAs")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
-                if (name->getName() == "Empty")
+                if (name->getName() == "EmptyString")
                 {
                     attr |= UndefinedIsEmpty;
                 }
@@ -434,25 +430,21 @@ void OpDcl::processExtendedAttributes()
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
         assert(ext);
-        if (ext->getName() == "Null")
+        if (ext->getName() == "TreatNullAs")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
-                if (name->getName() == "Empty")
+                if (name->getName() == "EmptyString")
                 {
                     attr |= NullIsEmpty;
                 }
-                else if (name->getName() == "Null")
-                {
-                    attr |= NullIsNull;
-                }
             }
         }
-        else if (ext->getName() == "Undefined")
+        else if (ext->getName() == "TreatUndefinedAs")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
-                if (name->getName() == "Empty")
+                if (name->getName() == "EmptyString")
                 {
                     attr |= UndefinedIsEmpty;
                 }
@@ -482,25 +474,21 @@ void ParamDcl::processExtendedAttributes()
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
         assert(ext);
-        if (ext->getName() == "Null")
+        if (ext->getName() == "TreatNullAs")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
-                if (name->getName() == "Empty")
+                if (name->getName() == "EmptyString")
                 {
                     attr |= NullIsEmpty;
                 }
-                else if (name->getName() == "Null")
-                {
-                    attr |= NullIsNull;
-                }
             }
         }
-        else if (ext->getName() == "Undefined")
+        else if (ext->getName() == "TreatUndefinedAs")
         {
             if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
             {
-                if (name->getName() == "Empty")
+                if (name->getName() == "EmptyString")
                 {
                     attr |= UndefinedIsEmpty;
                 }
