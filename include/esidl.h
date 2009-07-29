@@ -771,6 +771,7 @@ class Interface : public Node
     int methodCount;
     Interface* constructor;
     std::list<const Interface*> mixins;
+    std::list<const Interface*> implementedOn;
 
 public:
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
@@ -896,6 +897,19 @@ public:
     {
         mixin->setAttr(mixin->getAttr() | ImplementedOn);
         mixins.push_back(mixin);
+        mixin->implementedOn.push_back(this);
+    }
+
+    Interface* getImplementedOn() const
+    {
+        if (implementedOn.size() == 1)
+        {
+            return const_cast<Interface*>(implementedOn.front());
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     void collectMixins(std::list<const Interface*>* interfaceList) const
@@ -1072,6 +1086,14 @@ public:
     {
         javadoc = ::getJavadoc();
         setAttr(attr);
+    }
+
+    Member(const Member& m) :
+        Node(m.getName()),
+        spec(m.spec),
+        type(m.type)
+    {
+        setAttr(m.attr);
     }
 
     ~Member()
@@ -1424,7 +1446,7 @@ class Visitor
 protected:
     void visitChildren(const Node* node)
     {
-        if (node->isLeaf())
+        if (!node || node->isLeaf())
         {
             return;
         }

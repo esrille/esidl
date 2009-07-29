@@ -1,0 +1,17 @@
+This directory contains the esidl Web IDL compiler.
+
+The esidl Web IDL compiler is an Web IDL compiler being developed for the ES
+operating system; it can be used for products other than the ES operating
+system. The directory named 'npapi' contains an example program that uses
+esidl to create an NPAPI plugin efficiently. 
+
+To test the NPAPI plugin sample, copy libnpessample.so created in the install
+directory to ~/.mozilla/plugins, and open 'npapi/sample/sample.html' with the 
+browser (currently tested only with Firefox 3 on linux).
+
+ES operating system is open source software. See the file LICENSE for 
+copying permission. The manuals, and some of the software programs, are
+under different terms; see the individual source files for details.
+
+See http://code.google.com/p/es-operating-system/ for how to report problems.
+

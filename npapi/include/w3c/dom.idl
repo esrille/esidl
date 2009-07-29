@@ -24,16 +24,6 @@ module dom
 
   typedef   Object DOMObject;
 
-  interface DOMImplementation;
-  interface DocumentType;
-  interface Document;
-  interface NodeList;
-  interface NamedNodeMap;
-  interface UserDataHandler;
-  interface Element;
-  interface TypeInfo;
-  interface DOMLocator;
-
   exception DOMException {
     unsigned short   code;
     // ExceptionCode

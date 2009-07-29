@@ -29,6 +29,9 @@ AM_CPPFLAGS = \
 	-iquote $(srcdir)/include \
 	-iquote $(srcdir)/src
 
+EXTRA_DIST = \
+	LICENSE
+
 clean-local:
 	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
 

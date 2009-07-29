@@ -25,9 +25,6 @@ module events
   typedef dom::DOMObject DOMObject;
   typedef dom::Node Node;
 
-  interface EventTarget;
-  interface EventListener;
-
   // Introduced in DOM Level 2:
   exception EventException {
     unsigned short   code;

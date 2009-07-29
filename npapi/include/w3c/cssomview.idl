@@ -30,12 +30,6 @@ module views
   typedef events::MouseEvent MouseEvent;
   typedef html5::HTMLElement HTMLElement;
 
-  interface ClientRect;
-  interface ClientRectList;
-  interface DocumentView;
-  interface Media;
-  interface Screen;
-
   interface AbstractView {
     readonly attribute DocumentView document;
     readonly attribute Media media;

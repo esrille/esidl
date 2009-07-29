@@ -22,8 +22,6 @@ module traversal
 
   typedef dom::Node Node;
 
-  interface NodeFilter;
-
   // Introduced in DOM Level 2:
   interface NodeIterator {
     readonly attribute Node             root;

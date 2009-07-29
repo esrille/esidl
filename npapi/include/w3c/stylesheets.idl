@@ -22,8 +22,6 @@ module stylesheets
 
   typedef dom::Node Node;
 
-  interface MediaList;
-
   // Introduced in DOM Level 2:
   interface StyleSheet {
     readonly attribute DOMString        type;

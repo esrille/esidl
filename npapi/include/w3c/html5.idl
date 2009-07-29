@@ -35,43 +35,10 @@ module html5 {
   typedef webstorage::Database Database;
   typedef webstorage::Storage Storage;
 
-  interface ApplicationCache;
-  interface BarProp;
-  interface CanvasGradient;
-  interface CanvasPattern;
-  interface CanvasPixelArray;
-  interface CueRangeCallback;
-  interface DataGridDataProvider;
-  interface DataGridSelection;
-  interface DataTransfer;
-  interface History;
-  interface ImageData;
-  interface Function;
-  interface HTMLElement;
-  interface HTMLFormElement;
-  interface HTMLMediaElement;
-  interface HTMLMenuElement;
-  interface HTMLTableCaptionElement;
-  interface HTMLTableSectionElement;
-  interface HTMLOptionElement;
-  interface Location;
-  interface MediaError;
-  interface MessagePort;
-  interface Navigator;
-  interface RowSpecification;
-  interface Selection;
-  interface TextMetrics;
-  interface TimeoutHandler;
-  interface TimeRanges;
-  interface UndoManager;
-  interface ValidityState;
-  interface Window;
-
   typedef sequence<MessagePort> MessagePortArray;
 
   // XXX
   typedef any Date;
-  typedef Window WindowProxy;
 
   interface HTMLCollection {
     readonly attribute unsigned long length;
@@ -980,6 +947,7 @@ module html5 {
     readonly attribute HTMLFormElement form;
   };
 
+  typedef Window WindowProxy;
   [IndexGetter, NameGetter=OverrideBuiltins]
   interface Window {
     // the current browsing context

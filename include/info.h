@@ -636,12 +636,6 @@ public:
             node->getExp()->accept(&eval);
             write("%.20g ", eval.getValue());
         }
-        else if (type->getName() == "string")
-        {
-            EvalString<std::string> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%s ", eval.getValue().c_str());
-        }
         else
         {
             fprintf(stderr, "Inv. const type.\n");

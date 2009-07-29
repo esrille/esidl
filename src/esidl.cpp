@@ -17,6 +17,7 @@
 
 #include "esidl.h"
 #include "parser.h"
+#include "forward.h"
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -696,6 +697,10 @@ int output(const char* filename,
            bool skeleton,
            bool generic)
 {
+    Forward forward(filename);
+    getSpecification()->accept(&forward);
+    forward.generateForwardDeclarations();
+
     printCxx(filename, stringTypeName, useExceptions);
     if (skeleton)
     {

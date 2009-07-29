@@ -25,14 +25,6 @@ module css
   typedef dom::Element Element;
   typedef dom::DOMImplementation DOMImplementation;
 
-  interface CSSRule;
-  interface CSSStyleSheet;
-  interface CSSStyleDeclaration;
-  interface CSSValue;
-  interface Counter;
-  interface Rect;
-  interface RGBColor;
-
   // Introduced in DOM Level 2:
   interface CSSRuleList {
     readonly attribute unsigned long    length;

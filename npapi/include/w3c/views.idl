@@ -24,8 +24,6 @@
 module views
 {
 
-  interface DocumentView;
-
   // Introduced in DOM Level 2:
   interface AbstractView {
     readonly attribute DocumentView     document;
