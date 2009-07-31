@@ -29,17 +29,36 @@ class Formatter
     int         tabWidth;
     std::string indentString;
 
+    // Format options
+    unsigned indentLevel;  // 4, 2, 4
+    bool namespaceIndentation;  // true/false, false, false
+    int caseIndentation; // 0, 1
+    bool bracesOnFuncDeclLine;  // false, true, false (precedes bracesOnItsOwnLine)
+    bool bracesOnItsOwnLine;  // flase, false, true
+
+    static const int BufferSize = 4096;
+    char buffer[BufferSize];
+    char* bufferPointer;
+
 public:
     Formatter(FILE* file, int tabWidth = 4) :
         file(file),
-        tabWidth(tabWidth)
+        tabWidth(tabWidth),
+        bufferPointer(buffer)
     {
+        *bufferPointer = 0;
     }
 
     Formatter(const Formatter* f) :
         file(f->file),
         tabWidth(f->tabWidth),
-        indentString(f->indentString)
+        indentString(f->indentString),
+        bufferPointer(buffer)
+    {
+        *bufferPointer = 0;
+    }
+
+    ~Formatter()
     {
     }
 
@@ -53,12 +72,23 @@ public:
         indentString.erase(indentString.length() - tabWidth);
     }
 
+    void vwrite(const char* format, va_list ap)
+    {
+        vsnprintf(bufferPointer, BufferSize - (bufferPointer - buffer), format, ap);
+        bufferPointer = buffer + strlen(buffer);
+        assert(bufferPointer - buffer <= BufferSize);
+    }
+
     void write(const char* format, ...)
     {
         va_list ap;
         va_start(ap, format);
-        vfprintf(file, format, ap);
+        vwrite(format, ap);
         va_end(ap);
+        if (buffer < bufferPointer && *(bufferPointer - 1) == '\n')
+        {
+            flush();
+        }
     }
 
     void writetab()
@@ -74,9 +104,17 @@ public:
         }
         va_list ap;
         va_start(ap, format);
-        vfprintf(file, format, ap);
+        vwrite(format, ap);
         va_end(ap);
         write("\n");
+        flush();
+    }
+
+    void flush()
+    {
+        fputs(buffer, file);
+        bufferPointer = buffer;
+        *bufferPointer = 0;
     }
 };
 

@@ -127,10 +127,12 @@ public:
             writeln("{");
             indent();
                 writetab();
-                write("static const char* const info = ");
+                write("static const char* const info =");
+                flush();
                 indent();
                 Info info(this, moduleName);
                 const_cast<Interface*>(node)->accept(&info);
+                info.flush();
                 write(";\n");
                 unindent();
                 writeln("return info;");
