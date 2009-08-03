@@ -58,7 +58,6 @@ public:
         node->collectMixins(&interfaceList);
 
         writeln("class %s_Impl : public %s {", node->getName().c_str(), node->getName().c_str());
-        indent();
 
         std::set<std::string> idSet;
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
@@ -96,7 +95,6 @@ public:
 
         // Destructor
         writeln("~%s_Impl();", node->getName().c_str());
-        writeln("");
 
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
              i != interfaceList.end();
@@ -128,9 +126,7 @@ public:
         }
         currentNode = node;
 
-        unindent();
-        writetab();
-        write("}");
+        writeln("};");
     }
 
     virtual void at(const Attribute* node)
@@ -277,7 +273,6 @@ public:
         SkeletonImpl SkeletonImpl(source, file);
         SkeletonImpl.at(node);
         SkeletonImpl.flush();
-        fprintf(file, ";\n");
 
         pos = std::string::npos;
         while (pos && (pos = moduleName.rfind("::", pos)) != std::string::npos)

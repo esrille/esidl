@@ -142,12 +142,10 @@ public:
                 writetab();
             }
             write("namespace %s {\n", node->getName().c_str());
-            indent();
                 moduleName += "::";
                 moduleName += node->getName();
                 printChildren(node);
                 moduleName.erase(moduleName.size() - node->getName().size() - 2);
-            unindent();
             writeln("}");
         }
         else

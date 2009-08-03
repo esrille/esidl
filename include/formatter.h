@@ -21,12 +21,14 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <list>
 #include <string>
 
 class Formatter
 {
     FILE*       file;
     std::string indentString;
+    std::list<bool> nesting;  // true if indented one level
 
     // Format options
     const unsigned indentLevel;  // 4, 2, 4
@@ -53,25 +55,24 @@ class Formatter
         {
             --p;
         }
-        if (*p == c)
-        {
-            do {
-                if ((std::isspace)(*(p - 1)))
-                {
-                    --p;
-                }
-                else
-                {
-                    break;
-                }
-            } while (buffer < p);
-        }
+        assert(*p == c);
+        const char* rest = p + 1;
+        do {
+            if ((std::isspace)(*(p - 1)))
+            {
+                --p;
+            }
+            else
+            {
+                break;
+            }
+        } while (buffer < p);
         fprintf(file, "%.*s\n", p - buffer, buffer);
         fprintf(file, "%s", indentString.c_str());
         fprintf(file, "%c", c);
-        if (*(bufferPointer - 1) == '\n')
+        if (*rest)
         {
-            fprintf(file, "\n");
+            fprintf(file, rest);
         }
     }
 
@@ -158,14 +159,14 @@ public:
             return;
         }
 
-        const char* tail = bufferPointer - 1;
-        if (*tail == '\n' && (buffer + 1) < bufferPointer)
-        {
-            --tail;
-        }
         const char* head;
         for (head = buffer; head < bufferPointer && std::isspace(*head); ++head)
         {
+        }
+        const char* tail = bufferPointer - 1;
+        while ((*tail == '\n' || *tail == ';') && (buffer + 1) < bufferPointer)
+        {
+            --tail;
         }
 
         if (strncmp(head, "/*", 2) == 0 || strncmp(head, "//", 10) == 0)
@@ -179,6 +180,7 @@ public:
         }
         else if (*tail == '{')
         {
+            bool doIndent = true;
             if (strncmp(head, "namespace ", 10) == 0)
             {
                 if (bracesOnItsOwnLine)
@@ -189,7 +191,10 @@ public:
                 {
                     fputs(buffer, file);
                 }
-                // TODO: check indent
+                if (!namespaceIndentation)
+                {
+                    doIndent = false;
+                }
             }
             else if (strncmp(head, "class ", 6) == 0 || strncmp(head, "struct ", 7) == 0)
             {
@@ -210,6 +215,25 @@ public:
             {
                 fputs(buffer, file);
             }
+            nesting.push_back(doIndent);
+            if (doIndent)
+            {
+                indent();
+            }
+        }
+        else if (*tail == '}')
+        {
+            bool doUnindent = false;
+            if (!nesting.empty())
+            {
+                if (nesting.back())
+                {
+                    doUnindent = true;
+                    unindent();
+                }
+                nesting.pop_back();
+            }
+            fputs(doUnindent ? (buffer + indentLevel) : buffer, file);
         }
         else
         {

@@ -77,6 +77,7 @@ public:
         write("class %s_Proxy : public Proxy_Impl<O", node->getName().c_str());
         write(", %s", node->getName().c_str());
         write("> {\n");
+        unindent();
         writeln("public:");
         indent();
 
@@ -129,12 +130,9 @@ public:
 
         // createInstance
         writeln("static %s* createInstance(O object) {", node->getName().c_str());
-        indent();
             writeln("return new %s_Proxy(object);", node->getName().c_str());
-        unindent();
         writeln("}");
 
-        unindent();
         writeln("};");
     }
 
@@ -153,7 +151,6 @@ public:
         writetab();
         CPlusPlus::getter(node);
         write(" {\n");
-        indent();
         {
             unsigned paramCount = 1;  // for 'this'
             bool hasBuffer = false;
@@ -211,7 +208,6 @@ public:
                       methodNumber, paramCount);
             }
         }
-        unindent();
         writeln("}");
         ++methodNumber;
 
@@ -233,7 +229,6 @@ public:
         writetab();
         CPlusPlus::setter(node);
         write(" {\n");
-        indent();
         {
             unsigned paramCount = 2;  // +1 for 'this'
             if (spec->isSequence(node))
@@ -268,7 +263,6 @@ public:
                         methodNumber, paramCount);
             }
         }
-        unindent();
         writeln("}");
         ++methodNumber;
     }
@@ -281,7 +275,6 @@ public:
         writetab();
         CPlusPlus::at(node);
         write(" {\n");
-        indent();
             bool hasBuffer = false;
             Node* spec = node->getSpec();
             unsigned paramIndex;
@@ -377,7 +370,6 @@ public:
                 write(">(invoke(this->object, %u, %u, param));\n",
                       methodNumber, paramCount);
             }
-        unindent();
         writeln("}");
         ++methodNumber;
     }

@@ -49,11 +49,8 @@ public:
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
-        write("struct %s {", node->getName().c_str());
-        writeln("");
-        indent();
-        printChildren(node);
-        unindent();
+        write("struct %s {\n", node->getName().c_str());
+            printChildren(node);
         writeln("};");
     }
 
@@ -91,8 +88,8 @@ public:
                     (*i)->accept(this);
                 }
             }
-            write(" {");
-            writeln("");
+            write(" {\n");
+            unindent();
             writeln("public:");
             indent();
 
@@ -114,15 +111,12 @@ public:
             }
 
             writeln("static const char* iid() {");
-            indent();
                 writeln("static const char* const name = \"%s\";",
                         node->getQualifiedName().c_str());
                 writeln("return name;");
-            unindent();
             writeln("}");
 
             writeln("static const char* info() {");
-            indent();
                 writetab();
                 write("static const char* const info =");
                 flush();
@@ -133,7 +127,6 @@ public:
                 write(";\n");
                 unindent();
                 writeln("return info;");
-            unindent();
             writeln("}");
 
             if (Interface* constructor = node->getConstructor())
@@ -148,14 +141,10 @@ public:
                 }
                 constructorMode = false;
                 writeln("static Constructor* getConstructor() {");
-                indent();
                     writeln("return constructor;");
-                unindent();
                 writeln("}");
                 writeln("static void setConstructor(Constructor* ctor) {");
-                indent();
                     writeln("constructor = ctor;");
-                unindent();
                 writeln("}");
                 unindent();
                 writeln("private:");
@@ -163,7 +152,6 @@ public:
                 writeln("static Constructor* constructor;");
             }
 
-            unindent();
             writeln("};");
 
             if (node->getConstructor())
@@ -291,7 +279,6 @@ public:
         {
             write("{");
             writeln("");
-            indent();
                 writeln("if (constructor)");
                 indent();
                     writetab();
@@ -311,7 +298,6 @@ public:
                 indent();
                     writeln("return 0;");
                 unindent();
-            unindent();
             writeln("}");
         }
     }
@@ -387,11 +373,10 @@ public:
         }
         if (0 < node->getName().size())
         {
-            write("namespace %s { \n", node->getName().c_str());
-            indent();
+            write("namespace %s {\n", node->getName().c_str());
                 visitChildren(node);
-            unindent();
-            write("}\n\n");
+            writeln("}");
+            writeln("");
         }
         else
         {
