@@ -49,9 +49,8 @@ public:
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
-        write("struct %s", node->getName().c_str());
+        write("struct %s {", node->getName().c_str());
         writeln("");
-        writeln("{");
         indent();
         printChildren(node);
         unindent();
@@ -92,8 +91,8 @@ public:
                     (*i)->accept(this);
                 }
             }
+            write(" {");
             writeln("");
-            writeln("{");
             writeln("public:");
             indent();
 
@@ -114,8 +113,7 @@ public:
                 }
             }
 
-            writeln("static const char* iid()");
-            writeln("{");
+            writeln("static const char* iid() {");
             indent();
                 writeln("static const char* const name = \"%s\";",
                         node->getQualifiedName().c_str());
@@ -123,8 +121,7 @@ public:
             unindent();
             writeln("}");
 
-            writeln("static const char* info()");
-            writeln("{");
+            writeln("static const char* info() {");
             indent();
                 writetab();
                 write("static const char* const info =");
@@ -150,14 +147,12 @@ public:
                     (*i)->accept(this);
                 }
                 constructorMode = false;
-                writeln("static Constructor* getConstructor()");
-                writeln("{");
+                writeln("static Constructor* getConstructor() {");
                 indent();
                     writeln("return constructor;");
                 unindent();
                 writeln("}");
-                writeln("static void setConstructor(Constructor* ctor)");
-                writeln("{");
+                writeln("static void setConstructor(Constructor* ctor) {");
                 indent();
                     writeln("constructor = ctor;");
                 unindent();
@@ -294,8 +289,8 @@ public:
         }
         else
         {
+            write("{");
             writeln("");
-            writeln("{");
             indent();
                 writeln("if (constructor)");
                 indent();
@@ -364,15 +359,14 @@ public:
     }
 };
 
-class Predeclaration : public Visitor
+class Predeclaration : public Visitor, public Formatter
 {
     const char* source;
-    FILE* file;
 
 public:
     Predeclaration(const char* source, FILE* file) :
-        source(source),
-        file(file)
+        Formatter(file),
+        source(source)
     {
     }
 
@@ -393,10 +387,11 @@ public:
         }
         if (0 < node->getName().size())
         {
-            fprintf(file, "namespace %s\n", node->getName().c_str());
-            fprintf(file, "{\n");
+            write("namespace %s { \n", node->getName().c_str());
+            indent();
                 visitChildren(node);
-            fprintf(file, "}\n\n");
+            unindent();
+            write("}\n\n");
         }
         else
         {
@@ -410,7 +405,7 @@ public:
         {
             return;
         }
-        fprintf(file, "    class %s;\n", node->getName().c_str());
+        writeln("class %s;", node->getName().c_str());
     }
 };
 

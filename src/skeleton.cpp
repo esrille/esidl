@@ -57,8 +57,7 @@ public:
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList);
 
-        writeln("class %s_Impl : public %s", node->getName().c_str(), node->getName().c_str());
-        writeln("{");
+        writeln("class %s_Impl : public %s {", node->getName().c_str(), node->getName().c_str());
         indent();
 
         std::set<std::string> idSet;
@@ -277,6 +276,7 @@ public:
 
         SkeletonImpl SkeletonImpl(source, file);
         SkeletonImpl.at(node);
+        SkeletonImpl.flush();
         fprintf(file, ";\n");
 
         pos = std::string::npos;

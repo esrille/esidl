@@ -76,8 +76,7 @@ public:
         writetab();
         write("class %s_Proxy : public Proxy_Impl<O", node->getName().c_str());
         write(", %s", node->getName().c_str());
-        write(">\n");
-        writeln("{");
+        write("> {\n");
         writeln("public:");
         indent();
 
@@ -87,14 +86,13 @@ public:
             writetab();
             write("Proxy_Impl<O");
             write(", %s", node->getName().c_str());
-            write(">(object)\n");
+            write(">(object)");
         unindent();
-        writeln("{");
+        write(" {\n");
         writeln("}");
 
         // Destructor
-        writeln("~%s_Proxy()", node->getName().c_str());
-        writeln("{");
+        writeln("~%s_Proxy() {", node->getName().c_str());
         writeln("}");
 
         std::list<const Interface*> interfaceList;
@@ -130,8 +128,7 @@ public:
         currentNode = node;
 
         // createInstance
-        writeln("static %s* createInstance(O object)", node->getName().c_str());
-        writeln("{");
+        writeln("static %s* createInstance(O object) {", node->getName().c_str());
         indent();
             writeln("return new %s_Proxy(object);", node->getName().c_str());
         unindent();
@@ -155,8 +152,7 @@ public:
         // getter
         writetab();
         CPlusPlus::getter(node);
-        writeln("");
-        writeln("{");
+        write(" {\n");
         indent();
         {
             unsigned paramCount = 1;  // for 'this'
@@ -236,8 +232,7 @@ public:
         }
         writetab();
         CPlusPlus::setter(node);
-        writeln("");
-        writeln("{");
+        write(" {\n");
         indent();
         {
             unsigned paramCount = 2;  // +1 for 'this'
@@ -285,8 +280,7 @@ public:
 
         writetab();
         CPlusPlus::at(node);
-        writeln("");
-        writeln("{");
+        write(" {\n");
         indent();
             bool hasBuffer = false;
             Node* spec = node->getSpec();

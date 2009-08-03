@@ -141,8 +141,7 @@ public:
                 write("%s\n", node->getJavadoc().c_str());
                 writetab();
             }
-            write("namespace %s\n", node->getName().c_str());
-            writeln("{");
+            write("namespace %s {\n", node->getName().c_str());
             indent();
                 moduleName += "::";
                 moduleName += node->getName();

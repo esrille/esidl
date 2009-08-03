@@ -26,36 +26,77 @@
 class Formatter
 {
     FILE*       file;
-    int         tabWidth;
     std::string indentString;
 
     // Format options
-    unsigned indentLevel;  // 4, 2, 4
-    bool namespaceIndentation;  // true/false, false, false
-    int caseIndentation; // 0, 1
-    bool bracesOnFuncDeclLine;  // false, true, false (precedes bracesOnItsOwnLine)
-    bool bracesOnItsOwnLine;  // flase, false, true
+    const unsigned indentLevel;  // 4, 2, 4
+    const int caseIndentation; // 0, 1
+    const bool namespaceIndentation;  // true/false, false, false
+    const bool bracesOnFuncDeclLine;  // false, true, false (precedes bracesOnItsOwnLine)
+    const bool bracesOnItsOwnLine;  // flase, false, true
 
     static const int BufferSize = 4096;
     char buffer[BufferSize];
     char* bufferPointer;
 
-public:
-    Formatter(FILE* file, int tabWidth = 4) :
-        file(file),
-        tabWidth(tabWidth),
-        bufferPointer(buffer)
+    void initialize()
     {
-        *bufferPointer = 0;
+        bufferPointer = buffer;
+        *bufferPointer = '\0';
+    }
+
+    void breakLineAt(char c)
+    {
+        assert(buffer < bufferPointer);
+        const char* p = bufferPointer - 1;
+        while (buffer < p && *p != c)
+        {
+            --p;
+        }
+        if (*p == c)
+        {
+            do {
+                if ((std::isspace)(*(p - 1)))
+                {
+                    --p;
+                }
+                else
+                {
+                    break;
+                }
+            } while (buffer < p);
+        }
+        fprintf(file, "%.*s\n", p - buffer, buffer);
+        fprintf(file, "%s", indentString.c_str());
+        fprintf(file, "%c", c);
+        if (*(bufferPointer - 1) == '\n')
+        {
+            fprintf(file, "\n");
+        }
+    }
+
+public:
+    Formatter(FILE* file, unsigned indentLevel = 4) :
+        file(file),
+        indentLevel(indentLevel),
+        caseIndentation(0),
+        namespaceIndentation(false),
+        bracesOnItsOwnLine(true),
+        bracesOnFuncDeclLine(false)
+    {
+        initialize();
     }
 
     Formatter(const Formatter* f) :
         file(f->file),
-        tabWidth(f->tabWidth),
         indentString(f->indentString),
-        bufferPointer(buffer)
+        indentLevel(f->indentLevel),
+        caseIndentation(f->caseIndentation),
+        namespaceIndentation(f->namespaceIndentation),
+        bracesOnItsOwnLine(f->bracesOnItsOwnLine),
+        bracesOnFuncDeclLine(f->bracesOnFuncDeclLine)
     {
-        *bufferPointer = 0;
+        initialize();
     }
 
     ~Formatter()
@@ -64,12 +105,12 @@ public:
 
     void indent()
     {
-        indentString += std::string(tabWidth, ' ');
+        indentString += std::string(indentLevel, ' ');
     }
 
     void unindent()
     {
-        indentString.erase(indentString.length() - tabWidth);
+        indentString.erase(indentString.length() - indentLevel);
     }
 
     void vwrite(const char* format, va_list ap)
@@ -112,7 +153,68 @@ public:
 
     void flush()
     {
-        fputs(buffer, file);
+        if (bufferPointer <= buffer)
+        {
+            return;
+        }
+
+        const char* tail = bufferPointer - 1;
+        if (*tail == '\n' && (buffer + 1) < bufferPointer)
+        {
+            --tail;
+        }
+        const char* head;
+        for (head = buffer; head < bufferPointer && std::isspace(*head); ++head)
+        {
+        }
+
+        if (strncmp(head, "/*", 2) == 0 || strncmp(head, "//", 10) == 0)
+        {
+            fputs(buffer, file);
+        }
+        else if (*tail == ':' && buffer < tail && !std::isspace(*(tail - 1)) && 0 < caseIndentation)
+        {
+            fprintf(file, "%s", std::string(caseIndentation, ' ').c_str());
+            fputs(buffer, file);
+        }
+        else if (*tail == '{')
+        {
+            if (strncmp(head, "namespace ", 10) == 0)
+            {
+                if (bracesOnItsOwnLine)
+                {
+                    breakLineAt('{');
+                }
+                else
+                {
+                    fputs(buffer, file);
+                }
+                // TODO: check indent
+            }
+            else if (strncmp(head, "class ", 6) == 0 || strncmp(head, "struct ", 7) == 0)
+            {
+                if (bracesOnItsOwnLine)
+                {
+                    breakLineAt('{');
+                }
+                else
+                {
+                    fputs(buffer, file);
+                }
+            }
+            else if (!bracesOnFuncDeclLine)
+            {
+                breakLineAt('{');
+            }
+            else
+            {
+                fputs(buffer, file);
+            }
+        }
+        else
+        {
+            fputs(buffer, file);
+        }
         bufferPointer = buffer;
         *bufferPointer = 0;
     }
