@@ -1763,9 +1763,9 @@ public:
 };
 
 extern void print();
-extern void printCxx(const char* source, const char* stringTypeName, bool useExceptions);
-extern void printSkeleton(const char* source, bool isystem);
-extern void printTemplate(const char* source, const char* stringTypeName, bool useExceptions, bool isystem);
+extern void printCxx(const char* source, const char* stringTypeName, bool useExceptions, const char* indent);
+extern void printSkeleton(const char* source, bool isystem, const char* indent);
+extern void printTemplate(const char* source, const char* stringTypeName, bool useExceptions, bool isystem, const char* indent);
 
 extern std::string getOutputFilename(std::string, const char* suffix);
 extern std::string getIncludedName(const std::string& header);
@@ -1781,7 +1781,7 @@ extern int input(int fd,
                  bool isystem, bool useExceptions, const char* stringTypeName);
 
 extern int output(const char* filename,
-           bool isystem, bool useExceptions, const char* stringTypeName,
+           bool isystem, bool useExceptions, const char* stringTypeName, const char* indent,
            bool skeleton,
            bool generic);
 

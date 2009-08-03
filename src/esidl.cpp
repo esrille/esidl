@@ -682,6 +682,7 @@ int output(const char* filename,
            bool isystem,
            bool useExceptions,
            const char* stringTypeName,
+           const char* indent,
            bool skeleton,
            bool generic)
 {
@@ -689,14 +690,14 @@ int output(const char* filename,
     getSpecification()->accept(&forward);
     forward.generateForwardDeclarations();
 
-    printCxx(filename, stringTypeName, useExceptions);
+    printCxx(filename, stringTypeName, useExceptions, indent);
     if (skeleton)
     {
-        printSkeleton(filename, isystem);
+        printSkeleton(filename, isystem, indent);
     }
     if (generic)
     {
-        printTemplate(filename, stringTypeName, useExceptions, isystem);
+        printTemplate(filename, stringTypeName, useExceptions, isystem, indent);
     }
     return EXIT_SUCCESS;
 }

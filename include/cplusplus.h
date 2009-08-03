@@ -100,8 +100,8 @@ protected:
     }
 
 public:
-    CPlusPlus(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
-        Formatter(file),
+    CPlusPlus(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true, const char* indent = "es") :
+        Formatter(file, indent),
         source(source),
         stringTypeName(stringTypeName),
         useExceptions(useExceptions),

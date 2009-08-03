@@ -31,11 +31,11 @@ class Formatter
     std::list<bool> nesting;  // true if indented one level
 
     // Format options
-    const unsigned indentLevel;  // 4, 2, 4
-    const int caseIndentation; // 0, 1
-    const bool namespaceIndentation;  // true/false, false, false
-    const bool bracesOnFuncDeclLine;  // false, true, false (precedes bracesOnItsOwnLine)
-    const bool bracesOnItsOwnLine;  // flase, false, true
+    unsigned indentLevel;  // 4, 2, 4
+    int caseIndentation; // 0, 1
+    bool namespaceIndentation;  // true/false, false, false
+    bool bracesOnFuncDeclLine;  // false, true, false (precedes bracesOnItsOwnLine)
+    bool bracesOnItsOwnLine;  // flase, false, true
 
     static const int BufferSize = 4096;
     char buffer[BufferSize];
@@ -76,16 +76,42 @@ class Formatter
         }
     }
 
+    void useGoogleStyle()
+    {
+        indentLevel = 2;
+        caseIndentation = 1;
+        namespaceIndentation = false;
+        bracesOnItsOwnLine = false;
+        bracesOnFuncDeclLine = true;
+    }
+
+    void useWebKitStyle()
+    {
+        indentLevel = 4;
+        caseIndentation = 0;
+        namespaceIndentation = true;  // true in header only
+        bracesOnItsOwnLine = false;
+        bracesOnFuncDeclLine = false;
+    }
+
 public:
-    Formatter(FILE* file, unsigned indentLevel = 4) :
+    Formatter(FILE* file, const char* indent) :
         file(file),
-        indentLevel(indentLevel),
+        indentLevel(4),
         caseIndentation(0),
         namespaceIndentation(false),
         bracesOnItsOwnLine(true),
         bracesOnFuncDeclLine(false)
     {
         initialize();
+        if (strcmp(indent, "google") == 0)
+        {
+            useGoogleStyle();
+        }
+        else if (strcmp(indent, "webkit") == 0)
+        {
+            useWebKitStyle();
+        }
     }
 
     Formatter(const Formatter* f) :

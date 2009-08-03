@@ -88,6 +88,7 @@ int main(int argc, char* argv[])
     bool isystem = false;
     bool useExceptions = true;
     const char* stringTypeName = "char*";   // C++ string type name to be used
+    const char* indent = "es";
 
     for (int i = 1; i < argc; ++i)
     {
@@ -152,6 +153,11 @@ int main(int argc, char* argv[])
                 ++i;
                 stringTypeName = argv[i];
             }
+            else if (strcmp(argv[i], "-indent") == 0)
+            {
+                ++i;
+                indent = argv[i];
+            }
         }
     }
     argCpp[optCpp] = 0;
@@ -201,7 +207,8 @@ int main(int argc, char* argv[])
                         strcmp(argv[i], "-isystem") == 0 ||
                         strcmp(argv[i], "-namespace") == 0 ||
                         strcmp(argv[i], "-object") == 0 ||
-                        strcmp(argv[i], "-string") == 0)
+                        strcmp(argv[i], "-string") == 0 ||
+                        strcmp(argv[i], "-indent") == 0)
                     {
                         ++i;
                     }
@@ -298,7 +305,7 @@ int main(int argc, char* argv[])
             }
             continue;
         }
-        result = output(argv[i], isystem, useExceptions, stringTypeName,
+        result = output(argv[i], isystem, useExceptions, stringTypeName, indent,
                         skeleton, generic);
     }
 

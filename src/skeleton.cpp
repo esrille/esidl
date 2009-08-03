@@ -42,8 +42,8 @@ std::string getFileName(const std::string& name)
 class SkeletonImpl : public CPlusPlus
 {
 public:
-    SkeletonImpl(const char* source, FILE* file) :
-        CPlusPlus(source, file)
+    SkeletonImpl(const char* source, FILE* file, const char* indent) :
+        CPlusPlus(source, file, indent)
     {
     }
 
@@ -188,13 +188,15 @@ class SkeletonVisitor : public Visitor
 {
     const char* source;
     bool isystem;
+    const char* indent;
 
     std::string moduleName;
 
 public:
-    SkeletonVisitor(const char* source, bool isystem) :
+    SkeletonVisitor(const char* source, bool isystem, const char* indent) :
         source(source),
-        isystem(isystem)
+        isystem(isystem),
+        indent(indent)
     {
     }
 
@@ -270,7 +272,7 @@ public:
             pos += 2;
         }
 
-        SkeletonImpl SkeletonImpl(source, file);
+        SkeletonImpl SkeletonImpl(source, file, indent);
         SkeletonImpl.at(node);
         SkeletonImpl.flush();
 
@@ -288,8 +290,8 @@ public:
     }
 };
 
-void printSkeleton(const char* source, bool isystem)
+void printSkeleton(const char* source, bool isystem, const char* indent)
 {
-    SkeletonVisitor visitor(source, isystem);
+    SkeletonVisitor visitor(source, isystem, indent);
     getSpecification()->accept(&visitor);
 }

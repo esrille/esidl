@@ -36,8 +36,8 @@ class Cxx : public CPlusPlus
     }
 
 public:
-    Cxx(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true) :
-        CPlusPlus(source, file, stringTypeName, useExceptions)
+    Cxx(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true, const char* indent = "es") :
+        CPlusPlus(source, file, stringTypeName, useExceptions, indent)
     {
     }
 
@@ -350,8 +350,8 @@ class Predeclaration : public Visitor, public Formatter
     const char* source;
 
 public:
-    Predeclaration(const char* source, FILE* file) :
-        Formatter(file),
+    Predeclaration(const char* source, FILE* file, const char* indent) :
+        Formatter(file, indent),
         source(source)
     {
     }
@@ -394,7 +394,7 @@ public:
     }
 };
 
-void printCxx(const char* source, const char* stringTypeName, bool useExceptions)
+void printCxx(const char* source, const char* stringTypeName, bool useExceptions, const char* indent)
 {
     const std::string filename = getOutputFilename(source, "h");
     printf("# %s\n", filename.c_str());
@@ -419,11 +419,11 @@ void printCxx(const char* source, const char* stringTypeName, bool useExceptions
 
     if (!Node::getFlatNamespace())
     {
-        Predeclaration predeclaration(source, file);
+        Predeclaration predeclaration(source, file, indent);
         getSpecification()->accept(&predeclaration);
     }
 
-    Cxx cxx(source, file, stringTypeName, useExceptions);
+    Cxx cxx(source, file, stringTypeName, useExceptions, indent);
     getSpecification()->accept(&cxx);
 
     fprintf(file, "#endif  // %s\n", included.c_str());
