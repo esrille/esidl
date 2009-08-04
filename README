@@ -5,9 +5,17 @@ operating system; it can be used for products other than the ES operating
 system. The directory named 'npapi' contains an example program that uses
 esidl to create an NPAPI plugin efficiently. 
 
-To test the NPAPI plugin sample, copy libnpessample.so created in the install
-directory to ~/.mozilla/plugins, and open 'npapi/sample/sample.html' with the 
-browser (currently tested only with Firefox 3 on linux).
+The following three steps should build the NPAPI plugin sample:
+
+  CFLAGS=-g CXXFLAGS=-g configure --prefix=[install directory]
+  make
+  make install
+
+Note '-g' options are necessary at this moment. 
+
+Then please copy libnpessample.so created in the install library directory
+to ~/.mozilla/plugins, and open 'npapi/sample/sample.html' with the browser
+(currently tested only with Firefox 3 on linux).
 
 ES operating system is open source software. See the file LICENSE for 
 copying permission. The manuals, and some of the software programs, are
