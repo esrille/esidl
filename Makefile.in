@@ -271,6 +271,7 @@ esidl_SOURCES = \
 	include/esidl.h \
 	include/expr.h \
 	include/formatter.h \
+	include/forward.h \
 	include/info.h \
 	include/reflect.h \
 	include/utf.h \
