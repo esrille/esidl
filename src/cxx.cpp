@@ -22,10 +22,6 @@ class Cxx : public CPlusPlus
 {
     void visitInterfaceElement(const Interface* interface, Node* element)
     {
-        if (element->isSequence(interface) || element->isNative(interface))
-        {
-            return;
-        }
         optionalStage = 0;
         do
         {
