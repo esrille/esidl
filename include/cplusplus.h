@@ -500,6 +500,18 @@ public:
     {
     }
 
+    virtual void at(const NativeType* node)
+    {
+        if (node->getName() == "void_pointer")
+        {
+            write("void*");
+        }
+        else
+        {
+            write("%s", node->getName().c_str());
+        }
+    }
+
     static std::string getInterfaceName(std::string qualifiedName)
     {
         if (qualifiedName == "::Object")
@@ -516,16 +528,33 @@ public:
         return qualifiedName;
     }
 
-    virtual void at(const NativeType* node)
+    static std::string getIncludedName(const std::string headerFilename, const char* indent = "es")
     {
-        if (node->getName() == "void_pointer")
+        std::string included(headerFilename);
+        bool capitalize = true;
+
+        if (strcmp(indent, "google") == 0)
         {
-            write("void*");
+            included += "_";
+        }
+        else if (strcmp(indent, "es") == 0)
+        {
+            included += "_INCLUDED";
         }
         else
         {
-            write("%s", node->getName().c_str());
+            capitalize = false;
         }
+        if (isdigit(included[0]))
+        {
+            included = "No" + included;
+        }
+        for (int i = 0; i < included.size(); ++i)
+        {
+            char c = included[i];
+            included[i] = isalnum(c) ? (capitalize ? toupper(c) : c) : '_';
+        }
+        return included;
     }
 };
 

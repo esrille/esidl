@@ -602,27 +602,6 @@ std::string getScopedName(std::string moduleName, std::string absoluteName)
     return absoluteName.substr(2);
 }
 
-std::string getIncludedName(const std::string& header)
-{
-    std::string included(header);
-
-    for (int i = 0; i < included.size(); ++i)
-    {
-        char c = included[i];
-        included[i] = toupper(c);
-        if (c == '.' || c == '/' || c == '\\')
-        {
-            included[i] = '_';
-        }
-    }
-    included += "_INCLUDED";
-    if (isdigit(included[0]))
-    {
-        included = "NO" + included;
-    }
-    return included;
-}
-
 void Interface::processExtendedAttributes(OpDcl* op)
 {
     attr |= (op->getAttr() & IndexMask);
