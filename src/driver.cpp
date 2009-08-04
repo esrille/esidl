@@ -122,6 +122,11 @@ int main(int argc, char* argv[])
                 ++i;
                 argCpp[optCpp++] = argv[i];
             }
+            else if (strcmp(argv[i], "-indent") == 0)
+            {
+                ++i;
+                indent = argv[i];
+            }
             else if (strcmp(argv[i], "-isystem") == 0)
             {
                 argCpp[optCpp++] = argv[i];
@@ -152,11 +157,6 @@ int main(int argc, char* argv[])
             {
                 ++i;
                 stringTypeName = argv[i];
-            }
-            else if (strcmp(argv[i], "-indent") == 0)
-            {
-                ++i;
-                indent = argv[i];
             }
         }
     }
@@ -204,11 +204,11 @@ int main(int argc, char* argv[])
                 {
                     if (strcmp(argv[i], "-I") == 0 ||
                         strcmp(argv[i], "-include") == 0 ||
+                        strcmp(argv[i], "-indent") == 0 ||
                         strcmp(argv[i], "-isystem") == 0 ||
                         strcmp(argv[i], "-namespace") == 0 ||
                         strcmp(argv[i], "-object") == 0 ||
-                        strcmp(argv[i], "-string") == 0 ||
-                        strcmp(argv[i], "-indent") == 0)
+                        strcmp(argv[i], "-string") == 0)
                     {
                         ++i;
                     }
@@ -296,6 +296,7 @@ int main(int argc, char* argv[])
         {
             if (strcmp(argv[i], "-I") == 0 ||
                 strcmp(argv[i], "-include") == 0 ||
+                strcmp(argv[i], "-indent") == 0 ||
                 strcmp(argv[i], "-isystem") == 0 ||
                 strcmp(argv[i], "-namespace") == 0 ||
                 strcmp(argv[i], "-object") == 0 ||
