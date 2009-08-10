@@ -49,6 +49,9 @@ extern "C" int yywrap()
     return 1;
 }
 
+static long stdinOffset;
+static long stdinLine;
+
 %}
 
 %locations
@@ -621,26 +624,29 @@ Operation :
     OmittableSpecials OperationRest
         {
             OpDcl* op = static_cast<OpDcl*>($2);
-            uint32_t attr = op->getAttr();
-            /* TODO: Check attr is valid */
-            if (($1 & OpDcl::IndexGetter) || ($1 & OpDcl::IndexDeleter))
+            if (op)
             {
-                op->check(op->getParamCount() == 1,
-                          "Getters and deleters MUST be declared to take a single argument.");
+                uint32_t attr = op->getAttr();
+                /* TODO: Check attr is valid */
+                if (($1 & OpDcl::IndexGetter) || ($1 & OpDcl::IndexDeleter))
+                {
+                    op->check(op->getParamCount() == 1,
+                            "Getters and deleters MUST be declared to take a single argument.");
+                }
+                if (($1 & OpDcl::IndexCreator) || ($1 & OpDcl::IndexSetter))
+                {
+                    op->check(op->getParamCount() == 2,
+                            "Setters and creators MUST be declared to take two arguments.");
+                }
+                if ($1 & OpDcl::IndexMask)
+                {
+                    Node* spec = dynamic_cast<ParamDcl*>(*(op->begin()))->getSpec();
+                    op->check(spec->getName() == "unsigned long" || spec->getName() == "string",
+                            "The first argument MUST be an unsigned long or a DOMString.");
+                }
+                attr |= $1;
+                op->setAttr(attr);
             }
-            if (($1 & OpDcl::IndexCreator) || ($1 & OpDcl::IndexSetter))
-            {
-                op->check(op->getParamCount() == 2,
-                          "Setters and creators MUST be declared to take two arguments.");
-            }
-            if ($1 & OpDcl::IndexMask)
-            {
-                Node* spec = dynamic_cast<ParamDcl*>(*(op->begin()))->getSpec();
-                op->check(spec->getName() == "unsigned long" || spec->getName() == "string",
-                          "The first argument MUST be an unsigned long or a DOMString.");
-            }
-            attr |= $1;
-            op->setAttr(attr);
             $$ = $2;
         }
     ;
@@ -1281,7 +1287,15 @@ Preprocessor :
                 setFilename($3);
                 break;
             }
-            yylloc.last_line = atol($2);
+            if (strcmp($3, "\"<stdin>\"") == 0)
+            {
+                stdinLine = atol($2);
+                yylloc.last_line = stdinLine - stdinOffset;
+            }
+            else
+            {
+                yylloc.last_line = atol($2);
+            }
             free($2);
             free($3);
             free($4);
@@ -1301,7 +1315,15 @@ Preprocessor :
                 setFilename($3);
                 break;
             }
-            yylloc.last_line = atol($2);
+            if (strcmp($3, "\"<stdin>\"") == 0)
+            {
+                stdinLine = atol($2);
+                yylloc.last_line = stdinLine - stdinOffset;
+            }
+            else
+            {
+                yylloc.last_line = atol($2);
+            }
             free($2);
             free($3);
             free($4);
@@ -1314,7 +1336,15 @@ Preprocessor :
             {
                 setFilename($3);
             }
-            yylloc.last_line = atol($2);
+            if (strcmp($3, "\"<stdin>\"") == 0)
+            {
+                stdinLine = atol($2);
+                yylloc.last_line = stdinLine - stdinOffset;
+            }
+            else
+            {
+                yylloc.last_line = atol($2);
+            }
             free($2);
             free($3);
             $$ = 0;
@@ -1329,6 +1359,8 @@ Preprocessor :
             free($3);
             free($4);
             $$ = 0;
+            stdinOffset = stdinLine;
+            yylloc.last_line = 0;
         }
     ;
 
