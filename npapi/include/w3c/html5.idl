@@ -49,13 +49,13 @@ module html5 {
   interface HTMLFormControlsCollection {
     readonly attribute unsigned long length;
     getter HTMLElement item(in unsigned long index);
-    caller getter Object namedItem(in DOMString name);
+    caller getter object namedItem(in DOMString name);
   };
 
   interface HTMLOptionsCollection {
              attribute unsigned long length;
     getter HTMLOptionElement item(in unsigned long index);
-    caller getter Object namedItem(in DOMString name);
+    caller getter object namedItem(in DOMString name);
     void add(in HTMLElement element, in optional HTMLElement before);
     void add(in HTMLElement element, in long before);
     void remove(in long index);
@@ -439,7 +439,7 @@ module html5 {
 
     DOMString toDataURL(in optional DOMString type, in any... args);
 
-    Object getContext(in DOMString contextId);
+    object getContext(in DOMString contextId);
   };
 
   interface CanvasRenderingContext2D {

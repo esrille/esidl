@@ -55,6 +55,7 @@ protected:
     int optionalCount;
 
     std::string moduleName;
+    std::string objectTypeName;
     const Node* currentNode;
 
     int paramCount;  // The number of parameters of the previously evaluated operation
@@ -101,10 +102,11 @@ protected:
     }
 
 public:
-    Info(Formatter* f, std::string& moduleName) :
+    Info(Formatter* f, std::string& moduleName, std::string& objectTypeName) :
         Formatter(f),
         constructorMode(false),
         moduleName(moduleName),
+        objectTypeName(objectTypeName),
         currentNode(getSpecification()),
         paramCount(0),
         variadicParam(0)
@@ -660,18 +662,11 @@ public:
         getSpec(node)->accept(this);
     }
 
-    static std::string getInterfaceName(std::string qualifiedName)
+    std::string getInterfaceName(std::string qualifiedName)
     {
-        if (qualifiedName == "::Object")
+        if (qualifiedName == Node::getBaseObjectName())
         {
-            if (const char* base = Node::getBaseObjectName())
-            {
-                qualifiedName = base;
-            }
-            else
-            {
-                qualifiedName = "void";
-            }
+            qualifiedName.replace(2, qualifiedName.length(), objectTypeName);
         }
         return qualifiedName;
     }

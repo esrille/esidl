@@ -1,5 +1,5 @@
 // Test [Optional]
 interface ColorCreator {
-  Object createColor(in float v1, in optional float v2, in float v3,
+  object createColor(in float v1, in optional float v2, in float v3,
                      in optional float alpha);
 };

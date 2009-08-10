@@ -88,6 +88,7 @@ int main(int argc, char* argv[])
     bool isystem = false;
     bool useExceptions = true;
     const char* stringTypeName = "char*";   // C++ string type name to be used
+    const char* objectTypeName = "object";  // C++ object type name to be used
     const char* indent = "es";
 
     for (int i = 1; i < argc; ++i)
@@ -143,7 +144,7 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-object") == 0)
             {
                 ++i;
-                Node::setBaseObjectName(argv[i]);
+                objectTypeName = argv[i];
             }
             else if (strcmp(argv[i], "-template") == 0)
             {
@@ -167,13 +168,10 @@ int main(int argc, char* argv[])
     setSpecification(node);
     setCurrent(node);
 
-    if (strcmp(Node::getBaseObjectName(), "::Object") == 0)
-    {
-        // Manually install 'Object' interface forward declaration.
-        Interface* object = new Interface("Object", 0, true);
-        object->setRank(2);
-        getCurrent()->add(object);
-    }
+    // Manually install 'object' interface forward declaration.
+    Interface* object = new Interface("object", 0, true);
+    object->setRank(2);
+    getCurrent()->add(object);
 
     if (Node::getFlatNamespace())
     {
@@ -306,7 +304,7 @@ int main(int argc, char* argv[])
             }
             continue;
         }
-        result = output(argv[i], isystem, useExceptions, stringTypeName, indent,
+        result = output(argv[i], isystem, useExceptions, stringTypeName, objectTypeName, indent,
                         skeleton, generic);
     }
 

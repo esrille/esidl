@@ -50,7 +50,7 @@ namespace
 }
 
 int Node::level = 1;
-const char* Node::baseObjectName = "::Object";
+const char* Node::baseObjectName = "::object";
 const char* Node::namespaceName;
 
 Node* getSpecification()
@@ -339,12 +339,9 @@ void Interface::processExtendedAttributes()
             if (constructor == NULL)
             {
                 Node* extends = 0;
-                if (const char* base = getBaseObjectName())
-                {
-                    ScopedName* name = new ScopedName(base);
-                    extends = new Node();
-                    extends->add(name);
-                }
+                ScopedName* name = new ScopedName(getBaseObjectName());
+                extends = new Node();
+                extends->add(name);
                 constructor = new Interface("Constructor", extends);
                 constructor->setRank(getRank());
                 add(constructor);
@@ -661,6 +658,7 @@ int output(const char* filename,
            bool isystem,
            bool useExceptions,
            const char* stringTypeName,
+           const char* objectTypeName,
            const char* indent,
            bool skeleton,
            bool generic)
@@ -669,14 +667,14 @@ int output(const char* filename,
     getSpecification()->accept(&forward);
     forward.generateForwardDeclarations();
 
-    printCxx(filename, stringTypeName, useExceptions, indent);
+    printCxx(filename, stringTypeName, objectTypeName, useExceptions, indent);
     if (skeleton)
     {
         printSkeleton(filename, isystem, indent);
     }
     if (generic)
     {
-        printTemplate(filename, stringTypeName, useExceptions, isystem, indent);
+        printTemplate(filename, stringTypeName, objectTypeName, useExceptions, isystem, indent);
     }
     return EXIT_SUCCESS;
 }

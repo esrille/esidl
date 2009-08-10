@@ -193,7 +193,7 @@ native              {
                         stepLocation();
                         return NATIVE;
                     }
-Object              {
+object              {
                         stepLocation();
                         yylval.name = strdup(Node::getBaseObjectName());
                         return IDENTIFIER;
@@ -278,7 +278,8 @@ void                {
 
 {Identifier}        {
                         stepLocation();
-                        yylval.name = strdup(yytext);
+                        // A leading "_" is used to escape an identifier from looking like a reserved word terminal.
+                        yylval.name = (yytext[0] == '_') ? strdup(yytext + 1) : strdup(yytext);
                         return IDENTIFIER;
                     }
 

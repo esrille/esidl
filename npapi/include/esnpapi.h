@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef ESIDL_ESNPAPI_H_INCLUDED
-#define ESIDL_ESNPAPI_H_INCLUDED
+#ifndef ESNPAPI_H_INCLUDED
+#define ESNPAPI_H_INCLUDED
 
 #include <cstring>
 #include <string>

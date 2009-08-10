@@ -16,7 +16,7 @@ EXTRA_DIST = \
 	object.idl
 
 object.h : object.idl
-	../../esidl -I $(srcdir) -string std::string -indent google $<
+	../../esidl -I $(srcdir) -string std::string -indent google -object Object $<
 
 clean-local:
 	rm -rf object.h

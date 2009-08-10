@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef ESNPAPI_SAMPLE_H_INCLUDED
+#define ESNPAPI_SAMPLE_H_INCLUDED
+
 #include "esnpapi.h"
 
 class PluginInstance
@@ -45,3 +48,5 @@ public:
         return 0;
     }
 };
+
+#endif // ESNPAPI_SAMPLE_H_INCLUDED

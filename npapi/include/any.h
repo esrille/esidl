@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef ESIDL_ANY_H_INCLUDED
-#define ESIDL_ANY_H_INCLUDED
+#ifndef ESNPAPI_ANY_H_INCLUDED
+#define ESNPAPI_ANY_H_INCLUDED
 
 #include <inttypes.h>
 #include <limits.h>
@@ -316,4 +316,4 @@ Any apply(int argc, Any* argv, double (*function)());
 Any apply(int argc, Any* argv, std::string (*function)());
 Any apply(int argc, Any* argv, Object* (*function)());
 
-#endif // ESIDL_ANY_H_INCLUDED
+#endif // ESNPAPI_ANY_H_INCLUDED

@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-#ifndef NINTENDO_ES_OBJECT_IDL_INCLUDED
-#define NINTENDO_ES_OBJECT_IDL_INCLUDED
+#ifndef ESNPAPI_OBJECT_IDL_INCLUDED
+#define ESNPAPI_OBJECT_IDL_INCLUDED
 
-interface Object
+interface object
 {
     readonly attribute DOMString interfaceName;
     unsigned long retain();
     unsigned long release();
 };
 
-#endif // NINTENDO_ES_OBJECT_IDL_INCLUDED
+#endif // ESNPAPI_OBJECT_IDL_INCLUDED

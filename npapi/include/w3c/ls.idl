@@ -22,13 +22,13 @@
 module ls
 {
 
-  typedef   Object LSInputStream;
+  typedef   object LSInputStream;
 
-  typedef   Object LSOutputStream;
+  typedef   object LSOutputStream;
 
-  typedef   Object LSReader;
+  typedef   object LSReader;
 
-  typedef   Object LSWriter;
+  typedef   object LSWriter;
 
   typedef dom::DOMConfiguration DOMConfiguration;
   typedef dom::Node Node;

@@ -32,6 +32,7 @@ protected:
     const char* source;
 
     std::string stringTypeName;
+    std::string objectTypeName;
     bool useExceptions;
 
     bool constructorMode;
@@ -100,10 +101,12 @@ protected:
     }
 
 public:
-    CPlusPlus(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true, const char* indent = "es") :
+    CPlusPlus(const char* source, FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
+              bool useExceptions = true, const char* indent = "es") :
         Formatter(file, indent),
         source(source),
         stringTypeName(stringTypeName),
+        objectTypeName(objectTypeName),
         useExceptions(useExceptions),
         constructorMode(false),
         currentNode(getSpecification()),
@@ -512,18 +515,11 @@ public:
         }
     }
 
-    static std::string getInterfaceName(std::string qualifiedName)
+    std::string getInterfaceName(std::string qualifiedName)
     {
-        if (qualifiedName == "::Object")
+        if (qualifiedName == Node::getBaseObjectName())
         {
-            if (const char* base = Node::getBaseObjectName())
-            {
-                qualifiedName = base;
-            }
-            else
-            {
-                qualifiedName = "void";
-            }
+            qualifiedName.replace(2, qualifiedName.length(), objectTypeName);
         }
         return qualifiedName;
     }

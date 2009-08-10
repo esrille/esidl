@@ -516,11 +516,6 @@ public:
         --level;
     }
 
-    static void setBaseObjectName(const char* name)
-    {
-        baseObjectName = name;
-    }
-
     static const char* getBaseObjectName()
     {
         return baseObjectName;
@@ -528,15 +523,7 @@ public:
 
     bool isBaseObject() const
     {
-        if (getQualifiedName() == "::Object")
-        {
-            return true;
-        }
-        if (getQualifiedName() == baseObjectName)
-        {
-            return true;
-        }
-        return false;
+        return getQualifiedName() == getBaseObjectName();
     }
 
     static void setFlatNamespace(const char* name)
@@ -1763,9 +1750,11 @@ public:
 };
 
 extern void print();
-extern void printCxx(const char* source, const char* stringTypeName, bool useExceptions, const char* indent);
+extern void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName,
+                     bool useExceptions, const char* indent);
 extern void printSkeleton(const char* source, bool isystem, const char* indent);
-extern void printTemplate(const char* source, const char* stringTypeName, bool useExceptions, bool isystem, const char* indent);
+extern void printTemplate(const char* source, const char* stringTypeName, const char* objectTypeName,
+                          bool useExceptions, bool isystem, const char* indent);
 
 extern std::string getOutputFilename(std::string, const char* suffix);
 extern std::string getIncludedName(const std::string& header);
@@ -1781,8 +1770,9 @@ extern int input(int fd,
                  bool isystem, bool useExceptions, const char* stringTypeName);
 
 extern int output(const char* filename,
-           bool isystem, bool useExceptions, const char* stringTypeName, const char* indent,
-           bool skeleton,
-           bool generic);
+                  bool isystem, bool useExceptions, const char* stringTypeName,
+                  const char* objectTypeName, const char* indent,
+                  bool skeleton,
+                  bool generic);
 
 #endif  // ESIDL_H_INCLUDED

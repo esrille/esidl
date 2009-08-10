@@ -22,7 +22,7 @@ module dom
 
   typedef   any DOMUserData;
 
-  typedef   Object DOMObject;
+  typedef   object DOMObject;
 
   exception DOMException {
     unsigned short   code;

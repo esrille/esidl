@@ -1,4 +1,4 @@
-interface Object
+interface object
 {
   attribute long x;
 };

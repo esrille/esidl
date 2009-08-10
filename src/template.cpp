@@ -56,8 +56,9 @@ class TemplateVisitor : public CPlusPlus
     }
 
 public:
-    TemplateVisitor(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true, const char* indent = "es") :
-        CPlusPlus(source, file, stringTypeName, useExceptions, indent)
+    TemplateVisitor(const char* source, FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
+                    bool useExceptions = true, const char* indent = "es") :
+        CPlusPlus(source, file, stringTypeName, objectTypeName, useExceptions, indent)
     {
     }
 
@@ -385,7 +386,8 @@ public:
     }
 };
 
-void printTemplate(const char* source, const char* stringTypeName, bool useExceptions, bool isystem, const char* indent)
+void printTemplate(const char* source, const char* stringTypeName, const char* objectTypeName,
+                   bool useExceptions, bool isystem, const char* indent)
 {
     std::string filename = getOutputFilename(source, "template.h");
     printf("# %s\n", filename.c_str());
@@ -412,7 +414,7 @@ void printTemplate(const char* source, const char* stringTypeName, bool useExcep
         fprintf(file, "#include \"%s\"\n\n", header.c_str());
     }
 
-    TemplateVisitor visitor(source, file, stringTypeName, useExceptions, indent);
+    TemplateVisitor visitor(source, file, stringTypeName, objectTypeName, useExceptions, indent);
     getSpecification()->accept(&visitor);
 
     fprintf(file, "#endif  // %s\n", included.c_str());

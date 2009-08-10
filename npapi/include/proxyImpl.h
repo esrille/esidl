@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef ESIDL_PROXY_IMPL_H_INCLUDED
-#define ESIDL_PROXY_IMPL_H_INCLUDED
+#ifndef ESNPAPI_PROXY_IMPL_H_INCLUDED
+#define ESNPAPI_PROXY_IMPL_H_INCLUDED
 
 #include <stdint.h>
 
@@ -205,4 +205,4 @@ public:
     }
 };
 
-#endif // ESIDL_PROXY_IMPL_H_INCLUDED
+#endif // ESNPAPI_PROXY_IMPL_H_INCLUDED

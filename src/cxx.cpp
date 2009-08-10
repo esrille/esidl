@@ -32,8 +32,9 @@ class Cxx : public CPlusPlus
     }
 
 public:
-    Cxx(const char* source, FILE* file, const char* stringTypeName = "char*", bool useExceptions = true, const char* indent = "es") :
-        CPlusPlus(source, file, stringTypeName, useExceptions, indent)
+    Cxx(const char* source, FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
+        bool useExceptions = true, const char* indent = "es") :
+        CPlusPlus(source, file, stringTypeName, objectTypeName, useExceptions, indent)
     {
     }
 
@@ -62,13 +63,16 @@ public:
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
+
+        std::string name = node->getQualifiedName();
+        name = getInterfaceName(name);
+        write("class %s", name.substr(name.rfind(':') + 1).c_str());
         if (node->isLeaf())
         {
-            write("class %s;\n", node->getName().c_str());
+            write(";\n");
         }
         else
         {
-            write("class %s", node->getName().c_str());
             if (node->getExtends())
             {
                 write(" : ");
@@ -108,7 +112,7 @@ public:
 
             writeln("static const char* iid() {");
                 writeln("static const char* const name = \"%s\";",
-                        node->getQualifiedName().c_str());
+                        name.c_str());
                 writeln("return name;");
             writeln("}");
 
@@ -117,7 +121,7 @@ public:
                 write("static const char* const info =");
                 flush();
                 indent();
-                Info info(this, moduleName);
+                Info info(this, moduleName, objectTypeName);
                 const_cast<Interface*>(node)->accept(&info);
                 info.flush();
                 write(";\n");
@@ -390,7 +394,7 @@ public:
     }
 };
 
-void printCxx(const char* source, const char* stringTypeName, bool useExceptions, const char* indent)
+void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName, bool useExceptions, const char* indent)
 {
     const std::string filename = getOutputFilename(source, "h");
     printf("# %s\n", filename.c_str());
@@ -419,7 +423,7 @@ void printCxx(const char* source, const char* stringTypeName, bool useExceptions
         getSpecification()->accept(&predeclaration);
     }
 
-    Cxx cxx(source, file, stringTypeName, useExceptions, indent);
+    Cxx cxx(source, file, stringTypeName, objectTypeName, useExceptions, indent);
     getSpecification()->accept(&cxx);
 
     fprintf(file, "#endif  // %s\n", included.c_str());

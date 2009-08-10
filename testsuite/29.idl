@@ -1,6 +1,6 @@
 module A
 {
-    typedef Object DOMObject;
+    typedef object DOMObject;
 };
 
 module B
