@@ -210,21 +210,20 @@ public:
         currentNode = node;
 
         visitChildren(node->getExtends());
-        for (std::list<const Interface*>::const_iterator i = node->getMixins()->begin();
-             i != node->getMixins()->end();
+        std::list<const Interface*> interfaceList;
+        node->collectMixins(&interfaceList, node);
+        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+             i != interfaceList.end();
              ++i)
         {
-            const_cast<Interface*>(*i)->accept(this);
+            if (*i != node)
+            {
+                const_cast<Interface*>(*i)->accept(this);
+            }
         }
 
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            visitInterfaceElement(node, *i);
-        }
-
-        // Expand mixins
-        for (std::list<const Interface*>::const_iterator i = node->getMixins()->begin();
-             i != node->getMixins()->end();
+        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+             i != interfaceList.end();
              ++i)
         {
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)

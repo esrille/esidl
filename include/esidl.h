@@ -129,6 +129,8 @@ public:
     static const uint32_t Optional =                 0x00400000;
     // [ImplementedOn]
     static const uint32_t ImplementedOn =            0x01000000;
+    // [Supplemental]
+    static const uint32_t Supplemental =             0x02000000;
 
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);
@@ -899,21 +901,25 @@ public:
         }
     }
 
+    void collectMixins(std::list<const Interface*>* interfaceList, const Interface* interface) const
+    {
+        for (std::list<const Interface*>::const_reverse_iterator i = interface->getMixins()->rbegin();
+             i != interface->getMixins()->rend();
+             ++i)
+        {
+            assert(!(*i)->isLeaf());
+            collectMixins(interfaceList, *i);
+        }
+        interfaceList->push_front(interface);
+    }
+
     void collectMixins(std::list<const Interface*>* interfaceList) const
     {
         for (const Interface* interface = this;
              interface && !interface->isBaseObject();
              interface = interface->getSuper())
         {
-            for (std::list<const Interface*>::const_reverse_iterator i = interface->getMixins()->rbegin();
-                i != interface->getMixins()->rend();
-                ++i)
-            {
-                assert(!(*i)->isLeaf());
-                assert((*i)->getMixins()->empty());
-                interfaceList->push_front(*i);
-            }
-            interfaceList->push_front(interface);
+            collectMixins(interfaceList, interface);
         }
     }
 };

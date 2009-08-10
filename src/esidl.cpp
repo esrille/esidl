@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
+#include <sstream>
 
 #ifdef __cplusplus
 extern "C" {
@@ -297,6 +299,8 @@ void Implements::resolve()
 
 void Interface::processExtendedAttributes()
 {
+    static unsigned supplementalCount = 0;
+
     NodeList* list = getExtendedAttributes();
     if (!list)
     {
@@ -361,6 +365,39 @@ void Interface::processExtendedAttributes()
             }
             constructor->add(op);
         }
+        else if (ext->getName() == "Supplemental")
+        {
+            attr |= Supplemental;
+        }
+    }
+
+    switch (attr & (Supplemental | NoInterfaceObject))
+    {
+    case Supplemental:
+    {
+        ScopedName* first = new ScopedName(name);
+        std::ostringstream oss;
+        oss << name << '-' << ++supplementalCount;
+        name = oss.str();
+        ScopedName* second = new ScopedName(name);
+        Implements* implements = new Implements(first, second);
+        getCurrent()->add(implements);
+        break;
+    }
+    case Supplemental | NoInterfaceObject:
+        if (extends)
+        {
+            ScopedName* thisName = new ScopedName(name);
+            for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
+            {
+                Implements* implements = new Implements(static_cast<ScopedName*>(*i), thisName);
+                getCurrent()->add(implements);
+            }
+            extends = 0;
+        }
+        break;
+    default:
+        break;
     }
 }
 

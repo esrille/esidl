@@ -99,10 +99,16 @@ public:
             }
 
             // Expand mixins
-            for (std::list<const Interface*>::const_iterator i = node->getMixins()->begin();
-                 i != node->getMixins()->end();
+            std::list<const Interface*> interfaceList;
+            node->collectMixins(&interfaceList, node);
+            for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+                 i != interfaceList.end();
                  ++i)
             {
+                if (*i == node)
+                {
+                    continue;
+                }
                 writeln("// %s", (*i)->getName().c_str());
                 for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
                 {
