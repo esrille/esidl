@@ -8,8 +8,8 @@
 #include "css.idl"
 #include "ranges.idl"
 
-typedef object Date;
-typedef object FileList;
+typedef object Date;      // TBD at W3C
+typedef object FileList;  // see File API for the actual definition
 
 interface HTMLCollection {
   readonly attribute unsigned long length;
