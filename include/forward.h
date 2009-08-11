@@ -209,19 +209,8 @@ public:
 
         currentNode = node;
 
-        visitChildren(node->getExtends());
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
-        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
-             i != interfaceList.end();
-             ++i)
-        {
-            if (*i != node)
-            {
-                const_cast<Interface*>(*i)->accept(this);
-            }
-        }
-
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
              i != interfaceList.end();
              ++i)
