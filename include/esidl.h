@@ -891,6 +891,7 @@ public:
 
     Interface* getImplementedOn() const
     {
+        // TODO: This is is wrong. It should check [NoInterfaceObject], too.
         if (implementedOn.size() == 1)
         {
             return const_cast<Interface*>(implementedOn.front());

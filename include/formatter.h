@@ -197,7 +197,23 @@ public:
 
         if (strncmp(head, "/*", 2) == 0 || strncmp(head, "//", 10) == 0)
         {
-            fputs(buffer, file);
+            for (const char* p = buffer; *p; ++p)
+            {
+                if (*p != '\n')
+                {
+                    putc(*p, file);
+                    continue;
+                }
+                while (*++p == ' ')
+                {
+                }
+                putc('\n', file);
+                if (*p == '\0')
+                {
+                    break;
+                }
+                fprintf(file, "%s%c", std::string(head - buffer + 1, ' ').c_str(), *p);
+            }
         }
         else if (*tail == ':' && buffer < tail && !std::isspace(*(tail - 1)) && 0 < caseIndentation)
         {
