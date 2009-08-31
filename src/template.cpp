@@ -73,32 +73,39 @@ public:
             return;
         }
 
-        writeln("template<class O, Any invoke(O&, unsigned, unsigned, Any*)>");
+        writeln("template<class P, Any (*invoke)(P, const char*, unsigned, unsigned, unsigned, Any*), class O = %s, unsigned B = 0>",
+                node->getName().c_str());
         writetab();
-        write("class %s_Proxy : public Proxy_Impl<O", node->getName().c_str());
-        write(", %s", node->getName().c_str());
-        write("> {\n");
+        write("class %s_Proxy : ", node->getName().c_str());
+        if (Node* extends = node->getExtends())
+        {
+            write ("public ");
+            int n = 0;
+            for (NodeList::reverse_iterator i = extends->rbegin(); i != extends->rend(); ++i)
+            {
+                if (!(*i)->isBaseObject())
+                {
+                    ++n;
+                    write("%s_Proxy<P, invoke, ", (*i)->getName().c_str());
+                }
+            }
+            write("O");
+            for (int i = 0; i < n; ++i)
+            {
+                write(", B + %d>", i);
+            }
+        }
+        else
+        {
+            write("public O");
+        }
+        write(" {\n");
         unindent();
         writeln("public:");
         indent();
 
-        // Constructor
-        writeln("%s_Proxy(O object) :", node->getName().c_str());
-        indent();
-            writetab();
-            write("Proxy_Impl<O");
-            write(", %s", node->getName().c_str());
-            write(">(object)");
-        unindent();
-        write(" {\n");
-        writeln("}");
-
-        // Destructor
-        writeln("~%s_Proxy() {", node->getName().c_str());
-        writeln("}");
-
         std::list<const Interface*> interfaceList;
-        node->collectMixins(&interfaceList);
+        node->collectMixins(&interfaceList, node);
         methodNumber = 0;
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
              i != interfaceList.end();
@@ -128,12 +135,6 @@ public:
             }
         }
         currentNode = node;
-
-        // createInstance
-        writeln("static %s* createInstance(O object) {", node->getName().c_str());
-            writeln("return new %s_Proxy(object);", node->getName().c_str());
-        writeln("}");
-
         writeln("};");
     }
 
@@ -184,29 +185,29 @@ public:
             // Invoke
             if (spec->isVoid(node) || spec->isArray(node))
             {
-                writeln("invoke(this->object, %u, %u, param);",
-                        methodNumber, paramCount);
+                writeln("invoke(this, %s::iid(), B, %u, %u, param);",
+                        currentNode->getName().c_str(), methodNumber, paramCount);
             }
             else if (spec->isAny(node))
             {
-                writeln("return invoke(this->object, %u, %u, param);",
-                        methodNumber, paramCount);
+                writeln("return invoke(this, %s::iid(), B, %u, %u, param);",
+                        currentNode->getName().c_str(), methodNumber, paramCount);
             }
             else if (spec->isInterface(node))
             {
                 writetab();
-                write("return static_cast<");
+                write("return dynamic_cast<");
                 writeSpec(node);
-                write(">(static_cast<Object*>(invoke(this->object, %u, %u, param)));\n",
-                      methodNumber, paramCount);
+                write(">(static_cast<Object*>(invoke(this, %s::iid(), B, %u, %u, param)));\n",
+                      currentNode->getName().c_str(), methodNumber, paramCount);
             }
             else
             {
                 writetab();
                 write("return static_cast<");
                 writeSpec(node);
-                write(">(invoke(this->object, %u, %u, param));\n",
-                      methodNumber, paramCount);
+                write(">(invoke(this, %s::iid(), B, %u, %u, param));\n",
+                      currentNode->getName().c_str(), methodNumber, paramCount);
             }
         }
         writeln("}");
@@ -255,13 +256,13 @@ public:
             // Invoke
             if (spec->isSequence(node))
             {
-                writeln("return static_cast<int>(invoke(this->object, %u, %u, param));",
-                        methodNumber, paramCount);
+                writeln("return static_cast<int>(invoke(this, %s::iid(), B, %u, %u, param));",
+                        currentNode->getName().c_str(), methodNumber, paramCount);
             }
             else
             {
-                writeln("invoke(this->object, %u, %u, param);",
-                        methodNumber, paramCount);
+                writeln("invoke(this, %s::iid(), B, %u, %u, param);",
+                        currentNode->getName().c_str(), methodNumber, paramCount);
             }
         }
         writeln("}");
@@ -347,29 +348,29 @@ public:
             // Invoke
             if (spec->isVoid(node) || spec->isArray(node))
             {
-                writeln("invoke(this->object, %u, %u, param);",
-                        methodNumber, paramCount);
+                writeln("invoke(this, %s::iid(), B, %u, %u, param);",
+                        currentNode->getName().c_str(), methodNumber, paramCount);
             }
             else if (spec->isAny(node))
             {
-                writeln("return invoke(this->object, %u, %u, param);",
-                        methodNumber, paramCount);
+                writeln("return invoke(this, %s::iid(), B, %u, %u, param);",
+                        currentNode->getName().c_str(), methodNumber, paramCount);
             }
             else if (spec->isInterface(node))
             {
                 writetab();
-                write("return static_cast<");
+                write("return dynamic_cast<");
                 writeSpec(node);
-                write(">(static_cast<Object*>(invoke(this->object, %u, %u, param)));\n",
-                      methodNumber, paramCount);
+                write(">(static_cast<Object*>(invoke(this, %s::iid(), B, %u, %u, param)));\n",
+                      currentNode->getName().c_str(), methodNumber, paramCount);
             }
             else
             {
                 writetab();
                 write("return static_cast<");
                 writeSpec(node);
-                write(">(invoke(this->object, %u, %u, param));\n",
-                      methodNumber, paramCount);
+                write(">(invoke(this, %s::iid(), B, %u, %u, param));\n",
+                      currentNode->getName().c_str(), methodNumber, paramCount);
             }
         writeln("}");
         ++methodNumber;

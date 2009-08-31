@@ -163,7 +163,7 @@ void PluginInstance::test()
     {
         std::string interfaceName = getInterfaceName(npp, NPVARIANT_TO_OBJECT(document));
         printf("'%s'\n", interfaceName.c_str());
-        drawCharts(static_cast<es::HTMLDocument*>(createProxy(npp, NPVARIANT_TO_OBJECT(document))));
+        drawCharts(dynamic_cast<es::HTMLDocument*>(createProxy(npp, NPVARIANT_TO_OBJECT(document))));
     }
     NPN_ReleaseVariantValue(&document);
 }

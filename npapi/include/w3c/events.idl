@@ -108,6 +108,7 @@ module events
   };
 
   // Introduced in DOM Level 2:
+  Document implements DocumentEvent;
   interface DocumentEvent {
     Event              createEvent(in DOMString eventType)
                                         raises(dom::DOMException);

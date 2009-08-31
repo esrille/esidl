@@ -18,6 +18,13 @@
 #include "proxyImpl.h"
 
 #include "w3c/dom.template.h"
+#include "w3c/events.template.h"
+#include "w3c/stylesheets.template.h"
+#include "w3c/cssomview.template.h"
+#include "w3c/css.template.h"
+#include "w3c/ranges.template.h"
+#include "w3c/traversal.template.h"
+#include "w3c/ls.template.h"
 #include "w3c/html5.template.h"
 
 #include <new>
@@ -35,58 +42,58 @@ NPError NPP_Initialize()
     addInterfaceData(es::Node::iid(),
                      es::Node::info());
     addProxyConstructor(es::Node::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::Node_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Node_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::CharacterData::iid(),
                      es::CharacterData::info());
     addProxyConstructor(es::CharacterData::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::CharacterData_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::CharacterData_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::Text::iid(),
                      es::Text::info());
     addProxyConstructor(es::Text::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::Text_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Text_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::Document::iid(),
                      es::Document::info());
     addProxyConstructor(es::Document::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::Document_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Document_Proxy<Object*, invoke> >::createInstance));
 
     // This steps should be automated with es::Document.
     addInterfaceData("::es::HTMLDocument",
                      es::Document::info());
     addProxyConstructor("::es::HTMLDocument",
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::Document_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Document_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::Element::iid(),
                      es::Element::info());
     addProxyConstructor(es::Element::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::Element_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Element_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::HTMLElement::iid(),
                      es::HTMLElement::info());
     addProxyConstructor(es::HTMLElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::HTMLElement_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::HTMLElement_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::HTMLBodyElement::iid(),
                      es::HTMLBodyElement::info());
     addProxyConstructor(es::HTMLBodyElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::HTMLBodyElement_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::HTMLBodyElement_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::HTMLDivElement::iid(),
                      es::HTMLDivElement::info());
     addProxyConstructor(es::HTMLDivElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::HTMLDivElement_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::HTMLDivElement_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::HTMLCanvasElement::iid(),
                      es::HTMLCanvasElement::info());
     addProxyConstructor(es::HTMLCanvasElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::HTMLCanvasElement_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::HTMLCanvasElement_Proxy<Object*, invoke> >::createInstance));
 
     addInterfaceData(es::CanvasRenderingContext2D::iid(),
                      es::CanvasRenderingContext2D::info());
     addProxyConstructor(es::CanvasRenderingContext2D::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(es::CanvasRenderingContext2D_Proxy<ProxyObject, invoke>::createInstance));
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::CanvasRenderingContext2D_Proxy<Object*, invoke> >::createInstance));
 
     return NPERR_NO_ERROR;
 }

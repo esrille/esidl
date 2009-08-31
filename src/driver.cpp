@@ -87,6 +87,7 @@ int main(int argc, char* argv[])
     bool generic = false;
     bool isystem = false;
     bool useExceptions = true;
+    bool useVirtualBase = false;
     const char* stringTypeName = "char*";   // C++ string type name to be used
     const char* objectTypeName = "object";  // C++ object type name to be used
     const char* indent = "es";
@@ -116,6 +117,14 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-fno-exceptions") == 0)
             {
                 useExceptions = false;
+            }
+            else if (strcmp(argv[i], "-fvirtualbase") == 0)
+            {
+                useVirtualBase = true;
+            }
+            else if (strcmp(argv[i], "-fno-virtualbase") == 0)
+            {
+                useVirtualBase = false;
             }
             else if (strcmp(argv[i], "-include") == 0)
             {
@@ -304,7 +313,8 @@ int main(int argc, char* argv[])
             }
             continue;
         }
-        result = output(argv[i], isystem, useExceptions, stringTypeName, objectTypeName, indent,
+        result = output(argv[i], isystem, useExceptions, useVirtualBase,
+                        stringTypeName, objectTypeName, indent,
                         skeleton, generic);
     }
 

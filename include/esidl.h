@@ -296,6 +296,15 @@ public:
         }
     }
 
+    int getChildrenCount() const
+    {
+        if (!children)
+        {
+            return 0;
+        }
+        return children->size();
+    }
+
     NodeList::iterator begin() const
     {
         assert(children);
@@ -320,6 +329,12 @@ public:
         return children->rend();
     }
 
+    Node* front() const
+    {
+        assert(children);
+        return children->front();
+    }
+
     std::string& getName()
     {
         return name;
@@ -332,12 +347,17 @@ public:
 
     std::string getQualifiedName() const
     {
-        std::string name;
+        if (name.compare(0, 2, "::") == 0)
+        {
+            return name;
+        }
+
+        std::string qualifiedName;
         for (const Node* node = this; node && node->name != ""; node = node->getParent())
         {
-            name = "::" + node->name + name;
+            qualifiedName = "::" + node->name + qualifiedName;
         }
-        return name;
+        return qualifiedName;
     }
 
     // If there is an interface definition as well as interface forward declaration,
@@ -842,6 +862,16 @@ public:
     {
         methodCount += count;
         return methodCount;
+    }
+
+    int getSuperCount() const
+    {
+        Node* extends = getExtends();
+        if (!extends)
+        {
+            return 0;
+        }
+        return extends->getChildrenCount();
     }
 
     Interface* getSuper() const
@@ -1758,7 +1788,7 @@ public:
 
 extern void print();
 extern void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName,
-                     bool useExceptions, const char* indent);
+                     bool useExceptions, bool useVirtualBase, const char* indent);
 extern void printSkeleton(const char* source, bool isystem, const char* indent);
 extern void printTemplate(const char* source, const char* stringTypeName, const char* objectTypeName,
                           bool useExceptions, bool isystem, const char* indent);
@@ -1777,8 +1807,8 @@ extern int input(int fd,
                  bool isystem, bool useExceptions, const char* stringTypeName);
 
 extern int output(const char* filename,
-                  bool isystem, bool useExceptions, const char* stringTypeName,
-                  const char* objectTypeName, const char* indent,
+                  bool isystem, bool useExceptions, bool useMultipleInheritance,
+                  const char* stringTypeName, const char* objectTypeName, const char* indent,
                   bool skeleton,
                   bool generic);
 

@@ -166,7 +166,7 @@ void addStubConstructor(const std::string interfaceName, NPObject* (*createStub)
 NPObject* createStub(NPP npp, const char* interfaceName, Object* object);
 Object* createProxy(NPP npp, NPObject* object);
 
-Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any* paramArray);
+Any invoke(Object* object, const char* iid, unsigned baseNumber, unsigned methodNumber, unsigned paramCount, Any* paramArray);
 
 void addInterfaceData(const char* iid, const char* info);
 Reflect::Interface* getInterfaceData(const std::string interfaceName);

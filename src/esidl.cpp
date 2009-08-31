@@ -694,6 +694,7 @@ int input(int fd,
 int output(const char* filename,
            bool isystem,
            bool useExceptions,
+           bool useVirtualBase,
            const char* stringTypeName,
            const char* objectTypeName,
            const char* indent,
@@ -704,7 +705,7 @@ int output(const char* filename,
     getSpecification()->accept(&forward);
     forward.generateForwardDeclarations();
 
-    printCxx(filename, stringTypeName, objectTypeName, useExceptions, indent);
+    printCxx(filename, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
     if (skeleton)
     {
         printSkeleton(filename, isystem, indent);

@@ -589,9 +589,9 @@ void convertToVariant(NPP npp, Object* value, NPVariant* variant)
         NULL_TO_NPVARIANT(*variant);
         return;
     }
-    if (Proxy_Base<ProxyObject>* proxy = dynamic_cast<Proxy_Base<ProxyObject>*>(value))
+    if (ProxyObject* proxy = dynamic_cast<ProxyObject*>(value))
     {
-        OBJECT_TO_NPVARIANT(proxy->getObject()->getNPObject(), *variant);
+        OBJECT_TO_NPVARIANT(proxy->getNPObject(), *variant);
     }
     else
     {

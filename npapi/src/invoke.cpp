@@ -39,29 +39,17 @@ NPIdentifier getSpecialIdentifier(const Any& any)
 
 }  // namespace
 
-Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any* paramArray)
+Any invoke(Object* object, const char* iid, unsigned baseNumber, unsigned methodNumber, unsigned paramCount, Any* paramArray)
 {
     void* buffer;   // TODO for sequence
     size_t length;  // TODO for sequence
 
-    Reflect::Interface* interface = getInterfaceData(object.getInterfaceName());
-    while (interface)
+    ProxyObject* proxy = dynamic_cast<ProxyObject*>(object);  // XXX
+    if (!proxy)
     {
-        if (interface->getInheritedMethodCount() <= methodNumber)
-        {
-            methodNumber -= interface->getInheritedMethodCount();
-            break;
-        }
-        else
-        {
-            std::string name = interface->getQualifiedSuperName();
-            if (name == "")
-            {
-                return Any();
-            }
-            interface = getInterfaceData(name.c_str());
-        }
+        return Any();
     }
+    Reflect::Interface* interface = getInterfaceData(iid);
     if (!interface)
     {
         return Any();
@@ -70,7 +58,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
     Reflect::Method method = interface->getMethod(methodNumber);
     Reflect::Type type = method.getReturnType();
 
-    printf("invoke %s::%s %p\n", interface->getName().c_str(), method.getName().c_str(), object.getNPObject());
+    printf("invoke %s::%s %p\n", interface->getName().c_str(), method.getName().c_str(), proxy->getNPObject());
 
     NPIdentifier id;
     NPVariant result;
@@ -79,37 +67,37 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
     if (method.isGetter())
     {
         id = NPN_GetStringIdentifier(method.getName().c_str());
-        if (NPN_GetProperty(object.getNPP(), object.getNPObject(), id, &result))
+        if (NPN_GetProperty(proxy->getNPP(), proxy->getNPObject(), id, &result))
         {
-            return convertToAny(object.getNPP(), &result, buffer, length);
+            return convertToAny(proxy->getNPP(), &result, buffer, length);
         }
     }
     else if (method.isSetter())
     {
         id = NPN_GetStringIdentifier(method.getName().c_str());
         NPVariant value;
-        convertToVariant(object.getNPP(), paramArray[paramCount - 1], &value);
-        NPN_SetProperty(object.getNPP(), object.getNPObject(), id, &value);
+        convertToVariant(proxy->getNPP(), paramArray[paramCount - 1], &value);
+        NPN_SetProperty(proxy->getNPP(), proxy->getNPObject(), id, &value);
     }
     else if (method.isSpecialGetter())
     {
         id = getSpecialIdentifier(paramArray[paramCount - 1]);
-        if (NPN_GetProperty(object.getNPP(), object.getNPObject(), id, &result))
+        if (NPN_GetProperty(proxy->getNPP(), proxy->getNPObject(), id, &result))
         {
-            return convertToAny(object.getNPP(), &result, buffer, length);
+            return convertToAny(proxy->getNPP(), &result, buffer, length);
         }
     }
     else if (method.isSpecialSetter() || method.isSpecialCreator())
     {
         id = getSpecialIdentifier(paramArray[paramCount - 2]);
         NPVariant value;
-        convertToVariant(object.getNPP(), paramArray[paramCount - 1], &value);
-        NPN_SetProperty(object.getNPP(), object.getNPObject(), id, &value);
+        convertToVariant(proxy->getNPP(), paramArray[paramCount - 1], &value);
+        NPN_SetProperty(proxy->getNPP(), proxy->getNPObject(), id, &value);
     }
     else if (method.isSpecialDeleter())
     {
         id = getSpecialIdentifier(paramArray[paramCount - 1]);
-        NPN_RemoveProperty(object.getNPP(), object.getNPObject(), id);
+        NPN_RemoveProperty(proxy->getNPP(), proxy->getNPObject(), id);
     }
     else
     {
@@ -123,7 +111,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
         NPVariant variantArray[variantCount];
         for (int i = 1; i < paramCount; ++i)
         {
-            convertToVariant(object.getNPP(), paramArray[i], &variantArray[i - 1]);
+            convertToVariant(proxy->getNPP(), paramArray[i], &variantArray[i - 1]);
         }
         if (0 < variadicCount)
         {
@@ -139,7 +127,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const bool* variadic = reinterpret_cast<const bool*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -148,7 +136,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const uint8_t* variadic = reinterpret_cast<const uint8_t*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -157,7 +145,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const int16_t* variadic = reinterpret_cast<const int16_t*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -166,7 +154,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const uint16_t* variadic = reinterpret_cast<const uint16_t*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -175,7 +163,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const int32_t* variadic = reinterpret_cast<const int32_t*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -184,7 +172,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const uint32_t* variadic = reinterpret_cast<const uint32_t*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -193,7 +181,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const int64_t* variadic = reinterpret_cast<const int64_t*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -202,7 +190,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const uint64_t* variadic = reinterpret_cast<const uint64_t*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -211,7 +199,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const float* variadic = reinterpret_cast<const float*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -220,7 +208,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const double* variadic = reinterpret_cast<const double*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -229,7 +217,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const std::string* variadic = reinterpret_cast<const std::string*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -238,7 +226,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 const Any* variadic = reinterpret_cast<const Any*>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -247,7 +235,7 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
                 Object** variadic = reinterpret_cast<Object**>(static_cast<intptr_t>(paramArray[paramCount]));
                 for (int i = paramCount - 1; i < variantCount; ++i)
                 {
-                    convertToVariant(object.getNPP(), *variadic++, &variantArray[i]);
+                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
                 }
                 break;
             }
@@ -257,9 +245,9 @@ Any invoke(ProxyObject& object, unsigned methodNumber, unsigned paramCount, Any*
             }
         }
         id = NPN_GetStringIdentifier(method.getName().c_str());
-        if (NPN_Invoke(object.getNPP(), object.getNPObject(), id, variantArray, variantCount, &result))
+        if (NPN_Invoke(proxy->getNPP(), proxy->getNPObject(), id, variantArray, variantCount, &result))
         {
-            return convertToAny(object.getNPP(), &result, buffer, length);
+            return convertToAny(proxy->getNPP(), &result, buffer, length);
         }
     }
     return Any();

@@ -20,6 +20,9 @@
 
 class Cxx : public CPlusPlus
 {
+    bool useVirtualBase;
+
+    // TODO: Move to CPlusPlus
     void visitInterfaceElement(const Interface* interface, Node* element)
     {
         optionalStage = 0;
@@ -33,8 +36,9 @@ class Cxx : public CPlusPlus
 
 public:
     Cxx(const char* source, FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
-        bool useExceptions = true, const char* indent = "es") :
-        CPlusPlus(source, file, stringTypeName, objectTypeName, useExceptions, indent)
+        bool useExceptions = true, bool useVirtualBase = false, const char* indent = "es") :
+        CPlusPlus(source, file, stringTypeName, objectTypeName, useExceptions, indent),
+        useVirtualBase(useVirtualBase)
     {
     }
 
@@ -85,6 +89,10 @@ public:
                         write(", ");
                     }
                     write("public ");
+                    if (useVirtualBase && (*i)->isBaseObject())
+                    {
+                        write("virtual ");
+                    }
                     (*i)->accept(this);
                 }
             }
@@ -400,7 +408,8 @@ public:
     }
 };
 
-void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName, bool useExceptions, const char* indent)
+void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName,
+              bool useExceptions, bool useVirtualBase, const char* indent)
 {
     const std::string filename = getOutputFilename(source, "h");
     printf("# %s\n", filename.c_str());
@@ -429,7 +438,7 @@ void printCxx(const char* source, const char* stringTypeName, const char* object
         getSpecification()->accept(&predeclaration);
     }
 
-    Cxx cxx(source, file, stringTypeName, objectTypeName, useExceptions, indent);
+    Cxx cxx(source, file, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
     getSpecification()->accept(&cxx);
 
     fprintf(file, "#endif  // %s\n", included.c_str());
