@@ -64,7 +64,7 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if (node->getAttr() & Interface::ImplementedOn)
+        if (node->getAttr() & Interface::Supplemental)
         {
             return;
         }
@@ -98,6 +98,16 @@ public:
         else
         {
             write("public O");
+        }
+        const std::list<const Interface*>* implementList = node->getImplements();
+        if (!implementList->empty())
+        {
+            for (std::list<const Interface*>::const_iterator i = implementList->begin();
+                 i != implementList->end();
+                 ++i)
+            {
+                write(", public %s", (*i)->getName().c_str());
+            }
         }
         write(" {\n");
         unindent();

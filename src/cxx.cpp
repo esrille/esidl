@@ -57,7 +57,7 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if (node->getAttr() & Interface::ImplementedOn)
+        if (node->getAttr() & Interface::Supplemental)
         {
             return;
         }

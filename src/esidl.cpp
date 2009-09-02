@@ -371,33 +371,11 @@ void Interface::processExtendedAttributes()
         }
     }
 
-    switch (attr & (Supplemental | NoInterfaceObject))
+    if ((attr & (Supplemental | NoInterfaceObject)) == Supplemental)
     {
-    case Supplemental:
-    {
-        ScopedName* first = new ScopedName(name);
         std::ostringstream oss;
         oss << name << '-' << ++supplementalCount;
         name = oss.str();
-        ScopedName* second = new ScopedName(name);
-        Implements* implements = new Implements(first, second);
-        getCurrent()->add(implements);
-        break;
-    }
-    case Supplemental | NoInterfaceObject:
-        if (extends)
-        {
-            ScopedName* thisName = new ScopedName(name);
-            for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
-            {
-                Implements* implements = new Implements(static_cast<ScopedName*>(*i), thisName);
-                getCurrent()->add(implements);
-            }
-            extends = 0;
-        }
-        break;
-    default:
-        break;
     }
 }
 
@@ -594,6 +572,34 @@ Node* ScopedName::search(const Node* scope) const
         }
     }
     return resolved;
+}
+
+void Interface::adjustMethodCount()
+{
+    switch (attr & (Supplemental | NoInterfaceObject))
+    {
+    case Supplemental:
+    {
+        ScopedName* org = new ScopedName(name.substr(0, name.rfind('-')));
+        Interface* supplemental = dynamic_cast<Interface*>(org->search(getParent()));
+        supplementals.push_back(supplemental);
+        supplemental->implements(this);
+        break;
+    }
+    case Supplemental | NoInterfaceObject:
+        if (extends)
+        {
+            for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
+            {
+                Interface* supplemental = dynamic_cast<Interface*>(static_cast<ScopedName*>(*i)->search(getParent()));
+                supplementals.push_back(supplemental);
+                supplemental->implements(this);
+            }
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 Node* resolve(const Node* scope, std::string name)

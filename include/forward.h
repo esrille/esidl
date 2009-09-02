@@ -97,17 +97,6 @@ public:
         {
             if (node->isInterface(currentNode))
             {
-                if (node->getAttr() & Interface::ImplementedOn)
-                {
-                    // node is a mixin.
-                    const Interface* mixin = dynamic_cast<const Interface*>(node);
-                    assert(mixin);
-                    Interface* on = mixin->getImplementedOn();
-                    if (on && !isDeclared(on))
-                    {
-                        addNotDeclared(on);
-                    }
-                }
                 if (!isDeclared(node))
                 {
                     addNotDeclared(node);
@@ -191,11 +180,6 @@ public:
     virtual void at(const Interface* node)
     {
         if (node->getSource() != source)
-        {
-            return;
-        }
-
-        if (node->getAttr() & Interface::ImplementedOn)
         {
             return;
         }
@@ -322,20 +306,7 @@ public:
                 Member* t = new Member(*m);
                 node->getParent()->addFront(t);
             }
-            else if (node->getAttr() & Interface::ImplementedOn)
-            {
-                // node is a mixin.
-                Interface* mixin = dynamic_cast<Interface*>(node);
-                assert(mixin);
-                Interface* on = mixin->getImplementedOn();
-                if (on)
-                {
-                    Member* t = new Member(mixin->getName(), new ScopedName(on->getQualifiedName()));
-                    t->setTypedef(true);
-                    mixin->getParent()->addFront(t);
-                }
-            }
-            else
+            else if (!(node->getAttr() & Interface::Supplemental))
             {
                 node->getParent()->addFront(new Interface(node->getName().c_str(), 0, true));
             }

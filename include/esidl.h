@@ -781,6 +781,8 @@ class Interface : public Node
     Interface* constructor;
     std::list<const Interface*> mixins;
     std::list<const Interface*> implementedOn;
+    std::list<const Interface*> supplementals;
+    std::list<const Interface*> implementList;
 
 public:
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
@@ -905,6 +907,11 @@ public:
         return &mixins;
     }
 
+    const std::list<const Interface*>* getImplements() const
+    {
+        return &implementList;
+    }
+
     uint32_t isCallback() const
     {
         return (getAttr() & CallbackMask);
@@ -914,8 +921,14 @@ public:
 
     void implements(Interface* mixin)
     {
-        mixin->setAttr(mixin->getAttr() | ImplementedOn);
+        if (!(mixin->attr & (Supplemental | NoInterfaceObject)))
+        {
+            implementList.push_back(mixin);
+        }
+
         mixins.push_back(mixin);
+
+        mixin->setAttr(mixin->getAttr() | ImplementedOn);
         mixin->implementedOn.push_back(this);
     }
 
@@ -953,6 +966,8 @@ public:
             collectMixins(interfaceList, interface);
         }
     }
+
+    void adjustMethodCount();
 };
 
 class Type : public Node
@@ -1783,6 +1798,12 @@ public:
     virtual void at(const OpDcl* node)
     {
         const_cast<OpDcl*>(node)->adjustMethodCount();
+    }
+
+    virtual void at(const Interface* node)
+    {
+        visitChildren(node);
+        const_cast<Interface*>(node)->adjustMethodCount();
     }
 };
 
