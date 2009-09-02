@@ -17,6 +17,18 @@
 #include "sample.h"
 #include "proxyImpl.h"
 
+#include "w3c/dom.h"
+#include "w3c/events.h"
+#include "w3c/stylesheets.h"
+#include "w3c/cssomview.h"
+#include "w3c/css.h"
+#include "w3c/ranges.h"
+#include "w3c/traversal.h"
+#include "w3c/ls.h"
+#include "w3c/html5.h"
+#include "w3c/smil.h"
+#include "w3c/svg.h"
+
 #include "w3c/dom.template.h"
 #include "w3c/events.template.h"
 #include "w3c/stylesheets.template.h"
@@ -26,6 +38,8 @@
 #include "w3c/traversal.template.h"
 #include "w3c/ls.template.h"
 #include "w3c/html5.template.h"
+#include "w3c/smil.template.h"
+#include "w3c/svg.template.h"
 
 #include <new>
 

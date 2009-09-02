@@ -183,21 +183,23 @@ w3c_generated_files = \
 	ranges.h \
 	smil.h \
 	stylesheets.h \
+	svg.h \
 	traversal.h \
 	views.h
 
 w3c_idl_files = \
-	dom.idl \
-	ranges.idl \
-	cssomview.idl \
-	views.idl \
 	css.idl \
+	cssomview.idl \
+	dom.idl \
 	events.idl \
 	html5.idl \
-	traversal.idl \
 	ls.idl \
+	ranges.idl \
 	smil.idl \
-	stylesheets.idl
+	stylesheets.idl \
+	svg.idl \
+	traversal.idl \
+	views.idl
 
 noinst_HEADERS = \
 	$(w3c_generated_files)

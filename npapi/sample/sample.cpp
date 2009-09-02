@@ -25,8 +25,13 @@
 namespace
 {
 
-void drawCharts(es::HTMLDocument* document)
+void drawCharts(es::Document* document)
 {
+    // Test dynamic_cast implied by the 'implements' statement while Document does
+    // not inherit DocumentEvent.
+    es::DocumentEvent* documentEvent = dynamic_cast<es::DocumentEvent*>(document);
+    printf("documentEvent = %p\n", documentEvent);
+
     std::string title = document->getTitle();
     printf("title = %s\n", title.c_str());
 
@@ -163,7 +168,7 @@ void PluginInstance::test()
     {
         std::string interfaceName = getInterfaceName(npp, NPVARIANT_TO_OBJECT(document));
         printf("'%s'\n", interfaceName.c_str());
-        drawCharts(dynamic_cast<es::HTMLDocument*>(createProxy(npp, NPVARIANT_TO_OBJECT(document))));
+        drawCharts(dynamic_cast<es::Document*>(createProxy(npp, NPVARIANT_TO_OBJECT(document))));
     }
     NPN_ReleaseVariantValue(&document);
 }
