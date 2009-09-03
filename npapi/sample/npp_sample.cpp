@@ -79,6 +79,12 @@ NPError NPP_Initialize()
     addProxyConstructor("::es::HTMLDocument",
                         reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Document_Proxy<Object*, invoke> >::createInstance));
 
+    // This steps should be automated with es::Document.
+    addInterfaceData("::es::XMLDocument",
+                     es::Document::info());
+    addProxyConstructor("::es::XMLDocument",
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Document_Proxy<Object*, invoke> >::createInstance));
+
     addInterfaceData(es::Element::iid(),
                      es::Element::info());
     addProxyConstructor(es::Element::iid(),
@@ -109,7 +115,17 @@ NPError NPP_Initialize()
     addProxyConstructor(es::CanvasRenderingContext2D::iid(),
                         reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::CanvasRenderingContext2D_Proxy<Object*, invoke> >::createInstance));
 
-    return NPERR_NO_ERROR;
+    addInterfaceData(es::SVGElement::iid(),
+                     es::SVGElement::info());
+    addProxyConstructor(es::SVGElement::iid(),
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::SVGElement_Proxy<Object*, invoke> >::createInstance));
+
+    addInterfaceData(es::SVGCircleElement::iid(),
+                     es::SVGCircleElement::info());
+    addProxyConstructor(es::SVGCircleElement::iid(),
+                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::SVGCircleElement_Proxy<Object*, invoke> >::createInstance));
+
+     return NPERR_NO_ERROR;
 }
 
 // Invoked from NP_Shutdown()

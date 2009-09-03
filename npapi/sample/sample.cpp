@@ -19,6 +19,7 @@
 #include "proxyImpl.h"
 
 #include "w3c/html5.h"
+#include "w3c/svg.h"
 
 #include <math.h>
 
@@ -155,6 +156,14 @@ void drawCharts(es::Document* document)
 
     context->release();
     canvas->release();
+
+    es::SVGCircleElement* circle = dynamic_cast<es::SVGCircleElement*>(document->getElementById("circle"));
+    if (circle)
+    {
+        circle->setAttribute("r", "20");
+        circle->setAttribute("fill", "pink");
+        circle->release();
+    }
 }
 
 }  // namespace
