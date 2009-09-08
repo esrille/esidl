@@ -18,6 +18,7 @@
 #ifndef ESIDL_REFLECT_H_INCLUDED
 #define ESIDL_REFLECT_H_INCLUDED
 
+#include <stdint.h>
 #include <cctype>
 #include <cstring>
 #include <cstdlib>
@@ -827,7 +828,7 @@ public:
          */
         std::string getQualifiedModuleName() const
         {
-            char* colon = std::strrchr(qualifiedName, ':');
+            const char* colon = std::strrchr(qualifiedName, ':');
             if (!colon)
             {
                 return "";
