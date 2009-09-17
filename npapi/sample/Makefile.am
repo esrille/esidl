@@ -7,7 +7,7 @@ AM_CPPFLAGS = \
 	-I ../include/w3c \
 	-I $(srcdir)/../include \
 	-I $(srcdir)/../../include \
-	-g \  
+	-g \
 	-DXP_UNIX
 
 AM_LDFLAGS = -L.. -ldl -lesnpapi
