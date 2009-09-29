@@ -36,8 +36,7 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 subdir = npapi/include/w3c
-DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -47,7 +46,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 SOURCES =
 DIST_SOURCES =
-HEADERS = $(noinst_HEADERS)
+HEADERS = $(nodist_noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -207,7 +206,7 @@ w3c_idl_files = \
 	traversal.idl \
 	views.idl
 
-noinst_HEADERS = \
+nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
 EXTRA_DIST = \
@@ -337,9 +336,6 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	$(MAKE) $(AM_MAKEFLAGS) \
-	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
-	  dist-hook
 check-am: all-am
 check: check-am
 all-am: Makefile $(HEADERS)
@@ -438,14 +434,14 @@ uninstall-am:
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-local ctags dist-hook distclean \
-	distclean-generic distclean-libtool distclean-tags distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	clean-libtool clean-local ctags distclean distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic \
 	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
 	uninstall-am
@@ -456,9 +452,6 @@ $(w3c_generated_files) : $(w3c_idl_files)
 
 clean-local:
 	rm -rf *.h
-
-dist-hook:
-	rm -rf $(distdir)/*.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

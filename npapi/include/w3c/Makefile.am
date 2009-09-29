@@ -28,7 +28,7 @@ w3c_idl_files = \
 	traversal.idl \
 	views.idl
 	
-noinst_HEADERS = \
+nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
 EXTRA_DIST = \
@@ -40,7 +40,4 @@ $(w3c_generated_files) : $(w3c_idl_files)
 
 clean-local:
 	rm -rf *.h
-
-dist-hook:
-	rm -rf $(distdir)/*.h
 
