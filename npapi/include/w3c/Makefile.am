@@ -36,7 +36,7 @@ EXTRA_DIST = \
 	COPYRIGHT.html
 
 $(w3c_generated_files) : $(w3c_idl_files)
-	../../../esidl -I $(srcdir) -namespace es -template -string std::string -indent google -object Object -fvirtualbase $^
+	../../../esidl -I$(srcdir) -namespace es -template -string std::string -indent google -object Object -fvirtualbase $^
 
 clean-local:
 	rm -rf *.h
