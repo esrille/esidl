@@ -100,19 +100,19 @@ public:
         type = TypeBool;
     }
 
-    Any(uint8_t value)
+    Any(unsigned char value)
     {
         octetValue = value;
         type = TypeOctet;
     }
 
-    Any(int16_t value)
+    Any(short value)
     {
         shortValue = value;
         type = TypeShort;
     }
 
-    Any(uint16_t value)
+    Any(unsigned short value)
     {
         unsignedShortValue = value;
         type = TypeUnsignedShort;
@@ -221,37 +221,55 @@ public:
         assign(value);
     }
 
-    operator uint8_t() const
+    operator unsigned char() const
     {
         return octetValue;
     }
 
-    operator int16_t() const
+    operator short() const
     {
         return shortValue;
     }
 
-    operator uint16_t() const
+    operator unsigned short() const
     {
         return unsignedShortValue;
     }
 
-    operator int32_t() const
+    operator int() const
     {
         return longValue;
     }
 
-    operator uint32_t() const
+    operator unsigned int() const
     {
         return unsignedLongValue;
     }
 
-    operator int64_t() const
+    operator long() const
+    {
+#if 2147483647L < LONG_MAX
+        return longLongValue;
+#else
+        return longValue;
+#endif
+    }
+
+    operator unsigned long() const
+    {
+#if 4294967295UL < ULONG_MAX
+        return unsignedLongLongValue;
+#else
+        return unsignedLongValue;
+#endif
+    }
+
+    operator long long() const
     {
         return longLongValue;
     }
 
-    operator uint64_t() const
+    operator unsigned long long() const
     {
         return unsignedLongLongValue;
     }
