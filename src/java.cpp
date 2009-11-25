@@ -63,6 +63,12 @@ class JavaInterface : public Java
     // TODO: Move to Java
     void visitInterfaceElement(const Interface* interface, Node* element)
     {
+        if (dynamic_cast<Interface*>(element))
+        {
+            // Do not process Constructor.
+            return;
+        }
+
         optionalStage = 0;
         do
         {
@@ -94,10 +100,7 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if ((node->getAttr() & Interface::Supplemental) || node->isLeaf())
-        {
-            return;
-        }
+        assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
         writetab();
         if (node->getJavadoc().size())
         {
@@ -150,37 +153,7 @@ public:
             }
         }
 
-        if (Interface* constructor = node->getConstructor())
-        {
-            // Process constructors.
-            constructorMode = true;
-            for (NodeList::iterator i = constructor->begin();
-                    i != constructor->end();
-                    ++i)
-            {
-                (*i)->accept(this);
-            }
-            constructorMode = false;
-            writeln("static Constructor* getConstructor() {");
-                writeln("return constructor;");
-            writeln("}");
-            writeln("static void setConstructor(Constructor* ctor) {");
-                writeln("constructor = ctor;");
-            writeln("}");
-            unindent();
-            writeln("private:");
-            indent();
-            writeln("static Constructor* constructor;");
-        }
-
         writeln("}");
-
-        if (node->getConstructor())
-        {
-            // TODO: Control the use of GCC extensions.
-            writeln("%s::Constructor* %s::constructor __attribute__((weak));",
-                    node->getName().c_str(), node->getName().c_str());
-        }
     }
 
     virtual void at(const BinaryExpr* node)
@@ -291,38 +264,8 @@ public:
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
-
         Java::at(node);
-
-        if (!constructorMode)
-        {
-            write(";\n");
-        }
-        else
-        {
-            write("{");
-            writeln("");
-                writeln("if (constructor)");
-                indent();
-                    writetab();
-                    write("return constructor->createInstance(");
-                    for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-                    {
-                        if (i != node->begin())
-                        {
-                            write(", ");
-                        }
-                        write("%s", (*i)->getName().c_str());
-                    }
-                    write(");");
-                    writeln("");
-                unindent();
-                writeln("else");
-                indent();
-                    writeln("return 0;");
-                unindent();
-            writeln("}");
-        }
+        write(";\n");
     }
 };
 

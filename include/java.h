@@ -34,7 +34,6 @@ protected:
     std::string objectTypeName;
     bool useExceptions;
 
-    bool constructorMode;
     int optionalStage;
     int optionalCount;
 
@@ -100,7 +99,6 @@ public:
         source(source),
         objectTypeName("Object"),
         useExceptions(true),
-        constructorMode(false),
         currentNode(getSpecification()),
         paramCount(0),
         variadicParam(0)
@@ -276,14 +274,7 @@ public:
 
     virtual void at(const OpDcl* node)
     {
-        if (!constructorMode)
-        {
-            write("public ");
-        }
-        else
-        {
-            write("static ");
-        }
+        write("public ");
 
         bool needComma = true;  // true to write "," before the 1st parameter
         Node* spec = node->getSpec();
