@@ -35,7 +35,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-subdir = npapi/include/w3c
+subdir = java
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -177,21 +177,9 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUFFIXES = .h .idl
+SUFFIXES = .java .idl
 w3c_generated_files = \
-	css.h \
-	cssomview.h \
-	dom.h \
-	events.h \
-	geolocation.h \
-	html5.h \
-	ls.h \
-	ranges.h \
-	smil.h \
-	stylesheets.h \
-	svg.h \
-	traversal.h \
-	views.h
+	Node.java
 
 w3c_idl_files = \
 	css.idl \
@@ -211,14 +199,10 @@ w3c_idl_files = \
 nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
-EXTRA_DIST = \
-	$(w3c_idl_files) \
-	COPYRIGHT.html
-
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .h .idl
+.SUFFIXES: .java .idl
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -228,9 +212,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign npapi/include/w3c/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign java/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign npapi/include/w3c/Makefile
+	  $(AUTOMAKE) --foreign java/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -449,11 +433,13 @@ uninstall-am:
 	uninstall-am
 
 
+vpath %.idl = $(srcdir)/../npapi/include/w3c
+
 $(w3c_generated_files) : $(w3c_idl_files)
-	../../../esidl -I$(srcdir) -namespace es -template -string std::string -indent google -object Object -fvirtualbase $^
+	../esidl -I$(srcdir)/../npapi/include/w3c -java $^
 
 clean-local:
-	rm -rf *.h
+	rm -rf *.java
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -5,6 +5,7 @@ w3c_generated_files = \
 	cssomview.h \
 	dom.h \
 	events.h \
+	geolocation.h \
 	html5.h \
 	ls.h \
 	ranges.h \
@@ -19,6 +20,7 @@ w3c_idl_files = \
 	cssomview.idl \
 	dom.idl \
 	events.idl \
+	geolocation.idl \
 	html5.idl \
 	ls.idl \
 	ranges.idl \

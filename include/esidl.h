@@ -19,10 +19,11 @@
 #define ESIDL_H_INCLUDED
 
 #include <assert.h>
-#include <string.h>
+#include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <list>
 #include <string>
 #include <vector>
@@ -135,14 +136,21 @@ public:
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);
 
-    bool check(bool cond, const char* message)
+    bool check(bool cond, const char* message, ...) const
     {
         if (cond)
         {
             return true;
         }
-        fprintf(stderr, "%d.%d-%d.%d: %s\n",
-                firstLine, firstColumn, lastLine, lastColumn, message);
+
+        va_list ap;
+        va_start(ap, message);
+        fprintf(stderr, "%d.%d-%d.%d: ",
+                firstLine, firstColumn, lastLine, lastColumn);
+        vfprintf(stderr, message, ap);
+        fprintf(stderr, "\n");
+        va_end(ap);
+
         exit(EXIT_FAILURE);
         return false;
     }
@@ -1813,6 +1821,7 @@ extern void printCxx(const char* source, const char* stringTypeName, const char*
 extern void printSkeleton(const char* source, bool isystem, const char* indent);
 extern void printTemplate(const char* source, const char* stringTypeName, const char* objectTypeName,
                           bool useExceptions, bool isystem, const char* indent);
+extern void printJava(const char* source, const char* indent);
 
 extern std::string getOutputFilename(std::string, const char* suffix);
 extern std::string getIncludedName(const std::string& header);
@@ -1831,6 +1840,7 @@ extern int output(const char* filename,
                   bool isystem, bool useExceptions, bool useMultipleInheritance,
                   const char* stringTypeName, const char* objectTypeName, const char* indent,
                   bool skeleton,
-                  bool generic);
+                  bool generic,
+                  bool java);
 
 #endif  // ESIDL_H_INCLUDED

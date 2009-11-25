@@ -53,9 +53,10 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_esidl_OBJECTS = esidl-cxx.$(OBJEXT) esidl-driver.$(OBJEXT) \
-	esidl-esidl.$(OBJEXT) esidl-lexer.$(OBJEXT) \
-	esidl-parser.$(OBJEXT) esidl-print.$(OBJEXT) \
-	esidl-skeleton.$(OBJEXT) esidl-template.$(OBJEXT)
+	esidl-esidl.$(OBJEXT) esidl-java.$(OBJEXT) \
+	esidl-lexer.$(OBJEXT) esidl-parser.$(OBJEXT) \
+	esidl-print.$(OBJEXT) esidl-skeleton.$(OBJEXT) \
+	esidl-template.$(OBJEXT)
 esidl_OBJECTS = $(am_esidl_OBJECTS)
 esidl_LDADD = $(LDADD)
 esidl_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
@@ -270,7 +271,7 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = . testsuite npapi
+SUBDIRS = . testsuite npapi java
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 esidl_SOURCES = \
 	include/cplusplus.h\
@@ -279,11 +280,13 @@ esidl_SOURCES = \
 	include/formatter.h \
 	include/forward.h \
 	include/info.h \
+	include/java.h \
 	include/reflect.h \
 	include/utf.h \
 	src/cxx.cpp \
 	src/driver.cpp \
 	src/esidl.cpp \
+	src/java.cpp \
 	src/lexer.ll \
 	src/parser.yy \
 	src/print.cpp \
@@ -399,6 +402,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-cxx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-driver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-esidl.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-java.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-lexer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-parser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-print.Po@am__quote@
@@ -467,6 +471,20 @@ esidl-esidl.obj: src/esidl.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/esidl.cpp' object='esidl-esidl.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-esidl.obj `if test -f 'src/esidl.cpp'; then $(CYGPATH_W) 'src/esidl.cpp'; else $(CYGPATH_W) '$(srcdir)/src/esidl.cpp'; fi`
+
+esidl-java.o: src/java.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-java.o -MD -MP -MF $(DEPDIR)/esidl-java.Tpo -c -o esidl-java.o `test -f 'src/java.cpp' || echo '$(srcdir)/'`src/java.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/esidl-java.Tpo $(DEPDIR)/esidl-java.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/java.cpp' object='esidl-java.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-java.o `test -f 'src/java.cpp' || echo '$(srcdir)/'`src/java.cpp
+
+esidl-java.obj: src/java.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-java.obj -MD -MP -MF $(DEPDIR)/esidl-java.Tpo -c -o esidl-java.obj `if test -f 'src/java.cpp'; then $(CYGPATH_W) 'src/java.cpp'; else $(CYGPATH_W) '$(srcdir)/src/java.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/esidl-java.Tpo $(DEPDIR)/esidl-java.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/java.cpp' object='esidl-java.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-java.obj `if test -f 'src/java.cpp'; then $(CYGPATH_W) 'src/java.cpp'; else $(CYGPATH_W) '$(srcdir)/src/java.cpp'; fi`
 
 esidl-lexer.o: lexer.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-lexer.o -MD -MP -MF $(DEPDIR)/esidl-lexer.Tpo -c -o esidl-lexer.o `test -f 'lexer.cc' || echo '$(srcdir)/'`lexer.cc

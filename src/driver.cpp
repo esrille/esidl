@@ -88,6 +88,7 @@ int main(int argc, char* argv[])
     bool isystem = false;
     bool useExceptions = true;
     bool useVirtualBase = false;
+    bool java = false;
     const char* stringTypeName = "char*";   // C++ string type name to be used
     const char* objectTypeName = "object";  // C++ object type name to be used
     const char* indent = "es";
@@ -144,6 +145,10 @@ int main(int argc, char* argv[])
                 argCpp[optCpp++] = argv[i];
                 setIncludePath(argv[i]);
                 isystem = true;
+            }
+            else if (strcmp(argv[i], "-java") == 0)
+            {
+                java = true;
             }
             else if (strcmp(argv[i], "-namespace") == 0)
             {
@@ -315,7 +320,7 @@ int main(int argc, char* argv[])
         }
         result = output(argv[i], isystem, useExceptions, useVirtualBase,
                         stringTypeName, objectTypeName, indent,
-                        skeleton, generic);
+                        skeleton, generic, java);
     }
 
     return result;

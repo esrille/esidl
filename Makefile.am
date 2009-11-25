@@ -1,4 +1,4 @@
-SUBDIRS = . testsuite npapi
+SUBDIRS = . testsuite npapi java
 
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 
@@ -11,11 +11,13 @@ esidl_SOURCES = \
 	include/formatter.h \
 	include/forward.h \
 	include/info.h \
+	include/java.h \
 	include/reflect.h \
 	include/utf.h \
 	src/cxx.cpp \
 	src/driver.cpp \
 	src/esidl.cpp \
+	src/java.cpp \
 	src/lexer.ll \
 	src/parser.yy \
 	src/print.cpp \

@@ -6,6 +6,14 @@
 #include "dom.idl"
 #include "ranges.idl"
 
+typedef dom::Document Document;
+typedef dom::Element Element;
+typedef events::MouseEvent MouseEvent;
+typedef ranges::Range Range;
+
+module views 
+{
+
 [NoInterfaceObject] interface AbstractView {
   readonly attribute DocumentView document;
   readonly attribute Media media;
@@ -53,6 +61,11 @@ interface Screen {
 
 Document implements DocumentView;
 
+};
+
+module dom 
+{
+
 [Supplemental] interface Element {
   ClientRectList getClientRects();
   ClientRect getBoundingClientRect();
@@ -68,6 +81,8 @@ Document implements DocumentView;
   readonly attribute long clientHeight;
 };
 
+};
+
 [Supplemental] interface HTMLElement {
   readonly attribute Element offsetParent;
   readonly attribute long offsetTop;
@@ -76,10 +91,32 @@ Document implements DocumentView;
   readonly attribute long offsetHeight;
 };
 
+module ranges
+{
+
 [Supplemental] interface Range {
   ClientRectList getClientRects();
   ClientRect getBoundingClientRect();
 };
+
+interface ClientRectList {
+  readonly attribute unsigned long length;
+  getter ClientRect item(unsigned long index);
+};
+
+interface ClientRect {
+  readonly attribute float top;
+  readonly attribute float right;
+  readonly attribute float bottom;
+  readonly attribute float left;
+  readonly attribute float width;
+  readonly attribute float height;
+};
+
+};
+
+module events
+{
 
 [Supplemental] interface MouseEvent {
   // readonly attribute long screenX;
@@ -97,18 +134,5 @@ Document implements DocumentView;
   readonly attribute long offsetY;
 };
 
-interface ClientRectList {
-  readonly attribute unsigned long length;
-  getter ClientRect item(unsigned long index);
 };
-
-interface ClientRect {
-  readonly attribute float top;
-  readonly attribute float right;
-  readonly attribute float bottom;
-  readonly attribute float left;
-  readonly attribute float width;
-  readonly attribute float height;
-};
-
 #endif  // _CSSOMVIEW_IDL_

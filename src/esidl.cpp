@@ -293,7 +293,8 @@ void Implements::resolve()
 {
     Interface* interface = dynamic_cast<Interface*>(getFirst()->search(getParent()));
     Interface* mixin = dynamic_cast<Interface*>(getSecond()->search(getParent()));
-    assert(interface && mixin);
+    check(interface, "could not resolve `%s`.", getFirst()->getName().c_str());
+    check(mixin, "could not resolve `%s`.", getSecond()->getName().c_str());
     interface->implements(mixin);
 }
 
@@ -582,6 +583,7 @@ void Interface::adjustMethodCount()
     {
         ScopedName* org = new ScopedName(name.substr(0, name.rfind('-')));
         Interface* supplemental = dynamic_cast<Interface*>(org->search(getParent()));
+        check(supplemental, "could not resolve `%s`.", name.substr(0, name.rfind('-')).c_str());
         supplementals.push_back(supplemental);
         supplemental->implements(this);
         break;
@@ -705,20 +707,28 @@ int output(const char* filename,
            const char* objectTypeName,
            const char* indent,
            bool skeleton,
-           bool generic)
+           bool generic,
+           bool java)
 {
     Forward forward(filename);
     getSpecification()->accept(&forward);
     forward.generateForwardDeclarations();
 
-    printCxx(filename, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
-    if (skeleton)
+    if (!java)
     {
-        printSkeleton(filename, isystem, indent);
+        printCxx(filename, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+        if (skeleton)
+        {
+            printSkeleton(filename, isystem, indent);
+        }
+        if (generic)
+        {
+            printTemplate(filename, stringTypeName, objectTypeName, useExceptions, isystem, indent);
+        }
     }
-    if (generic)
+    else
     {
-        printTemplate(filename, stringTypeName, objectTypeName, useExceptions, isystem, indent);
+        printJava(filename, indent);
     }
     return EXIT_SUCCESS;
 }

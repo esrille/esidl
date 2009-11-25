@@ -505,11 +505,7 @@ public:
             {
                 std::string name = (*i)->getName();
                 Node* resolved = resolve(currentNode, name);
-                if (!resolved)
-                {
-                    // TODO: Print an error message.
-                    exit(EXIT_FAILURE);
-                }
+                node->check(resolved, "could not resolve `%s`.", name.c_str());
                 name = resolved->getQualifiedName();
                 write("\n");
                 writetab();
@@ -524,14 +520,7 @@ public:
              i != node->getMixins()->end();
              ++i)
         {
-            std::string name = (*i)->getName();
-            Node* resolved = resolve(currentNode, name);
-            if (!resolved)
-            {
-                // TODO: Print an error message.
-                exit(EXIT_FAILURE);
-            }
-            name = resolved->getQualifiedName();
+            std::string name = (*i)->getQualifiedName();
             write("\n");
             writetab();
             write("\"%c", Reflect::kImplements);

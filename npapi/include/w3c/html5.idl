@@ -12,6 +12,12 @@
 typedef object Date;      // TBD at W3C
 typedef object FileList;  // see File API for the actual definition
 
+typedef dom::DOMImplementation DOMImplementation;
+typedef dom::NodeList NodeList;
+typedef events::Event Event;
+typedef events::EventTarget EventTarget;
+typedef stylesheets::LinkStyle LinkStyle;
+
 interface HTMLCollection {
   readonly attribute unsigned long length;
   caller getter object item(in unsigned long index);  // [Shiki] Element -> object

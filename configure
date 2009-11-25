@@ -15691,7 +15691,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # Only expand once:
 
 
-ac_config_files="$ac_config_files Makefile testsuite/Makefile testsuite/runtime/Makefile npapi/Makefile npapi/include/Makefile npapi/include/w3c/Makefile npapi/sample/Makefile"
+ac_config_files="$ac_config_files Makefile testsuite/Makefile testsuite/runtime/Makefile npapi/Makefile npapi/include/Makefile npapi/include/w3c/Makefile npapi/sample/Makefile java/Makefile"
 
 
 case ${target} in
@@ -16761,6 +16761,7 @@ do
     "npapi/include/Makefile") CONFIG_FILES="$CONFIG_FILES npapi/include/Makefile" ;;
     "npapi/include/w3c/Makefile") CONFIG_FILES="$CONFIG_FILES npapi/include/w3c/Makefile" ;;
     "npapi/sample/Makefile") CONFIG_FILES="$CONFIG_FILES npapi/sample/Makefile" ;;
+    "java/Makefile") CONFIG_FILES="$CONFIG_FILES java/Makefile" ;;
 
   *) { { $as_echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 $as_echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
