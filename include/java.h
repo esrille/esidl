@@ -182,7 +182,7 @@ public:
         }
         else if (node->getName() == "string")
         {
-            write(nullable ? "String" : "string");
+            write("String");
         }
         else if (node->getName() == "any")
         {
