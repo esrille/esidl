@@ -21,7 +21,7 @@
  *
  * W3C,
  * Web IDL,
- * W3C Editor’s Draft 10 July 2009.
+ * W3C Editor’s Draft 30 September 2009.
  * http://dev.w3.org/2006/webapi/WebIDL/
  *
  * W3C,
@@ -142,6 +142,7 @@ int yylex();
 %type <node>        Operation
 %type <attr>        OmittableSpecials
 %type <attr>        Specials
+%type <attr>        Special
 %type <node>        OperationRest
 %type <name>        OptionalIdentifier
 %type <node>        Raises
@@ -652,11 +653,7 @@ Operation :
     ;
 
 OmittableSpecials :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | OMITTABLE Specials
+    OMITTABLE Specials
         {
             $$ = OpDcl::Omittable | $2;
         }
@@ -664,6 +661,17 @@ OmittableSpecials :
     ;
 
 Specials :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | Special Specials
+        {
+            $$ = $1 | $2;
+        }
+    ;
+
+Special :
     GETTER
         {
             $$ = OpDcl::IndexGetter;
@@ -676,14 +684,6 @@ Specials :
         {
             $$ = OpDcl::IndexCreator;
         }
-    | SETTER CREATOR
-        {
-            $$ = OpDcl::IndexSetter | OpDcl::IndexCreator;
-        }
-    | CREATOR SETTER
-        {
-            $$ = OpDcl::IndexSetter | OpDcl::IndexCreator;
-        }
     | DELETER
         {
             $$ = OpDcl::IndexDeleter;
@@ -691,14 +691,6 @@ Specials :
     | CALLER
         {
             $$ = OpDcl::Caller;
-        }
-    | CALLER GETTER
-        {
-            $$ = OpDcl::Caller | OpDcl::IndexGetter;
-        }
-    | GETTER CALLER
-        {
-            $$ = OpDcl::Caller | OpDcl::IndexGetter;
         }
     ;
 
