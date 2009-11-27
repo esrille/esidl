@@ -113,9 +113,9 @@ void pushJavadoc()
 
 std::string getOutputFilename(std::string filename, const char* suffix)
 {
-    int begin = filename.rfind(".");
-    int end   = filename.size();
-    if (0 <= begin)
+    size_t begin = filename.rfind(".");
+    size_t end = filename.size();
+    if (begin != std::string::npos)
     {
         filename.replace(begin + 1, end, suffix);
     }
@@ -127,15 +127,15 @@ std::string getOutputFilename(std::string filename, const char* suffix)
 
     if (getIncludePath())
     {
-        int pos = filename.find(getIncludePath());
+        size_t pos = filename.find(getIncludePath());
         if (pos == 0)
         {
             filename.replace(pos, strlen(getIncludePath()) + 1, "");
         }
         else
         {
-            int slash = filename.rfind("/");
-            if (0 <= slash)
+            size_t slash = filename.rfind("/");
+            if (slash != std::string::npos)
             {
                 filename.replace(0, slash + 1, "");
             }
@@ -146,8 +146,8 @@ std::string getOutputFilename(std::string filename, const char* suffix)
     std::string path(filename);
     for (;;)
     {
-        int slash = path.find("/");
-        if (slash < 0)
+        size_t slash = path.find("/");
+        if (slash == std::string::npos)
         {
             break;
         }
