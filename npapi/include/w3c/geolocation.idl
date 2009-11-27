@@ -1,3 +1,12 @@
+#ifndef _GEOLOCATION_IDL_
+#define _GEOLOCATION_IDL_
+
+#include "html5.idl"
+
+module geolocation
+{
+
+ typedef html::Navigator Navigator;
 
  [NoInterfaceObject]
  interface NavigatorGeolocation {
@@ -69,4 +78,7 @@
     readonly attribute DOMString message;
   };
   
+};
+
+#endif  // _GEOLOCATION_IDL_
 

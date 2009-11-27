@@ -9,6 +9,9 @@
 #include "css.idl"
 #include "ranges.idl"
 
+module html
+{
+
 typedef object Date;      // TBD at W3C
 typedef object FileList;  // see File API for the actual definition
 
@@ -1717,6 +1720,8 @@ interface HTMLDocument {
   readonly attribute HTMLCollection applets;
 
   readonly attribute HTMLAllCollection all;
+};
+
 };
 
 #endif  // _HTML5_IDL_

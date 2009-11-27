@@ -512,7 +512,8 @@ public:
 
     void setExtendedAttributes(NodeList* list)
     {
-        assert(extendedAttributes == 0);
+        // TODO: The following assert should be enabled.
+        // assert(extendedAttributes == 0);
         extendedAttributes = list;
     }
 
@@ -678,6 +679,7 @@ class Module : public Node
     int interfaceCount; // of rank 1
     int constCount;     // of rank 1
     int moduleCount;    // of rank 1
+    std::string prefix;
 
 public:
     Module(std::string identifier) :
@@ -713,6 +715,44 @@ public:
     }
 
     bool hasPredeclarations() const;
+
+    std::string getPrefix() const
+    {
+        return prefix;
+    }
+
+    void processExtendedAttributes();
+
+    std::string getPrefixedName() const
+    {
+        std::string body;
+        if (0 < getName().length())
+        {
+            body = "::" + getName();
+        }
+
+        if (prefix.compare(0, 2, "::") == 0)
+        {
+            return prefix + body;
+        }
+        if (0 < prefix.length())
+        {
+            if (Module* parent = dynamic_cast<Module*>(getParent()))
+            {
+                return parent->getPrefixedName() + "::" + prefix + body;
+            }
+            return "::" + prefix + body;
+        }
+        if (getQualifiedName() == "::dom")
+        {
+            return "::org::w3c::dom";
+        }
+        if (Module* parent = dynamic_cast<Module*>(getParent()))
+        {
+            return parent->getPrefixedName() + body;
+        }
+        return "::org::w3c::dom" + body;
+    }
 
     virtual void accept(Visitor* visitor);
 };
@@ -1747,6 +1787,12 @@ class ProcessExtendedAttributes : public Visitor
 public:
     virtual void at(const Node* node)
     {
+        visitChildren(node);
+    }
+
+    virtual void at(const Module* node)
+    {
+        const_cast<Module*>(node)->processExtendedAttributes();
         visitChildren(node);
     }
 

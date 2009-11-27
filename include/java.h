@@ -134,12 +134,11 @@ public:
                 write("%s\n", node->getJavadoc().c_str());
                 writetab();
             }
-            write("namespace %s {\n", node->getName().c_str());
-                moduleName += "::";
-                moduleName += node->getName();
-                printChildren(node);
-                moduleName.erase(moduleName.size() - node->getName().size() - 2);
-            writeln("}");
+
+            moduleName += "::";
+            moduleName += node->getName();
+            printChildren(node);
+            moduleName.erase(moduleName.size() - node->getName().size() - 2);
         }
         else
         {
@@ -390,6 +389,25 @@ public:
             included[i] = isalnum(c) ? (capitalize ? toupper(c) : c) : '_';
         }
         return included;
+    }
+
+    static std::string getPackageName(std::string prefixedName)
+    {
+        size_t pos = 0;
+        for (;;)
+        {
+            pos = prefixedName.find("::", pos);
+            if (pos == std::string::npos)
+            {
+                break;
+            }
+            prefixedName.replace(pos, 2, ".");
+        }
+        if (prefixedName[0] == '.')
+        {
+            prefixedName = prefixedName.substr(1);
+        }
+        return prefixedName;
     }
 };
 

@@ -298,6 +298,28 @@ void Implements::resolve()
     interface->implements(mixin);
 }
 
+void Module::processExtendedAttributes()
+{
+    NodeList* list = getExtendedAttributes();
+    if (!list)
+    {
+        return;
+    }
+
+    for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
+    {
+        ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
+        assert(ext);
+        if (ext->getName() == "Prefix")
+        {
+            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            {
+                prefix = name->getName();
+            }
+        }
+    }
+}
+
 void Interface::processExtendedAttributes()
 {
     static unsigned supplementalCount = 0;

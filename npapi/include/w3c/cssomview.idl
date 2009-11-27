@@ -83,12 +83,17 @@ module dom
 
 };
 
+module html
+{
+
 [Supplemental] interface HTMLElement {
   readonly attribute Element offsetParent;
   readonly attribute long offsetTop;
   readonly attribute long offsetLeft;
   readonly attribute long offsetWidth;
   readonly attribute long offsetHeight;
+};
+
 };
 
 module ranges

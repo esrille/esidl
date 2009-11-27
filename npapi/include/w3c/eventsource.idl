@@ -14,7 +14,7 @@
 
 module eventsource {
 
-typedef html5::Function Function;
+typedef html::Function Function;
 
 [Constructor(in DOMString url)]
 interface EventSource {
