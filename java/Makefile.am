@@ -3,7 +3,7 @@ SUFFIXES = .java .idl
 vpath %.idl = $(srcdir)/../npapi/include/w3c
 
 w3c_generated_files = \
-	Node.java
+	org/w3c/dom/Node.java
 
 w3c_idl_files = \
 	css.idl \
@@ -27,5 +27,5 @@ $(w3c_generated_files) : $(w3c_idl_files)
 	../esidl -I$(srcdir)/../npapi/include/w3c -java $^
 
 clean-local:
-	rm -rf *.java
+	rm -rf org
 

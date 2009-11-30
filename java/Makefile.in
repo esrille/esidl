@@ -179,7 +179,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUFFIXES = .java .idl
 w3c_generated_files = \
-	Node.java
+	org/w3c/dom/Node.java
 
 w3c_idl_files = \
 	css.idl \
@@ -439,7 +439,7 @@ $(w3c_generated_files) : $(w3c_idl_files)
 	../esidl -I$(srcdir)/../npapi/include/w3c -java $^
 
 clean-local:
-	rm -rf *.java
+	rm -rf org
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

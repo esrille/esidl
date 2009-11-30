@@ -15,44 +15,47 @@
  * limitations under the License.
  */
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include "java.h"
-#include "info.h"
 
 namespace
 {
 
-std::string getFileName(const std::string& name)
+FILE* createFile(const std::string package, const Node* node)
 {
-    std::string filename(name);
+    std::string filename = package;
 
-    for (int i = 0; i < filename.size(); ++i)
+    size_t pos = 0;
+    for (;;)
     {
-        char c = filename[i];
-        if (c == '.' || c == '/' || c == '\\')
+        pos = filename.find('.', pos);
+        if (pos == std::string::npos)
         {
-            filename[i] = '_';
+            break;
         }
+        filename[pos] = '/';
     }
-    return filename;
-}
 
-FILE* createFile(const char* source, const Node* node)
-{
-    std::string filename = source;
-    size_t begin = filename.rfind("/");
-    if (begin == std::string::npos)
+    filename += "/" + node->getName() + ".java";
+
+    std::string dir;
+    std::string path(filename);
+    for (;;)
     {
-        begin = 0;
+        size_t slash = path.find("/");
+        if (slash == std::string::npos)
+        {
+            break;
+        }
+        dir += path.substr(0, slash);
+        path.erase(0, slash + 1);
+        mkdir(dir.c_str(), 0777);
+        dir += '/';
     }
-    else
-    {
-        ++begin;
-    }
-    filename.replace(begin, filename.length() - begin, getFileName(node->getName()));
-    filename += ".";
-    filename = getOutputFilename(filename.c_str(), "java");
+
     printf("# %s in %s\n", node->getName().c_str(), filename.c_str());
-
     return fopen(filename.c_str(), "w");
 }
 
@@ -307,7 +310,7 @@ public:
             return;
         }
 
-        FILE* file = createFile(source, node);
+        FILE* file = createFile(Java::getPackageName(prefixedName), node);
         if (!file)
         {
             return;
@@ -330,7 +333,7 @@ public:
             return;
         }
 
-        FILE* file = createFile(source, node);
+        FILE* file = createFile(Java::getPackageName(prefixedName), node);
         if (!file)
         {
             return;
