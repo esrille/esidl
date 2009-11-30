@@ -109,20 +109,17 @@ public:
     {
         if (0 < node->getName().size())
         {
-            std::string name = node->getName();
-            Node* resolved = resolve(currentNode, name);
-            if (resolved)
-            {
-                name = resolved->getQualifiedName();
-                name = getInterfaceName(name);
-                name = getScopedName(moduleName, name);
-            }
-            write("%s", name.c_str());
+            write("%s", node->getName().c_str());
         }
         else
         {
             printChildren(node);
         }
+    }
+
+    virtual void at(const ScopedName* node)
+    {
+        write("%s", node->getIdentifier().c_str());
     }
 
     virtual void at(const Module* node)
@@ -360,35 +357,6 @@ public:
             qualifiedName.replace(2, qualifiedName.length(), objectTypeName);
         }
         return qualifiedName;
-    }
-
-    static std::string getIncludedName(const std::string headerFilename, const char* indent = "es")
-    {
-        std::string included(headerFilename);
-        bool capitalize = true;
-
-        if (strcmp(indent, "google") == 0)
-        {
-            included += "_";
-        }
-        else if (strcmp(indent, "es") == 0)
-        {
-            included += "_INCLUDED";
-        }
-        else
-        {
-            capitalize = false;
-        }
-        if (isdigit(included[0]))
-        {
-            included = "No" + included;
-        }
-        for (int i = 0; i < included.size(); ++i)
-        {
-            char c = included[i];
-            included[i] = isalnum(c) ? (capitalize ? toupper(c) : c) : '_';
-        }
-        return included;
     }
 
     static std::string getPackageName(std::string prefixedName)

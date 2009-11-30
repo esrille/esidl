@@ -672,6 +672,16 @@ public:
     }
 
     virtual void accept(Visitor* visitor);
+
+    std::string getIdentifier() const
+    {
+        size_t pos = getName().rfind("::");
+        if (pos == std::string::npos)
+        {
+            return getName();
+        }
+        return getName().substr(pos + 2);
+    }
 };
 
 class Module : public Node
