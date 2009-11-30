@@ -302,7 +302,7 @@ public:
             return;
         }
         std::string name = node->getName();
-        Node* resolved = resolve(current, name);
+        Node* resolved = node->search(current);
         if (resolved)
         {
             if (Module* module = dynamic_cast<Module*>(resolved->getParent()))
