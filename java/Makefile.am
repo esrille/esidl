@@ -26,6 +26,13 @@ nodist_noinst_HEADERS = \
 $(w3c_generated_files) : $(w3c_idl_files)
 	../esidl -I$(srcdir)/../npapi/include/w3c -java $^
 
+noinst_DATA = build.xml
+
+build.xml : build.xml.src
+	cp $^ $@
+
 clean-local:
-	rm -rf org
+	rm -rf org build.xml
+
+EXTRA_DIST = build.xml.src
 

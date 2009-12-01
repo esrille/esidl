@@ -15,6 +15,7 @@
 
 @SET_MAKE@
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -46,6 +47,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 SOURCES =
 DIST_SOURCES =
+DATA = $(noinst_DATA)
 HEADERS = $(nodist_noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -199,6 +201,8 @@ w3c_idl_files = \
 nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
+noinst_DATA = build.xml
+EXTRA_DIST = build.xml.src
 all: all-am
 
 .SUFFIXES:
@@ -324,7 +328,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(HEADERS)
+all-am: Makefile $(DATA) $(HEADERS)
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -438,8 +442,11 @@ vpath %.idl = $(srcdir)/../npapi/include/w3c
 $(w3c_generated_files) : $(w3c_idl_files)
 	../esidl -I$(srcdir)/../npapi/include/w3c -java $^
 
+build.xml : build.xml.src
+	cp $^ $@
+
 clean-local:
-	rm -rf org
+	rm -rf org build.xml
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

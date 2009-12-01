@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<project name="w3c" default="compile">
+  <target name="compile">
+    <javac srcdir="org/w3c" />
+  </target>
+</project>
+
