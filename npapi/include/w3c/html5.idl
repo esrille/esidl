@@ -8,6 +8,7 @@
 #include "events.idl"
 #include "css.idl"
 #include "ranges.idl"
+#include "views.idl"
 
 module html
 {
@@ -16,10 +17,14 @@ typedef object Date;      // TBD at W3C
 typedef object FileList;  // see File API for the actual definition
 
 typedef dom::DOMImplementation DOMImplementation;
+typedef dom::Node Node;
 typedef dom::NodeList NodeList;
+typedef dom::DOMStringList DOMStringList;
 typedef events::Event Event;
 typedef events::EventTarget EventTarget;
 typedef stylesheets::LinkStyle LinkStyle;
+typedef css::CSSStyleDeclaration CSSStyleDeclaration;
+typedef views::AbstractView AbstractView;
 
 interface HTMLCollection {
   readonly attribute unsigned long length;

@@ -558,8 +558,8 @@ Node* Node::search(const std::string& elem, size_t pos) const
         n = elem.size();
     }
     for (NodeList::reverse_iterator i = children->rbegin();
-            i != children->rend();
-            ++i)
+         i != children->rend();
+         ++i)
     {
         if ((*i)->getName().compare(0, (*i)->getName().size(), elem, pos, n - pos) == 0)
         {

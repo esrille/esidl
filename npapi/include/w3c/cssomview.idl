@@ -11,6 +11,9 @@ typedef dom::Element Element;
 typedef events::MouseEvent MouseEvent;
 typedef ranges::Range Range;
 
+typedef views::ClientRectList ClientRectList;
+typedef views::ClientRect ClientRect;
+
 module views 
 {
 
@@ -61,6 +64,20 @@ interface Screen {
 
 Document implements DocumentView;
 
+interface ClientRectList {
+  readonly attribute unsigned long length;
+  getter ClientRect item(unsigned long index);
+};
+
+interface ClientRect {
+  readonly attribute float top;
+  readonly attribute float right;
+  readonly attribute float bottom;
+  readonly attribute float left;
+  readonly attribute float width;
+  readonly attribute float height;
+};
+
 };
 
 module dom 
@@ -102,20 +119,6 @@ module ranges
 [Supplemental] interface Range {
   ClientRectList getClientRects();
   ClientRect getBoundingClientRect();
-};
-
-interface ClientRectList {
-  readonly attribute unsigned long length;
-  getter ClientRect item(unsigned long index);
-};
-
-interface ClientRect {
-  readonly attribute float top;
-  readonly attribute float right;
-  readonly attribute float bottom;
-  readonly attribute float left;
-  readonly attribute float width;
-  readonly attribute float height;
 };
 
 };

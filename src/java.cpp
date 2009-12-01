@@ -103,6 +103,10 @@ public:
 
     virtual void at(const Interface* node)
     {
+        if (!currentNode)
+        {
+            currentNode = node->getParent();
+        }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
         writetab();
         if (node->getJavadoc().size())
@@ -150,10 +154,13 @@ public:
                 continue;
             }
             writeln("// %s", (*i)->getName().c_str());
+            const Node* saved = currentNode;
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
             {
+                currentNode = *i;
                 visitInterfaceElement(*i, *j);
             }
+            currentNode = saved;
         }
 
         writeln("}");
@@ -190,13 +197,8 @@ public:
     {
         if (node->isTypedef(node->getParent()))
         {
-            return;
+            node->getSpec()->accept(this);
         }
-
-        writetab();
-        write("public ");
-        node->getSpec()->accept(this);
-        write(" %s;\n", node->getName().c_str());
     }
 
     virtual void at(const ArrayDcl* node)
@@ -297,14 +299,14 @@ public:
     {
         assert(current);
 
-        if (node->isBaseObject())
-        {
-            return;
-        }
-        std::string name = node->getName();
         Node* resolved = node->search(current);
-        if (resolved)
+        node->check(resolved, "could not resolved %s.", node->getName().c_str());
+        if (dynamic_cast<Interface*>(resolved) || dynamic_cast<ExceptDcl*>(resolved))
         {
+            if (resolved->isBaseObject())
+            {
+                return;
+            }
             if (Module* module = dynamic_cast<Module*>(resolved->getParent()))
             {
                 if (prefixedName != module->getPrefixedName())
@@ -339,8 +341,10 @@ public:
             {
                 continue;
             }
+            current = *i;
             visitChildren(*i);
         }
+        current = node;
     }
 
     virtual void at(const Attribute* node)

@@ -6,6 +6,7 @@
 module geolocation
 {
 
+ typedef dom::DOMTimeStamp DOMTimeStamp;
  typedef html::Navigator Navigator;
 
  [NoInterfaceObject]

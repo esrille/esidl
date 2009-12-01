@@ -60,25 +60,14 @@ protected:
             return;
         }
 
-        const Node* saved = currentNode;
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
-            if (!(*i)->isDefinedIn(source))
-            {
-                continue;
-            }
-            if ((*i)->isNative(node->getParent()))
-            {
-                continue;
-            }
             if (separater && i != node->begin())
             {
                 write("%s", separater);
             }
-            currentNode = (*i);
             (*i)->accept(this);
         }
-        currentNode = saved;
     }
 
     std::string getBufferName(const Node* spec)
@@ -99,7 +88,7 @@ public:
         source(source),
         objectTypeName("Object"),
         useExceptions(true),
-        currentNode(getSpecification()),
+        currentNode(0),
         paramCount(0),
         variadicParam(0)
     {
@@ -119,7 +108,20 @@ public:
 
     virtual void at(const ScopedName* node)
     {
-        write("%s", node->getIdentifier().c_str());
+        Node* resolved = node->search(currentNode);
+        node->check(resolved, "%s could not resolved.", node->getName().c_str());
+        if (!dynamic_cast<Interface*>(resolved) && !dynamic_cast<ExceptDcl*>(resolved))
+        {
+            resolved->accept(this);
+        }
+        else if (resolved->isBaseObject())
+        {
+            write("Object");
+        }
+        else
+        {
+            write("%s", resolved->getName().c_str());
+        }
     }
 
     virtual void at(const Module* node)
