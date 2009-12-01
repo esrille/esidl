@@ -3,5 +3,10 @@
   <target name="compile">
     <javac srcdir="org/w3c" />
   </target>
+  <target name="clean">
+    <delete>
+      <fileset dir="org/w3c" includes="**/*.class"/>
+    </delete>
+  </target>
 </project>
 
