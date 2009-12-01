@@ -311,7 +311,7 @@ public:
             {
                 if (prefixedName != module->getPrefixedName())
                 {
-                    importSet.insert(Java::getPackageName(module->getPrefixedName()) + "." + node->getIdentifier());
+                    importSet.insert(Java::getPackageName(module->getPrefixedName()) + "." + resolved->getName());
                 }
             }
         }
