@@ -96,7 +96,12 @@ public:
             writetab();
         }
         write("public class %s extends RuntimeException {\n", node->getName().c_str());
-            // TODO(Shiki): Need a constructor.
+            // Constructor
+            // TODO: should check exception members
+            writeln("public %s(short code, String message) {", node->getName().c_str());
+                writeln("super(message);");
+                writeln("this.code = code;");
+            writeln("}");
             printChildren(node);
         writeln("}");
     }
