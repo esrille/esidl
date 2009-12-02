@@ -199,6 +199,14 @@ public:
         {
             node->getSpec()->accept(this);
         }
+        else
+        {
+            // This node is an exception class member.
+            writetab();
+            write("public ");
+            node->getSpec()->accept(this);
+            write(" %s;\n", node->getName().c_str());
+        }
     }
 
     virtual void at(const ArrayDcl* node)
