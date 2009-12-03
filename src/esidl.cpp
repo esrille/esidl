@@ -293,8 +293,8 @@ void Implements::resolve(bool importImplements)
 {
     Interface* interface = dynamic_cast<Interface*>(getFirst()->search(getParent()));
     Interface* mixin = dynamic_cast<Interface*>(getSecond()->search(getParent()));
-    check(interface, "could not resolve `%s`.", getFirst()->getName().c_str());
-    check(mixin, "could not resolve `%s`.", getSecond()->getName().c_str());
+    getFirst()->check(interface, "could not resolve `%s`.", getFirst()->getName().c_str());
+    getSecond()->check(mixin, "could not resolve `%s`.", getSecond()->getName().c_str());
     interface->implements(mixin, importImplements);
 }
 

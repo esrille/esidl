@@ -410,6 +410,7 @@ ImplementsStatement :
         {
             Implements* implements = new Implements(static_cast<ScopedName*>($1), static_cast<ScopedName*>($3));
             getCurrent()->add(implements);
+            implements->setLocation(&@1, &@4);
             $$ = implements;
         }
     ;
@@ -1052,7 +1053,13 @@ ScopedNames :
 
 ScopedName :
     AbsoluteScopedName
+        {
+            $$->setLocation(&@1);
+        }
     | RelativeScopedName
+        {
+            $$->setLocation(&@1);
+        }
 
 AbsoluteScopedName :
     OP_SCOPE IDENTIFIER ScopedNameParts

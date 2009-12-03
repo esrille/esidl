@@ -145,8 +145,8 @@ public:
 
         va_list ap;
         va_start(ap, message);
-        fprintf(stderr, "%d.%d-%d.%d: ",
-                firstLine, firstColumn, lastLine, lastColumn);
+        fprintf(stderr, "%s:%d.%d-%d.%d: ",
+                source.c_str(), firstLine, firstColumn, lastLine, lastColumn);
         vfprintf(stderr, message, ap);
         fprintf(stderr, "\n");
         va_end(ap);
