@@ -289,13 +289,13 @@ void OpDcl::adjustMethodCount()
     interface->addMethodCount(methodCount - 1);
 }
 
-void Implements::resolve()
+void Implements::resolve(bool importImplements)
 {
     Interface* interface = dynamic_cast<Interface*>(getFirst()->search(getParent()));
     Interface* mixin = dynamic_cast<Interface*>(getSecond()->search(getParent()));
     check(interface, "could not resolve `%s`.", getFirst()->getName().c_str());
     check(mixin, "could not resolve `%s`.", getSecond()->getName().c_str());
-    interface->implements(mixin);
+    interface->implements(mixin, importImplements);
 }
 
 void Module::processExtendedAttributes()
@@ -607,7 +607,7 @@ void Interface::adjustMethodCount()
         Interface* supplemental = dynamic_cast<Interface*>(org->search(getParent()));
         check(supplemental, "could not resolve `%s`.", name.substr(0, name.rfind('-')).c_str());
         supplementals.push_back(supplemental);
-        supplemental->implements(this);
+        supplemental->implements(this, true);
         break;
     }
     case Supplemental | NoInterfaceObject:
@@ -617,7 +617,7 @@ void Interface::adjustMethodCount()
             {
                 Interface* supplemental = dynamic_cast<Interface*>(static_cast<ScopedName*>(*i)->search(getParent()));
                 supplementals.push_back(supplemental);
-                supplemental->implements(this);
+                supplemental->implements(this, true);
             }
         }
         break;

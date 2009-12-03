@@ -299,7 +299,7 @@ int main(int argc, char* argv[])
     ProcessExtendedAttributes processExtendedAttributes;
     getSpecification()->accept(&processExtendedAttributes);
 
-    AdjustMethodCount adjustMethodCount;
+    AdjustMethodCount adjustMethodCount(Node::getFlatNamespace());
     getSpecification()->accept(&adjustMethodCount);
 
     for (int i = 1; i < argc; ++i)

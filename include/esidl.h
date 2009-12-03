@@ -826,7 +826,7 @@ public:
         return second;
     }
 
-    void resolve();
+    void resolve(bool importImplements);
 
     virtual void accept(Visitor* visitor);
 };
@@ -977,17 +977,20 @@ public:
 
     virtual void accept(Visitor* visitor);
 
-    void implements(Interface* mixin)
+    void implements(Interface* mixin, bool importImplements)
     {
+        // cf. http://lists.w3.org/Archives/Public/public-webapps/2009JulSep/0528.html
         if (!(mixin->attr & (Supplemental | NoInterfaceObject)))
         {
             implementList.push_back(mixin);
         }
+        if ((mixin->attr & Supplemental) || importImplements)
+        {
+            mixins.push_back(mixin);
 
-        mixins.push_back(mixin);
-
-        mixin->setAttr(mixin->getAttr() | ImplementedOn);
-        mixin->implementedOn.push_back(this);
+            mixin->setAttr(mixin->getAttr() | ImplementedOn);
+            mixin->implementedOn.push_back(this);
+        }
     }
 
     Interface* getImplementedOn() const
@@ -1848,7 +1851,12 @@ public:
 
 class AdjustMethodCount : public Visitor
 {
+    bool importImplements;
 public:
+    AdjustMethodCount(bool importImplements) :
+        importImplements(importImplements)
+    {
+    }
     virtual void at(const Node* node)
     {
         visitChildren(node);
@@ -1856,7 +1864,7 @@ public:
 
     virtual void at(const Implements* node)
     {
-        const_cast<Implements*>(node)->resolve();
+        const_cast<Implements*>(node)->resolve(importImplements);
     }
 
     virtual void at(const OpDcl* node)
