@@ -10,19 +10,20 @@
 
 module ls {
 
-  typedef   Object LSInputStream;
+  typedef   object LSInputStream;
 
-  typedef   Object LSOutputStream;
+  typedef   object LSOutputStream;
 
-  typedef   Object LSReader;
+  typedef   object LSReader;
 
-  typedef   Object LSWriter;
+  typedef   object LSWriter;
 
   typedef dom::DOMConfiguration DOMConfiguration;
   typedef dom::DOMException DOMException;
   typedef dom::Node Node;
   typedef dom::Document Document;
   typedef dom::Element Element;
+  typedef dom::DOMImplementation DOMImplementation;
 
   exception LSException {
     // LSExceptionCode

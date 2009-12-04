@@ -11,6 +11,7 @@
 module traversal {
 
   typedef dom::Node Node;
+  typedef dom::Document Document;
   typedef dom::DOMException DOMException;
 
   interface NodeFilter;
