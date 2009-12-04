@@ -24,7 +24,7 @@ nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
 $(w3c_generated_files) : $(w3c_idl_files)
-	../esidl -I$(srcdir)/../npapi/include/w3c -java $^
+	../esidl -java $^
 
 noinst_DATA = build.xml
 

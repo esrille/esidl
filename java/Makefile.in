@@ -440,7 +440,7 @@ uninstall-am:
 vpath %.idl = $(srcdir)/../npapi/include/w3c
 
 $(w3c_generated_files) : $(w3c_idl_files)
-	../esidl -I$(srcdir)/../npapi/include/w3c -java $^
+	../esidl -java $^
 
 build.xml : build.xml.src
 	cp $^ $@
