@@ -26,13 +26,16 @@ nodist_noinst_HEADERS = \
 $(w3c_generated_files) : $(w3c_idl_files)
 	../esidl -java $^
 
-noinst_DATA = build.xml
+noinst_DATA = build.xml java-binding.zip
 
 build.xml : build.xml.src
 	cp $^ $@
 
+java-binding.zip : $(w3c_generated_files)
+	find . -name "*.java" -print | zip $@ -@
+
 clean-local:
-	rm -rf org build.xml
+	rm -rf org $(noinst_DATA)
 
 EXTRA_DIST = build.xml.src
 

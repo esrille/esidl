@@ -201,7 +201,7 @@ w3c_idl_files = \
 nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
-noinst_DATA = build.xml
+noinst_DATA = build.xml java-binding.zip
 EXTRA_DIST = build.xml.src
 all: all-am
 
@@ -445,8 +445,11 @@ $(w3c_generated_files) : $(w3c_idl_files)
 build.xml : build.xml.src
 	cp $^ $@
 
+java-binding.zip : $(w3c_generated_files)
+	find . -name "*.java" -print | zip $@ -@
+
 clean-local:
-	rm -rf org build.xml
+	rm -rf org $(noinst_DATA)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
