@@ -1,24 +1,23 @@
 SUFFIXES = .java .idl
 
-vpath %.idl = $(srcdir)/../npapi/include/w3c
+vpath %.idl = $(srcdir)/../dom
 
 w3c_generated_files = \
 	org/w3c/dom/Node.java
 
 w3c_idl_files = \
-	css.idl \
 	cssomview.idl \
-	dom.idl \
-	events.idl \
-	geolocation.idl \
-	html5.idl \
-	ls.idl \
-	ranges.idl \
-	smil.idl \
-	stylesheets.idl \
-	svg.idl \
-	traversal.idl \
-	views.idl
+	dom2css.idl \
+	dom2events.idl \
+	dom2ranges.idl \
+	dom2stylesheets.idl \
+	dom2traversal.idl \
+	dom3core.idl \
+	dom3ls.idl \
+	dom3validation.idl \
+	dom3xpath.idl \
+	file.idl \
+	html5.idl
 	
 nodist_noinst_HEADERS = \
 	$(w3c_generated_files)

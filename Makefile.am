@@ -33,7 +33,23 @@ AM_CPPFLAGS = \
 	-iquote $(srcdir)/src
 
 EXTRA_DIST = \
-	LICENSE
+	LICENSE \
+	dom/COPYRIGHT.html \
+	dom/cssomview.idl \
+	dom/dom2css.idl \
+	dom/dom2events.idl \
+	dom/dom2ranges.idl \
+	dom/dom2stylesheets.idl \
+	dom/dom2traversal.idl \
+	dom/dom2views.idl \
+	dom/dom3core.idl \
+	dom/dom3ls.idl \
+	dom/dom3validation.idl \
+	dom/dom3xpath.idl \
+	dom/file.idl \
+	dom/html5.idl \
+	dom/NOTICE \
+	dom/wget_webidl_dom
 
 clean-local:
 	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
