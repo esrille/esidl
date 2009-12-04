@@ -17,7 +17,8 @@ w3c_idl_files = \
 	dom3validation.idl \
 	dom3xpath.idl \
 	file.idl \
-	html5.idl
+	html5.idl \
+	xhr2.idl
 	
 nodist_noinst_HEADERS = \
 	$(w3c_generated_files)

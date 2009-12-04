@@ -49,7 +49,8 @@ EXTRA_DIST = \
 	dom/file.idl \
 	dom/html5.idl \
 	dom/NOTICE \
-	dom/wget_webidl_dom
+	dom/wget_webidl_dom \
+	dom/xhr2.idl
 
 clean-local:
 	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
