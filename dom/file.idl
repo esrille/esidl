@@ -1,0 +1,115 @@
+/*
+ * file.idl
+ *
+ * File API IDL definitions scraped from the W3C specification
+ *
+ * Original W3C Working Draft:
+ *
+ *   http://www.w3.org/TR/2009/WD-FileAPI-20091117/
+ */
+
+    typedef sequence<File> FileList;
+    
+
+
+    interface Blob {
+      
+      readonly attribute unsigned long long size;
+      
+      //slice Blob into byte-ranged chunks
+      
+      Blob slice(in long long start,
+                 in long long length); // raises DOMException
+    
+    };
+    
+
+
+  interface File : Blob {
+
+      readonly attribute DOMString name;
+      readonly attribute DOMString type;
+      readonly attribute DOMString urn;
+};
+  
+
+
+
+[Constructor]
+interface FileReader {
+
+  // async read methods 
+  void readAsBinaryString(in Blob fileBlob);
+  void readAsText(in Blob fileBlob, [Optional] in DOMString encoding);
+  void readAsDataURL(in File file);
+
+  void abort();
+
+  // states
+  const unsigned short EMPTY = 0;
+  const unsigned short LOADING = 1;
+  const unsigned short DONE = 2;
+  
+  
+  readonly attribute unsigned short readyState;
+
+  // file data
+  readonly attribute DOMString result;
+  
+  readonly attribute FileError error;
+
+  // event handler attributes
+  attribute Function onloadstart;
+  attribute Function onprogress;
+  attribute Function onload;
+  attribute Function onabort;
+  attribute Function onerror;
+  attribute Function onloadend;
+
+};
+FileReader implements EventTarget;
+  
+
+
+
+[Constructor]
+interface FileReaderSync {
+
+  // Synchronously return strings
+  // All three methods raise FileException
+  
+  DOMString readAsBinaryString(in Blob fileBlob); 
+  DOMString readAsText(in Blob fileBlob, [Optional] in DOMString encoding);                                                       
+  DOMString readAsDataURL(in File file); 
+};
+
+
+
+ interface FileError {
+   // File error codes
+   // Found in DOMException
+   const unsigned short NOT_FOUND_ERR = 8;
+   const unsigned short SECURITY_ERR = 18;
+   const unsigned short ABORT_ERR = 20;
+   
+   // Added by this specification
+   const unsigned short NOT_READABLE_ERR = 24;
+   const unsigned short ENCODING_ERR = 26;
+ 
+   readonly attribute unsigned short code;
+};
+
+
+
+ exception FileException {
+  
+  const unsigned short NOT_FOUND_ERR = 8;
+  const unsigned short SECURITY_ERR = 18;
+  const unsigned short ABORT_ERR = 20;
+  
+  const unsigned short NOT_READABLE_ERR = 24;
+  const unsigned short ENCODING_ERR = 26;
+ 
+  unsigned short code;
+};
+
