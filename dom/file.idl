@@ -1,12 +1,17 @@
 /*
  * file.idl
  *
- * File API IDL definitions scraped from the W3C specification
+ * File API IDL definitions scraped from the W3C specification, revised for esidl.
  *
  * Original W3C Working Draft:
  *
  *   http://www.w3.org/TR/2009/WD-FileAPI-20091117/
  */
+
+module file {
+
+    typedef events::EventTarget EventTarget;
+    typedef html::Function Function;
 
     typedef sequence<File> FileList;
     
@@ -111,5 +116,7 @@ interface FileReaderSync {
   const unsigned short ENCODING_ERR = 26;
  
   unsigned short code;
+};
+
 };
 
