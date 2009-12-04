@@ -352,7 +352,7 @@ public:
 class JavaImport : public Visitor, public Formatter
 {
     std::string package;
-    const Interface* current;
+    const Node* currentNode;
     bool printed;
     std::string prefixedName;
     std::set<std::string> importSet;
@@ -361,7 +361,7 @@ public:
     JavaImport(std::string package, FILE* file, const char* indent) :
         Formatter(file, indent),
         package(package),
-        current(0)
+        currentNode(0)
     {
     }
 
@@ -372,16 +372,18 @@ public:
 
     virtual void at(const ScopedName* node)
     {
-        assert(current);
+        assert(currentNode);
 
-        Node* resolved = node->search(current);
+        Node* resolved = node->search(currentNode);
         node->check(resolved, "could not resolved %s.", node->getName().c_str());
-        if (dynamic_cast<Interface*>(resolved) || dynamic_cast<ExceptDcl*>(resolved))
+        const Node* saved = currentNode;
+        currentNode = resolved->getParent();
+        if (!dynamic_cast<Interface*>(resolved) && !dynamic_cast<ExceptDcl*>(resolved))
         {
-            if (resolved->isBaseObject())
-            {
-                return;
-            }
+            resolved->accept(this);
+        }
+        else if (!resolved->isBaseObject())
+        {
             if (Module* module = dynamic_cast<Module*>(resolved->getParent()))
             {
                 if (prefixedName != module->getPrefixedName())
@@ -390,15 +392,30 @@ public:
                 }
             }
         }
+        currentNode = saved;
+    }
+
+    virtual void at(const SequenceType* node)
+    {
+        Node* spec = node->getSpec();
+        spec->accept(this);
+    }
+
+    virtual void at(const Member* node)
+    {
+        if (node->isTypedef(node->getParent()))
+        {
+            node->getSpec()->accept(this);
+        }
     }
 
     virtual void at(const Interface* node)
     {
-        if (current)
+        if (currentNode)
         {
             return;
         }
-        current = node;
+        currentNode = node;
         if (Module* module = dynamic_cast<Module*>(node->getParent()))
         {
             prefixedName = module->getPrefixedName();
@@ -416,10 +433,10 @@ public:
             {
                 continue;
             }
-            current = *i;
+            currentNode = *i;
             visitChildren(*i);
         }
-        current = node;
+        currentNode = node;
     }
 
     virtual void at(const Attribute* node)

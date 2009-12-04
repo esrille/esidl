@@ -108,6 +108,8 @@ public:
     {
         Node* resolved = node->search(currentNode);
         node->check(resolved, "%s could not resolved.", node->getName().c_str());
+        const Node* saved = currentNode;
+        currentNode = resolved->getParent();
         if (!dynamic_cast<Interface*>(resolved) && !dynamic_cast<ExceptDcl*>(resolved))
         {
             resolved->accept(this);
@@ -120,6 +122,7 @@ public:
         {
             write("%s", getEscapedName(resolved->getName()).c_str());
         }
+        currentNode = saved;
     }
 
     virtual void at(const Module* node)
