@@ -17,6 +17,7 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <algorithm>
 #include <set>
 #include "java.h"
 
@@ -61,6 +62,69 @@ FILE* createFile(const std::string package, const Node* node)
 
 }  // namespace
 
+std::string Java::getEscapedName(std::string name)
+{
+    static const char* reservedWords[] =
+    {
+        "abstract",
+        "assert",
+        "boolean",
+        "break",
+        "byte",
+        "case",
+        "catch",
+        "char",
+        "class",
+        "const",
+        "continue",
+        "default",
+        "do",
+        "double",
+        "else",
+        "enum",
+        "extends",
+        "final",
+        "finally",
+        "float",
+        "for",
+        "goto",
+        "if",
+        "implements",
+        "import",
+        "instanceof",
+        "int",
+        "interface",
+        "long",
+        "native",
+        "new",
+        "package",
+        "private",
+        "protected",
+        "public",
+        "return",
+        "short",
+        "static",
+        "strictfp",
+        "super",
+        "switch",
+        "synchronized",
+        "this",
+        "throw",
+        "throws",
+        "transient",
+        "try",
+        "void",
+        "volatile",
+        "while",
+    };
+    const char** p = find(reservedWords, reservedWords + sizeof reservedWords / sizeof reservedWords[0], name);
+    if (p == &reservedWords[sizeof reservedWords / sizeof reservedWords[0]])
+    {
+        return name;
+    }
+    return "_" + name;
+}
+
 class JavaInterface : public Java
 {
     // TODO: Move to Java
@@ -95,10 +159,10 @@ public:
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
-        write("public class %s extends RuntimeException {\n", node->getName().c_str());
+        write("public class %s extends RuntimeException {\n", getEscapedName(node->getName()).c_str());
             // Constructor
             // TODO: should check exception members
-            writeln("public %s(short code, String message) {", node->getName().c_str());
+            writeln("public %s(short code, String message) {", getEscapedName(node->getName()).c_str());
                 writeln("super(message);");
                 writeln("this.code = code;");
             writeln("}");
@@ -120,9 +184,7 @@ public:
             writetab();
         }
 
-        std::string name = node->getQualifiedName();
-        name = getInterfaceName(name);
-        write("public interface %s", name.substr(name.rfind(':') + 1).c_str());
+        write("public interface %s", Java::getEscapedName(node->getName()).c_str());
         if (node->getExtends())
         {
             const char* separator = " extends ";
@@ -210,7 +272,7 @@ public:
             writetab();
             write("public ");
             node->getSpec()->accept(this);
-            write(" %s;\n", node->getName().c_str());
+            write(" %s;\n", getEscapedName(node->getName()).c_str());
         }
     }
 
@@ -224,7 +286,7 @@ public:
 
         writetab();
         node->getSpec()->accept(this);
-        write(" %s", node->getName().c_str());
+        write(" %s", getEscapedName(node->getName()).c_str());
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
             write("[");
@@ -247,7 +309,7 @@ public:
         }
         write("public static final ");
         node->getSpec()->accept(this);
-        write(" %s = ", node->getName().c_str());
+        write(" %s = ", getEscapedName(node->getName()).c_str());
         node->getExp()->accept(this);
         write(";\n");
     }

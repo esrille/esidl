@@ -31,7 +31,6 @@ class Java : public Visitor, public Formatter
 protected:
     const char* source;
 
-    std::string objectTypeName;
     bool useExceptions;
 
     int optionalStage;
@@ -86,7 +85,6 @@ public:
     Java(const char* source, FILE* file, const char* indent = "es") :
         Formatter(file, indent),
         source(source),
-        objectTypeName("Object"),
         useExceptions(true),
         currentNode(0),
         paramCount(0),
@@ -98,7 +96,7 @@ public:
     {
         if (0 < node->getName().size())
         {
-            write("%s", node->getName().c_str());
+            write("%s", getEscapedName(node->getName()).c_str());
         }
         else
         {
@@ -120,7 +118,7 @@ public:
         }
         else
         {
-            write("%s", resolved->getName().c_str());
+            write("%s", getEscapedName(resolved->getName()).c_str());
         }
     }
 
@@ -261,7 +259,7 @@ public:
         {
             spec->accept(this);
         }
-        write(" %s)", name.c_str());
+        write(" %s)", getEscapedName(name).c_str());
         if (useExceptions && node->getSetRaises())
         {
             write(" throws ");
@@ -284,7 +282,7 @@ public:
         {
             spec->accept(this);
         }
-        write(" %s(", node->getName().c_str());
+        write(" %s(", getEscapedName(node->getName()).c_str());
         needComma = false;
 
         paramCount = 0;
@@ -333,7 +331,7 @@ public:
         {
             spec->accept(this);
         }
-        write(" %s", node->getName().c_str());
+        write(" %s", getEscapedName(node->getName()).c_str());
     }
 
     virtual void at(const Include* node)
@@ -350,15 +348,6 @@ public:
         {
             write("%s", node->getName().c_str());
         }
-    }
-
-    std::string getInterfaceName(std::string qualifiedName)
-    {
-        if (qualifiedName == Node::getBaseObjectName())
-        {
-            qualifiedName.replace(2, qualifiedName.length(), objectTypeName);
-        }
-        return qualifiedName;
     }
 
     static std::string getPackageName(std::string prefixedName)
@@ -379,6 +368,8 @@ public:
         }
         return prefixedName;
     }
+
+    static std::string getEscapedName(std::string name);
 };
 
 #endif  // ESIDL_JAVA_H_INCLUDED
