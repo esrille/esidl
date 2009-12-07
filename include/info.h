@@ -505,7 +505,7 @@ public:
             {
                 std::string name = (*i)->getName();
                 Node* resolved = resolve(currentNode, name);
-                node->check(resolved, "could not resolve `%s`.", name.c_str());
+                (*i)->check(resolved, "could not resolve `%s`.", name.c_str());
                 name = resolved->getQualifiedName();
                 write("\n");
                 writetab();
