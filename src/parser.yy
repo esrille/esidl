@@ -1360,7 +1360,7 @@ Preprocessor :
             free($4);
             $$ = 0;
             stdinOffset = stdinLine;
-            yylloc.last_line = 0;
+            yylloc.last_line = 1;
         }
     ;
 
