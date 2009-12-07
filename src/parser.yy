@@ -628,6 +628,7 @@ Operation :
             OpDcl* op = static_cast<OpDcl*>($2);
             if (op)
             {
+                op->setLocation(&@1, &@2);
                 uint32_t attr = op->getAttr();
                 /* TODO: Check attr is valid */
                 if (($1 & OpDcl::IndexGetter) || ($1 & OpDcl::IndexDeleter))
