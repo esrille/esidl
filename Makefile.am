@@ -48,6 +48,7 @@ EXTRA_DIST = \
 	dom/dom3xpath.idl \
 	dom/file.idl \
 	dom/html5.idl \
+	dom/idl_scraper.pl \
 	dom/NOTICE \
 	dom/wget_webidl_dom \
 	dom/xhr2.idl
