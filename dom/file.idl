@@ -45,7 +45,7 @@ interface FileReader {
 
   // async read methods 
   void readAsBinaryString(in Blob fileBlob);
-  void readAsText(in Blob fileBlob, [Optional] in DOMString encoding);
+  void readAsText(in Blob fileBlob, in optional DOMString encoding);
   void readAsDataURL(in File file);
 
   void abort();
@@ -84,7 +84,7 @@ interface FileReaderSync {
   // All three methods raise FileException
   
   DOMString readAsBinaryString(in Blob fileBlob); 
-  DOMString readAsText(in Blob fileBlob, [Optional] in DOMString encoding);                                                       
+  DOMString readAsText(in Blob fileBlob, in optional DOMString encoding);                                                       
   DOMString readAsDataURL(in File file); 
 };
 
