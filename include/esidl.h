@@ -136,6 +136,22 @@ public:
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);
 
+    void vreport(const char* message, va_list ap) const
+    {
+        fprintf(stderr, "%s:%d.%d-%d.%d: ",
+                source.c_str(), firstLine, firstColumn, lastLine, lastColumn);
+        vfprintf(stderr, message, ap);
+        fprintf(stderr, "\n");
+    }
+
+    void report(const char* message, ...) const
+    {
+        va_list ap;
+        va_start(ap, message);
+        vreport(message, ap);
+        va_end(ap);
+    }
+
     bool check(bool cond, const char* message, ...) const
     {
         if (cond)
@@ -145,10 +161,7 @@ public:
 
         va_list ap;
         va_start(ap, message);
-        fprintf(stderr, "%s:%d.%d-%d.%d: ",
-                source.c_str(), firstLine, firstColumn, lastLine, lastColumn);
-        vfprintf(stderr, message, ap);
-        fprintf(stderr, "\n");
+        vreport(message, ap);
         va_end(ap);
 
         exit(EXIT_FAILURE);

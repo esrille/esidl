@@ -392,6 +392,13 @@ void Interface::processExtendedAttributes()
         {
             attr |= Supplemental;
         }
+        else if (ext->getName() == "NoIndexingOperations" ||
+                 ext->getName() == "ImplementedOn" ||
+                 ext->getName() == "Callable" ||
+                 ext->getName() == "Stringifies")
+        {
+            ext->report("Warning: %s has been deprecated.", ext->getName().c_str());
+        }
     }
 
     if ((attr & (Supplemental | NoInterfaceObject)) == Supplemental)

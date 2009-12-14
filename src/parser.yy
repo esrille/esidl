@@ -307,6 +307,7 @@ Interface :
         }
     '{' InterfaceMembers '}' ';'
         {
+            getCurrent()->setLocation(&@1, &@8);
             $$ = getCurrent();
             setCurrent(getCurrent()->getParent());
             if (Node::getFlatNamespace() && getCurrent() == getSpecification())
@@ -865,9 +866,21 @@ ExtendedAttributes :
 
 ExtendedAttribute :
     ExtendedAttributeNoArg
+        {
+            $$->setLocation(&@1);
+        }
     | ExtendedAttributeArgList
+        {
+            $$->setLocation(&@1);
+        }
     | ExtendedAttributeNamedArgList
+        {
+            $$->setLocation(&@1);
+        }
     | ExtendedAttributeScopedName
+        {
+            $$->setLocation(&@1);
+        }
     ;
 
 Type :
