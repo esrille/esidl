@@ -293,8 +293,8 @@ void Implements::resolve(bool importImplements)
 {
     Interface* interface = dynamic_cast<Interface*>(getFirst()->search(getParent()));
     Interface* mixin = dynamic_cast<Interface*>(getSecond()->search(getParent()));
-    getFirst()->check(interface, "could not resolve `%s`.", getFirst()->getName().c_str());
-    getSecond()->check(mixin, "could not resolve `%s`.", getSecond()->getName().c_str());
+    getFirst()->check(interface, "could not resolve '%s'.", getFirst()->getName().c_str());
+    getSecond()->check(mixin, "could not resolve '%s'.", getSecond()->getName().c_str());
     interface->implements(mixin, importImplements);
 }
 
@@ -316,6 +316,10 @@ void Module::processExtendedAttributes()
             {
                 prefix = name->getName();
             }
+        }
+        else if (ext->getName() == "ExceptionConsts")
+        {
+            ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }
     }
 }
@@ -397,7 +401,7 @@ void Interface::processExtendedAttributes()
                  ext->getName() == "Callable" ||
                  ext->getName() == "Stringifies")
         {
-            ext->report("Warning: %s has been deprecated.", ext->getName().c_str());
+            ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }
     }
 
@@ -456,6 +460,11 @@ void Attribute::processExtendedAttributes()
                 putForwards = name->getName();
             }
         }
+        else if (ext->getName() == "Null" ||
+                 ext->getName() == "Undefined")
+        {
+            ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
+        }
     }
     setAttr(attr);
 }
@@ -496,9 +505,18 @@ void OpDcl::processExtendedAttributes()
                 }
             }
         }
-        else
+        else if (ext->getName() == "Null" ||
+                 ext->getName() == "Undefined" ||
+                 ext->getName() == "IndexCreator" ||
+                 ext->getName() == "IndexDeleter" ||
+                 ext->getName() == "IndexGetter" ||
+                 ext->getName() == "IndexSetter" ||
+                 ext->getName() == "NameCreator" ||
+                 ext->getName() == "NameDeleter" ||
+                 ext->getName() == "NameGetter" ||
+                 ext->getName() == "NameSetter")
         {
-            // ignore
+            ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }
     }
     setAttr(attr);
@@ -539,6 +557,13 @@ void ParamDcl::processExtendedAttributes()
                     attr |= UndefinedIsNull;
                 }
             }
+        }
+        else if (ext->getName() == "Null" ||
+                 ext->getName() == "Undefined" ||
+                 ext->getName() == "Optional" ||
+                 ext->getName() == "Variadic")
+        {
+            ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }
     }
     setAttr(attr);
@@ -612,7 +637,7 @@ void Interface::adjustMethodCount()
     {
         ScopedName* org = new ScopedName(name.substr(0, name.rfind('-')));
         Interface* supplemental = dynamic_cast<Interface*>(org->search(getParent()));
-        check(supplemental, "could not resolve `%s`.", name.substr(0, name.rfind('-')).c_str());
+        check(supplemental, "could not resolve '%s'.", name.substr(0, name.rfind('-')).c_str());
         supplementals.push_back(supplemental);
         supplemental->implements(this, true);
         break;
