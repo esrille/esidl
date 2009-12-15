@@ -196,6 +196,7 @@ w3c_idl_files = \
 	dom3xpath.idl \
 	file.idl \
 	html5.idl \
+	webgl.idl \
 	xhr2.idl
 
 nodist_noinst_HEADERS = \
@@ -446,7 +447,7 @@ build.xml : build.xml.src
 	cp $^ $@
 
 java-binding.zip : $(w3c_generated_files)
-	find . -name "*.java" -print | zip $@ -@
+	find . -name "*.java" -print | zip -q $@ -@
 
 clean-local:
 	rm -rf org $(noinst_DATA)

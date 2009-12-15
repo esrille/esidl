@@ -50,6 +50,7 @@ EXTRA_DIST = \
 	dom/html5.idl \
 	dom/idl_scraper.pl \
 	dom/NOTICE \
+	dom/webgl.idl \
 	dom/wget_webidl_dom \
 	dom/xhr2.idl
 

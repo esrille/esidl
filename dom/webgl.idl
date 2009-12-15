@@ -1,17 +1,36 @@
 /*
  * webgl.idl
  *
- * WebGL IDL definitions scraped from the Khronos specification.
+ * WebGL IDL definitions scraped from the Khronos specification, revised for esidl.
  *
  * Original Khronos Working Draft:
  *
  *   https://cvs.khronos.org/svn/repos/registry/trunk/public/webgl/doc/spec/WebGL-spec.html
  */
 
+module webgl {
+
+typedef events::Event Event;
+typedef dom::DOMException DOMException;
+typedef html::HTMLCanvasElement HTMLCanvasElement;
+typedef html::HTMLImageElement HTMLImageElement;
+typedef html::HTMLVideoElement HTMLVideoElement;
+typedef html::ImageData ImageData;
+
+typedef unsigned long  GLenum;
+typedef boolean        GLboolean;
+typedef unsigned long  GLbitfield;
+typedef long           GLint;
+typedef long           GLsizei;
+typedef long           GLsizeiptr;
+typedef unsigned long  GLuint;
+typedef float          GLfloat;
+typedef float          GLclampf;  
+
 interface WebGLContextAttributes {
-    [NameGetter] DOMString get(in DOMString name);
-    [NameSetter, NameCreator] void set(in DOMString name, in DOMString value);
-    [NameDeleter] void remove(in DOMString name);
+    getter DOMString get(in DOMString name);
+    setter creator void set(in DOMString name, in DOMString value);
+    deleter void remove(in DOMString name);
 };
 
 interface WebGLObject {
@@ -37,7 +56,7 @@ interface WebGLTexture : WebGLObject {
 
 interface WebGLObjectArray {
     readonly attribute unsigned long length;
-    [IndexGetter] WebGLObject get(in unsigned long index);
+    getter WebGLObject get(in unsigned long index);
 };
 
 interface WebGLUniformLocation {
@@ -68,135 +87,110 @@ interface WebGLArray {
 
 [
     Constructor(in unsigned long length),
-    Constructor(in WebGLTypeNameArray array)
-    Constructor(in sequence<type> array)
+    Constructor(in WebGLByteArray array),
+    Constructor(in sequence<long> array),
     Constructor(in WebGLArrayBuffer buffer, 
-                [Optional] in unsigned long byteOffset, [Optional] in unsigned long length)
-]
-interface WebGLTypeNameArray : WebGLArray {
-    [IndexGetter] type get(in unsigned long index);
-    [IndexSetter] void set(in unsigned long index, in type value);
-    void set(in WebGLTypeNameArray array, [Optional] in unsigned long offset);
-    void set(in sequence<type> array, [Optional] in unsigned long offset);
-};
-
-
-[
-    Constructor(in unsigned long length),
-    Constructor(in WebGLByteArray array)
-    Constructor(in sequence<long> array)
-    Constructor(in WebGLArrayBuffer buffer, 
-                [Optional] in unsigned long byteOffset, [Optional] in unsigned long length)
+                in optional unsigned long byteOffset, in optional unsigned long length)
 ]
 interface WebGLByteArray : WebGLArray {
-    [IndexGetter] long get(in unsigned long index);
-    [IndexSetter] void set(in unsigned long index, in long value);
-    void set(in WebGLByteArray array, [Optional] in unsigned long offset);
-    void set(in sequence<long> array, [Optional] in unsigned long offset);
+    getter long get(in unsigned long index);
+    setter void set(in unsigned long index, in long value);
+    void set(in WebGLByteArray array, in optional unsigned long offset);
+    void set(in sequence<long> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
-    Constructor(in WebGLUnsignedByteArray array)
-    Constructor(in sequence<unsigned long> array)
+    Constructor(in WebGLUnsignedByteArray array),
+    Constructor(in sequence<unsigned long> array),
     Constructor(in WebGLArrayBuffer buffer, 
-                [Optional] in unsigned long byteOffset, [Optional] in unsigned long length)
+                in optional unsigned long byteOffset, in optional unsigned long length)
 ]
 interface WebGLUnsignedByteArray : WebGLArray {
-    [IndexGetter] unsigned long get(in unsigned long index);
-    [IndexSetter] void set(in unsigned long index, in unsigned long value);
-    void set(in WebGLUnsignedByteArray array, [Optional] in unsigned long offset);
-    void set(in sequence<unsigned long> array, [Optional] in unsigned long offset);
+    getter unsigned long get(in unsigned long index);
+    setter void set(in unsigned long index, in unsigned long value);
+    void set(in WebGLUnsignedByteArray array, in optional unsigned long offset);
+    void set(in sequence<unsigned long> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
-    Constructor(in WebGLShortArray array)
-    Constructor(in sequence<long> array)
+    Constructor(in WebGLShortArray array),
+    Constructor(in sequence<long> array),
     Constructor(in WebGLArrayBuffer buffer, 
-                [Optional] in unsigned long byteOffset, [Optional] in unsigned long length)
+                in optional unsigned long byteOffset, in optional unsigned long length)
 ]
 interface WebGLShortArray : WebGLArray {
-    [IndexGetter] long get(in unsigned long index);
-    [IndexSetter] void set(in unsigned long index, in long value);
-    void set(in WebGLShortArray array, [Optional] in unsigned long offset);
-    void set(in sequence<long> array, [Optional] in unsigned long offset);
+    getter long get(in unsigned long index);
+    setter void set(in unsigned long index, in long value);
+    void set(in WebGLShortArray array, in optional unsigned long offset);
+    void set(in sequence<long> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
-    Constructor(in WebGLUnsignedShortArray array)
-    Constructor(in sequence<unsigned long> array)
+    Constructor(in WebGLUnsignedShortArray array),
+    Constructor(in sequence<unsigned long> array),
     Constructor(in WebGLArrayBuffer buffer, 
-                [Optional] in unsigned long byteOffset, [Optional] in unsigned long length)
+                in optional unsigned long byteOffset, in optional unsigned long length)
 ]
 interface WebGLUnsignedShortArray : WebGLArray {
-    [IndexGetter] unsigned long get(in unsigned long index);
-    [IndexSetter] void set(in unsigned long index, in unsigned long value);
-    void set(in WebGLUnsignedShortArray array, [Optional] in unsigned long offset);
-    void set(in sequence<unsigned long> array, [Optional] in unsigned long offset);
+    getter unsigned long get(in unsigned long index);
+    setter void set(in unsigned long index, in unsigned long value);
+    void set(in WebGLUnsignedShortArray array, in optional unsigned long offset);
+    void set(in sequence<unsigned long> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
-    Constructor(in WebGLIntArray array)
-    Constructor(in sequence<long> array)
+    Constructor(in WebGLIntArray array),
+    Constructor(in sequence<long> array),
     Constructor(in WebGLArrayBuffer buffer, 
-                [Optional] in unsigned long byteOffset, [Optional] in unsigned long length)
+                in optional unsigned long byteOffset, in optional unsigned long length)
 ]
 interface WebGLIntArray : WebGLArray {
-    [IndexGetter] long get(in unsigned long index);
-    [IndexSetter] void set(in unsigned long index, in long value);
-    void set(in WebGLIntArray array, [Optional] in unsigned long offset);
-    void set(in sequence<long> array, [Optional] in unsigned long offset);
+    getter long get(in unsigned long index);
+    setter void set(in unsigned long index, in long value);
+    void set(in WebGLIntArray array, in optional unsigned long offset);
+    void set(in sequence<long> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
-    Constructor(in WebGLUnsignedIntArray array)
-    Constructor(in sequence<unsigned long> array)
+    Constructor(in WebGLUnsignedIntArray array),
+    Constructor(in sequence<unsigned long> array),
     Constructor(in WebGLArrayBuffer buffer, 
-                [Optional] in unsigned long byteOffset, [Optional] in unsigned long length)
+                in optional unsigned long byteOffset, in optional unsigned long length)
 ]
 interface WebGLUnsignedIntArray : WebGLArray {
-    [IndexGetter] unsigned long get(in unsigned long index);
-    [IndexSetter] void set(in unsigned long index, in unsigned long value);
-    void set(in WebGLUnsignedIntArray array, [Optional] in unsigned long offset);
-    void set(in sequence<unsigned long> array, [Optional] in unsigned long offset);
+    getter unsigned long get(in unsigned long index);
+    setter void set(in unsigned long index, in unsigned long value);
+    void set(in WebGLUnsignedIntArray array, in optional unsigned long offset);
+    void set(in sequence<unsigned long> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
-    Constructor(in WebGLFloatArray array)
-    Constructor(in sequence<float> array)
+    Constructor(in WebGLFloatArray array),
+    Constructor(in sequence<float> array),
     Constructor(in WebGLArrayBuffer buffer, 
-                [Optional] in unsigned long byteOffset, [Optional] in unsigned long length)
+                in optional unsigned long byteOffset, in optional unsigned long length)
 ]
 interface WebGLFloatArray : WebGLArray {
-    [IndexGetter] float get(in unsigned long index);
-    [IndexSetter] void set(in unsigned long index, in float value);
-    void set(in WebGLFloatArray array, [Optional] in unsigned long offset);
-    void set(in sequence<float> array, [Optional] in unsigned long offset);
+    getter float get(in unsigned long index);
+    setter void set(in unsigned long index, in float value);
+    void set(in WebGLFloatArray array, in optional unsigned long offset);
+    void set(in sequence<float> array, in optional unsigned long offset);
 };
 
 interface WebGLRenderingContext {
 
-    typedef unsigned long  GLenum;
-    typedef boolean        GLboolean;
-    typedef unsigned long  GLbitfield;
-    typedef long           GLint;
-    typedef long           GLsizei;
-    typedef long           GLsizeiptr;
-    typedef unsigned long  GLuint;
-    typedef float          GLfloat;
-    typedef float          GLclampf;
-    
     /* ClearBufferMask */
     const GLenum DEPTH_BUFFER_BIT               = 0x00000100;
     const GLenum STENCIL_BUFFER_BIT             = 0x00000400;
@@ -772,16 +766,16 @@ interface WebGLRenderingContext {
                     in GLsizei width, in GLsizei height, in GLint border, in GLenum format, 
                     in GLenum type, in WebGLArray pixels) raises(DOMException);
     void texImage2D(in GLenum target, in GLint level, in ImageData pixels,
-                    [Optional] GLboolean flipY, [Optional] in asPremultipliedAlpha) 
+                    in optional GLboolean flipY, in optional GLboolean asPremultipliedAlpha) 
                                                                         raises(DOMException);
     void texImage2D(in GLenum target, in GLint level, in HTMLImageElement image,
-                    [Optional] GLboolean flipY, [Optional] in asPremultipliedAlpha) 
+                    in optional GLboolean flipY, in optional GLboolean asPremultipliedAlpha) 
                                                                         raises(DOMException);
     void texImage2D(in GLenum target, in GLint level, in HTMLCanvasElement image,
-                    [Optional] GLboolean flipY, [Optional] in asPremultipliedAlpha) 
+                    in optional GLboolean flipY, in optional GLboolean asPremultipliedAlpha) 
                                                                         raises(DOMException);
     void texImage2D(in GLenum target, in GLint level, in HTMLVideoElement image,
-                    [Optional] GLboolean flipY, [Optional] in asPremultipliedAlpha) 
+                    in optional GLboolean flipY, in optional GLboolean asPremultipliedAlpha) 
                                                                         raises(DOMException);
 
     void texParameterf(in GLenum target, in GLenum pname, in GLfloat param) 
@@ -794,19 +788,19 @@ interface WebGLRenderingContext {
                                                                         raises(DOMException);
     void texSubImage2D(in GLenum target, in GLint level, in GLint xoffset, in GLint yoffset, 
                        in ImageData pixels,
-                       [Optional] GLboolean flipY, [Optional] in asPremultipliedAlpha)
+                       in optional GLboolean flipY, in optional GLboolean asPremultipliedAlpha)
                                                                         raises(DOMException);
     void texSubImage2D(in GLenum target, in GLint level, in GLint xoffset, in GLint yoffset, 
                        in HTMLImageElement image,
-                       [Optional] GLboolean flipY, [Optional] in asPremultipliedAlpha) 
+                       in optional GLboolean flipY, in optional GLboolean asPremultipliedAlpha) 
                                                                         raises(DOMException);
     void texSubImage2D(in GLenum target, in GLint level, in GLint xoffset, in GLint yoffset, 
                        in HTMLCanvasElement image,
-                       [Optional] GLboolean flipY, [Optional] in asPremultipliedAlpha) 
+                       in optional GLboolean flipY, in optional GLboolean asPremultipliedAlpha) 
                                                                         raises(DOMException);
     void texSubImage2D(in GLenum target, in GLint level, in GLint xoffset, in GLint yoffset, 
                        in HTMLVideoElement image,
-                       [Optional] GLboolean flipY, [Optional] in asPremultipliedAlpha) 
+                       in optional GLboolean flipY, in optional GLboolean asPremultipliedAlpha) 
                                                                         raises(DOMException);
 
     void uniform1f(in WebGLUniformLocation location, in GLfloat x) raises(DOMException);
@@ -887,3 +881,4 @@ interface WebGLResourceLostEvent : Event {
                                     in WebGLRenderingContext context);
 };
 
+};
