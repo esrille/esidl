@@ -5,7 +5,7 @@
  *
  * Original W3C Working Draft:
  *
- *   http://www.w3.org/TR/2009/WD-html5-20090825/Overview.html
+ *   http://dev.w3.org/html5/spec/Overview.html (Editor's Draft 15 December 2009)
  */
 
 module html {
@@ -14,6 +14,7 @@ typedef long long Date;   // TBD at W3C. This is Date object in JavaScript.
 
 typedef css::CSSStyleDeclaration CSSStyleDeclaration;
 typedef dom::Document Document;
+typedef dom::DOMImplementation DOMImplementation;
 typedef dom::DOMStringList DOMStringList;
 typedef dom::Element Element;
 typedef dom::Node Node;
@@ -30,48 +31,44 @@ typedef Window WindowProxy;
 
 interface HTMLCollection {
   readonly attribute unsigned long length;
-  caller getter Element item(in unsigned long index);
-  caller getter Element namedItem(in DOMString name);
+  caller getter object item(in unsigned long index); // only returns Element
+  caller getter object namedItem(in DOMString name); // only returns Element
+};
+
+interface HTMLAllCollection : HTMLCollection {
+  // inherits length and item()
+  caller getter object namedItem(in DOMString name); // overrides inherited namedItem()
   HTMLAllCollection tags(in DOMString tagName);
 };
 
-interface HTMLAllCollection {
-  readonly attribute unsigned long length;
-  caller getter Element item(in unsigned long index);
-  caller getter object namedItem(in DOMString name);
-  HTMLAllCollection tags(in DOMString tagName);
-};
-
-interface HTMLFormControlsCollection {
-  readonly attribute unsigned long length;
-  caller getter HTMLElement item(in unsigned long index);
-  caller getter object namedItem(in DOMString name);
+interface HTMLFormControlsCollection : HTMLCollection {
+  // inherits length and item()
+  caller getter object namedItem(in DOMString name); // overrides inherited namedItem()
 };
 
 interface RadioNodeList : NodeList {
           attribute DOMString value;
 };
 
-interface HTMLOptionsCollection {
-           attribute unsigned long length;
-  caller getter HTMLOptionElement item(in unsigned long index);
-  caller getter object namedItem(in DOMString name);
+interface HTMLOptionsCollection : HTMLCollection {
+  // inherits item()
+           attribute unsigned long length; // overrides inherited length
+  caller getter object namedItem(in DOMString name); // overrides inherited namedItem()
   void add(in HTMLElement element, in optional HTMLElement before);
   void add(in HTMLElement element, in long before);
   void remove(in long index);
 };
 
-interface HTMLPropertyCollection {
-  readonly attribute unsigned long length;
+interface HTMLPropertiesCollection : HTMLCollection {
+  // inherits length and item()
+  caller getter PropertyNodeList namedItem(in DOMString name); // overrides inherited namedItem()
   readonly attribute DOMStringList names;
-  caller getter HTMLElement item(in unsigned long index);
-  caller getter PropertyNodeList namedItem(in DOMString name);
 };
 
 typedef sequence<any> PropertyValueArray;
 
 interface PropertyNodeList : NodeList {
-          attribute PropertyValueArray contents;
+  readonly attribute PropertyValueArray values;
 };
 
 interface DOMTokenList {
@@ -91,7 +88,7 @@ interface DOMSettableTokenList : DOMTokenList {
 interface DOMStringMap {
   getter DOMString (in DOMString name);
   setter void (in DOMString name, in DOMString value);
-  creator void (in DOMString name);
+  creator void (in DOMString name, in DOMString value);
   deleter void (in DOMString name);
 };
 
@@ -114,6 +111,7 @@ interface HTMLDocument {
            attribute DOMString title;
            attribute DOMString dir;
            attribute HTMLElement body;
+  readonly attribute HTMLHeadElement head;
   readonly attribute HTMLCollection images;
   readonly attribute HTMLCollection embeds;
   readonly attribute HTMLCollection plugins;
@@ -148,7 +146,7 @@ interface HTMLDocument {
   DOMString queryCommandValue(in DOMString commandId);
   readonly attribute HTMLCollection commands;
 
-  // event handler DOM attributes
+  // event handler IDL attributes
            attribute Function onabort;
            attribute Function onblur;
            attribute Function oncanplay;
@@ -206,6 +204,11 @@ interface HTMLDocument {
 };
 Document implements HTMLDocument;
 
+[Supplemental, NoInterfaceObject]
+interface DOMHTMLImplementation {
+  Document createHTMLDocument(in DOMString title);
+};
+DOMImplementation implements DOMHTMLImplementation;
 
 interface HTMLElement : Element {
   // DOM tree accessors
@@ -226,11 +229,13 @@ interface HTMLElement : Element {
   readonly attribute DOMStringMap dataset;
 
   // microdata
-           attribute DOMString item;
-  [PutForwards=value] readonly attribute DOMSettableTokenList itemprop;
-  readonly attribute HTMLPropertyCollection properties;
-           attribute DOMString content;
-           attribute HTMLElement subject;
+           attribute boolean itemScope;
+           attribute DOMString itemType;
+           attribute DOMString itemId;
+           attribute DOMString itemRef;
+  [PutForwards=value] readonly attribute DOMSettableTokenList itemProp;
+  readonly attribute HTMLPropertiesCollection properties;
+           attribute any itemValue;
 
   // user interaction
            attribute boolean hidden;
@@ -258,7 +263,7 @@ interface HTMLElement : Element {
   // styling
   readonly attribute CSSStyleDeclaration style;
 
-  // event handler DOM attributes
+  // event handler IDL attributes
            attribute Function onabort;
            attribute Function onblur;
            attribute Function oncanplay;
@@ -345,6 +350,7 @@ HTMLLinkElement implements LinkStyle;
 interface HTMLMetaElement : HTMLElement {
            attribute DOMString name;
            attribute DOMString httpEquiv;
+           attribute DOMString content;
 };
 
 interface HTMLStyleElement : HTMLElement {
@@ -377,15 +383,13 @@ interface HTMLBodyElement : HTMLElement {
            attribute Function onoffline;
            attribute Function ononline;
            attribute Function onpopstate;
+           attribute Function onpagehide;
+           attribute Function onpageshow;
            attribute Function onredo;
            attribute Function onresize;
            attribute Function onstorage;
            attribute Function onundo;
            attribute Function onunload;
-};
-
-interface HTMLArticleElement : HTMLElement {
-           attribute DOMString pubDate;
 };
 
 interface HTMLHeadingElement : HTMLElement {};
@@ -415,6 +419,8 @@ interface HTMLLIElement : HTMLElement {
 
 interface HTMLDListElement : HTMLElement {};
 
+interface HTMLDivElement : HTMLElement {};
+
 interface HTMLAnchorElement : HTMLElement {
   stringifier attribute DOMString href;
            attribute DOMString target;
@@ -425,7 +431,7 @@ interface HTMLAnchorElement : HTMLElement {
            attribute DOMString hreflang;
            attribute DOMString type;
 
-  // URL decomposition attributes
+  // URL decomposition IDL attributes
            attribute DOMString protocol;
            attribute DOMString host;
            attribute DOMString hostname;
@@ -433,6 +439,12 @@ interface HTMLAnchorElement : HTMLElement {
            attribute DOMString pathname;
            attribute DOMString search;
            attribute DOMString hash;
+};
+
+interface HTMLTimeElement : HTMLElement {
+           attribute DOMString dateTime;
+           attribute boolean pubDate;
+  readonly attribute Date valueAsDate;
 };
 
 interface HTMLProgressElement : HTMLElement {
@@ -448,13 +460,6 @@ interface HTMLMeterElement : HTMLElement {
            attribute float low;
            attribute float high;
            attribute float optimum;
-};
-
-interface HTMLTimeElement : HTMLElement {
-           attribute DOMString dateTime;
-  readonly attribute Date date;
-  readonly attribute Date time;
-  readonly attribute Date timezone;
 };
 
 interface HTMLSpanElement : HTMLElement {};
@@ -474,6 +479,8 @@ interface HTMLImageElement : HTMLElement {
            attribute boolean isMap;
            attribute unsigned long width;
            attribute unsigned long height;
+  readonly attribute unsigned long naturalWidth;
+  readonly attribute unsigned long naturalHeight;
   readonly attribute boolean complete;
 };
 
@@ -505,6 +512,12 @@ interface HTMLObjectElement : HTMLElement {
            attribute DOMString height;
   readonly attribute Document contentDocument;
   readonly attribute WindowProxy contentWindow;
+
+  readonly attribute boolean willValidate;
+  readonly attribute ValidityState validity;
+  readonly attribute DOMString validationMessage;
+  boolean checkValidity();
+  void setCustomValidity(in DOMString error);
 };
 
 interface HTMLParamElement : HTMLElement {
@@ -541,8 +554,7 @@ interface HTMLMediaElement : HTMLElement {
   const unsigned short NETWORK_EMPTY = 0;
   const unsigned short NETWORK_IDLE = 1;
   const unsigned short NETWORK_LOADING = 2;
-  const unsigned short NETWORK_LOADED = 3;
-  const unsigned short NETWORK_NO_SOURCE = 4;
+  const unsigned short NETWORK_NO_SOURCE = 3;
   readonly attribute unsigned short networkState;
            attribute boolean autobuffer;
   readonly attribute TimeRanges buffered;
@@ -732,7 +744,7 @@ interface HTMLAreaElement : HTMLElement {
            attribute DOMString hreflang;
            attribute DOMString type;
 
-  // URL decomposition attributes
+  // URL decomposition IDL attributes
            attribute DOMString protocol;
            attribute DOMString host;
            attribute DOMString hostname;
@@ -757,6 +769,7 @@ interface HTMLTableElement : HTMLElement {
   readonly attribute HTMLCollection rows;
   HTMLElement insertRow(in optional long index);
   void deleteRow(in long index);
+           attribute DOMString summary;
 };
 
 interface HTMLTableCaptionElement : HTMLElement {};
@@ -800,7 +813,7 @@ interface HTMLFormElement : HTMLElement {
            attribute DOMString enctype;
            attribute DOMString method;
            attribute DOMString name;
-           attribute boolean novalidate;
+           attribute boolean noValidate;
            attribute DOMString target;
 
   readonly attribute HTMLFormControlsCollection elements;
@@ -832,6 +845,10 @@ interface HTMLFieldSetElement : HTMLElement {
   void setCustomValidity(in DOMString error);
 };
 
+interface HTMLLegendElement : HTMLElement {
+  readonly attribute HTMLFormElement form;
+};
+
 interface HTMLLabelElement : HTMLElement {
   readonly attribute HTMLFormElement form;
            attribute DOMString htmlFor;
@@ -857,7 +874,7 @@ interface HTMLInputElement : HTMLElement {
            attribute boolean indeterminate;
   readonly attribute HTMLElement list;
            attribute DOMString max;
-           attribute unsigned long maxLength;
+           attribute long maxLength;
            attribute DOMString min;
            attribute boolean multiple;
            attribute DOMString name;
@@ -876,8 +893,8 @@ interface HTMLInputElement : HTMLElement {
   readonly attribute HTMLOptionElement selectedOption;
            attribute DOMString width;
 
-  void stepUp(in long n);
-  void stepDown(in long n);
+  void stepUp(in optional long n);
+  void stepDown(in optional long n);
 
   readonly attribute boolean willValidate;
   readonly attribute ValidityState validity;
@@ -897,11 +914,11 @@ interface HTMLButtonElement : HTMLElement {
            attribute boolean autofocus;
            attribute boolean disabled;
   readonly attribute HTMLFormElement form;
-           attribute DOMString formaction;
-           attribute DOMString formenctype;
-           attribute DOMString formmethod;
-           attribute DOMString formnoValidate;
-           attribute DOMString formtarget;
+           attribute DOMString formAction;
+           attribute DOMString formEnctype;
+           attribute DOMString formMethod;
+           attribute DOMString formNoValidate;
+           attribute DOMString formTarget;
            attribute DOMString name;
            attribute DOMString type;
            attribute DOMString value;
@@ -977,7 +994,7 @@ interface HTMLTextAreaElement : HTMLElement {
            attribute unsigned long cols;
            attribute boolean disabled;
   readonly attribute HTMLFormElement form;
-           attribute unsigned long maxLength;
+           attribute long maxLength;
            attribute DOMString name;
            attribute DOMString placeholder;
            attribute boolean readOnly;
@@ -1069,12 +1086,6 @@ interface HTMLMenuElement : HTMLElement {
            attribute DOMString label;
 };
 
-interface HTMLLegendElement : HTMLElement {
-  readonly attribute HTMLFormElement form;
-};
-
-interface HTMLDivElement : HTMLElement {};
-
 [OverrideBuiltins]
 interface Window {
   // the current browsing context
@@ -1096,8 +1107,8 @@ interface Window {
   void blur();
 
   // other browsing contexts
-  readonly attribute WindowProxy frames;
-  readonly attribute unsigned long length;
+  [Replaceable] readonly attribute WindowProxy frames;
+  [Replaceable] readonly attribute unsigned long length;
   readonly attribute WindowProxy top;
   [Replaceable] readonly attribute WindowProxy opener;
   readonly attribute WindowProxy parent;
@@ -1121,7 +1132,7 @@ interface Window {
   void postMessage(in any message, in DOMString targetOrigin);
   void postMessage(in any message, in MessagePortArray ports, in DOMString targetOrigin);
 
-  // event handler DOM attributes
+  // event handler IDL attributes
            attribute Function onabort;
            attribute Function onafterprint;
            attribute Function onbeforeprint;
@@ -1169,6 +1180,8 @@ interface Window {
            attribute Function onpause;
            attribute Function onplay;
            attribute Function onplaying;
+           attribute Function onpagehide;
+           attribute Function onpageshow;
            attribute Function onpopstate;
            attribute Function onprogress;
            attribute Function onratechange;
@@ -1190,6 +1203,7 @@ interface Window {
            attribute Function onvolumechange;
            attribute Function onwaiting;
 };
+Window implements EventTarget;
 
 interface BarProp {
            attribute boolean visible;
@@ -1240,7 +1254,7 @@ interface NavigatorAbilities {
   // content handler registration
   void registerProtocolHandler(in DOMString scheme, in DOMString url, in DOMString title);
   void registerContentHandler(in DOMString mimeType, in DOMString url, in DOMString title);
-  void getStorageUpdates();
+  void yieldForStorageUpdates();
 };
 
 interface ApplicationCache {
@@ -1268,6 +1282,7 @@ interface ApplicationCache {
            attribute Function oncached;
            attribute Function onobsolete;
 };
+ApplicationCache implements EventTarget;
 
 interface History {
   readonly attribute long length;
@@ -1275,13 +1290,12 @@ interface History {
   void back();
   void forward();
   void pushState(in any data, in DOMString title, in optional DOMString url);
-  void clearState();
+  void replaceState(in any data, in DOMString title, in optional DOMString url);
 };
 
 interface PopStateEvent : Event {
   readonly attribute any state;
   void initPopStateEvent(in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in any stateArg);
-  void initPopStateEventNS(in DOMString namespaceURIArg, in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in any stateArg);
 };
 
 interface Location {
@@ -1290,7 +1304,7 @@ interface Location {
   void replace(in DOMString url);
   void reload();
 
-  // URL decomposition attributes 
+  // URL decomposition IDL attributes 
            attribute DOMString protocol;
            attribute DOMString host;
            attribute DOMString hostname;
@@ -1330,7 +1344,6 @@ interface DragEvent : MouseEvent {
   readonly attribute DataTransfer dataTransfer;
 
   void initDragEvent(in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in AbstractView viewArg, in long detailArg, in long screenXArg, in long screenYArg, in long clientXArg, in long clientYArg, in boolean ctrlKeyArg, in boolean altKeyArg, in boolean shiftKeyArg, in boolean metaKeyArg, in unsigned short buttonArg, in EventTarget relatedTargetArg, in DataTransfer dataTransferArg);
-  void initDragEventNS(in DOMString namespaceURIArg, in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in AbstractView viewArg, in long detailArg, in long screenXArg, in long screenYArg, in long clientXArg, in long clientYArg, in unsigned short buttonArg, in EventTarget relatedTargetArg, in DOMString modifiersListArg, in DataTransfer dataTransferArg);
 };
 
 interface DataTransfer {
@@ -1360,7 +1373,6 @@ interface UndoManager {
 interface UndoManagerEvent : Event {
   readonly attribute any data;
   void initUndoManagerEvent(in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in any dataArg);
-  void initUndoManagerEventNS(in DOMString namespaceURIArg, in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in any dataArg);
 };
 
 interface MessageEvent : Event {
@@ -1370,7 +1382,6 @@ interface MessageEvent : Event {
   readonly attribute WindowProxy source;
   readonly attribute MessagePortArray ports;
   void initMessageEvent(in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in any dataArg, in DOMString originArg, in DOMString lastEventIdArg, in WindowProxy sourceArg, in MessagePortArray portsArg);
-  void initMessageEventNS(in DOMString namespaceURI, in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in any dataArg, in DOMString originArg, in DOMString lastEventIdArg, in WindowProxy sourceArg, in MessagePortArray portsArg);
 };
 
 [Constructor]
@@ -1386,9 +1397,10 @@ interface MessagePort {
   void start();
   void close();
 
-  // event handler attributes
+  // event handlers
            attribute Function onmessage;
 };
+MessagePort implements EventTarget;
 
 interface HTMLAppletElement : HTMLElement {
            attribute DOMString align;
@@ -1439,6 +1451,8 @@ interface HTMLFrameSetElement : HTMLElement {
            attribute Function onmessage;
            attribute Function onoffline;
            attribute Function ononline;
+           attribute Function onpagehide;
+           attribute Function onpageshow;
            attribute Function onpopstate;
            attribute Function onredo;
            attribute Function onresize;
@@ -1463,6 +1477,7 @@ interface HTMLFrameElement : HTMLElement {
 interface HTMLAnchorElement {
            attribute DOMString coords;
            attribute DOMString charset;
+           attribute DOMString name;
            attribute DOMString rev;
            attribute DOMString shape;
 };
@@ -1521,6 +1536,12 @@ interface HTMLDListElement {
            attribute DOMString compact;
 };
 
+[Supplemental]
+interface HTMLEmbedElement {
+           attribute DOMString align;
+           attribute DOMString name;
+};
+
 interface HTMLFontElement : HTMLElement {
            attribute DOMString color;
            attribute DOMString face;
@@ -1540,6 +1561,7 @@ interface HTMLHeadElement {
 [Supplemental]
 interface HTMLHRElement {
            attribute DOMString align;
+           attribute DOMString color;
            attribute boolean noShade;
            attribute DOMString size;
            attribute DOMString width;
@@ -1654,7 +1676,6 @@ interface HTMLTableElement {
            attribute DOMString cellSpacing;
            attribute DOMString frame;
            attribute DOMString rules;
-           attribute DOMString summary;
            attribute DOMString width;
 };
 
@@ -1709,5 +1730,5 @@ interface HTMLDocument {
   readonly attribute HTMLAllCollection all;
 };
 
-};  // module html5
+};
 
