@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,6 +74,7 @@ int yylex();
 %token ANY
 %token ATTRIBUTE
 %token BOOLEAN
+%token BYTE
 %token CALLER
 %token CONST
 %token CREATOR
@@ -943,7 +944,11 @@ UnsignedIntegerType :
     ;
 
 IntegerType :
-    SHORT
+    BYTE
+        {
+            $$ = new Type("byte");
+        }
+    | SHORT
         {
             $$ = new Type("short");
         }

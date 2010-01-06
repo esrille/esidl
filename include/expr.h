@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,6 +53,12 @@ inline Literal::operator char() const
     return s[0];
 }
 
+inline Literal::operator int8_t() const
+{
+    int64_t value = static_cast<int64_t>(*this);
+    return static_cast<int8_t>(value);
+}
+
 inline Literal::operator int16_t() const
 {
     int64_t value = static_cast<int64_t>(*this);
@@ -77,10 +83,10 @@ inline Literal::operator int64_t() const
     return static_cast<int64_t>(value);
 }
 
-inline Literal::operator unsigned char() const
+inline Literal::operator uint8_t() const
 {
     uint64_t value = static_cast<uint64_t>(*this);
-    return static_cast<unsigned char>(value);
+    return static_cast<uint8_t>(value);
 }
 
 inline Literal::operator uint16_t() const

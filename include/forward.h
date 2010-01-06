@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Google Inc.
+ * Copyright 2009, 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -228,6 +228,16 @@ public:
             node->getExp()->accept(&eval);
         }
         else if (type->getName() == "octet")
+        {
+            EvalInteger<uint8_t> eval(node->getParent());
+            node->getExp()->accept(&eval);
+        }
+        else if (type->getName() == "byte")
+        {
+            EvalInteger<int8_t> eval(node->getParent());
+            node->getExp()->accept(&eval);
+        }
+        else if (type->getName() == "unsigned byte")
         {
             EvalInteger<uint8_t> eval(node->getParent());
             node->getExp()->accept(&eval);

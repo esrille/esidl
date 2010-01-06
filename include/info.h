@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -159,6 +159,14 @@ public:
         else if (node->getName() == "octet")
         {
             write("%c", Reflect::kOctet);
+        }
+        else if (node->getName() == "byte")
+        {
+            write("%c", Reflect::kByte);
+        }
+        else if (node->getName() == "unsigned byte")
+        {
+            write("%c", Reflect::kUnsignedByte);
         }
         else if (node->getName() == "short")
         {
@@ -574,6 +582,18 @@ public:
             write("%u ", eval.getValue());
         }
         else if (type->getName() == "octet")
+        {
+            EvalInteger<uint8_t> eval(node->getParent());
+            node->getExp()->accept(&eval);
+            write("%u ", eval.getValue());
+        }
+        else if (type->getName() == "byte")
+        {
+            EvalInteger<int8_t> eval(node->getParent());
+            node->getExp()->accept(&eval);
+            write("%d ", eval.getValue());
+        }
+        else if (type->getName() == "unsigned byte")
         {
             EvalInteger<uint8_t> eval(node->getParent());
             node->getExp()->accept(&eval);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -120,6 +120,10 @@ any                 {
 attribute           {
                         stepLocation();
                         return ATTRIBUTE;
+                    }
+byte                {   /* ES extension for WebGL */
+                        stepLocation();
+                        return BYTE;
                     }
 boolean             {
                         stepLocation();

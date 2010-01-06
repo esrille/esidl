@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -159,6 +159,10 @@ public:
             write(nullable ? "Boolean" : "boolean");
         }
         else if (node->getName() == "octet")
+        {
+            write(nullable ? "Byte" : "byte");
+        }
+        else if (node->getName() == "byte" || node->getName() == "unsigned byte")
         {
             write(nullable ? "Byte" : "byte");
         }

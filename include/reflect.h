@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2006, 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,7 +62,8 @@
  *    B type: nullable
  *    v: void
  *    b: boolean
- *    h: octet
+ *    g: byte
+ *    h: octet, unsigned byte
  *    s: short
  *    t: unsigned short
  *    l: long
@@ -85,6 +86,8 @@ public:
     // Type
     static const char kVoid = 'v';
     static const char kBoolean = 'b';
+    static const char kByte = 'g';
+    static const char kUnsignedByte = 'h';
     static const char kOctet = 'h';
     static const char kShort = 's';
     static const char kUnsignedShort = 't';
@@ -136,6 +139,7 @@ public:
         switch (*info)
         {
         case kBoolean:
+        case kByte:
         case kOctet:
         case kShort:
         case kUnsignedShort:
@@ -186,6 +190,7 @@ public:
         {
         case kVoid:
         case kBoolean:
+        case kByte:
         case kOctet:
         case kShort:
         case kUnsignedShort:
@@ -275,6 +280,7 @@ public:
         {
             switch (getType())
             {
+            case kByte:
             case kOctet:
             case kShort:
             case kUnsignedShort:
@@ -346,6 +352,7 @@ public:
                 return 0;
             case kBoolean:
                 return sizeof(bool);
+            case kByte:
             case kOctet:
                 return sizeof(uint8_t);
             case kShort:

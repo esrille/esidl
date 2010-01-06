@@ -412,6 +412,11 @@ public:
         return compare("boolean", scope) == 0;
     }
 
+    virtual bool isByte(const Node* scope) const
+    {
+        return compare("byte", scope) == 0;
+    }
+
     virtual bool isShort(const Node* scope) const
     {
         return compare("short", scope) == 0;
@@ -425,6 +430,11 @@ public:
     virtual bool isLongLong(const Node* scope) const
     {
         return compare("long long", scope) == 0;
+    }
+
+    virtual bool isUnsignedByte(const Node* scope) const
+    {
+        return compare("unsigned byte", scope) == 0;
     }
 
     virtual bool isUnsignedShort(const Node* scope) const
@@ -1174,10 +1184,11 @@ public:
 
     operator bool() const;
     operator char() const;
+    operator int8_t() const;
     operator int16_t() const;
     operator int32_t() const;
     operator int64_t() const;
-    operator unsigned char() const;
+    operator uint8_t() const;
     operator uint16_t() const;
     operator uint32_t() const;
     operator uint64_t() const;

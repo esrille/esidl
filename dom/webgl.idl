@@ -20,9 +20,13 @@ typedef html::ImageData ImageData;
 typedef unsigned long  GLenum;
 typedef boolean        GLboolean;
 typedef unsigned long  GLbitfield;
+typedef byte           GLbyte;         /* 'byte' should be a signed 8 bit type. */
+typedef short          GLshort;
 typedef long           GLint;
 typedef long           GLsizei;
 typedef long           GLsizeiptr;
+typedef unsigned byte  GLubyte;        /* 'unsigned byte' should be an unsigned 8 bit type. */
+typedef unsigned short GLushort;
 typedef unsigned long  GLuint;
 typedef float          GLfloat;
 typedef float          GLclampf;  
@@ -88,7 +92,7 @@ interface WebGLArray {
 [
     Constructor(in unsigned long length),
     Constructor(in WebGLByteArray array),
-    Constructor(in sequence<long> array),
+    Constructor(in sequence<GLbyte> array),
     Constructor(in WebGLArrayBuffer buffer, 
                 in optional unsigned long byteOffset, in optional unsigned long length)
 ]
@@ -96,14 +100,14 @@ interface WebGLByteArray : WebGLArray {
     getter long get(in unsigned long index);
     setter void set(in unsigned long index, in long value);
     void set(in WebGLByteArray array, in optional unsigned long offset);
-    void set(in sequence<long> array, in optional unsigned long offset);
+    void set(in sequence<GLbyte> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
     Constructor(in WebGLUnsignedByteArray array),
-    Constructor(in sequence<unsigned long> array),
+    Constructor(in sequence<GLubyte> array),
     Constructor(in WebGLArrayBuffer buffer, 
                 in optional unsigned long byteOffset, in optional unsigned long length)
 ]
@@ -111,14 +115,14 @@ interface WebGLUnsignedByteArray : WebGLArray {
     getter unsigned long get(in unsigned long index);
     setter void set(in unsigned long index, in unsigned long value);
     void set(in WebGLUnsignedByteArray array, in optional unsigned long offset);
-    void set(in sequence<unsigned long> array, in optional unsigned long offset);
+    void set(in sequence<GLubyte> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
     Constructor(in WebGLShortArray array),
-    Constructor(in sequence<long> array),
+    Constructor(in sequence<GLshort> array),
     Constructor(in WebGLArrayBuffer buffer, 
                 in optional unsigned long byteOffset, in optional unsigned long length)
 ]
@@ -126,14 +130,14 @@ interface WebGLShortArray : WebGLArray {
     getter long get(in unsigned long index);
     setter void set(in unsigned long index, in long value);
     void set(in WebGLShortArray array, in optional unsigned long offset);
-    void set(in sequence<long> array, in optional unsigned long offset);
+    void set(in sequence<GLshort> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
     Constructor(in WebGLUnsignedShortArray array),
-    Constructor(in sequence<unsigned long> array),
+    Constructor(in sequence<GLushort> array),
     Constructor(in WebGLArrayBuffer buffer, 
                 in optional unsigned long byteOffset, in optional unsigned long length)
 ]
@@ -141,14 +145,14 @@ interface WebGLUnsignedShortArray : WebGLArray {
     getter unsigned long get(in unsigned long index);
     setter void set(in unsigned long index, in unsigned long value);
     void set(in WebGLUnsignedShortArray array, in optional unsigned long offset);
-    void set(in sequence<unsigned long> array, in optional unsigned long offset);
+    void set(in sequence<GLushort> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
     Constructor(in WebGLIntArray array),
-    Constructor(in sequence<long> array),
+    Constructor(in sequence<GLint> array),
     Constructor(in WebGLArrayBuffer buffer, 
                 in optional unsigned long byteOffset, in optional unsigned long length)
 ]
@@ -156,14 +160,14 @@ interface WebGLIntArray : WebGLArray {
     getter long get(in unsigned long index);
     setter void set(in unsigned long index, in long value);
     void set(in WebGLIntArray array, in optional unsigned long offset);
-    void set(in sequence<long> array, in optional unsigned long offset);
+    void set(in sequence<GLint> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
     Constructor(in WebGLUnsignedIntArray array),
-    Constructor(in sequence<unsigned long> array),
+    Constructor(in sequence<GLuint> array),
     Constructor(in WebGLArrayBuffer buffer, 
                 in optional unsigned long byteOffset, in optional unsigned long length)
 ]
@@ -171,22 +175,22 @@ interface WebGLUnsignedIntArray : WebGLArray {
     getter unsigned long get(in unsigned long index);
     setter void set(in unsigned long index, in unsigned long value);
     void set(in WebGLUnsignedIntArray array, in optional unsigned long offset);
-    void set(in sequence<unsigned long> array, in optional unsigned long offset);
+    void set(in sequence<GLuint> array, in optional unsigned long offset);
 };
 
 
 [
     Constructor(in unsigned long length),
     Constructor(in WebGLFloatArray array),
-    Constructor(in sequence<float> array),
+    Constructor(in sequence<GLfloat> array),
     Constructor(in WebGLArrayBuffer buffer, 
                 in optional unsigned long byteOffset, in optional unsigned long length)
 ]
 interface WebGLFloatArray : WebGLArray {
-    getter float get(in unsigned long index);
-    setter void set(in unsigned long index, in float value);
+    getter GLfloat get(in unsigned long index);
+    setter void set(in unsigned long index, in GLfloat value);
     void set(in WebGLFloatArray array, in optional unsigned long offset);
-    void set(in sequence<float> array, in optional unsigned long offset);
+    void set(in sequence<GLfloat> array, in optional unsigned long offset);
 };
 
 interface WebGLRenderingContext {
