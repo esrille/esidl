@@ -26,6 +26,8 @@
 #include "esidl.h"
 #include "formatter.h"
 
+#define USE_CONSTRUCTOR
+
 class Java : public Visitor, public Formatter
 {
 protected:
@@ -41,6 +43,8 @@ protected:
 
     int paramCount;  // The number of parameters of the previously evaluated operation
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
+
+    std::string methodAccessLevel;
 
     int getParamCount() const
     {
@@ -88,7 +92,8 @@ public:
         useExceptions(true),
         currentNode(0),
         paramCount(0),
-        variadicParam(0)
+        variadicParam(0),
+        methodAccessLevel("public")
     {
     }
 
@@ -209,7 +214,7 @@ public:
             spec = &replaceable;
         }
 
-        write("public ");
+        write("%s ", methodAccessLevel.c_str());
         if (NativeType* nativeType = spec->isNative(node->getParent()))
         {
             nativeType->accept(this);
@@ -252,7 +257,7 @@ public:
         std::string name = getBufferName(node);
 
         // setter
-        write("public ");
+        write("%s ", methodAccessLevel.c_str());
         write("void set%s(", cap.c_str());
         if (NativeType* nativeType = spec->isNative(node->getParent()))
         {
@@ -273,7 +278,7 @@ public:
 
     virtual void at(const OpDcl* node)
     {
-        write("public ");
+        write("%s ", methodAccessLevel.c_str());
 
         bool needComma = true;  // true to write "," before the 1st parameter
         Node* spec = node->getSpec();

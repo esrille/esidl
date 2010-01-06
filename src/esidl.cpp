@@ -375,6 +375,7 @@ void Interface::processExtendedAttributes()
                 extends->add(name);
                 constructor = new Interface("Constructor", extends);
                 constructor->setRank(getRank());
+                constructor->setAttr(constructor->getAttr() | Interface::Constructor);
                 add(constructor);
 
                 interfaceName = new ScopedName(getName());

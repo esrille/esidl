@@ -39,7 +39,16 @@ FILE* createFile(const std::string package, const Node* node)
         filename[pos] = '/';
     }
 
+#ifndef USE_CONSTRUCTOR
     filename += "/" + node->getName() + ".java";
+#else
+    filename += "/";
+    if (node->getAttr() & Node::Constructor)
+    {
+        filename += node->getParent()->getName() + "_";
+    }
+    filename += node->getName() + ".java";
+#endif
 
     std::string dir;
     std::string path(filename);
@@ -172,6 +181,8 @@ public:
 
     virtual void at(const Interface* node)
     {
+        Interface* constructor = node->getConstructor();
+
         if (!currentNode)
         {
             currentNode = node->getParent();
@@ -184,10 +195,25 @@ public:
             writetab();
         }
 
-        write("public interface %s", Java::getEscapedName(node->getName()).c_str());
+        write("public %s ", constructor ? "abstract class" : "interface");
+
+#ifdef USE_CONSTRUCTOR
+        if (node->getAttr() & Interface::Constructor)
+        {
+            write("%s_%s", Java::getEscapedName(node->getParent()->getName()).c_str(),
+                           node->getName().c_str());
+        }
+        else
+        {
+            write("%s", Java::getEscapedName(node->getName()).c_str());
+        }
+#else
+        write("%s", Java::getEscapedName(node->getName()).c_str());
+#endif
+
         if (node->getExtends())
         {
-            const char* separator = " extends ";
+            const char* separator = constructor ? " implements " : " extends ";
             for (NodeList::iterator i = node->getExtends()->begin();
                  i != node->getExtends()->end();
                  ++i)
@@ -203,6 +229,13 @@ public:
             }
         }
         write(" {\n");
+
+#ifdef USE_CONSTRUCTOR
+        if (constructor)
+        {
+            methodAccessLevel = "public abstract";
+        }
+#endif
 
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
@@ -229,6 +262,24 @@ public:
             }
             currentNode = saved;
         }
+
+#ifdef USE_CONSTRUCTOR
+        if (constructor)
+        {
+            methodAccessLevel = "public static";
+            writeln("");
+            writeln("// Constructor");
+            writeln("static public %s_Constructor factory;",
+                    Java::getEscapedName(node->getName()).c_str());
+            for (NodeList::iterator i = constructor->begin();
+                 i != constructor->end();
+                 ++i)
+            {
+                visitInterfaceElement(constructor, *i);
+            }
+            methodAccessLevel = "public";
+        }
+#endif
 
         writeln("}");
     }
@@ -345,7 +396,32 @@ public:
             writetab();
         }
         Java::at(node);
+
+#ifdef USE_CONSTRUCTOR
+        if (methodAccessLevel == "public static")
+        {
+            writeln("{");
+                writetab();
+                write("return factory.createInstance(");
+                NodeList::iterator param = node->begin();
+                for (int i = 0; i < paramCount; ++i, ++param)
+                {
+                    if (i != 0)
+                    {
+                        write(", ");
+                    }
+                    write("%s", getEscapedName((*param)->getName()).c_str());
+                }
+                write(");\n");
+            writeln("}");
+        }
+        else
+        {
+            write(";\n");
+        }
+#else
         write(";\n");
+#endif
     }
 };
 
@@ -416,7 +492,13 @@ public:
             return;
         }
         currentNode = node;
-        if (Module* module = dynamic_cast<Module*>(node->getParent()))
+#ifdef USE_CONSTRUCTOR
+        if (node->getAttr() & Interface::Constructor)
+        {
+            currentNode = node->getParent();
+        }
+#endif
+        if (Module* module = dynamic_cast<Module*>(currentNode->getParent()))
         {
             prefixedName = module->getPrefixedName();
         }
@@ -555,6 +637,13 @@ public:
         javaInterface.at(node);
 
         fclose(file);
+
+#ifdef USE_CONSTRUCTOR
+        if (Interface* constructor = node->getConstructor())
+        {
+            at(constructor);
+        }
+#endif
     }
 };
 

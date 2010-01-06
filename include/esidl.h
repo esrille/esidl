@@ -132,6 +132,8 @@ public:
     static const uint32_t ImplementedOn =            0x01000000;
     // [Supplemental]
     static const uint32_t Supplemental =             0x02000000;
+    // [Constructor]
+    static const uint32_t Constructor =              0x04000000;
 
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);
