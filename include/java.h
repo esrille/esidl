@@ -207,6 +207,82 @@ public:
         write("[]");
     }
 
+    virtual void at(const ArrayType* node)
+    {
+        Node* spec = node->getSpec();
+        if (ScopedName* name = dynamic_cast<ScopedName*>(spec))
+        {
+            spec = name->search(currentNode);
+        }
+        Type* type = dynamic_cast<Type*>(spec);
+        if (type && !(type->getAttr() & Node::Nullable))
+        {
+            if (type->getName() == "boolean")
+            {
+                write("BooleanArray");
+                return;
+            }
+            else if (type->getName() == "octet")
+            {
+                write("OctetArray");
+                return;
+            }
+            else if (type->getName() == "byte")
+            {
+                write("ByteArray");
+                return;
+            }
+            else if (type->getName() == "unsigned byte")
+            {
+                write("UnsignedByteArray");
+                return;
+            }
+            else if (type->getName() == "short")
+            {
+                write("ShortArray");
+                return;
+            }
+            else if (type->getName() == "unsigned short")
+            {
+                write("UnsignedShortArray");
+                return;
+            }
+            else if (type->getName() == "long")
+            {
+                write("LongArray");
+                return;
+            }
+            else if (type->getName() == "unsigned long")
+            {
+                write("UnsignedLongArray");
+                return;
+            }
+            else if (type->getName() == "long long")
+            {
+                write("LongLongArray");
+                return;
+            }
+            else if (type->getName() == "unsigned long long")
+            {
+                write("UnsignedLongLongArray");
+                return;
+            }
+            else if (type->getName() == "float")
+            {
+                write("FloatArray");
+                return;
+            }
+            else if (type->getName() == "double")
+            {
+                write("DoubleArray");
+                return;
+            }
+        }
+        write("ObjectArray<");
+        node->getSpec()->accept(this);
+        write(">");
+    }
+
     void getter(const Attribute* node)
     {
         static Type replaceable("any");

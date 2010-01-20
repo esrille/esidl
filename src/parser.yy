@@ -193,10 +193,9 @@ int yylex();
 %type <node>        PrimaryExpr
 %type <name>        UnaryOperator
 %type <node>        Preprocessor
-%type <node>        Declarator
-%type <node>        array_declarator
-%type <node>        fixed_array_size_list
-%type <node>        fixed_array_size
+%type <node>        BracketsListOpt
+%type <node>        BracketsList
+%type <node>        Brackets
 %type <node>        positive_int_const
 %type <name>        JavaDoc
 
@@ -387,11 +386,11 @@ ExceptionMembers :
     ;
 
 Typedef :
-    TYPEDEF Type Declarator ';'
+    TYPEDEF Type IDENTIFIER ';'
         {
-            Member* m = static_cast<Member*>($3);
+            Member* m = new Member($3);
             // In flat namespace mode, even a valid typedef can define a new type for the spec using the exactly same name.
-            if (dynamic_cast<ArrayDcl*>(m) || !dynamic_cast<ScopedName*>($2) || m->getQualifiedName() != $2->getQualifiedName())
+            if (!dynamic_cast<ScopedName*>($2) || m->getQualifiedName() != $2->getQualifiedName())
             {
                 m->setSpec($2);
                 m->setTypedef(true);
@@ -885,9 +884,42 @@ ExtendedAttribute :
     ;
 
 Type :
-    NullableType
-    | ScopedName  /* Note in esidl, "object" is treated as a ScopedName. */
-    | AnyType
+    NullableType BracketsListOpt
+        {
+            if ($2)
+            {
+                static_cast<ArrayType*>($2)->setSpec($1);
+                $$ = $2;
+            }
+            else
+            {
+                $$ = $1;
+            }
+        }
+    | ScopedName BracketsListOpt /* Note in esidl, "object" is treated as a ScopedName. */
+        {
+            if ($2)
+            {
+                static_cast<ArrayType*>($2)->setSpec($1);
+                $$ = $2;
+            }
+            else
+            {
+                $$ = $1;
+            }
+        }
+    | AnyType BracketsListOpt
+        {
+            if ($2)
+            {
+                static_cast<ArrayType*>($2)->setSpec($1);
+                $$ = $2;
+            }
+            else
+            {
+                $$ = $1;
+            }
+        }
     ;
 
 NullableType :
@@ -1072,7 +1104,7 @@ ScopedNames :
 
 ScopedName :
     AbsoluteScopedName
-        {
+       {
             $$->setLocation(&@1);
         }
     | RelativeScopedName
@@ -1252,41 +1284,33 @@ positive_int_const :
     ConstExpr
     ;
 
-Declarator :
-    IDENTIFIER
+BracketsListOpt :
+    /* empty */
         {
-            $$ = new Member($1);
-            free($1);
+            $$ = 0;
         }
-    | array_declarator
-    ;
-
-array_declarator :
-    IDENTIFIER fixed_array_size_list
+    | BracketsList
         {
-            $2->getName() = $1;
-            $$ = $2;
-            free($1);
         }
     ;
 
-fixed_array_size_list :
-    fixed_array_size
+BracketsList :
+    Brackets
+    | Brackets BracketsList
         {
-            $$ = new ArrayDcl;
-            $$->add($1);
-        }
-    | fixed_array_size_list fixed_array_size
-        {
-            $1->add($2);
+            static_cast<ArrayType*>($1)->setSpec($2);
             $$ = $1;
         }
     ;
 
-fixed_array_size :
-    '[' positive_int_const ']'
+Brackets :
+    '[' ']'
         {
-            $$ = $2;
+            $$ = new ArrayType;
+        }
+    | '[' positive_int_const ']'
+        {
+            $$ = new ArrayType($2);
         }
     ;
 

@@ -327,29 +327,6 @@ public:
         }
     }
 
-    virtual void at(const ArrayDcl* node)
-    {
-        assert(!node->isLeaf());
-        if (node->isTypedef(node->getParent()))
-        {
-            return;
-        }
-
-        writetab();
-        node->getSpec()->accept(this);
-        write(" %s", getEscapedName(node->getName()).c_str());
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            write("[");
-            (*i)->accept(this);
-            write("]");
-        }
-        if (node->isTypedef(node->getParent()))
-        {
-            write(";\n");
-        }
-    }
-
     virtual void at(const ConstDcl* node)
     {
         writetab();
@@ -475,6 +452,81 @@ public:
     {
         Node* spec = node->getSpec();
         spec->accept(this);
+    }
+
+    virtual void at(const ArrayType* node)
+    {
+        Node* spec = node->getSpec();
+        if (ScopedName* name = dynamic_cast<ScopedName*>(spec))
+        {
+            spec = name->search(currentNode);
+        }
+        Type* type = dynamic_cast<Type*>(spec);
+        if (type && !(type->getAttr() & Node::Nullable))
+        {
+            if (type->getName() == "boolean")
+            {
+                importSet.insert("org.w3c.dom.BooleanArray");
+                return;
+            }
+            else if (type->getName() == "octet")
+            {
+                importSet.insert("org.w3c.dom.OctetArray");
+                return;
+            }
+            else if (type->getName() == "byte")
+            {
+                importSet.insert("org.w3c.dom.ByteArray");
+                return;
+            }
+            else if (type->getName() == "unsigned byte")
+            {
+                importSet.insert("org.w3c.dom.UnsignedByteArray");
+                return;
+            }
+            else if (type->getName() == "short")
+            {
+                importSet.insert("org.w3c.dom.ShortArray");
+                return;
+            }
+            else if (type->getName() == "unsigned short")
+            {
+                importSet.insert("org.w3c.dom.UnsignedShortArray");
+                return;
+            }
+            else if (type->getName() == "long")
+            {
+                importSet.insert("org.w3c.dom.LongArray");
+                return;
+            }
+            else if (type->getName() == "unsigned long")
+            {
+                importSet.insert("org.w3c.dom.UnsignedLongArray");
+                return;
+            }
+            else if (type->getName() == "long long")
+            {
+                importSet.insert("org.w3c.dom.LongLongArray");
+                return;
+            }
+            else if (type->getName() == "unsigned long long")
+            {
+                importSet.insert("org.w3c.dom.UnsignedLongLongArray");
+                return;
+            }
+            else if (type->getName() == "float")
+            {
+                importSet.insert("org.w3c.dom.FloatArray");
+                return;
+            }
+            else if (type->getName() == "double")
+            {
+                importSet.insert("org.w3c.dom.DoubleArray");
+                return;
+            }
+        }
+        importSet.insert("org.w3c.dom.ObjectArray");
+        node->getSpec()->accept(this);
     }
 
     virtual void at(const Member* node)

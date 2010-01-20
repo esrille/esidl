@@ -236,7 +236,15 @@ public:
         {
             write("int get%s(", cap.c_str());
             seq->accept(this);
-            write(" %s, int %sLength)", name.c_str(), name.c_str());
+            write(" %s", name.c_str());
+            if (seq->getMax())
+            {
+                write(")");
+            }
+            else
+            {
+                write(", int %sLength)", name.c_str());
+            }
         }
         else if (!hasCustomStringType() && spec->isString(node->getParent()))
         {
@@ -313,7 +321,15 @@ public:
         {
             write("int set%s(const ", cap.c_str());
             seq->accept(this);
-            write(" %s, int %sLength)", name.c_str(), name.c_str());
+            write(" %s", name.c_str());
+            if (seq->getMax())
+            {
+                write(")");
+            }
+            else
+            {
+                write(", int %sLength)", name.c_str());
+            }
         }
         else if (spec->isString(node->getParent()))
         {
@@ -375,7 +391,11 @@ public:
             write("int");
             write(" %s(", node->getName().c_str());
             seq->accept(this);
-            write(" %s, int %sLength", name.c_str(), name.c_str());
+            write(" %s", name.c_str());
+            if (!seq->getMax())
+            {
+                write(", int %sLength", name.c_str());
+            }
         }
         else if (!hasCustomStringType() && spec->isString(node->getParent()))
         {
@@ -481,7 +501,11 @@ public:
         else if (seq)
         {
             seq->accept(this);
-            write(" %s, int %sLength", node->getName().c_str() , node->getName().c_str());
+            write(" %s", node->getName().c_str());
+            if (!seq->getMax())
+            {
+                write(", int %sLength", node->getName().c_str());
+            }
         }
         else if (spec->isArray(node->getParent()))
         {

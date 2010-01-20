@@ -144,10 +144,6 @@ public:
 
     virtual void at(const Type* node)
     {
-        if (node->getAttr() & Node::Nullable)
-        {
-            write("%c", Reflect::kNullable);
-        }
         if (node->getName() == "void")
         {
             write("%c", Reflect::kVoid);
@@ -214,6 +210,10 @@ public:
                     node->getName().c_str());
             exit(EXIT_FAILURE);
         }
+        if (node->getAttr() & Node::Nullable)
+        {
+            write("%c", Reflect::kNullable);
+        }
     }
 
     virtual void at(const NativeType* node)
@@ -232,11 +232,26 @@ public:
 
     virtual void at(const SequenceType* node)
     {
+        write("%c", Reflect::kSequence);
+        if (node->getMax())
+        {
+            write("%u", const_cast<SequenceType*>(node)->getLength(currentNode));
+        }
+        Node* spec = node->getSpec();
+        spec->accept(this);
         if (node->getAttr() & Node::Nullable)
         {
             write("%c", Reflect::kNullable);
         }
-        write("%c", Reflect::kSequence);
+    }
+
+    virtual void at(const ArrayType* node)
+    {
+        write("%c", Reflect::kArray);
+        if (node->getMax())
+        {
+            write("%u", const_cast<ArrayType*>(node)->getLength(currentNode));
+        }
         Node* spec = node->getSpec();
         spec->accept(this);
     }
@@ -658,16 +673,6 @@ public:
     virtual void at(const Member* node)
     {
         assert(node->isTypedef(node->getParent()));
-        getSpec(node)->accept(this);
-    }
-
-    virtual void at(const ArrayDcl* node)
-    {
-        assert(node->isTypedef(node->getParent()));
-        assert(node->getDimension() == 1);
-        EvalInteger<uint32_t> eval(node->getParent());
-        (*(node->begin()))->accept(&eval);
-        write("%c%u", Reflect::kArray, eval.getValue());
         getSpec(node)->accept(this);
     }
 

@@ -215,28 +215,6 @@ public:
         write(" %s;\n", node->getName().c_str());
     }
 
-    virtual void at(const ArrayDcl* node)
-    {
-        assert(!node->isLeaf());
-        writetab();
-        if (node->isTypedef(node->getParent()))
-        {
-            write("typedef ");
-        }
-        node->getSpec()->accept(this);
-        write(" %s", node->getName().c_str());
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            write("[");
-            (*i)->accept(this);
-            write("]");
-        }
-        if (node->isTypedef(node->getParent()))
-        {
-            write(";\n");
-        }
-    }
-
     virtual void at(const ConstDcl* node)
     {
         writetab();

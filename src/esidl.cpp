@@ -615,7 +615,7 @@ Node* ScopedName::search(const Node* scope) const
     {
         if (Member* member = dynamic_cast<Member*>(resolved))
         {
-            if (member->isTypedef(member->getParent()) && !member->isArray(member->getParent()))
+            if (member->isTypedef(member->getParent()))
             {
                 if (ScopedName* node = dynamic_cast<ScopedName*>(member->getSpec()))
                 {
@@ -715,6 +715,30 @@ void Interface::processExtendedAttributes(Attribute* attr)
     {
         methodCount += 2;
     }
+}
+
+unsigned SequenceType::getLength(const Node* scope)
+{
+    EvalInteger<unsigned> eval(scope);
+
+    if (!max)
+    {
+        return 0;
+    }
+    max->accept(&eval);
+    return eval.getValue();
+}
+
+unsigned ArrayType::getLength(const Node* scope)
+{
+    EvalInteger<unsigned> eval(scope);
+
+    if (!max)
+    {
+        return 0;
+    }
+    max->accept(&eval);
+    return eval.getValue();
 }
 
 void yyerror(const char* message, ...)

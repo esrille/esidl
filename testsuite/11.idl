@@ -1,7 +1,7 @@
 module A
 {
-    typedef sequence<unsigned short> S;
-    typedef long T[10];
+    typedef sequence<unsigned short, 20> S;
+    typedef long[10] T;
 
     interface X
     {

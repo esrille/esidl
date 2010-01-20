@@ -30,7 +30,7 @@ $(w3c_generated_files) : $(w3c_idl_files)
 noinst_DATA = build.xml java-binding.zip
 
 build.xml : build.xml.src
-	cp $^ $@
+	sed -e 's|$$(srcdir)|$(srcdir)|' $^ > $@
 
 java-binding.zip : $(w3c_generated_files)
 	find . -name "*.java" -print | zip -q $@ -@

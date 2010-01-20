@@ -193,19 +193,6 @@ public:
         printf(" %s", node->getName().c_str());
     }
 
-    virtual void at(const ArrayDcl* node)
-    {
-        assert(!node->isLeaf());
-
-        at(static_cast<const Member*>(node));
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            printf("[");
-            (*i)->accept(this);
-            printf("]");
-        }
-    }
-
     virtual void at(const Attribute* node)
     {
         if (node->hasExtendedAttributes())

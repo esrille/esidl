@@ -44,12 +44,12 @@ class Node;
     class Type;
     class NativeType;
     class SequenceType;
+    class ArrayType;
     class BinaryExpr;
     class UnaryExpr;
     class GroupingExpression;
     class Literal;
     class Member;
-        class ArrayDcl;
         class Attribute;
         class ConstDcl;
         class OpDcl;
@@ -482,12 +482,12 @@ public:
         return 0;
     }
 
-    virtual StructType* isStruct(const Node* scope)
+    virtual ArrayType* isArray(const Node* scope)
     {
         return 0;
     }
 
-    virtual ArrayDcl* isArray(const Node* scope)
+    virtual StructType* isStruct(const Node* scope)
     {
         return 0;
     }
@@ -656,6 +656,16 @@ public:
         return node->isSequence(node->getParent());
     }
 
+    virtual ArrayType* isArray(const Node* scope)
+    {
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
+        return node->isArray(node->getParent());
+    }
+
     virtual StructType* isStruct(const Node* scope)
     {
         Node* node = search(scope);
@@ -674,16 +684,6 @@ public:
             return 0;
         }
         return node->isNative(node->getParent());
-    }
-
-    virtual ArrayDcl* isArray(const Node* scope)
-    {
-        Node* node = search(scope);
-        if (!node)
-        {
-            return 0;
-        }
-        return node->isArray(node->getParent());
     }
 
     virtual Member* isTypedef(const Node* scope) const
@@ -1120,7 +1120,56 @@ public:
         return max;
     }
 
+    unsigned getLength(const Node* scope);
+
     virtual SequenceType* isSequence(const Node* scope)
+    {
+        return this;
+    }
+
+    virtual void accept(Visitor* visitor);
+};
+
+class ArrayType : public Node
+{
+    Node* spec;
+    Node* max;
+
+public:
+    ArrayType(Node* max = 0) :
+        Node("array"),  // Default name
+        spec(0),
+        max(max)
+    {
+    }
+
+    ~ArrayType()
+    {
+        // delete spec;
+        if (max)
+        {
+            delete max;
+        }
+    }
+
+    Node* getSpec() const
+    {
+        return spec;
+    }
+
+    void setSpec(Node* spec)
+    {
+        this->spec = spec;
+    }
+
+    Node* getMax() const
+    {
+        return max;
+    }
+
+    unsigned getLength(const Node* scope);
+
+    virtual ArrayType* isArray(const Node* scope)
     {
         return this;
     }
@@ -1269,6 +1318,15 @@ public:
         return spec->isSequence(scope);
     }
 
+    virtual ArrayType* isArray(const Node* scope)
+    {
+        if (!type)
+        {
+            return 0;
+        }
+        return spec->isArray(scope);
+    }
+
     virtual StructType* isStruct(const Node* scope)
     {
         if (!type)
@@ -1287,40 +1345,9 @@ public:
         return spec->isNative(scope);
     }
 
-    virtual ArrayDcl* isArray(const Node* scope)
-    {
-        if (!type)
-        {
-            return 0;
-        }
-        return spec->isArray(scope);
-    }
-
     virtual Member* isTypedef(const Node* scope) const
     {
         return type ? const_cast<Member*>(this) : 0;
-    }
-
-    virtual void accept(Visitor* visitor);
-};
-
-class ArrayDcl : public Member
-{
-public:
-    ArrayDcl() :
-        Member("")
-    {
-    }
-
-    virtual ArrayDcl* isArray(const Node* scope)
-    {
-        return this;
-    }
-
-    int getDimension() const
-    {
-        assert(children);
-        return children->size();
     }
 
     virtual void accept(Visitor* visitor);
@@ -1647,6 +1674,11 @@ public:
         at(static_cast<const Node*>(node));
     }
 
+    virtual void at(const ArrayType* node)
+    {
+        at(static_cast<const Node*>(node));
+    }
+
     virtual void at(const BinaryExpr* node)
     {
         at(static_cast<const Node*>(node));
@@ -1670,11 +1702,6 @@ public:
     virtual void at(const Member* node)
     {
         at(static_cast<const Node*>(node));
-    }
-
-    virtual void at(const ArrayDcl* node)
-    {
-        at(static_cast<const Member*>(node));
     }
 
     virtual void at(const Attribute* node)
@@ -1766,6 +1793,11 @@ inline void SequenceType::accept(Visitor* visitor)
     visitor->at(this);
 }
 
+inline void ArrayType::accept(Visitor* visitor)
+{
+    visitor->at(this);
+}
+
 inline void BinaryExpr::accept(Visitor* visitor)
 {
     visitor->at(this);
@@ -1787,11 +1819,6 @@ inline void Literal::accept(Visitor* visitor)
 }
 
 inline void Member::accept(Visitor* visitor)
-{
-    visitor->at(this);
-}
-
-inline void ArrayDcl::accept(Visitor* visitor)
 {
     visitor->at(this);
 }

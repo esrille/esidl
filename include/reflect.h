@@ -58,6 +58,9 @@
  *    A: any
  *    D: DOMString
  *    Q type: sequence<type>
+ *    Q n type: sequence<type, n>           // ES extension
+ *    Y type: type[]
+ *    Y n type: type[n]                     // ES extension
  *    O name: Object
  *    B type: nullable
  *    v: void
@@ -73,7 +76,6 @@
  *    f: float
  *    d: double
  *    p: void*                              // XXX To be unsupported
- *    YnT: array of n elements of type T    // XXX To be unsupported
  *
  *  raises ->
  *    R name
@@ -100,9 +102,7 @@ public:
     static const char kString = 'D';
     static const char kAny = 'A';
     static const char kObject = 'O';
-    static const char kNullable = 'B';
     static const char kSequence = 'Q';
-    static const char kVariadic = 'V';
     // Misc.
     static const char kInterface = 'I';
     static const char kExtends = 'X';
@@ -122,6 +122,9 @@ public:
     static const char kSpecialCaller = 'f';
     static const char kSpecialStringifier = 't';
     static const char kSpecialOmittable = 'o';
+    static const char kVariadic = 'V';
+
+    static const char kNullable = '?';
 
     static const char kUndefinedIsNull = 'n';
     static const char kUndefinedIsEmpty = 'e';
@@ -133,6 +136,8 @@ public:
     static const char kPointer = 'p';
 
     class Interface;
+    class Array;
+    class Sequence;
 
     static bool isParam(const char* info)
     {
@@ -184,11 +189,23 @@ public:
         return info + length;
     }
 
+    static const char* skipNullable(const char* info)
+    {
+        if (*info == kNullable)
+        {
+            ++info;
+        }
+        return info;
+    }
+
     static const char* skipType(const char* info)
     {
         switch (*info)
         {
         case kVoid:
+        case kAny:
+        case kPointer:
+            return ++info;
         case kBoolean:
         case kByte:
         case kOctet:
@@ -201,12 +218,9 @@ public:
         case kFloat:
         case kDouble:
         case kString:
-        case kAny:
-        case kPointer:
-            return ++info;
-        case kNullable:
+            return skipNullable(++info);
         case kSequence:
-            return skipType(++info);
+            return skipType(skipDigits(++info));
         case kObject:
             return skipName(++info);
         case kArray:
@@ -222,6 +236,9 @@ public:
     class Type
     {
         const char* info;
+
+        friend class Array;
+        friend class Sequence;
 
     public:
         /**
@@ -380,11 +397,9 @@ public:
             case kSequence:
                 {
                     Sequence seq(info);
-                    return seq.getType().getSize();
+                    return seq.getType().getSize() * seq.getMax();
                 }
                 break;
-            case kNullable:
-                return sizeof(void*);   // TODO: TBD
             default:
                 return 0;
             }
@@ -1048,25 +1063,28 @@ public:
         {
         }
 
+        Sequence(Type type) :
+            info(type.info)
+        {
+        }
+
         /**
          * Gets the type of elements value of this sequence.
          */
         Type getType() const
         {
-            return Type(info + 1);
+            return Type(skipDigits(info + 1));
         }
 
-#if 0
         /**
-         * Gets the maximum number of elements in this sequence type.
+         * Gets the maximum size of this sequence. Returns zero if this is a variable length sequence.
          */
-        uint64_t getMax() const
+        unsigned getMax() const
         {
             unsigned max;
             skipDigits(info + 1, &max);
             return max;
         }
-#endif
     };
 };
 
