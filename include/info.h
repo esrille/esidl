@@ -31,24 +31,6 @@
 // Generate the string-encoded interface information for reflection
 class Info : public Visitor, public Formatter
 {
-    Node* getSpec(const Member* node) const
-    {
-        Node* spec = node->getSpec();
-        if (Member* member = spec->isTypedef(currentNode))
-        {
-            if (ScopedName* scopedName = dynamic_cast<ScopedName*>(spec))
-            {
-                spec = scopedName->search(currentNode);
-                assert(spec);
-            }
-        }
-        else if (NativeType* native = spec->isNative(currentNode))
-        {
-            spec = native;
-        }
-        return spec;
-    }
-
 protected:
     bool constructorMode;
     int optionalStage;
@@ -117,23 +99,42 @@ public:
     {
         if (0 < node->getName().size())
         {
-            if (node->isInterface(currentNode))
-            {
-                write("%c", Reflect::kObject);
-            }
-
+            assert(!node->isInterface(currentNode));
             std::string name = node->getName();
             Node* resolved = resolve(currentNode, name);
             if (resolved)
             {
                 name = resolved->getQualifiedName();
-                name = getInterfaceName(name);
             }
             write("%zu%s", name.length(), name.c_str());
         }
         else
         {
             printChildren(node);
+        }
+    }
+
+    virtual void at(const ScopedName* node)
+    {
+        Node* resolved = node->search(currentNode);
+        node->check(resolved, "%s could not resolved.", node->getName().c_str());
+        if (dynamic_cast<ExceptDcl*>(resolved))
+        {
+            std::string name = resolved->getQualifiedName();
+            write("%zu%s", name.length(), name.c_str());
+        }
+        else if (dynamic_cast<Interface*>(resolved))
+        {
+            std::string name = resolved->getQualifiedName();
+            name = getInterfaceName(name);
+            write("%c%zu%s", Reflect::kObject, name.length(), name.c_str());
+        }
+        else
+        {
+            const Node* saved = currentNode;
+            currentNode = resolved->getParent();
+            resolved->accept(this);
+            currentNode = saved;
         }
     }
 
@@ -259,7 +260,7 @@ public:
     void getter(const Attribute* node)
     {
         static Type replaceable("any");
-        Node* spec = getSpec(node);
+        Node* spec = node->getSpec();
         if (node->isReplaceable())
         {
             spec = &replaceable;
@@ -307,7 +308,7 @@ public:
         }
 
         static Type replaceable("any");
-        Node* spec = getSpec(node);
+        Node* spec = node->getSpec();
         if (node->isReplaceable())
         {
             spec = &replaceable;
@@ -318,7 +319,7 @@ public:
             assert(target);
             Attribute* forwards = dynamic_cast<Attribute*>(target->search(node->getPutForwards()));
             assert(forwards);
-            spec = getSpec(forwards);
+            spec = forwards->getSpec();
         }
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
 
@@ -422,7 +423,7 @@ public:
 
         write("%u", node->getParamCount(optionalStage));
 
-        Node* spec = getSpec(node);
+        Node* spec = node->getSpec();
         spec->accept(this);
         writeName(node);
 
@@ -457,7 +458,7 @@ public:
 
     virtual void at(const ParamDcl* node)
     {
-        Node* spec = getSpec(node);
+        Node* spec = node->getSpec();
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         if (seq)
         {
@@ -526,10 +527,10 @@ public:
                  i != node->getExtends()->end();
                  ++i)
             {
-                std::string name = (*i)->getName();
-                Node* resolved = resolve(currentNode, name);
-                (*i)->check(resolved, "could not resolve '%s'.", name.c_str());
-                name = resolved->getQualifiedName();
+                ScopedName* scopedName = static_cast<ScopedName*>(*i);
+                Node* resolved = scopedName->search(node->getParent());
+                scopedName->check(resolved, "could not resolve '%s'.", scopedName->getName().c_str());
+                std::string name = resolved->getQualifiedName();
                 write("\n");
                 writetab();
                 write("\"%c", Reflect::kExtends);
@@ -557,6 +558,7 @@ public:
             visitInterfaceElement(node, *i);
         }
 
+        // TODO: The following expanding mixins should be optional
         // Expand mixins
         for (std::list<const Interface*>::const_iterator i = node->getMixins()->begin();
                 i != node->getMixins()->end();
@@ -673,7 +675,7 @@ public:
     virtual void at(const Member* node)
     {
         assert(node->isTypedef(node->getParent()));
-        getSpec(node)->accept(this);
+        node->getSpec()->accept(this);
     }
 
     std::string getInterfaceName(std::string qualifiedName)

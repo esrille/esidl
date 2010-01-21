@@ -64,6 +64,8 @@ Node* setSpecification(Node* node);
 Node* getCurrent();
 Node* setCurrent(const Node* node);
 
+Node* resolve(const Node* scope, std::string name);
+
 std::string& getJavadoc();
 void setJavadoc(const char* doc);
 std::string& popJavadoc();
@@ -686,15 +688,7 @@ public:
         return node->isNative(node->getParent());
     }
 
-    virtual Member* isTypedef(const Node* scope) const
-    {
-        Node* node = search(scope);
-        if (!node)
-        {
-            return 0;
-        }
-        return node->isTypedef(node->getParent());
-    }
+    virtual Member* isTypedef(const Node* scope) const;
 
     virtual void accept(Visitor* visitor);
 
@@ -974,7 +968,7 @@ public:
                     fprintf(stderr, "%s not found\n", scoped->getName().c_str());
                     exit(EXIT_FAILURE);
                 }
-                break;  // Multiple inheritance is not allowed.
+                break;  // XXX Needs to support multiple inheritance is not allowed.
             }
         }
         return super;
@@ -1473,13 +1467,9 @@ public:
     Type* getType() const
     {
         Node* type = getSpec();
-        Node* scope = getParent();
-        while (ScopedName* scopedName = dynamic_cast<ScopedName*>(type))
+        if (ScopedName* scopedName = dynamic_cast<ScopedName*>(type))
         {
-            Member* member = dynamic_cast<Member*>(scopedName->search(scope));
-            assert(member);
-            type = member->getSpec();
-            scope = member->getParent();
+            type = scopedName->search(getParent());
         }
         assert(dynamic_cast<Type*>(type));
         return static_cast<Type*>(type);
@@ -1942,8 +1932,6 @@ extern void printJava(const char* source, const char* indent);
 
 extern std::string getOutputFilename(std::string, const char* suffix);
 extern std::string getIncludedName(const std::string& header);
-
-extern Node* resolve(const Node* scope, std::string name);
 
 extern std::string getScopedName(std::string moduleName, std::string absoluteName);
 

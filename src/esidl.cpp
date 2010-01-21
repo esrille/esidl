@@ -608,6 +608,20 @@ Node* Node::search(const std::string& elem, size_t pos) const
     return forwardDecl;
 }
 
+Member* ScopedName::isTypedef(const Node* scope) const
+{
+    Node* resolved = resolve(scope, name);
+    if (!resolved)
+    {
+        return 0;
+    }
+    if (Member* member = dynamic_cast<Member*>(resolved))
+    {
+        return member->isTypedef(member->getParent());
+    }
+    return 0;
+}
+
 Node* ScopedName::search(const Node* scope) const
 {
     Node* resolved = resolve(scope, name);
@@ -617,7 +631,8 @@ Node* ScopedName::search(const Node* scope) const
         {
             if (member->isTypedef(member->getParent()))
             {
-                if (ScopedName* node = dynamic_cast<ScopedName*>(member->getSpec()))
+                resolved = member->getSpec();
+                if (ScopedName* node = dynamic_cast<ScopedName*>(resolved))
                 {
                     if (Node* found = node->search(member->getParent()))
                     {
