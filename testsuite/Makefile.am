@@ -1,6 +1,6 @@
 SUBDIRS = . runtime
 
-TESTS_ENVIRONMENT = PATH=..:$(PATH) esidl -I$(srcdir) -template -skeleton
+TESTS_ENVIRONMENT = ../esidl -I$(srcdir) -template -skeleton
 
 XFAIL_TESTS = 201.idl 202.idl 203.idl 204.idl 205.idl 206.idl
 
