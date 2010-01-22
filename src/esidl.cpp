@@ -622,6 +622,25 @@ Node* resolve(const Node* scope, std::string name)
             {
                 return found;
             }
+            if (const Interface* interface = dynamic_cast<const Interface*>(node))
+            {
+                if (Node* extends = interface->getExtends())
+                {
+                    for (NodeList::iterator i = extends->begin();
+                         i != extends->end();
+                         ++i)
+                    {
+                        ScopedName* baseName = static_cast<ScopedName*>(*i);
+                        if (Node* baseInterface = baseName->search(interface->getParent()))
+                        {
+                            if (Node* found = resolve(baseInterface, name))
+                            {
+                                return found;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     return 0;
