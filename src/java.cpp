@@ -430,7 +430,10 @@ public:
         Node* resolved = node->search(currentNode);
         node->check(resolved, "could not resolved %s.", node->getName().c_str());
         const Node* saved = currentNode;
-        currentNode = resolved->getParent();
+        if (resolved->getParent())
+        {
+            currentNode = resolved->getParent();
+        }
         if (!dynamic_cast<Interface*>(resolved) && !dynamic_cast<ExceptDcl*>(resolved))
         {
             resolved->accept(this);

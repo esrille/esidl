@@ -608,6 +608,25 @@ Node* Node::search(const std::string& elem, size_t pos) const
     return forwardDecl;
 }
 
+Node* resolve(const Node* scope, std::string name)
+{
+    if (name.compare(0, 2, "::") == 0)
+    {
+        return getSpecification()->search(name, 2);
+    }
+    else
+    {
+        for (const Node* node = scope; node; node = node->getParent())
+        {
+            if (Node* found = node->search(name))
+            {
+                return found;
+            }
+        }
+    }
+    return 0;
+}
+
 Member* ScopedName::isTypedef(const Node* scope) const
 {
     Node* resolved = resolve(scope, name);
@@ -672,25 +691,6 @@ void Interface::adjustMethodCount()
     default:
         break;
     }
-}
-
-Node* resolve(const Node* scope, std::string name)
-{
-    if (name.compare(0, 2, "::") == 0)
-    {
-        return getSpecification()->search(name, 2);
-    }
-    else
-    {
-        for (const Node* node = scope; node; node = node->getParent())
-        {
-            if (Node* found = node->search(name))
-            {
-                return found;
-            }
-        }
-    }
-    return 0;
 }
 
 std::string getScopedName(std::string moduleName, std::string absoluteName)
