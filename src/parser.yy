@@ -193,7 +193,7 @@ int yylex();
 %type <node>        PrimaryExpr
 %type <name>        UnaryOperator
 %type <node>        Preprocessor
-%type <node>        BracketsListOpt
+%type <node>        OptionalBracketsList
 %type <node>        BracketsList
 %type <node>        Brackets
 %type <node>        positive_int_const
@@ -884,7 +884,7 @@ ExtendedAttribute :
     ;
 
 Type :
-    NullableType BracketsListOpt
+    NullableType OptionalBracketsList
         {
             if ($2)
             {
@@ -896,7 +896,7 @@ Type :
                 $$ = $1;
             }
         }
-    | ScopedName BracketsListOpt /* Note in esidl, "object" is treated as a ScopedName. */
+    | ScopedName OptionalBracketsList /* Note in esidl, "object" is treated as a ScopedName. */
         {
             if ($2)
             {
@@ -908,7 +908,7 @@ Type :
                 $$ = $1;
             }
         }
-    | AnyType BracketsListOpt
+    | AnyType OptionalBracketsList
         {
             if ($2)
             {
@@ -1284,7 +1284,7 @@ positive_int_const :
     ConstExpr
     ;
 
-BracketsListOpt :
+OptionalBracketsList :
     /* empty */
         {
             $$ = 0;
@@ -1295,7 +1295,10 @@ BracketsListOpt :
     ;
 
 BracketsList :
-    Brackets
+    /* empty */
+        {
+            $$ = 0;
+        }
     | Brackets BracketsList
         {
             static_cast<ArrayType*>($1)->setSpec($2);

@@ -1153,7 +1153,14 @@ public:
 
     void setSpec(Node* spec)
     {
-        this->spec = spec;
+        if (ArrayType* array = dynamic_cast<ArrayType*>(this->spec))
+        {
+            array->setSpec(spec);
+        }
+        else
+        {
+            this->spec = spec;
+        }
     }
 
     Node* getMax() const
