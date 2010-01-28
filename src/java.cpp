@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -200,15 +200,15 @@ public:
 #ifdef USE_CONSTRUCTOR
         if (node->getAttr() & Interface::Constructor)
         {
-            write("%s_%s", Java::getEscapedName(node->getParent()->getName()).c_str(),
+            write("%s_%s", getEscapedName(node->getParent()->getName()).c_str(),
                            node->getName().c_str());
         }
         else
         {
-            write("%s", Java::getEscapedName(node->getName()).c_str());
+            write("%s", getEscapedName(node->getName()).c_str());
         }
 #else
-        write("%s", Java::getEscapedName(node->getName()).c_str());
+        write("%s", getEscapedName(node->getName()).c_str());
 #endif
 
         if (node->getExtends())
@@ -270,7 +270,7 @@ public:
             writeln("");
             writeln("// Constructor");
             writeln("static public %s_Constructor factory;",
-                    Java::getEscapedName(node->getName()).c_str());
+                    getEscapedName(node->getName()).c_str());
             for (NodeList::iterator i = constructor->begin();
                  i != constructor->end();
                  ++i)
