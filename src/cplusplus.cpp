@@ -627,6 +627,7 @@ class CPlusPlusImport : public Visitor, public Formatter
     bool printed;
     std::string prefixedName;
     std::set<std::string> importSet;
+    std::list<Member*> typedefList;
     std::set<Member*> typedefSet;
 
     CPlusPlusNameSpace* ns;
@@ -674,10 +675,15 @@ public:
 
         if (Member* type = node->isTypedef(currentNode))
         {
-            typedefSet.insert(type);
+            // The order of definitions is important here.
             if (type->getSpec()->isTypedef(type->getParent()))
             {
                 type->getSpec()->accept(this);
+            }
+            if (typedefSet.find(type) == typedefSet.end())
+            {
+                typedefSet.insert(type);
+                typedefList.push_back(type);
             }
         }
     }
@@ -843,8 +849,8 @@ public:
             writeln("class %s;", (*i).substr(pos).c_str());
         }
 
-        for (std::set<Member*>::iterator i = typedefSet.begin();
-             i != typedefSet.end();
+        for (std::list<Member*>::iterator i = typedefList.begin();
+             i != typedefList.end();
              ++i)
         {
             if (Module* module = dynamic_cast<Module*>((*i)->getParent()))
