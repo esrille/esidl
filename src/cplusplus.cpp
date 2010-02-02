@@ -153,37 +153,26 @@ std::string CPlusPlus::getEscapedName(std::string name)
 
 class CPlusPlusInterface : public CPlusPlus
 {
-    // TODO: Move to CPlusPlus
-    void visitInterfaceElement(const Interface* interface, Node* element)
-    {
-        if (dynamic_cast<Interface*>(element))
-        {
-            // Do not process Constructor.
-            return;
-        }
-
-        optionalStage = 0;
-        do
-        {
-            optionalCount = 0;
-            element->accept(this);
-            ++optionalStage;
-        } while (optionalStage <= optionalCount);
-    }
-
 public:
     CPlusPlusInterface(const char* source, FILE* file, const char* indent = "es") :
         CPlusPlus(source, file, "std::string", "Object", true, indent)
     {
+        currentNode = 0;
     }
 
     CPlusPlusInterface(const char* source, const Formatter* formattter) :
         CPlusPlus(source, formattter, "std::string", "Object", true)
     {
+        currentNode = 0;
     }
 
     virtual void at(const ExceptDcl* node)
     {
+        if (!currentNode)
+        {
+            currentNode = node->getParent();
+        }
+
         writetab();
         if (node->getJavadoc().size())
         {
@@ -411,6 +400,162 @@ public:
     }
 };
 
+class CPlusPlusInclude: public CPlusPlus
+{
+    std::set<const Node*> includeSet;
+
+public:
+    CPlusPlusInclude(const char* source, FILE* file, const char* indent = "es") :
+        CPlusPlus(source, file, "std::string", "Object", true, indent)
+    {
+        currentNode = 0;
+    }
+
+    CPlusPlusInclude(const char* source, const Formatter* formattter) :
+        CPlusPlus(source, formattter, "std::string", "Object", true)
+    {
+        currentNode = 0;
+    }
+
+    virtual void at(const ScopedName* node)
+    {
+        assert(currentNode);
+
+        Node* resolved = node->search(currentNode);
+        node->check(resolved, "could not resolved %s.", node->getName().c_str());
+        const Node* saved = currentNode;
+        if (resolved->getParent())
+        {
+            currentNode = resolved->getParent();
+        }
+        if (dynamic_cast<ExceptDcl*>(resolved))
+        {
+            resolved->accept(this);
+        }
+        currentNode = saved;
+    }
+
+    virtual void at(const ExceptDcl* node)
+    {
+        includeSet.insert(node);
+    }
+
+    virtual void at(const Interface* node)
+    {
+        Interface* constructor = node->getConstructor();
+
+        if (!currentNode)
+        {
+            currentNode = node->getParent();
+        }
+        assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
+
+        if (node->getExtends())
+        {
+            for (NodeList::iterator i = node->getExtends()->begin();
+                 i != node->getExtends()->end();
+                 ++i)
+            {
+                ScopedName* name = static_cast<ScopedName*>(*i);
+                if (name->getName() == Node::getBaseObjectName())
+                {
+                    // Do not process 'object'.
+                    continue;
+                }
+                Node* base = name->search(node->getParent());
+                node->check(base, "could not resolved %s.", name->getName().c_str());
+                includeSet.insert(base);
+            }
+        }
+
+        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
+        {
+            visitInterfaceElement(node, *i);
+        }
+
+        // Expand mixins
+        std::list<const Interface*> interfaceList;
+        node->collectMixins(&interfaceList, node);
+        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+             i != interfaceList.end();
+             ++i)
+        {
+            if (*i == node)
+            {
+                continue;
+            }
+            const Node* saved = currentNode;
+            for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+            {
+                currentNode = *i;
+                visitInterfaceElement(*i, *j);
+            }
+            currentNode = saved;
+        }
+
+#ifdef USE_CONSTRUCTOR
+        if (constructor)
+        {
+            for (NodeList::iterator i = constructor->begin();
+                 i != constructor->end();
+                 ++i)
+            {
+                visitInterfaceElement(constructor, *i);
+            }
+        }
+#endif
+    }
+
+    virtual void at(const Member* node)
+    {
+        if (node->isTypedef(node->getParent()))
+        {
+            node->getSpec()->accept(this);
+        }
+    }
+
+    virtual void at(const Attribute* node)
+    {
+        // getter
+        if (useExceptions && node->getGetRaises())
+        {
+            visitChildren(node->getGetRaises());
+        }
+        if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
+        {
+            // setter
+            if (useExceptions && node->getSetRaises())
+            {
+                visitChildren(node->getSetRaises());
+            }
+        }
+    }
+
+    virtual void at(const OpDcl* node)
+    {
+        if (useExceptions && node->getRaises())
+        {
+            visitChildren(node->getRaises());
+        }
+    }
+
+    void print()
+    {
+        if (includeSet.empty())
+        {
+            return;
+        }
+        for (std::set<const Node*>::iterator i = includeSet.begin();
+             i != includeSet.end();
+             ++i)
+        {
+            std::string name = createFileName(getPackageName(static_cast<Module*>((*i)->getParent())->getPrefixedName()), *i);
+            writeln("#include <%s>", name.c_str());
+        }
+        write("\n");
+    }
+};
+
 class CPlusPlusNameSpace : public Formatter
 {
     std::vector<std::string> packageName;
@@ -470,6 +615,7 @@ public:
         packageName.clear();
     }
 };
+
 
 // Print the required class forward declarations.
 class CPlusPlusImport : public Visitor, public Formatter
@@ -754,11 +900,28 @@ public:
             return;
         }
 
+        // preamble
         fprintf(file, "// Generated by esaidl %s.\n\n", VERSION);
+
+        Module* module = dynamic_cast<Module*>(node->getParent());
+        assert(module);
+        std::string name = CPlusPlus::getPackageName(module->getPrefixedName()) + "." + node->getName();
+
+        std::string included = CPlusPlus::getIncludedName(name, indent);
+        fprintf(file, "#ifndef %s\n", included.c_str());
+        fprintf(file, "#define %s\n\n", included.c_str());
+
+        // body
+        CPlusPlusNameSpace ns(file, indent);
+        ns.enter(name);
 
         CPlusPlusInterface cplusplusInterface(source, file, indent);
         cplusplusInterface.at(node);
 
+        ns.closeAll();
+
+        // postable
+        fprintf(file, "\n#endif  // %s\n", included.c_str());
         fclose(file);
     }
 
@@ -776,6 +939,7 @@ public:
             return;
         }
 
+        // preamble
         fprintf(file, "// Generated by esidl %s.\n\n", VERSION);
 
         Module* module = dynamic_cast<Module*>(node->getParent());
@@ -786,31 +950,12 @@ public:
         fprintf(file, "#ifndef %s\n", included.c_str());
         fprintf(file, "#define %s\n\n", included.c_str());
 
-        // The base classes need to be defined.
-        if (node->getExtends())
-        {
-            bool done = false;
-            for (NodeList::iterator i = node->getExtends()->begin();
-                 i != node->getExtends()->end();
-                 ++i)
-            {
-                if ((*i)->getName() == Node::getBaseObjectName())
-                {
-                    // Do not process 'object'.
-                    continue;
-                }
-                ScopedName* baseName = static_cast<ScopedName*>(*i);
-                Node* base = baseName->search(module);
-                node->check(base, "%s could not resolved.", baseName->getName().c_str());
-                std::string name = createFileName(CPlusPlus::getPackageName(static_cast<Module*>(base->getParent())->getPrefixedName()), base);
-                fprintf(file, "#include <%s>\n", name.c_str());
-                done = true;
-            }
-            if (done)
-            {
-                fprintf(file, "\n");
-            }
-        }
+        // body
+
+        // The base classes and exception classes need to be defined.
+        CPlusPlusInclude include(source, file, indent);
+        include.at(node);
+        include.print();
 
         CPlusPlusNameSpace ns(file, indent);
 
@@ -825,16 +970,16 @@ public:
 
         ns.closeAll();
 
-        fprintf(file, "\n#endif  // %s\n", included.c_str());
-
-        fclose(file);
-
 #ifdef USE_CONSTRUCTOR
         if (Interface* constructor = node->getConstructor())
         {
             at(constructor);
         }
 #endif
+
+        // postable
+        fprintf(file, "\n#endif  // %s\n", included.c_str());
+        fclose(file);
     }
 };
 

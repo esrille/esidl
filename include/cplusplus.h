@@ -100,6 +100,23 @@ protected:
         return stringTypeName != "char*";
     }
 
+    void visitInterfaceElement(const Interface* interface, Node* element)
+    {
+        if (dynamic_cast<Interface*>(element))
+        {
+            // Do not process Constructor.
+            return;
+        }
+
+        optionalStage = 0;
+        do
+        {
+            optionalCount = 0;
+            element->accept(this);
+            ++optionalStage;
+        } while (optionalStage <= optionalCount);
+    }
+
 public:
     CPlusPlus(const char* source, FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
               bool useExceptions = true, const char* indent = "es") :
