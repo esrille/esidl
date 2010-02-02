@@ -89,6 +89,7 @@ int main(int argc, char* argv[])
     bool useExceptions = true;
     bool useVirtualBase = false;
     bool java = false;
+    bool cplusplus = false;
     const char* stringTypeName = "char*";   // C++ string type name to be used
     const char* objectTypeName = "object";  // C++ object type name to be used
     const char* indent = "es";
@@ -110,6 +111,10 @@ int main(int argc, char* argv[])
                 {
                     setIncludePath(&argv[i][2]);
                 }
+            }
+            else if (strcmp(argv[i], "-cplusplus") == 0)
+            {
+                cplusplus = true;
             }
             else if (strcmp(argv[i], "-fexceptions") == 0)
             {
@@ -320,7 +325,7 @@ int main(int argc, char* argv[])
         }
         result = output(argv[i], isystem, useExceptions, useVirtualBase,
                         stringTypeName, objectTypeName, indent,
-                        skeleton, generic, java);
+                        skeleton, generic, java, cplusplus);
     }
 
     return result;

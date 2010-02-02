@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -821,13 +821,22 @@ int output(const char* filename,
            const char* indent,
            bool skeleton,
            bool generic,
-           bool java)
+           bool java,
+           bool cplusplus)
 {
     Forward forward(filename);
     getSpecification()->accept(&forward);
     forward.generateForwardDeclarations();
 
-    if (!java)
+    if (java)
+    {
+        printJava(filename, indent);
+    }
+    else if (cplusplus)
+    {
+        printCPlusPlus(filename, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+    }
+    else
     {
         printCxx(filename, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
         if (skeleton)
@@ -838,10 +847,6 @@ int output(const char* filename,
         {
             printTemplate(filename, stringTypeName, objectTypeName, useExceptions, isystem, indent);
         }
-    }
-    else
-    {
-        printJava(filename, indent);
     }
     return EXIT_SUCCESS;
 }

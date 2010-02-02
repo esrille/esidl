@@ -1,4 +1,4 @@
-SUBDIRS = . testsuite npapi java
+SUBDIRS = . testsuite java cplusplus npapi
 
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 
@@ -7,6 +7,7 @@ bin_PROGRAMS = esidl
 esidl_SOURCES = \
 	include/cplusplus.h\
 	include/esidl.h \
+	include/cxx.h \
 	include/expr.h \
 	include/formatter.h \
 	include/forward.h \
@@ -14,6 +15,7 @@ esidl_SOURCES = \
 	include/java.h \
 	include/reflect.h \
 	include/utf.h \
+	src/cplusplus.cpp \
 	src/cxx.cpp \
 	src/driver.cpp \
 	src/esidl.cpp \

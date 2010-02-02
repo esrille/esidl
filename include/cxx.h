@@ -26,7 +26,7 @@
 #include "esidl.h"
 #include "formatter.h"
 
-class CPlusPlus : public Visitor, public Formatter
+class Cxx : public Visitor, public Formatter
 {
 protected:
     const char* source;
@@ -101,8 +101,8 @@ protected:
     }
 
 public:
-    CPlusPlus(const char* source, FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
-              bool useExceptions = true, const char* indent = "es") :
+    Cxx(const char* source, FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
+        bool useExceptions = true, const char* indent = "es") :
         Formatter(file, indent),
         source(source),
         stringTypeName(stringTypeName),
@@ -584,27 +584,6 @@ public:
         }
         return included;
     }
-
-    static std::string getPackageName(std::string prefixedName)
-    {
-        size_t pos = 0;
-        for (;;)
-        {
-            pos = prefixedName.find("::", pos);
-            if (pos == std::string::npos)
-            {
-                break;
-            }
-            prefixedName.replace(pos, 2, ".");
-        }
-        if (prefixedName[0] == '.')
-        {
-            prefixedName = prefixedName.substr(1);
-        }
-        return prefixedName;
-    }
-
-    static std::string getEscapedName(std::string name);
 };
 
 #endif  // ESIDL_CPLUSPLUS_H_INCLUDED

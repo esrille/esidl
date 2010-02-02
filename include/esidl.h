@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1930,6 +1930,8 @@ public:
 };
 
 extern void print();
+extern void printCPlusPlus(const char* source, const char* stringTypeName, const char* objectTypeName,
+                           bool useExceptions, bool useVirtualBase, const char* indent);
 extern void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName,
                      bool useExceptions, bool useVirtualBase, const char* indent);
 extern void printSkeleton(const char* source, bool isystem, const char* indent);
@@ -1953,6 +1955,7 @@ extern int output(const char* filename,
                   const char* stringTypeName, const char* objectTypeName, const char* indent,
                   bool skeleton,
                   bool generic,
-                  bool java);
+                  bool java,
+                  bool cplusplus);
 
 #endif  // ESIDL_H_INCLUDED
