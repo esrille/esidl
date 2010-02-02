@@ -675,6 +675,10 @@ public:
         if (Member* type = node->isTypedef(currentNode))
         {
             typedefSet.insert(type);
+            if (type->getSpec()->isTypedef(type->getParent()))
+            {
+                type->getSpec()->accept(this);
+            }
         }
     }
 
