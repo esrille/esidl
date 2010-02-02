@@ -177,6 +177,11 @@ public:
     {
     }
 
+    CPlusPlusInterface(const char* source, const Formatter* formattter) :
+        CPlusPlus(source, formattter, "std::string", "Object", true)
+    {
+    }
+
     virtual void at(const ExceptDcl* node)
     {
         writetab();
@@ -322,17 +327,13 @@ public:
 
     virtual void at(const Member* node)
     {
+        writetab();
         if (node->isTypedef(node->getParent()))
         {
-            node->getSpec()->accept(this);
-        }
-        else
-        {
-            // This node is an exception class member.
-            writetab();
-            node->getSpec()->accept(this);
-            write(" %s;\n", getEscapedName(node->getName()).c_str());
-        }
+            write("typedef ");
+        }  // else this node is an exception class member.
+        node->getSpec()->accept(this);
+        write(" %s;\n", getEscapedName(node->getName()).c_str());
     }
 
     virtual void at(const ConstDcl* node)
@@ -473,6 +474,8 @@ public:
 // Print the required class forward declarations.
 class CPlusPlusImport : public Visitor, public Formatter
 {
+    const char* source;
+
     std::string package;
     const Node* currentNode;
     bool printed;
@@ -483,8 +486,10 @@ class CPlusPlusImport : public Visitor, public Formatter
     CPlusPlusNameSpace* ns;
 
 public:
-    CPlusPlusImport(std::string package, FILE* file, const char* indent,
+    CPlusPlusImport(std::string package,
+                    const char* source, FILE* file, const char* indent,
                     CPlusPlusNameSpace* ns) :
+        source(source),
         Formatter(file, indent),
         package(package),
         currentNode(0),
@@ -696,9 +701,8 @@ public:
             {
                 std::string name = CPlusPlus::getPackageName(module->getPrefixedName()) + "." + (*i)->getName();
                 size_t pos = ns->enter(name);
-                writeln("typedef %s %s;",
-                        (*i)->getSpec()->getName().c_str(),  // TODO: spec needs to be evaluated
-                        (*i)->getName().c_str());
+                CPlusPlusInterface cplusplusInterface(source, this);
+                cplusplusInterface.at(*i);
             }
         }
 
@@ -810,7 +814,7 @@ public:
 
         CPlusPlusNameSpace ns(file, indent);
 
-        CPlusPlusImport import(CPlusPlus::getPackageName(prefixedName), file, indent, &ns);
+        CPlusPlusImport import(CPlusPlus::getPackageName(prefixedName), source, file, indent, &ns);
         import.at(node);
         import.print();
 

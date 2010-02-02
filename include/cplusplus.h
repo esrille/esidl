@@ -115,6 +115,20 @@ public:
     {
     }
 
+    CPlusPlus(const char* source, const Formatter* formatter, const char* stringTypeName = "char*", const char* objectTypeName = "object",
+              bool useExceptions = true) :
+        Formatter(formatter),
+        source(source),
+        stringTypeName(stringTypeName),
+        objectTypeName(objectTypeName),
+        useExceptions(useExceptions),
+        constructorMode(false),
+        currentNode(getSpecification()),
+        paramCount(0),
+        variadicParam(0)
+    {
+    }
+
     virtual void at(const Node* node)
     {
         if (0 < node->getName().size())
