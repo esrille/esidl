@@ -385,6 +385,8 @@ public:
         return qualifiedName;
     }
 
+    std::string getQualifiedModuleName() const;
+
     // If there is an interface definition as well as interface forward declaration,
     // search() must return the interface definition.
     virtual Node* search(const std::string& elem, size_t pos = 0) const;

@@ -39,7 +39,6 @@ protected:
     int optionalStage;
     int optionalCount;
 
-    std::string moduleName;
     const Node* currentNode;
 
     int paramCount;  // The number of parameters of the previously evaluated operation
@@ -156,7 +155,7 @@ public:
             {
                 name = resolved->getQualifiedName();
                 name = getInterfaceName(name);
-                name = getScopedName(moduleName, name);
+                name = getScopedName(currentNode->getQualifiedModuleName(), name);
             }
             write("%s", name.c_str());
         }
@@ -176,10 +175,7 @@ public:
                 writetab();
             }
             write("namespace %s {\n", node->getName().c_str());
-                moduleName += "::";
-                moduleName += node->getName();
                 printChildren(node);
-                moduleName.erase(moduleName.size() - node->getName().size() - 2);
             writeln("}");
         }
         else

@@ -176,6 +176,20 @@ void Node::setLocation(struct YYLTYPE* first, struct YYLTYPE* last)
     lastColumn = last->last_column;
 }
 
+std::string Node::getQualifiedModuleName() const
+{
+    const Node* node = this;
+    while (node)
+    {
+        if (dynamic_cast<const Module*>(node))
+        {
+            return node->getQualifiedName();
+        }
+        node = node->getParent();
+    }
+    return "";
+}
+
 bool Module::hasPredeclarations() const
 {
     if (isLeaf())
