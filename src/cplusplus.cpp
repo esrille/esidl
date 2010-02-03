@@ -625,7 +625,6 @@ class CPlusPlusImport : public Visitor, public Formatter
     std::string package;
     const Node* currentNode;
     bool printed;
-    std::string prefixedName;
     std::set<std::string> importSet;
     std::list<Member*> typedefList;
     std::set<Member*> typedefSet;
@@ -783,6 +782,8 @@ public:
         {
             return;
         }
+        currentNode = node->getParent();
+        visitChildren(node->getExtends());
         currentNode = node;
 #ifdef USE_CONSTRUCTOR
         if (node->getAttr() & Interface::Constructor)
@@ -790,11 +791,6 @@ public:
             currentNode = node->getParent();
         }
 #endif
-        if (Module* module = dynamic_cast<Module*>(currentNode->getParent()))
-        {
-            prefixedName = module->getPrefixedName();
-        }
-        visitChildren(node->getExtends());
         visitChildren(node);
         // Expand mixins
         std::list<const Interface*> interfaceList;
@@ -810,7 +806,7 @@ public:
             currentNode = *i;
             visitChildren(*i);
         }
-        currentNode = node;
+        currentNode = node->getParent();
     }
 
     virtual void at(const Attribute* node)
