@@ -833,16 +833,15 @@ public:
 
     void print()
     {
-        if (importSet.empty())
-        {
-            return;
-        }
+        bool newline = false;
+
         for (std::set<std::string>::iterator i = importSet.begin();
              i != importSet.end();
              ++i)
         {
             size_t pos = ns->enter(*i);
             writeln("class %s;", (*i).substr(pos).c_str());
+            newline = true;
         }
 
         for (std::list<Member*>::iterator i = typedefList.begin();
@@ -855,10 +854,14 @@ public:
                 size_t pos = ns->enter(name);
                 CPlusPlusInterface cplusplusInterface(source, this);
                 cplusplusInterface.at(*i);
+                newline = true;
             }
         }
 
-        write("\n");
+        if (newline)
+        {
+            write("\n");
+        }
     }
 };
 
