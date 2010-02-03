@@ -622,38 +622,52 @@ Node* Node::search(const std::string& elem, size_t pos) const
     return forwardDecl;
 }
 
+Node* resolveInBase(const Interface* interface, std::string name)
+{
+    Node* extends = interface->getExtends();
+    if (!extends)
+    {
+        return 0;
+    }
+    for (NodeList::iterator i = extends->begin();
+         i != extends->end();
+         ++i)
+    {
+        ScopedName* baseName = static_cast<ScopedName*>(*i);
+        Interface* base = dynamic_cast<Interface*>(baseName->search(interface->getParent()));
+        if (base)
+        {
+            if (Node* found = base->search(name))
+            {
+                return found;
+            }
+            if (Node* found = resolveInBase(base, name))
+            {
+                return found;
+            }
+        }
+    }
+    return 0;
+ }
+
 Node* resolve(const Node* scope, std::string name)
 {
     if (name.compare(0, 2, "::") == 0)
     {
         return getSpecification()->search(name, 2);
     }
-    else
+
+    for (const Node* node = scope; node; node = node->getParent())
     {
-        for (const Node* node = scope; node; node = node->getParent())
+        if (Node* found = node->search(name))
         {
-            if (Node* found = node->search(name))
+            return found;
+        }
+        if (const Interface* base = dynamic_cast<const Interface*>(node))
+        {
+            if (Node* found = resolveInBase(base, name))
             {
                 return found;
-            }
-            if (const Interface* interface = dynamic_cast<const Interface*>(node))
-            {
-                if (Node* extends = interface->getExtends())
-                {
-                    for (NodeList::iterator i = extends->begin();
-                         i != extends->end();
-                         ++i)
-                    {
-                        ScopedName* baseName = static_cast<ScopedName*>(*i);
-                        if (Node* baseInterface = baseName->search(interface->getParent()))
-                        {
-                            if (Node* found = resolve(baseInterface, name))
-                            {
-                                return found;
-                            }
-                        }
-                    }
-                }
             }
         }
     }
