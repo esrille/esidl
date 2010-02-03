@@ -533,6 +533,24 @@ public:
 
     virtual void at(const OpDcl* node)
     {
+        Interface* interface = static_cast<Interface*>(node->getParent());
+        assert(interface);
+        if (resolveInBase(interface, node->getName()))
+        {
+            // This node possibly overrides a base class operation.
+            // It might need to have the interface definition of the return type.
+            // cf. namedItem() in HTMLPropertiesCollection
+            if (ScopedName* name = dynamic_cast<ScopedName*>(node->getSpec()))
+            {
+                Node* spec = name->search(currentNode);
+                node->check(spec, "could not resolved %s.", name->getName().c_str());
+                if (dynamic_cast<Interface*>(spec) && !spec->isBaseObject())
+                {
+                    includeSet.insert(spec);
+                }
+            }
+        }
+
         if (useExceptions && node->getRaises())
         {
             visitChildren(node->getRaises());
@@ -608,6 +626,7 @@ public:
 
     void closeAll()
     {
+        write("\n");
         for (int i = 0; i < packageName.size(); ++i)
         {
             writeln("}");
@@ -675,15 +694,14 @@ public:
         if (Member* type = node->isTypedef(currentNode))
         {
             // The order of definitions is important here.
-            if (type->getSpec()->isTypedef(type->getParent()))
-            {
-                type->getSpec()->accept(this);
-            }
+            currentNode = type->getParent();
+            type->getSpec()->accept(this);
             if (typedefSet.find(type) == typedefSet.end())
             {
                 typedefSet.insert(type);
                 typedefList.push_back(type);
             }
+            currentNode = saved;
         }
     }
 

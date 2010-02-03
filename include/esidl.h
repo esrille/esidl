@@ -65,6 +65,7 @@ Node* getCurrent();
 Node* setCurrent(const Node* node);
 
 Node* resolve(const Node* scope, std::string name);
+Node* resolveInBase(const Interface* interface, std::string name);
 
 std::string& getJavadoc();
 void setJavadoc(const char* doc);
