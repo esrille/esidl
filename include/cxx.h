@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef ESIDL_CPLUSPLUS_H_INCLUDED
-#define ESIDL_CPLUSPLUS_H_INCLUDED
+#ifndef ESIDL_CXX_H_INCLUDED
+#define ESIDL_CXX_H_INCLUDED
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -586,4 +586,4 @@ public:
     }
 };
 
-#endif  // ESIDL_CPLUSPLUS_H_INCLUDED
+#endif  // ESIDL_CXX_H_INCLUDED
