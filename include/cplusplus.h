@@ -554,7 +554,7 @@ public:
             {
                 spec->accept(this);
             }
-            write(" %s", node->getName().c_str());
+            write(" %s", getEscapedName(node->getName()).c_str());
         }
     }
 
