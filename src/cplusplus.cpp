@@ -635,7 +635,6 @@ public:
     }
 };
 
-
 // Print the required class forward declarations.
 class CPlusPlusImport : public Visitor, public Formatter
 {

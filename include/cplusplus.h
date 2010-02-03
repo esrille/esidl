@@ -262,7 +262,7 @@ public:
         if (seq)
         {
             write("int get%s(", cap.c_str());
-            seq->accept(this);
+            spec->accept(this);
             write(" %s", name.c_str());
             if (seq->getMax())
             {
@@ -347,7 +347,7 @@ public:
         if (seq)
         {
             write("int set%s(const ", cap.c_str());
-            seq->accept(this);
+            spec->accept(this);
             write(" %s", name.c_str());
             if (seq->getMax())
             {
@@ -417,7 +417,7 @@ public:
 
             write("int");
             write(" %s(", node->getName().c_str());
-            seq->accept(this);
+            spec->accept(this);
             write(" %s", name.c_str());
             if (!seq->getMax())
             {
@@ -527,7 +527,7 @@ public:
         }
         else if (seq)
         {
-            seq->accept(this);
+            spec->accept(this);
             write(" %s", node->getName().c_str());
             if (!seq->getMax())
             {
