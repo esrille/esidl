@@ -247,6 +247,74 @@ public:
         }
     }
 
+    virtual void at(const ArrayType* node)
+    {
+        Node* spec = node->getSpec();
+        if (ScopedName* name = dynamic_cast<ScopedName*>(spec))
+        {
+            spec = name->search(currentNode);
+        }
+        Type* type = dynamic_cast<Type*>(spec);
+        std::string name;
+        if (type && !(type->getAttr() & Node::Nullable))
+        {
+            if (type->getName() == "boolean")
+            {
+                name = "BooleanArray";
+            }
+            else if (type->getName() == "octet")
+            {
+                name = "OctetArray";
+            }
+            else if (type->getName() == "byte")
+            {
+                name = "ByteArray";
+            }
+            else if (type->getName() == "unsigned byte")
+            {
+                name = "UnsignedByteArray";
+            }
+            else if (type->getName() == "short")
+            {
+                name = "ShortArray";
+            }
+            else if (type->getName() == "unsigned short")
+            {
+                name = "UnsignedShortArray";
+            }
+            else if (type->getName() == "long")
+            {
+                name = "LongArray";
+            }
+            else if (type->getName() == "unsigned long")
+            {
+                name = "UnsignedLongArray";
+            }
+            else if (type->getName() == "long long")
+            {
+                name = "LongLongArray";
+            }
+            else if (type->getName() == "unsigned long long")
+            {
+                name = "UnsignedLongLongArray";
+            }
+            else if (type->getName() == "float")
+            {
+                name = "FloatArray";
+            }
+            else if (type->getName() == "double")
+            {
+                name = "DoubleArray";
+            }
+        }
+        else
+        {
+            name = "ObjectArray";
+        }
+        name = getScopedName(currentNode->getQualifiedModuleName(), "::dom::" + name);
+        write("%s", name.c_str());
+    }
+
     void getter(const Attribute* node)
     {
         static Type replaceable("any");
@@ -280,12 +348,6 @@ public:
             write("const ", cap.c_str());
             spec->accept(this);
             write(" get%s(void* %s, int %sLength)", cap.c_str(), name.c_str(), name.c_str());
-        }
-        else if (spec->isArray(node->getParent()))
-        {
-            write("void get%s(", cap.c_str());
-            spec->accept(this);
-            write(" %s)", name.c_str());
         }
         else if (spec->isAny(node->getParent()))
         {
@@ -366,7 +428,7 @@ public:
             spec->accept(this);
             write(" %s)", name.c_str());
         }
-        else if (spec->isArray(node->getParent()) || spec->isAny(node->getParent()))
+        else if (spec->isAny(node->getParent()))
         {
             write("void set%s(const ", cap.c_str());
             spec->accept(this);
@@ -434,15 +496,6 @@ public:
             spec->accept(this);
             write(" %s(", node->getName().c_str());
             write("void* %s, int %sLength", name.c_str(), name.c_str());
-        }
-        else if (spec->isArray(node->getParent()))
-        {
-            std::string name = getBufferName(spec);
-
-            write("void");
-            write(" %s(", node->getName().c_str());
-            spec->accept(this);
-            write(" %s", name.c_str());
         }
         else if (spec->isAny(node->getParent()))
         {
@@ -516,8 +569,7 @@ public:
         }
 
         if (seq && !seq->getSpec()->isInterface(currentNode) ||
-            spec->isString(node->getParent()) ||
-            spec->isArray(node->getParent()))
+            spec->isString(node->getParent()))
         {
             write("const ");
         }

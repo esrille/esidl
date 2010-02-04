@@ -1173,6 +1173,11 @@ public:
 
     unsigned getLength(const Node* scope);
 
+    virtual bool isInterface(const Node* scope) const
+    {
+        return true;
+    }
+
     virtual ArrayType* isArray(const Node* scope)
     {
         return this;

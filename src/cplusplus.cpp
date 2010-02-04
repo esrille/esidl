@@ -295,6 +295,10 @@ public:
 
     virtual void at(const Member* node)
     {
+        if (!currentNode)
+        {
+            currentNode = node->getParent();
+        }
         writetab();
         if (node->isTypedef(node->getParent()))
         {
@@ -619,7 +623,7 @@ public:
     }
 };
 
-// Print the required class forward declarations.
+// Print the required class forward declarations and typedef statments.
 class CPlusPlusImport : public Visitor, public Formatter
 {
     const char* source;
