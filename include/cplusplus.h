@@ -18,6 +18,8 @@
 #ifndef ESIDL_CPLUSPLUS_H_INCLUDED
 #define ESIDL_CPLUSPLUS_H_INCLUDED
 
+#define USE_CONSTRUCTOR
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -533,11 +535,6 @@ public:
             {
                 write(", int %sLength", node->getName().c_str());
             }
-        }
-        else if (spec->isArray(node->getParent()))
-        {
-            spec->accept(this);
-            write(" %s", node->getName().c_str());
         }
         else
         {

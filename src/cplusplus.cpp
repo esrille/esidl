@@ -40,16 +40,7 @@ std::string createFileName(const std::string package, const Node* node)
         filename[pos] = '/';
     }
 
-#ifndef USE_CONSTRUCTOR
     filename += "/" + node->getName() + ".h";
-#else
-    filename += "/";
-    if (node->getAttr() & Node::Constructor)
-    {
-        filename += node->getParent()->getName() + "_";
-    }
-    filename += node->getName() + ".h";
-#endif
 
     return filename;
 }
@@ -201,20 +192,7 @@ public:
         }
 
         write("class ");
-
-#ifdef USE_CONSTRUCTOR
-        if (node->getAttr() & Interface::Constructor)
-        {
-            write("%s_%s", getEscapedName(node->getParent()->getName()).c_str(),
-                           node->getName().c_str());
-        }
-        else
-        {
-            write("%s", getEscapedName(node->getName()).c_str());
-        }
-#else
         write("%s", getEscapedName(node->getName()).c_str());
-#endif
 
         if (node->getExtends())
         {
@@ -236,7 +214,9 @@ public:
 #ifdef USE_CONSTRUCTOR
         if (constructor)
         {
-            methodAccessLevel = "static";
+            writeln("// [Constructor]");
+            at(constructor);
+            writeln("");
         }
 #endif
 
@@ -269,18 +249,17 @@ public:
 #ifdef USE_CONSTRUCTOR
         if (constructor)
         {
-            methodAccessLevel = "static";
+            constructorMode = true;
             writeln("");
             writeln("// Constructor");
-            writeln("static %s_Constructor* factory;",
-                    getEscapedName(node->getName()).c_str());
+            writeln("static Constructor* factory;");
             for (NodeList::iterator i = constructor->begin();
                  i != constructor->end();
                  ++i)
             {
                 visitInterfaceElement(constructor, *i);
             }
-            methodAccessLevel = "virtual";
+            constructorMode = false;
         }
 #endif
 
@@ -373,19 +352,24 @@ public:
         CPlusPlus::at(node);
 
 #ifdef USE_CONSTRUCTOR
-        if (methodAccessLevel == "static")
+        if (constructorMode)
         {
             writeln("{");
                 writetab();
                 write("return factory->createInstance(");
-                NodeList::iterator param = node->begin();
-                for (int i = 0; i < paramCount; ++i, ++param)
+                NodeList::iterator it = node->begin();
+                for (int i = 0; i < paramCount; ++i, ++it)
                 {
                     if (i != 0)
                     {
                         write(", ");
                     }
-                    write("%s", getEscapedName((*param)->getName()).c_str());
+                    ParamDcl* param = static_cast<ParamDcl*>(*it);
+                    write("%s", getEscapedName(param->getName()).c_str());
+                    if (param->isVariadic() || param->getSpec()->isSequence(node))
+                    {
+                        write(", %sLength", getEscapedName(param->getName()).c_str());
+                    }
                 }
                 write(");\n");
             writeln("}");
@@ -995,13 +979,6 @@ public:
         cplusplusInterface.at(node);
 
         ns.closeAll();
-
-#ifdef USE_CONSTRUCTOR
-        if (Interface* constructor = node->getConstructor())
-        {
-            at(constructor);
-        }
-#endif
 
         // postable
         fprintf(file, "\n#endif  // %s\n", included.c_str());
