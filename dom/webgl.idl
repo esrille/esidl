@@ -811,62 +811,62 @@ interface WebGLRenderingContext {
 
     void uniform1f(in WebGLUniformLocation location, in GLfloat x) raises(DOMException);
     void uniform1fv(in WebGLUniformLocation location, in WebGLFloatArray v) raises(DOMException);
-    void uniform1fv(in WebGLUniformLocation location, in sequence<float> v) raises(DOMException);
+    void uniform1fv(in WebGLUniformLocation location, in sequence<GLfloat> v) raises(DOMException);
     void uniform1i(in WebGLUniformLocation location, in GLint x) raises(DOMException);
     void uniform1iv(in WebGLUniformLocation location, in WebGLIntArray v) raises(DOMException);
-    void uniform1iv(in WebGLUniformLocation location, in sequence<long> v) raises(DOMException);
+    void uniform1iv(in WebGLUniformLocation location, in sequence<GLint> v) raises(DOMException);
     void uniform2f(in WebGLUniformLocation location, in GLfloat x, in GLfloat y) raises(DOMException);
     void uniform2fv(in WebGLUniformLocation location, in WebGLFloatArray v) raises(DOMException);
-    void uniform2fv(in WebGLUniformLocation location, in sequence<float> v) raises(DOMException);
+    void uniform2fv(in WebGLUniformLocation location, in sequence<GLfloat> v) raises(DOMException);
     void uniform2i(in WebGLUniformLocation location, in GLint x, in GLint y) raises(DOMException);
     void uniform2iv(in WebGLUniformLocation location, in WebGLIntArray v) raises(DOMException);
-    void uniform2iv(in WebGLUniformLocation location, in sequence<long> v) raises(DOMException);
+    void uniform2iv(in WebGLUniformLocation location, in sequence<GLint> v) raises(DOMException);
     void uniform3f(in WebGLUniformLocation location, in GLfloat x, in GLfloat y, in GLfloat z) 
                                                                         raises(DOMException);
     void uniform3fv(in WebGLUniformLocation location, in WebGLFloatArray v) raises(DOMException);
-    void uniform3fv(in WebGLUniformLocation location, in sequence<float> v) raises(DOMException);
+    void uniform3fv(in WebGLUniformLocation location, in sequence<GLfloat> v) raises(DOMException);
     void uniform3i(in WebGLUniformLocation location, in GLint x, in GLint y, in GLint z) raises(DOMException);
     void uniform3iv(in WebGLUniformLocation location, in WebGLIntArray v) raises(DOMException);
-    void uniform3iv(in WebGLUniformLocation location, in sequence<long> v) raises(DOMException);
+    void uniform3iv(in WebGLUniformLocation location, in sequence<GLint> v) raises(DOMException);
     void uniform4f(in WebGLUniformLocation location, in GLfloat x, in GLfloat y, in GLfloat z, in GLfloat w) 
                                                                         raises(DOMException);
     void uniform4fv(in WebGLUniformLocation location, in WebGLFloatArray v) raises(DOMException);
-    void uniform4fv(in WebGLUniformLocation location, in sequence<float> v) raises(DOMException);
+    void uniform4fv(in WebGLUniformLocation location, in sequence<GLfloat> v) raises(DOMException);
     void uniform4i(in WebGLUniformLocation location, in GLint x, in GLint y, in GLint z, in GLint w) 
                                                                         raises(DOMException);
     void uniform4iv(in WebGLUniformLocation location, in WebGLIntArray v) raises(DOMException);
-    void uniform4iv(in WebGLUniformLocation location, in sequence<long> v) raises(DOMException);
+    void uniform4iv(in WebGLUniformLocation location, in sequence<GLint> v) raises(DOMException);
 
     void uniformMatrix2fv(in WebGLUniformLocation location, in GLboolean transpose, 
                           in WebGLFloatArray value) raises(DOMException);
     void uniformMatrix2fv(in WebGLUniformLocation location, in GLboolean transpose, 
-                          in sequence<float> value) raises(DOMException);
+                          in sequence<GLfloat> value) raises(DOMException);
     void uniformMatrix3fv(in WebGLUniformLocation location, in GLboolean transpose, 
                           in WebGLFloatArray value) raises(DOMException);
     void uniformMatrix3fv(in WebGLUniformLocation location, in GLboolean transpose, 
-                          in sequence<float> value) raises(DOMException);
+                          in sequence<GLfloat> value) raises(DOMException);
     void uniformMatrix4fv(in WebGLUniformLocation location, in GLboolean transpose, 
                           in WebGLFloatArray value) raises(DOMException);
     void uniformMatrix4fv(in WebGLUniformLocation location, in GLboolean transpose, 
-                          in sequence<float> value) raises(DOMException);
+                          in sequence<GLfloat> value) raises(DOMException);
 
     void useProgram(in WebGLProgram program) raises(DOMException);
     void validateProgram(in WebGLProgram program) raises(DOMException);
 
     void vertexAttrib1f(in GLuint indx, in GLfloat x) raises(DOMException);
     void vertexAttrib1fv(in GLuint indx, in WebGLFloatArray values) raises(DOMException);
-    void vertexAttrib1fv(in GLuint indx, in sequence<float> values) raises(DOMException);
+    void vertexAttrib1fv(in GLuint indx, in sequence<GLfloat> values) raises(DOMException);
     void vertexAttrib2f(in GLuint indx, in GLfloat x, in GLfloat y) raises(DOMException);
     void vertexAttrib2fv(in GLuint indx, in WebGLFloatArray values) raises(DOMException);
-    void vertexAttrib2fv(in GLuint indx, in sequence<float> values) raises(DOMException);
+    void vertexAttrib2fv(in GLuint indx, in sequence<GLfloat> values) raises(DOMException);
     void vertexAttrib3f(in GLuint indx, in GLfloat x, in GLfloat y, in GLfloat z) 
                                                                         raises(DOMException);
     void vertexAttrib3fv(in GLuint indx, in WebGLFloatArray values) raises(DOMException);
-    void vertexAttrib3fv(in GLuint indx, in sequence<float> values) raises(DOMException);
+    void vertexAttrib3fv(in GLuint indx, in sequence<GLfloat> values) raises(DOMException);
     void vertexAttrib4f(in GLuint indx, in GLfloat x, in GLfloat y, in GLfloat z, in GLfloat w) 
                                                                         raises(DOMException);
     void vertexAttrib4fv(in GLuint indx, in WebGLFloatArray values) raises(DOMException);
-    void vertexAttrib4fv(in GLuint indx, in sequence<float> values) raises(DOMException);
+    void vertexAttrib4fv(in GLuint indx, in sequence<GLfloat> values) raises(DOMException);
     void vertexAttribPointer(in GLuint indx, in GLint size, in GLenum type, 
                              in GLboolean normalized, GLsizei stride, GLsizeiptr offset) 
                                                                         raises(DOMException);
