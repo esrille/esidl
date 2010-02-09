@@ -188,6 +188,10 @@ public:
 
     virtual void at(const Type* node)
     {
+        if (node->getAttr() & Node::Nullable)
+        {
+            write ("Nullable<");
+        }
         if (node->getName() == "boolean")
         {
             write("bool");
@@ -224,6 +228,10 @@ public:
         {
             write("%s", node->getName().c_str());
         }
+        if (node->getAttr() & Node::Nullable)
+        {
+            write (">");
+        }
     }
 
     virtual void at(const SequenceType* node)
@@ -250,10 +258,6 @@ public:
     virtual void at(const ArrayType* node)
     {
         Node* spec = node->getSpec();
-        if (ScopedName* name = dynamic_cast<ScopedName*>(spec))
-        {
-            spec = name->search(currentNode);
-        }
         Type* type = dynamic_cast<Type*>(spec);
         std::string name;
         if (type && !(type->getAttr() & Node::Nullable))
@@ -306,13 +310,17 @@ public:
             {
                 name = "DoubleArray";
             }
+            name = getScopedName(currentNode->getQualifiedModuleName(), "::dom::" + name);
+            write("%s", name.c_str());
         }
         else
         {
             name = "ObjectArray";
+            name = getScopedName(currentNode->getQualifiedModuleName(), "::dom::" + name);
+            write("%s<", name.c_str());
+            spec->accept(this);
+            write(">");
         }
-        name = getScopedName(currentNode->getQualifiedModuleName(), "::dom::" + name);
-        write("%s", name.c_str());
     }
 
     void getter(const Attribute* node)

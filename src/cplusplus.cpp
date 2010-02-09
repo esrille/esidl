@@ -634,6 +634,7 @@ class CPlusPlusImport : public Visitor, public Formatter
     std::set<std::string> importSet;
     std::list<Member*> typedefList;
     std::set<Member*> typedefSet;
+    bool importObjectArray;
 
     CPlusPlusNameSpace* ns;
 
@@ -645,6 +646,7 @@ public:
         Formatter(file, indent),
         package(package),
         currentNode(0),
+        importObjectArray(false),
         ns(ns)
     {
     }
@@ -769,7 +771,7 @@ public:
                 return;
             }
         }
-        importSet.insert("org.w3c.dom.ObjectArray");
+        importObjectArray = true;
         node->getSpec()->accept(this);
     }
 
@@ -839,6 +841,13 @@ public:
     void print()
     {
         bool newline = false;
+
+        if (importObjectArray)
+        {
+            writeln("#include <org/w3c/dom/ObjectArray.h>");
+            writeln("");
+            newline = true;
+        }
 
         for (std::set<std::string>::iterator i = importSet.begin();
              i != importSet.end();
