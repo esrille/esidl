@@ -1,0 +1,64 @@
+module dom {
+
+interface BooleanArray {
+  attribute unsigned long length;
+  attribute boolean element;
+};
+
+interface OctetArray {
+  attribute unsigned long length;
+  attribute octet element;
+};
+
+interface ByteArray {
+  attribute unsigned long length;
+  attribute byte element;
+};
+
+interface UnsignedByteArray {
+  attribute unsigned long length;
+  attribute unsigned byte element;
+};
+
+interface ShortArray {
+  attribute unsigned long length;
+  attribute short element;
+};
+
+interface UnsignedShortArray {
+  attribute unsigned long length;
+  attribute unsigned short element;
+};
+
+interface LongArray {
+  attribute unsigned long length;
+  attribute long element;
+};
+
+interface UnsignedLongArray {
+  attribute unsigned long length;
+  attribute unsigned long element;
+};
+
+interface LongLongArray {
+  attribute unsigned long length;
+  attribute long long element;
+};
+
+interface UnsignedLongLongArray {
+  attribute unsigned long length;
+  attribute unsigned long long element;
+};
+
+interface FloatArray {
+  attribute unsigned long length;
+  attribute float element;
+};
+
+interface DoubleArray {
+  attribute unsigned long length;
+  attribute double element;
+};
+
+};
+

@@ -6,6 +6,7 @@ w3c_generated_files = \
 	org/w3c/dom/Node.h
 
 w3c_idl_files = \
+	arrays.idl \
 	cssomview.idl \
 	dom2css.idl \
 	dom2events.idl \
