@@ -21,6 +21,7 @@
 #include <set>
 #include <vector>
 #include "cplusplus.h"
+#include "info.h"
 
 namespace
 {
@@ -245,6 +246,22 @@ public:
             }
             currentNode = saved;
         }
+
+        writeln("static const char* getQualifiedName() {");
+            writeln("return \"%s\";", node->getQualifiedName().c_str());
+        writeln("}");
+
+        writeln("static const char* info() {");
+            writetab();
+            write("return");
+            flush();
+            indent();
+            Info info(this, "Object");
+            const_cast<Interface*>(node)->accept(&info);
+            info.flush();
+            write(";\n");
+            unindent();
+        writeln("}");
 
 #ifdef USE_CONSTRUCTOR
         if (constructor)

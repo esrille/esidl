@@ -36,7 +36,6 @@ protected:
     int optionalStage;
     int optionalCount;
 
-    std::string moduleName;
     std::string objectTypeName;
     const Node* currentNode;
 
@@ -84,10 +83,9 @@ protected:
     }
 
 public:
-    Info(Formatter* f, std::string& moduleName, std::string& objectTypeName) :
+    Info(Formatter* f, const std::string& objectTypeName) :
         Formatter(f),
         constructorMode(false),
-        moduleName(moduleName),
         objectTypeName(objectTypeName),
         currentNode(getSpecification()),
         paramCount(0),
@@ -276,7 +274,7 @@ public:
 
         if (seq)
         {
-            seq->accept(this);
+            spec->accept(this);
         }
         else if (NativeType* nativeType = spec->isNative(node->getParent()))
         {
@@ -327,7 +325,7 @@ public:
         writeName(node);
         if (seq)
         {
-            seq->accept(this);
+            spec->accept(this);
         }
         else if (NativeType* nativeType = spec->isNative(node->getParent()))
         {
@@ -462,7 +460,7 @@ public:
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         if (seq)
         {
-            seq->accept(this);
+            spec->accept(this);
         }
         else if (spec->isStruct(node->getParent()))
         {
