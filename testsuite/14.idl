@@ -2,8 +2,10 @@
 
 module M
 {
-    typedef long A;
-    interface B
+    interface A
+    {
+    };
+    interface B : A
     {
     };
 };

@@ -637,9 +637,9 @@ Node* resolveInBase(const Interface* interface, std::string name)
         Interface* base = dynamic_cast<Interface*>(baseName->search(interface->getParent()));
         if (base)
         {
-            if (Node* found = base->search(name))
+            if (base->getParent()->search(name) == base)
             {
-                return found;
+                return base;
             }
             if (Node* found = resolveInBase(base, name))
             {
