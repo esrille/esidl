@@ -641,6 +641,11 @@ Node* resolveInBase(const Interface* interface, std::string name)
             {
                 return base;
             }
+            // Search the interface members to check method overrides.
+            if (Node* found = base->search(name))
+            {
+                return found;
+            }
             if (Node* found = resolveInBase(base, name))
             {
                 return found;
