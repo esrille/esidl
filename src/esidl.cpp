@@ -725,7 +725,6 @@ void Interface::adjustMethodCount()
         ScopedName* org = new ScopedName(name.substr(0, name.rfind('-')));
         Interface* supplemental = dynamic_cast<Interface*>(org->search(getParent()));
         check(supplemental, "could not resolve '%s'.", name.substr(0, name.rfind('-')).c_str());
-        supplementals.push_back(supplemental);
         supplemental->implements(this, true);
         break;
     }
@@ -735,7 +734,6 @@ void Interface::adjustMethodCount()
             for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
             {
                 Interface* supplemental = dynamic_cast<Interface*>(static_cast<ScopedName*>(*i)->search(getParent()));
-                supplementals.push_back(supplemental);
                 supplemental->implements(this, true);
             }
         }

@@ -860,7 +860,6 @@ class Interface : public Node
     int methodCount;
     Interface* constructor;
     std::list<const Interface*> mixins;
-    std::list<const Interface*> supplementals;
     std::list<const Interface*> implementList;
 
 public:
