@@ -860,7 +860,6 @@ class Interface : public Node
     int methodCount;
     Interface* constructor;
     std::list<const Interface*> mixins;
-    std::list<const Interface*> implementedOn;
     std::list<const Interface*> supplementals;
     std::list<const Interface*> implementList;
 
@@ -1011,20 +1010,6 @@ public:
             mixins.push_back(mixin);
 
             mixin->setAttr(mixin->getAttr() | ImplementedOn);
-            mixin->implementedOn.push_back(this);
-        }
-    }
-
-    Interface* getImplementedOn() const
-    {
-        // TODO: This is is wrong. It should check [NoInterfaceObject], too.
-        if (implementedOn.size() == 1)
-        {
-            return const_cast<Interface*>(implementedOn.front());
-        }
-        else
-        {
-            return 0;
         }
     }
 
