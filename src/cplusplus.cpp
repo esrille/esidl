@@ -21,6 +21,7 @@
 #include <set>
 #include <vector>
 #include "cplusplus.h"
+#include "cplusplusTemplate.h"
 #include "info.h"
 
 namespace
@@ -204,6 +205,12 @@ public:
             {
                 write(separator);
                 separator = ", public ";
+#ifdef USE_VIRTUAL_BASE
+                if ((*i)->isBaseObject())
+                {
+                    write("virtual ");
+                }
+#endif
                 (*i)->accept(this);
             }
         }
@@ -470,6 +477,18 @@ public:
                 Node* base = name->search(node->getParent());
                 node->check(base, "could not resolved %s.", name->getName().c_str());
                 includeSet.insert(base);
+            }
+        }
+
+        // Include mixins for the implementation class
+        const std::list<const Interface*>* implementList = node->getImplements();
+        if (!implementList->empty())
+        {
+            for (std::list<const Interface*>::const_iterator i = implementList->begin();
+                 i != implementList->end();
+                 ++i)
+            {
+                includeSet.insert(*i);
             }
         }
 
@@ -1007,6 +1026,11 @@ public:
 
         CPlusPlusInterface cplusplusInterface(source, file, indent);
         cplusplusInterface.at(node);
+
+        fprintf(file, "\n");
+
+        CPlusPlusTemplate cplusplusTemplate(source, file, indent);
+        cplusplusTemplate.at(node);
 
         ns.closeAll();
 

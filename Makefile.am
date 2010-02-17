@@ -6,6 +6,7 @@ bin_PROGRAMS = esidl
 
 esidl_SOURCES = \
 	include/cplusplus.h\
+	include/cplusplusTemplate.h \
 	include/esidl.h \
 	include/cxx.h \
 	include/expr.h \
