@@ -538,8 +538,8 @@ public:
             }
         }
 
-        for (std::list<const Interface*>::const_iterator i = node->getMixins()->begin();
-             i != node->getMixins()->end();
+        for (std::list<const Interface*>::const_iterator i = node->getImplements()->begin();
+             i != node->getImplements()->end();
              ++i)
         {
             std::string name = (*i)->getQualifiedName();
@@ -556,10 +556,8 @@ public:
             visitInterfaceElement(node, *i);
         }
 
-        // TODO: The following expanding mixins should be optional
-        // Expand mixins
-        for (std::list<const Interface*>::const_iterator i = node->getMixins()->begin();
-                i != node->getMixins()->end();
+        for (std::list<const Interface*>::const_iterator i = node->getSupplementals()->begin();
+                i != node->getSupplementals()->end();
                 ++i)
         {
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)

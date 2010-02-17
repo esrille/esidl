@@ -859,7 +859,7 @@ class Interface : public Node
     int constCount;
     int methodCount;
     Interface* constructor;
-    std::list<const Interface*> mixins;
+    std::list<const Interface*> supplementalList;
     std::list<const Interface*> implementList;
 
 public:
@@ -980,9 +980,9 @@ public:
         return constructor;
     }
 
-    const std::list<const Interface*>* getMixins() const
+    const std::list<const Interface*>* getSupplementals() const
     {
-        return &mixins;
+        return &supplementalList;
     }
 
     const std::list<const Interface*>* getImplements() const
@@ -1006,7 +1006,7 @@ public:
         }
         if ((mixin->attr & Supplemental) || importImplements)
         {
-            mixins.push_back(mixin);
+            supplementalList.push_back(mixin);
 
             mixin->setAttr(mixin->getAttr() | ImplementedOn);
         }
@@ -1014,8 +1014,8 @@ public:
 
     void collectMixins(std::list<const Interface*>* interfaceList, const Interface* interface) const
     {
-        for (std::list<const Interface*>::const_reverse_iterator i = interface->getMixins()->rbegin();
-             i != interface->getMixins()->rend();
+        for (std::list<const Interface*>::const_reverse_iterator i = interface->getSupplementals()->rbegin();
+             i != interface->getSupplementals()->rend();
              ++i)
         {
             assert(!(*i)->isLeaf());
