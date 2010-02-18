@@ -119,36 +119,59 @@ public:
             qualifiedModuleName = currentNode->getQualifiedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
-        writetab();
 
-        writeln("template<Any (*invoke)(Object*, unsigned, ...)>");
-        write("class %s_Bridge : public %s",
-              getEscapedName(node->getName()).c_str(),
-              getEscapedName(node->getName()).c_str());
         const std::list<const Interface*>* implementList = node->getImplements();
+
+        // Mixin interface
+        if (!implementList->empty())
+        {
+            write("class %s_Mixin : public %s",
+                  getEscapedName(node->getName()).c_str(),
+                  getEscapedName(node->getName()).c_str());
+            for (std::list<const Interface*>::const_iterator i = implementList->begin();
+                i != implementList->end();
+                ++i)
+            {
+                std::string name = (*i)->getQualifiedName();
+                name = getInterfaceName(name);
+                name = getScopedName(qualifiedModuleName, name);
+                write(", public %s", name.c_str());
+            }
+            writeln("{");
+            writeln("};");
+            writeln("");
+        }
+
+        // Bridge template
+        writeln("template<Any (*invoke)(Object*, unsigned, ...), class B = %s%s>",
+                getEscapedName(node->getName()).c_str(),
+                implementList->empty() ? "" : "_Mixin");
+        write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
+        int baseCount = 0;
+        write("public ");
         for (std::list<const Interface*>::const_iterator i = implementList->begin();
-             i != implementList->end();
-             ++i)
+                i != implementList->end();
+                ++i)
         {
             std::string name = (*i)->getQualifiedName();
             name = getInterfaceName(name);
             name = getScopedName(qualifiedModuleName, name);
-            write(", public %s", name.c_str());
+            write("%s_Bridge<invoke, ", name.c_str());
+            ++baseCount;
         }
-        writeln("{");
+        write("B");
+        for (int i = 0; i < baseCount; ++i)
+        {
+            write(" >");
+        }
+
+        write(" {\n");
         unindent();
         writeln("public:");
         indent();
 
-        // Expand mixins
         std::list<const Interface*> interfaceList;
-        for (std::list<const Interface*>::const_reverse_iterator i = implementList->rbegin();
-             i != implementList->rend();
-             ++i)
-        {
-            (*i)->collectMixins(&interfaceList);
-        }
-        node->collectMixins(&interfaceList);
+        node->collectMixins(&interfaceList, node);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
              i != interfaceList.end();
              ++i)
