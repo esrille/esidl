@@ -116,6 +116,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
+            qualifiedModuleName = currentNode->getQualifiedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
         writetab();
@@ -125,45 +126,39 @@ public:
               getEscapedName(node->getName()).c_str(),
               getEscapedName(node->getName()).c_str());
         const std::list<const Interface*>* implementList = node->getImplements();
-        if (!implementList->empty())
+        for (std::list<const Interface*>::const_iterator i = implementList->begin();
+             i != implementList->end();
+             ++i)
         {
-            for (std::list<const Interface*>::const_iterator i = implementList->begin();
-                 i != implementList->end();
-                 ++i)
-            {
-                std::string name = (*i)->getQualifiedName();
-                name = getInterfaceName(name);
-                name = getScopedName(currentNode->getQualifiedModuleName(), name);
-                write(", public %s", name.c_str());
-            }
+            std::string name = (*i)->getQualifiedName();
+            name = getInterfaceName(name);
+            name = getScopedName(qualifiedModuleName, name);
+            write(", public %s", name.c_str());
         }
         writeln("{");
         unindent();
         writeln("public:");
         indent();
 
-        methodNumber = 0;
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            visitInterfaceElement(node, *i);
-        }
-
         // Expand mixins
         std::list<const Interface*> interfaceList;
-        node->collectMixins(&interfaceList, node);
-        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
-                i != interfaceList.end();
-                ++i)
+        for (std::list<const Interface*>::const_reverse_iterator i = implementList->rbegin();
+             i != implementList->rend();
+             ++i)
         {
-            if (*i == node)
-            {
-                continue;
-            }
+            (*i)->collectMixins(&interfaceList);
+        }
+        node->collectMixins(&interfaceList);
+        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+             i != interfaceList.end();
+             ++i)
+        {
+            methodNumber = 0;
             writeln("// %s", (*i)->getName().c_str());
             const Node* saved = currentNode;
+            currentNode = *i;
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
             {
-                currentNode = *i;
                 visitInterfaceElement(*i, *j);
             }
             currentNode = saved;

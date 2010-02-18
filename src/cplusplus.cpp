@@ -164,6 +164,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
+            qualifiedModuleName = currentNode->getQualifiedModuleName();
         }
 
         writetab();
@@ -184,6 +185,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
+            qualifiedModuleName = currentNode->getQualifiedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
         writetab();
@@ -237,8 +239,8 @@ public:
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
-                i != interfaceList.end();
-                ++i)
+             i != interfaceList.end();
+             ++i)
         {
             if (*i == node)
             {
@@ -322,6 +324,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
+            qualifiedModuleName = currentNode->getQualifiedModuleName();
         }
         writetab();
         if (node->isTypedef(node->getParent()))
@@ -459,6 +462,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
+            qualifiedModuleName = currentNode->getQualifiedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
@@ -1029,7 +1033,7 @@ public:
 
         fprintf(file, "\n");
 
-        CPlusPlusTemplate cplusplusTemplate(source, file, indent);
+        CPlusPlusTemplate cplusplusTemplate(0, file, indent);
         cplusplusTemplate.at(node);
 
         ns.closeAll();

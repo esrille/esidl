@@ -477,6 +477,11 @@ public:
         return compare("double", scope) == 0;
     }
 
+    virtual Module* isModule(const Node* scope)
+    {
+        return 0;
+    }
+
     virtual Member* isTypedef(const Node* scope) const
     {
         return 0;
@@ -537,7 +542,7 @@ public:
 
     bool isDefinedIn(const char* source) const
     {
-        return getRank() == 1 && (getSource() == source || getSource() == "");
+        return getRank() == 1 && (!source || getSource() == source || getSource() == "");
     }
 
     void setExtendedAttributes(NodeList* list)
@@ -691,6 +696,16 @@ public:
         return node->isNative(node->getParent());
     }
 
+    virtual Module* isModule(const Node* scope)
+    {
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
+        return node->isModule(node->getParent());
+    }
+
     virtual Member* isTypedef(const Node* scope) const;
 
     virtual void accept(Visitor* visitor);
@@ -784,6 +799,11 @@ public:
             return parent->getPrefixedName() + body;
         }
         return "::org::w3c::dom" + body;
+    }
+
+    virtual Module* isModule(const Node* scope)
+    {
+        return this;
     }
 
     virtual void accept(Visitor* visitor);
@@ -1336,6 +1356,15 @@ public:
             return 0;
         }
         return spec->isNative(scope);
+    }
+
+    virtual Module* isModule(const Node* scope)
+    {
+        if (!type)
+        {
+            return 0;
+        }
+        return spec->isModule(scope);
     }
 
     virtual Member* isTypedef(const Node* scope) const

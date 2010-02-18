@@ -46,6 +46,8 @@ protected:
     int paramCount;  // The number of parameters of the previously evaluated operation
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
 
+    std::string qualifiedModuleName;
+
     int getParamCount() const
     {
         return paramCount;
@@ -78,7 +80,10 @@ protected:
             {
                 write("%s", separater);
             }
-            currentNode = (*i);
+            if ((*i)->isInterface(currentNode) || (*i)->isModule(currentNode))
+            {
+                currentNode = (*i);
+            }
             (*i)->accept(this);
         }
         currentNode = saved;
@@ -131,6 +136,7 @@ public:
         paramCount(0),
         variadicParam(0)
     {
+        qualifiedModuleName = currentNode->getQualifiedModuleName();
     }
 
     CPlusPlus(const char* source, const Formatter* formatter, const char* stringTypeName = "char*", const char* objectTypeName = "object",
@@ -145,6 +151,7 @@ public:
         paramCount(0),
         variadicParam(0)
     {
+        qualifiedModuleName = currentNode->getQualifiedModuleName();
     }
 
     virtual void at(const Node* node)
@@ -157,7 +164,7 @@ public:
             {
                 name = resolved->getQualifiedName();
                 name = getInterfaceName(name);
-                name = getScopedName(currentNode->getQualifiedModuleName(), name);
+                name = getScopedName(qualifiedModuleName, name);
             }
             write("%s", name.c_str());
         }
@@ -310,13 +317,13 @@ public:
             {
                 name = "DoubleArray";
             }
-            name = getScopedName(currentNode->getQualifiedModuleName(), "::dom::" + name);
+            name = getScopedName(qualifiedModuleName, "::dom::" + name);
             write("%s", name.c_str());
         }
         else
         {
             name = "ObjectArray";
-            name = getScopedName(currentNode->getQualifiedModuleName(), "::dom::" + name);
+            name = getScopedName(qualifiedModuleName, "::dom::" + name);
             write("%s<", name.c_str());
             spec->accept(this);
             write(">");
