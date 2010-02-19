@@ -71,7 +71,7 @@ class CPlusPlusTemplate : public CPlusPlus
             hasCast = 1;
         }
 
-        write(", %u", methodNumber);
+        write(", I, %u", methodNumber);
 
         if (!hasCustomStringType() && spec->isString(node->getParent()))
         {
@@ -143,16 +143,30 @@ public:
         }
 
         // Bridge template
-        writeln("template<Any (*invoke)(Object*, unsigned, ...), class B = %s%s>",
+        writeln("template<Any (*invoke)(Object*, unsigned, unsigned, ...), class B = %s%s, unsigned I = 0>",
                 getEscapedName(node->getName()).c_str(),
                 implementList->empty() ? "" : "_Mixin");
         write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
         int baseCount = 0;
-        write("public ");
-        for (std::list<const Interface*>::const_iterator i = implementList->begin();
-                i != implementList->end();
-                ++i)
+        
+        std::list<const Interface*> bridgeList;
+        for (std::list<const Interface*>::const_reverse_iterator i = implementList->rbegin();
+             i != implementList->rend();
+             ++i)
         {
+            (*i)->collectMixins(&bridgeList);
+        }
+        node->collectMixins(&bridgeList);
+        
+        write("public ");
+        for (std::list<const Interface*>::const_iterator i = bridgeList.begin();
+             i != bridgeList.end();
+             ++i)
+        {
+            if (*i == node || ((*i)->getAttr() & Interface::Supplemental))
+            {
+                continue;
+            }
             std::string name = (*i)->getQualifiedName();
             name = getInterfaceName(name);
             name = getScopedName(qualifiedModuleName, name);
@@ -162,7 +176,7 @@ public:
         write("B");
         for (int i = 0; i < baseCount; ++i)
         {
-            write(" >");
+            write(", I + %u>", baseCount - i - 1);
         }
 
         write(" {\n");
@@ -237,7 +251,7 @@ public:
             {
                 write("return ");
             }
-            write("invoke(this, %u, %s", methodNumber, name.c_str());
+            write("invoke(this, I, %u, %s", methodNumber, name.c_str());
             if (seq && !seq->getMax())
             {
                 write(", %sLength)", name.c_str());
