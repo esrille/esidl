@@ -275,6 +275,7 @@ SUBDIRS = . testsuite java cplusplus npapi
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 esidl_SOURCES = \
 	include/cplusplus.h\
+	include/cplusplusCall.h \
 	include/cplusplusTemplate.h \
 	include/esidl.h \
 	include/cxx.h \

@@ -193,14 +193,13 @@ public:
         writeln("public:");
         indent();
 
+        methodNumber = 0;
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
              i != interfaceList.end();
              ++i)
         {
-            methodNumber = 0;
-            writeln("// %s", (*i)->getName().c_str());
             const Node* saved = currentNode;
             currentNode = *i;
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)

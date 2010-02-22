@@ -21,6 +21,7 @@
 #include <set>
 #include <vector>
 #include "cplusplus.h"
+#include "cplusplusCall.h"
 #include "cplusplusTemplate.h"
 #include "info.h"
 
@@ -288,6 +289,10 @@ public:
             constructorMode = false;
         }
 #endif
+
+        writeln("");
+        CPlusPlusCall call(source, this);
+        call.at(node);
 
         writeln("};");
     }

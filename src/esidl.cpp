@@ -743,6 +743,29 @@ int Interface::getInterfaceCount() const
     return interfaceCount;
 }
 
+void Interface::getInterfaceList(std::list<const Interface*>* list) const
+{
+    for (std::list<const Interface*>::const_reverse_iterator i = implementList.rbegin();
+         i != implementList.rend();
+         ++i)
+    {
+        if (!((*i)->getAttr() & Interface::Supplemental))
+        {
+            (*i)->getInterfaceList(list);
+        }
+    }
+    for (std::list<const Interface*>::const_iterator i = superList.begin();
+         i != superList.end();
+         ++i)
+    {
+        if (!((*i)->getAttr() & Interface::Supplemental) && !(*i)->isBaseObject())
+        {
+            (*i)->getInterfaceList(list);
+        }
+    }
+    list->push_front(this);
+}
+
 void Interface::adjustMethodCount()
 {
     if (extends)

@@ -962,6 +962,7 @@ public:
     }
 
     int getInterfaceCount() const;
+    void getInterfaceList(std::list<const Interface*>* list) const;
 
     int addMethodCount(int count)
     {
