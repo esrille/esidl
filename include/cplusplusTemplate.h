@@ -143,7 +143,7 @@ public:
         }
 
         // Bridge template
-        writeln("template<Any (*invoke)(Object*, unsigned, unsigned, ...), class B = %s%s, unsigned I = 0>",
+        writeln("template<Any (*invoke)(Object*, unsigned, unsigned, ...), unsigned I = 0, class B = %s%s>",
                 getEscapedName(node->getName()).c_str(),
                 implementList->empty() ? "" : "_Mixin");
         write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
@@ -176,13 +176,13 @@ public:
             std::string name = (*i)->getQualifiedName();
             name = getInterfaceName(name);
             name = getScopedName(qualifiedModuleName, name);
-            write("%s_Bridge<invoke, ", name.c_str());
             ++baseCount;
+            write("%s_Bridge<invoke, I + %u, ", name.c_str(), baseCount);
         }
         write("B");
         for (int i = 0; i < baseCount; ++i)
         {
-            write(", I + %u>", baseCount - i - 1);
+            write(" >");
         }
 
         write(" {\n");
