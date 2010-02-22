@@ -147,7 +147,6 @@ public:
                 getEscapedName(node->getName()).c_str(),
                 implementList->empty() ? "" : "_Mixin");
         write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
-        int baseCount = 0;
 
         std::list<const Interface*> bridgeList;
         for (std::list<const Interface*>::const_reverse_iterator i = implementList->rbegin();
@@ -164,6 +163,9 @@ public:
         }
         bridgeList.push_front(node);
 
+        int baseCount = 0;
+        int interfaceCount = 1;
+
         write("public ");
         for (std::list<const Interface*>::const_iterator i = bridgeList.begin();
              i != bridgeList.end();
@@ -177,7 +179,8 @@ public:
             name = getInterfaceName(name);
             name = getScopedName(qualifiedModuleName, name);
             ++baseCount;
-            write("%s_Bridge<invoke, I + %u, ", name.c_str(), baseCount);
+            write("%s_Bridge<invoke, I + %u, ", name.c_str(), interfaceCount);
+            interfaceCount += (*i)->getInterfaceCount();
         }
         write("B");
         for (int i = 0; i < baseCount; ++i)

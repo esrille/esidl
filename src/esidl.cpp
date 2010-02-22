@@ -716,6 +716,33 @@ Node* ScopedName::search(const Node* scope) const
     return resolved;
 }
 
+// This method works only after AdjustMethodCount visitor has been applied.
+int Interface::getInterfaceCount() const
+{
+    if (interfaceCount != 0)
+    {
+        return interfaceCount;
+    }
+
+    interfaceCount = 1;
+    for (std::list<const Interface*>::const_iterator i = superList.begin();
+         i != superList.end();
+         ++i)
+    {
+        if (!(*i)->isBaseObject())
+        {
+            interfaceCount += (*i)->getInterfaceCount();
+        }
+    }
+    for (std::list<const Interface*>::const_reverse_iterator i = implementList.rbegin();
+            i != implementList.rend();
+            ++i)
+    {
+        interfaceCount += (*i)->getInterfaceCount();
+    }
+    return interfaceCount;
+}
+
 void Interface::adjustMethodCount()
 {
     if (extends)

@@ -878,6 +878,7 @@ class Interface : public Node
     Node* extends;
     int constCount;
     int methodCount;
+    mutable int interfaceCount;  // total number of non-supplemental interfaces this interface will implement excluding Object.
     Interface* constructor;
     std::list<const Interface*> supplementalList;
     std::list<const Interface*> implementList;
@@ -889,6 +890,7 @@ public:
         extends(extends),
         constCount(0),
         methodCount(0),
+        interfaceCount(0),
         constructor(0)
     {
         if (!forward)
@@ -958,6 +960,8 @@ public:
     {
         return methodCount;
     }
+
+    int getInterfaceCount() const;
 
     int addMethodCount(int count)
     {
