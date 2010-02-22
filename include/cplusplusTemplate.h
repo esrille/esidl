@@ -148,22 +148,28 @@ public:
                 implementList->empty() ? "" : "_Mixin");
         write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
         int baseCount = 0;
-        
+
         std::list<const Interface*> bridgeList;
         for (std::list<const Interface*>::const_reverse_iterator i = implementList->rbegin();
              i != implementList->rend();
              ++i)
         {
-            (*i)->collectMixins(&bridgeList);
+            bridgeList.push_front(*i);
         }
-        node->collectMixins(&bridgeList);
-        
+        for (std::list<const Interface*>::const_iterator i = node->getSuperList()->begin();
+             i != node->getSuperList()->end();
+             ++i)
+        {
+            bridgeList.push_front(*i);
+        }
+        bridgeList.push_front(node);
+
         write("public ");
         for (std::list<const Interface*>::const_iterator i = bridgeList.begin();
              i != bridgeList.end();
              ++i)
         {
-            if (*i == node || ((*i)->getAttr() & Interface::Supplemental))
+            if (*i == node || ((*i)->getAttr() & Interface::Supplemental) || (*i)->isBaseObject())
             {
                 continue;
             }

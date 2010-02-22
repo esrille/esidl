@@ -881,6 +881,7 @@ class Interface : public Node
     Interface* constructor;
     std::list<const Interface*> supplementalList;
     std::list<const Interface*> implementList;
+    std::list<const Interface*> superList;
 
 public:
     Interface(std::string identifier, Node* extends = 0, bool forward = false) :
@@ -998,6 +999,11 @@ public:
     Interface* getConstructor() const
     {
         return constructor;
+    }
+
+    const std::list<const Interface*>* getSuperList() const
+    {
+        return &superList;
     }
 
     const std::list<const Interface*>* getSupplementals() const

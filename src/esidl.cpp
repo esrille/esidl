@@ -718,6 +718,16 @@ Node* ScopedName::search(const Node* scope) const
 
 void Interface::adjustMethodCount()
 {
+    if (extends)
+    {
+        for (NodeList::iterator i = extends->begin(); i != extends->end(); ++i)
+        {
+            Interface* super = dynamic_cast<Interface*>(static_cast<ScopedName*>(*i)->search(getParent()));
+            check(super, "could not resolve '%s'.", name.substr(0, name.rfind('-')).c_str());
+            superList.push_back(super);
+        }
+    }
+
     switch (attr & (Supplemental | NoInterfaceObject))
     {
     case Supplemental:
