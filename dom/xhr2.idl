@@ -13,7 +13,7 @@ module dom {
 typedef events::EventTarget EventTarget;
 typedef html::Function Function;
 
-typedef file::Blob ByteArray;  // TBD at W3C
+typedef sequence<octet> ByteArray;  // TBD at W3C
 
 [NoInterfaceObject]
 interface XMLHttpRequestEventTarget : EventTarget {
