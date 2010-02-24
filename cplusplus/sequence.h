@@ -77,6 +77,7 @@ public:
     Sequence& operator=(const Sequence& value)
     {
         clone(value.sequence, value.size);
+        return *this;
     }
 
     T operator[](int index) const
