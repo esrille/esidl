@@ -28,10 +28,10 @@ template <typename E>
 class ObjectArray : public Object
 {
 public:
-    virtual int getLength() = 0;
-    virtual void setLength(int length) = 0;
-    virtual E getElement(int index) = 0;
-    virtual void setElement(int index, const E value) = 0;
+    virtual unsigned int getLength() = 0;
+    virtual void setLength(unsigned int length) = 0;
+    virtual E getElement(unsigned int index) = 0;
+    virtual void setElement(unsigned int index, const E value) = 0;
 };
 
 }
