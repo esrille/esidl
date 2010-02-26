@@ -30,67 +30,6 @@ class CPlusPlusCall : public CPlusPlus
 {
     unsigned methodNumber;
 
-    int writeInvoke(const Node* node, Node* spec, SequenceType* seq, const Node* nameNode)
-    {
-        bool hasBuffer = false;
-        bool hasLength = false;
-        int hasCast = 0;
-
-        writetab();
-        if (seq)
-        {
-            write("return static_cast<int>(invoke(this");
-            hasBuffer = true;
-            if (!seq->getMax())
-            {
-                hasLength = true;
-            }
-            hasCast = 1;
-        }
-        else if (spec->isVoid(node))
-        {
-            write("invoke(this");
-        }
-        else if (spec->isAny(node))
-        {
-            write("return invoke(this");
-            hasBuffer = hasLength = true;
-        }
-        else if (spec->isInterface(node))
-        {
-            write("return dynamic_cast<");
-            spec->accept(this);
-            write("*>(static_cast<Object*>(invoke(this");
-            hasCast = 2;
-        }
-        else
-        {
-            write("return static_cast<");
-            spec->accept(this);
-            write(" >(invoke(this");
-            hasCast = 1;
-        }
-
-        write(", I, %u", methodNumber);
-
-        if (!hasCustomStringType() && spec->isString(node->getParent()))
-        {
-            hasBuffer = hasLength = true;
-        }
-        if (hasBuffer)
-        {
-            write(", %s", getBufferName(nameNode).c_str());
-        }
-        if (hasLength)
-        {
-            write(", %sLength", getBufferName(nameNode).c_str());
-        }
-
-        ++methodNumber;
-
-        return hasCast;
-    }
-
 public:
     CPlusPlusCall(const char* source, const Formatter* formattter) :
         CPlusPlus(source, formattter, "std::string", "Object", true)
@@ -176,34 +115,11 @@ public:
         {
             spec = &replaceable;
         }
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         std::string name = getBufferName(node);
 
         writeln("case %u:", methodNumber);
         indent();
-            writetab();
-            write("return ");
-            write("get%s(", cap.c_str());
-
-            // TODO: seq, any, etc.
-            if (seq)
-            {
-                write("0");
-                if (!seq->getMax())
-                {
-                    write(", 0");
-                }
-            }
-            else if (!hasCustomStringType() && spec->isString(node->getParent()))
-            {
-                write("0, 0");
-            }
-            else if (spec->isAny(node->getParent()))
-            {
-                write("0, 0");
-            }
-
-            write(");\n");
+            writeln("return get%s();", cap.c_str());
         unindent();
         ++methodNumber;
 
@@ -221,15 +137,10 @@ public:
             assert(forwards);
             spec = forwards->getSpec();
         }
-        seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
 
         writeln("case %u:", methodNumber);
         indent();
             writetab();
-            if (seq)
-            {
-                write("return ");
-            }
             write("set%s(", cap.c_str());
             if (spec->isInterface(node->getParent()))
             {
@@ -243,15 +154,9 @@ public:
                 spec->accept(this);
                 write(" >(arguments[0])");
             }
-            if (seq && !seq->getMax())
-            {
-                write(", arguments.getLength(0)");  // TODO: Any for seq should provide length info.
-            }
             write(");\n");
-            if (!seq)
-            {
-                writeln("return Any();");
-            }
+            writeln("return Any();");
+
         unindent();
         ++methodNumber;
     }
@@ -265,31 +170,6 @@ public:
         indent();
             writetab();
             write("return %s(", getEscapedName(node->getName()).c_str());
-
-            bool needComma = false;
-            Node* spec = node->getSpec();
-            SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-
-            // TODO: seq, any, etc.
-            if (seq)
-            {
-                write("0");
-                if (!seq->getMax())
-                {
-                    write(", 0");
-                }
-                needComma = true;
-            }
-            else if (!hasCustomStringType() && spec->isString(node->getParent()))
-            {
-                write("0, 0");
-                needComma = true;
-            }
-            else if (spec->isAny(node->getParent()))
-            {
-                write("0, 0");
-                needComma = true;
-            }
 
             // TODO: Move this to CPlusPlus
             paramCount = 0;
@@ -306,7 +186,7 @@ public:
                         break;
                     }
                 }
-                if (needComma || i != node->begin())
+                if (i != node->begin())
                 {
                     write(", ");
                 }
@@ -333,27 +213,12 @@ public:
             seq = &variadicSequence;
         }
 
-#if 0
-        if (seq && !seq->getSpec()->isInterface(currentNode) ||
-            spec->isString(node->getParent()))
-        {
-            write("const ");
-        }
-#endif
-
         bool hasLength = false;
 
         if (node->isVariadic())
         {
             spec = seq;  // TODO: Check
             hasLength = true;
-        }
-        else if (seq)
-        {
-            if (!seq->getMax())
-            {
-                hasLength = true;
-            }
         }
 
         if (spec->isInterface(node->getParent()))

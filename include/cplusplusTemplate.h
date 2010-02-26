@@ -30,31 +30,20 @@ class CPlusPlusTemplate : public CPlusPlus
 {
     unsigned methodNumber;
 
-    int writeInvoke(const Node* node, Node* spec, SequenceType* seq, const Node* nameNode)
+    int writeInvoke(const Node* node, Node* spec, const Node* nameNode)
     {
         bool hasBuffer = false;
         bool hasLength = false;
         int hasCast = 0;
 
         writetab();
-        if (seq)
-        {
-            write("return static_cast<int>(invoke(this");
-            hasBuffer = true;
-            if (!seq->getMax())
-            {
-                hasLength = true;
-            }
-            hasCast = 1;
-        }
-        else if (spec->isVoid(node))
+        if (spec->isVoid(node))
         {
             write("invoke(this");
         }
         else if (spec->isAny(node))
         {
             write("return invoke(this");
-            hasBuffer = hasLength = true;
         }
         else if (spec->isInterface(node))
         {
@@ -227,7 +216,7 @@ public:
         writetab();
         CPlusPlus::getter(node);
         writeln("{");
-            int hasCast = writeInvoke(node, spec, seq, node);
+            int hasCast = writeInvoke(node, spec, node);
             while (0 < hasCast--)
             {
                 write(")");
@@ -254,17 +243,7 @@ public:
         writetab();
         CPlusPlus::setter(node);
         writeln("{");
-            writetab();
-            if (seq)
-            {
-                write("return ");
-            }
-            write("invoke(this, I, %u, %s", methodNumber, name.c_str());
-            if (seq && !seq->getMax())
-            {
-                write(", %sLength)", name.c_str());
-            }
-            write(");\n");
+            writeln("invoke(this, I, %u, %s);", methodNumber, name.c_str());
         writeln("}");
 
         ++methodNumber;
@@ -281,17 +260,15 @@ public:
 
             // Invoke
             Node* spec = node->getSpec();
-            SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
 
-            int hasCast = writeInvoke(node, spec, seq, spec);
+            int hasCast = writeInvoke(node, spec, spec);
 
             NodeList::iterator it = node->begin();
             for (int i = 0; i < getParamCount(); ++i, ++it)
             {
                 ParamDcl* param = static_cast<ParamDcl*>(*it);
                 write(", %s", getEscapedName(param->getName()).c_str());
-                SequenceType* seq = const_cast<SequenceType*>(param->getSpec()->isSequence(node));
-                if (param->isVariadic() || seq && !seq->getMax())
+                if (param->isVariadic())
                 {
                     write(", %sLength", getEscapedName(param->getName()).c_str());
                 }

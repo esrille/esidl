@@ -244,90 +244,24 @@ public:
     virtual void at(const SequenceType* node)
     {
         Node* spec = node->getSpec();
-        if (spec->isOctet(node->getParent()))
+        write("Sequence<");
+        spec->accept(this);
+        if (spec->isInterface(currentNode))
         {
-            write("void*");
+            write("*");
         }
-        else
-        {
-            spec->accept(this);
-            if (spec->isInterface(node->getParent()))
-            {
-                write("**");
-            }
-            else
-            {
-                write("*");
-            }
-        }
+        write (">");
     }
 
     virtual void at(const ArrayType* node)
     {
         Node* spec = node->getSpec();
         Type* type = dynamic_cast<Type*>(spec);
-        std::string name;
-        if (type && !(type->getAttr() & Node::Nullable))
-        {
-            if (type->getName() == "boolean")
-            {
-                name = "BooleanArray";
-            }
-            else if (type->getName() == "octet")
-            {
-                name = "OctetArray";
-            }
-            else if (type->getName() == "byte")
-            {
-                name = "ByteArray";
-            }
-            else if (type->getName() == "unsigned byte")
-            {
-                name = "UnsignedByteArray";
-            }
-            else if (type->getName() == "short")
-            {
-                name = "ShortArray";
-            }
-            else if (type->getName() == "unsigned short")
-            {
-                name = "UnsignedShortArray";
-            }
-            else if (type->getName() == "long")
-            {
-                name = "LongArray";
-            }
-            else if (type->getName() == "unsigned long")
-            {
-                name = "UnsignedLongArray";
-            }
-            else if (type->getName() == "long long")
-            {
-                name = "LongLongArray";
-            }
-            else if (type->getName() == "unsigned long long")
-            {
-                name = "UnsignedLongLongArray";
-            }
-            else if (type->getName() == "float")
-            {
-                name = "FloatArray";
-            }
-            else if (type->getName() == "double")
-            {
-                name = "DoubleArray";
-            }
-            name = getScopedName(qualifiedModuleName, "::dom::" + name);
-            write("%s", name.c_str());
-        }
-        else
-        {
-            name = "ObjectArray";
-            name = getScopedName(qualifiedModuleName, "::dom::" + name);
-            write("%s<", name.c_str());
-            spec->accept(this);
-            write(">");
-        }
+        // Note we don't need separate array types for primitive types in C++.
+        std::string name = getScopedName(qualifiedModuleName, "::dom::ObjectArray");
+        write("%s<", name.c_str());
+        spec->accept(this);
+        write(">");
     }
 
     void getter(const Attribute* node)
@@ -340,35 +274,14 @@ public:
         {
             spec = &replaceable;
         }
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         std::string name = getBufferName(node);
 
         write("virtual ");
-        if (seq)
-        {
-            write("int get%s(", cap.c_str());
-            spec->accept(this);
-            write(" %s", name.c_str());
-            if (seq->getMax())
-            {
-                write(")");
-            }
-            else
-            {
-                write(", int %sLength)", name.c_str());
-            }
-        }
-        else if (!hasCustomStringType() && spec->isString(node->getParent()))
+        if (!hasCustomStringType() && spec->isString(node->getParent()))
         {
             write("const ", cap.c_str());
             spec->accept(this);
             write(" get%s(void* %s, int %sLength)", cap.c_str(), name.c_str(), name.c_str());
-        }
-        else if (spec->isAny(node->getParent()))
-        {
-            spec->accept(this);
-            write(" get%s(", cap.c_str());
-            write("void* %s, int %sLength)", name.c_str(), name.c_str());
         }
         else
         {
@@ -418,32 +331,11 @@ public:
             assert(forwards);
             spec = forwards->getSpec();
         }
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         std::string name = getBufferName(node);
 
         // setter
         write("virtual ");
-        if (seq)
-        {
-            write("int set%s(const ", cap.c_str());
-            spec->accept(this);
-            write(" %s", name.c_str());
-            if (seq->getMax())
-            {
-                write(")");
-            }
-            else
-            {
-                write(", int %sLength)", name.c_str());
-            }
-        }
-        else if (spec->isString(node->getParent()))
-        {
-            write("void set%s(const ", cap.c_str());
-            spec->accept(this);
-            write(" %s)", name.c_str());
-        }
-        else if (spec->isAny(node->getParent()))
+        if (spec->isString(node->getParent()))
         {
             write("void set%s(const ", cap.c_str());
             spec->accept(this);
@@ -452,18 +344,14 @@ public:
         else
         {
             write("void set%s(", cap.c_str());
+            spec->accept(this);
             if (spec->isInterface(node->getParent()))
             {
-                spec->accept(this);
                 write("*");
             }
-            else if (NativeType* nativeType = spec->isNative(node->getParent()))
+            else if (spec->isAny(node->getParent()) || spec->isSequence(node->getParent()))
             {
-                nativeType->accept(this);
-            }
-            else
-            {
-                spec->accept(this);
+                write("&");
             }
             write(" %s)", name.c_str());
         }
@@ -489,21 +377,7 @@ public:
 
         bool needComma = true;  // true to write "," before the 1st parameter
         Node* spec = node->getSpec();
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-        if (seq)
-        {
-            std::string name = getBufferName(spec);
-
-            write("int");
-            write(" %s(", node->getName().c_str());
-            spec->accept(this);
-            write(" %s", name.c_str());
-            if (!seq->getMax())
-            {
-                write(", int %sLength", name.c_str());
-            }
-        }
-        else if (!hasCustomStringType() && spec->isString(node->getParent()))
+        if (!hasCustomStringType() && spec->isString(node->getParent()))
         {
             std::string name = getBufferName(spec);
 
@@ -512,28 +386,12 @@ public:
             write(" %s(", node->getName().c_str());
             write("void* %s, int %sLength", name.c_str(), name.c_str());
         }
-        else if (spec->isAny(node->getParent()))
-        {
-            std::string name = getBufferName(spec);
-
-            spec->accept(this);
-            write(" %s(", node->getName().c_str());
-            write("void* %s, int %sLength", name.c_str(), name.c_str());
-        }
         else
         {
+            spec->accept(this);
             if (spec->isInterface(node->getParent()))
             {
-                spec->accept(this);
                 write("*");
-            }
-            else if (NativeType* nativeType = spec->isNative(node->getParent()))
-            {
-                nativeType->accept(this);
-            }
-            else
-            {
-                spec->accept(this);
             }
             write(" %s(", node->getName().c_str());
             needComma = false;
@@ -575,6 +433,7 @@ public:
         static SequenceType variadicSequence(0);
 
         Node* spec = node->getSpec();
+        // TODO: Fix variadic support
         SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         if (node->isVariadic())
         {
@@ -583,40 +442,21 @@ public:
             seq = &variadicSequence;
         }
 
-        if (seq && !seq->getSpec()->isInterface(currentNode) ||
-            spec->isString(node->getParent()))
-        {
-            write("const ");
-        }
-
         if (node->isVariadic())
         {
             seq->accept(this);
             write(" %s = 0, int %sLength = 0", node->getName().c_str() , node->getName().c_str());
         }
-        else if (seq)
-        {
-            spec->accept(this);
-            write(" %s", node->getName().c_str());
-            if (!seq->getMax())
-            {
-                write(", int %sLength", node->getName().c_str());
-            }
-        }
         else
         {
+            spec->accept(this);
             if (spec->isInterface(node->getParent()))
             {
-                spec->accept(this);
                 write("*");
             }
-            else if (NativeType* nativeType = spec->isNative(node->getParent()))
+            else if (spec->isAny(node->getParent()) || spec->isSequence(node->getParent()))
             {
-                nativeType->accept(this);
-            }
-            else
-            {
-                spec->accept(this);
+                write("&");
             }
             write(" %s", getEscapedName(node->getName()).c_str());
         }

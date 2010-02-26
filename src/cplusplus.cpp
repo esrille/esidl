@@ -402,7 +402,7 @@ public:
                     }
                     ParamDcl* param = static_cast<ParamDcl*>(*it);
                     write("%s", getEscapedName(param->getName()).c_str());
-                    if (param->isVariadic() || param->getSpec()->isSequence(node))
+                    if (param->isVariadic() /* || param->getSpec()->isSequence(node) */)
                     {
                         write(", %sLength", getEscapedName(param->getName()).c_str());
                     }
@@ -747,75 +747,6 @@ public:
 
     virtual void at(const ArrayType* node)
     {
-        Node* spec = node->getSpec();
-        if (ScopedName* name = dynamic_cast<ScopedName*>(spec))
-        {
-            spec = name->search(currentNode);
-        }
-        Type* type = dynamic_cast<Type*>(spec);
-        if (type && !(type->getAttr() & Node::Nullable))
-        {
-            if (type->getName() == "boolean")
-            {
-                importSet.insert("org.w3c.dom.BooleanArray");
-                return;
-            }
-            else if (type->getName() == "octet")
-            {
-                importSet.insert("org.w3c.dom.OctetArray");
-                return;
-            }
-            else if (type->getName() == "byte")
-            {
-                importSet.insert("org.w3c.dom.ByteArray");
-                return;
-            }
-            else if (type->getName() == "unsigned byte")
-            {
-                importSet.insert("org.w3c.dom.UnsignedByteArray");
-                return;
-            }
-            else if (type->getName() == "short")
-            {
-                importSet.insert("org.w3c.dom.ShortArray");
-                return;
-            }
-            else if (type->getName() == "unsigned short")
-            {
-                importSet.insert("org.w3c.dom.UnsignedShortArray");
-                return;
-            }
-            else if (type->getName() == "long")
-            {
-                importSet.insert("org.w3c.dom.LongArray");
-                return;
-            }
-            else if (type->getName() == "unsigned long")
-            {
-                importSet.insert("org.w3c.dom.UnsignedLongArray");
-                return;
-            }
-            else if (type->getName() == "long long")
-            {
-                importSet.insert("org.w3c.dom.LongLongArray");
-                return;
-            }
-            else if (type->getName() == "unsigned long long")
-            {
-                importSet.insert("org.w3c.dom.UnsignedLongLongArray");
-                return;
-            }
-            else if (type->getName() == "float")
-            {
-                importSet.insert("org.w3c.dom.FloatArray");
-                return;
-            }
-            else if (type->getName() == "double")
-            {
-                importSet.insert("org.w3c.dom.DoubleArray");
-                return;
-            }
-        }
         importObjectArray = true;
         node->getSpec()->accept(this);
     }
