@@ -27,5 +27,23 @@ esac
 AM_CONDITIONAL(I386, test x$cpu_type = xi386)
 AM_CONDITIONAL(X86_64, test x$cpu_type = xx86_64)
 
+AC_ARG_ENABLE(java, AC_HELP_STRING([--enable-java],
+                                   [enable Java interface generation [[default=yes]]]), 
+              [], [enable_java="yes"])
+AC_MSG_RESULT([$enable_java])
+AM_CONDITIONAL(ENABLE_JAVA, test "$enable_java" = "yes")
+
+AC_ARG_ENABLE(npapi, AC_HELP_STRING([--enable-npapi],
+                                    [enable NPAPI demo [[default=yes]]]), 
+              [], [enable_npapi="yes"])
+AC_MSG_RESULT([$enable_npapi])
+AM_CONDITIONAL(ENABLE_NPAPI, test "$enable_npapi" = "yes")
+
+AC_ARG_ENABLE(cplusplus, AC_HELP_STRING([--enable-cplusplus],
+                                        [enable C++ interface generation [[default=yes]]]), 
+              [], [enable_cplusplus="yes"])
+AC_MSG_RESULT([$enable_cplusplus])
+AM_CONDITIONAL(ENABLE_CPLUSPLUS, test "$enable_cplusplus" = "yes")
+
 AC_OUTPUT
 

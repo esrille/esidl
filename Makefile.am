@@ -1,4 +1,22 @@
-SUBDIRS = . testsuite java cplusplus npapi
+if ENABLE_JAVA
+JAVADIR = java
+else
+JAVADIR =
+endif
+
+if ENABLE_CPLUSPLUS
+CPLUSPLUSDIR = cplusplus
+else
+CPLUSPLUSDIR =
+endif
+
+if ENABLE_NPAPI
+NPAPIDIR = npapi
+else
+NPAPIDIR =
+endif
+
+SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR)
 
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 
