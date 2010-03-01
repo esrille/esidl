@@ -1,0 +1,35 @@
+/*
+ * eventsource.idl
+ *
+ * Server-Sent Events
+ *
+ * Original W3C Working Draft 22 December 2009:
+ *
+ *   http://www.w3.org/TR/eventsource/
+ */
+
+module eventsource {
+
+typedef events::EventTarget EventTarget;
+typedef html::Function Function;
+
+[Constructor(in DOMString url)]
+interface EventSource {
+  readonly attribute DOMString URL;
+
+  // ready state
+  const unsigned short CONNECTING = 0;
+  const unsigned short OPEN = 1;
+  const unsigned short CLOSED = 2;
+  readonly attribute unsigned short readyState;
+
+  // networking
+           attribute Function onopen;
+           attribute Function onmessage;
+           attribute Function onerror;
+  void close();
+};
+EventSource implements EventTarget;
+
+};
+

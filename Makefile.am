@@ -50,12 +50,16 @@ EXTRA_DIST = \
 	dom/dom3ls.idl \
 	dom/dom3validation.idl \
 	dom/dom3xpath.idl \
+	dom/eventsource.idl \
 	dom/file.idl \
 	dom/html5.idl \
 	dom/idl_scraper.pl \
 	dom/NOTICE \
 	dom/webgl.idl \
+	dom/webstorage.idl \
+	dom/websocket.idl \
 	dom/wget_webidl_dom \
+	dom/workers.idl \
 	dom/xhr2.idl
 
 clean-local:
