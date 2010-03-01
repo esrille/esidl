@@ -192,9 +192,13 @@ w3c_idl_files = \
 	dom3ls.idl \
 	dom3validation.idl \
 	dom3xpath.idl \
+	eventsource.idl \
 	file.idl \
 	html5.idl \
 	webgl.idl \
+	webstorage.idl \
+	websocket.idl \
+	workers.idl \
 	xhr2.idl
 
 nodist_noinst_HEADERS = \

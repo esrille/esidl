@@ -560,10 +560,13 @@ public:
                 i != node->getSupplementals()->end();
                 ++i)
         {
+            const Node* saved = currentNode;
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
             {
+                currentNode = *i;
                 visitInterfaceElement(*i, *j);
             }
+            currentNode = saved;
         }
 
         if (Interface* constructor = node->getConstructor())
