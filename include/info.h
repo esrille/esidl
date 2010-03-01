@@ -556,9 +556,12 @@ public:
             visitInterfaceElement(node, *i);
         }
 
-        for (std::list<const Interface*>::const_iterator i = node->getSupplementals()->begin();
-                i != node->getSupplementals()->end();
-                ++i)
+        // Expand supplementals
+        std::list<const Interface*> interfaceList;
+        node->collectMixins(&interfaceList, node);
+        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+             i != interfaceList.end();
+             ++i)
         {
             const Node* saved = currentNode;
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)

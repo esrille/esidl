@@ -236,7 +236,7 @@ public:
             visitInterfaceElement(node, *i);
         }
 
-        // Expand mixins
+        // Expand supplementals
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
@@ -506,7 +506,7 @@ public:
             visitInterfaceElement(node, *i);
         }
 
-        // Expand mixins
+        // Expand supplementals
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
@@ -775,7 +775,7 @@ public:
         }
 #endif
         visitChildren(node);
-        // Expand mixins
+        // Expand supplementals
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();

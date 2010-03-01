@@ -1055,6 +1055,7 @@ public:
         interfaceList->push_front(interface);
     }
 
+    // Note: This is for the backward compatibility only. We should not use this any more.
     void collectMixins(std::list<const Interface*>* interfaceList) const
     {
         for (const Interface* interface = this;
