@@ -433,33 +433,23 @@ public:
         static SequenceType variadicSequence(0);
 
         Node* spec = node->getSpec();
-        // TODO: Fix variadic support
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         if (node->isVariadic())
         {
             variadicParam = node;
             variadicSequence.setSpec(spec);
-            seq = &variadicSequence;
+            spec = &variadicSequence;
         }
 
-        if (node->isVariadic())
+        spec->accept(this);
+        if (spec->isInterface(node->getParent()))
         {
-            seq->accept(this);
-            write(" %s = 0, int %sLength = 0", node->getName().c_str() , node->getName().c_str());
+            write("*");
         }
-        else
+        else if (spec->isAny(node->getParent()) || spec->isSequence(node->getParent()))
         {
-            spec->accept(this);
-            if (spec->isInterface(node->getParent()))
-            {
-                write("*");
-            }
-            else if (spec->isAny(node->getParent()) || spec->isSequence(node->getParent()))
-            {
-                write("&");
-            }
-            write(" %s", getEscapedName(node->getName()).c_str());
+            write("&");
         }
+        write(" %s", getEscapedName(node->getName()).c_str());
     }
 
     virtual void at(const Include* node)

@@ -268,10 +268,6 @@ public:
             {
                 ParamDcl* param = static_cast<ParamDcl*>(*it);
                 write(", %s", getEscapedName(param->getName()).c_str());
-                if (param->isVariadic())
-                {
-                    write(", %sLength", getEscapedName(param->getName()).c_str());
-                }
             }
 
             while (0 < hasCast--)

@@ -205,20 +205,12 @@ public:
         static SequenceType variadicSequence(0);
 
         Node* spec = node->getSpec();
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
+
         if (node->isVariadic())
         {
             variadicParam = node;
             variadicSequence.setSpec(spec);
-            seq = &variadicSequence;
-        }
-
-        bool hasLength = false;
-
-        if (node->isVariadic())
-        {
-            spec = seq;  // TODO: Check
-            hasLength = true;
+            spec = &variadicSequence;
         }
 
         if (spec->isInterface(node->getParent()))
@@ -232,11 +224,6 @@ public:
             write("static_cast<");
             spec->accept(this);
             write(" >(arguments[%u])", getParamCount());
-        }
-
-        if (hasLength)
-        {
-            write(", arguments.getLength(%u)", getParamCount());  // TODO: Any for seq should provide length info.
         }
      }
  };
