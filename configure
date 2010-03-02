@@ -15736,6 +15736,8 @@ else
 fi
 
 
+{ $as_echo "$as_me:$LINENO: checking whether to generate Java interfaces" >&5
+$as_echo_n "checking whether to generate Java interfaces... " >&6; }
 # Check whether --enable-java was given.
 if test "${enable_java+set}" = set; then
   enableval=$enable_java;
@@ -15754,6 +15756,8 @@ else
 fi
 
 
+{ $as_echo "$as_me:$LINENO: checking whether to generate NPAPI interfaces" >&5
+$as_echo_n "checking whether to generate NPAPI interfaces... " >&6; }
 # Check whether --enable-npapi was given.
 if test "${enable_npapi+set}" = set; then
   enableval=$enable_npapi;
@@ -15772,6 +15776,8 @@ else
 fi
 
 
+{ $as_echo "$as_me:$LINENO: checking whether to generate C++ interfaces" >&5
+$as_echo_n "checking whether to generate C++ interfaces... " >&6; }
 # Check whether --enable-cplusplus was given.
 if test "${enable_cplusplus+set}" = set; then
   enableval=$enable_cplusplus;
