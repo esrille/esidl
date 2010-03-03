@@ -81,6 +81,23 @@ protected:
         currentNode = saved;
     }
 
+    void visitInterfaceElement(const Interface* interface, Node* element)
+    {
+        if (element->isSequence(interface) ||
+            element->isNative(interface) ||
+            element->isTypedef(interface))
+        {
+            return;
+        }
+        optionalStage = 0;
+        do
+        {
+            optionalCount = 0;
+            element->accept(this);
+            ++optionalStage;
+        } while (optionalStage <= optionalCount);
+    }
+
 public:
     Meta(const std::string& objectTypeName) :
         objectTypeName(objectTypeName),
@@ -398,16 +415,6 @@ public:
             output << Reflect::kSpecialStringifier;
         }
 
-        NodeList::reverse_iterator last = node->rbegin();
-        if (last != node->rend())
-        {
-            const ParamDcl* param = dynamic_cast<const ParamDcl*>(*last);
-            if (param && param->isVariadic())
-            {
-                output << Reflect::kVariadic;
-            }
-        }
-
         output << node->getParamCount(optionalStage);
 
         Node* spec = node->getSpec();
@@ -441,55 +448,24 @@ public:
             }
         }
 
-        node->getMeta() = output.str();
+        node->getMetaOp(optionalStage) = output.str();
+
+        if (variadicParam)
+        {
+            // Insert Reflect::kVariadic just after Reflect::kOperation.
+            node->getMetaOp(optionalStage).insert(1, 1, Reflect::kVariadic);
+        }
     }
 
     virtual void at(const ParamDcl* node)
     {
         Node* spec = node->getSpec();
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-        if (seq)
+        if (node->isVariadic())
         {
-            spec->accept(this);
+            variadicParam = node;
         }
-        else if (spec->isStruct(node->getParent()))
-        {
-            spec->accept(this);
-        }
-        else if (spec->isArray(node->getParent()))
-        {
-            spec->accept(this);
-        }
-        else if (NativeType* nativeType = spec->isNative(node->getParent()))
-        {
-            nativeType->accept(this);
-        }
-        else if (spec->isInterface(node->getParent()))
-        {
-            spec->accept(this);
-        }
-        else
-        {
-            spec->accept(this);
-        }
+        spec->accept(this);
         writeName(node);
-    }
-
-    void visitInterfaceElement(const Interface* interface, Node* element)
-    {
-        if (element->isSequence(interface) ||
-            element->isNative(interface) ||
-            element->isTypedef(interface))
-        {
-            return;
-        }
-        optionalStage = 0;
-        do
-        {
-            optionalCount = 0;
-            element->accept(this);
-            ++optionalStage;
-        } while (optionalStage <= optionalCount);
     }
 
     virtual void at(const Interface* node)

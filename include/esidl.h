@@ -1545,6 +1545,8 @@ class OpDcl : public Member
     int methodCount;
     std::vector<int> paramCounts;  // for each method
 
+    mutable std::vector<std::string> metaOps;
+
 public:
     OpDcl(std::string identifier, Node* spec) :
         Member(identifier, spec, 0),
@@ -1557,6 +1559,16 @@ public:
 
     virtual void add(Node* node);
     void processExtendedAttributes();
+
+    std::string& getMetaOp(int i) const
+    {
+        assert(i < methodCount);
+        if (metaOps.size() < methodCount)
+        {
+            metaOps.resize(methodCount);
+        }
+        return metaOps.at(i);
+    }
 
     Node* getRaises() const
     {

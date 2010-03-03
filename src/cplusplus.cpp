@@ -252,7 +252,7 @@ public:
             writeln("return \"%s\";", node->getQualifiedName().c_str());
         writeln("}");
 
-        writeln("static const char* info() {");
+        writeln("static const char* getMetaData() {");
             writetab();
             write("return");
             flush();

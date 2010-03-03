@@ -40,6 +40,8 @@ protected:
     int paramCount;  // The number of parameters of the previously evaluated operation
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
 
+    unsigned offset;
+
     int getParamCount() const
     {
         return paramCount;
@@ -75,6 +77,21 @@ protected:
         currentNode = saved;
     }
 
+    void visitInterfaceElement(const Interface* interface, Node* element)
+    {
+        if (element->isSequence(interface) ||
+            element->isNative(interface) ||
+            element->isTypedef(interface) ||
+            element->isInterface(interface))  // Do not process Constructor
+        {
+            return;
+        }
+        writeln("");
+        writetab();
+        write("/* %u */ ", offset);
+        element->accept(this);
+    }
+
 public:
     Info(Formatter* f, const std::string& objectTypeName) :
         Formatter(f),
@@ -82,7 +99,8 @@ public:
         objectTypeName(objectTypeName),
         currentNode(getSpecification()),
         paramCount(0),
-        variadicParam(0)
+        variadicParam(0),
+        offset(0)
     {
     }
 
@@ -93,47 +111,38 @@ public:
 
     virtual void at(const Attribute* node)
     {
-        writetab();
         write("\"%s\"", node->getMetaGetter().c_str());
+        offset += node->getMetaGetter().length();
         if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
         {
             writeln("");
             writetab();
+            write("/* %u */ ", offset);
             write("\"%s\"", node->getMetaSetter().c_str());
+            offset += node->getMetaSetter().length();
         }
     }
 
     virtual void at(const OpDcl* node)
     {
-        writetab();
-        if (constructorMode)
+        for (int i = 0; i < node->getMethodCount(); ++i)
         {
-            write("\"%c%s\"", Reflect::kConstructor, node->getMeta().c_str() + 1);
-
+            if (i != 0)
+            {
+                writeln("");
+                writetab();
+                write("/* %u */ ", offset);
+            }
+            if (constructorMode)
+            {
+                write("\"%c%s\"", Reflect::kConstructor, node->getMetaOp(i).c_str() + 1);
+            }
+            else
+            {
+                write("\"%c%s\"", Reflect::kOperation, node->getMetaOp(i).c_str() + 1);
+            }
+            offset += node->getMetaOp(i).length();
         }
-        else
-        {
-            write("\"%c%s\"", Reflect::kOperation, node->getMeta().c_str() + 1);
-        }
-    }
-
-    void visitInterfaceElement(const Interface* interface, Node* element)
-    {
-        if (element->isSequence(interface) ||
-            element->isNative(interface) ||
-            element->isTypedef(interface) ||
-            element->isInterface(interface))  // Do not process Constructor
-        {
-            return;
-        }
-        optionalStage = 0;
-        do
-        {
-            write("\n");
-            optionalCount = 0;
-            element->accept(this);
-            ++optionalStage;
-        } while (optionalStage <= optionalCount);
     }
 
     virtual void at(const Interface* node)
@@ -144,10 +153,14 @@ public:
         }
 
         currentNode = node;
+        offset = 0;
 
         writeln("");
         writetab();
+        write("/* %u */ ", offset);
         write("\"%s\"", node->getMeta().c_str());
+
+        offset += node->getMeta().length();
 
         // Expand supplementals
         std::list<const Interface*> interfaceList;
@@ -181,8 +194,8 @@ public:
 
     virtual void at(const ConstDcl* node)
     {
-        writetab();
         write("\"%s\"", node->getMeta().c_str());
+        offset += node->getMeta().length();
     }
 
     virtual void at(const Member* node)

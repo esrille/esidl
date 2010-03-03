@@ -29,11 +29,11 @@
 class CPlusPlusTemplate : public CPlusPlus
 {
     unsigned methodNumber;
+    std::string className;
+    unsigned offset;
 
     int writeInvoke(const Node* node, Node* spec, const Node* nameNode)
     {
-        bool hasBuffer = false;
-        bool hasLength = false;
         int hasCast = 0;
 
         writetab();
@@ -60,20 +60,7 @@ class CPlusPlusTemplate : public CPlusPlus
             hasCast = 1;
         }
 
-        write(", I, %u", methodNumber);
-
-        if (!hasCustomStringType() && spec->isString(node->getParent()))
-        {
-            hasBuffer = hasLength = true;
-        }
-        if (hasBuffer)
-        {
-            write(", %s", getBufferName(nameNode).c_str());
-        }
-        if (hasLength)
-        {
-            write(", %sLength", getBufferName(nameNode).c_str());
-        }
+        write(", I, %u, %s::getMetaData(), %u", methodNumber, className.c_str(), offset);
 
         ++methodNumber;
 
@@ -95,7 +82,11 @@ public:
 
     virtual void at(const Member* node)
     {
-        // To avoid constants
+    }
+
+    virtual void at(const ConstDcl* node)
+    {
+        offset += node->getMeta().length();
     }
 
     virtual void at(const Interface* node)
@@ -106,6 +97,7 @@ public:
         {
             currentNode = node->getParent();
             qualifiedModuleName = currentNode->getQualifiedModuleName();
+            className = node->getName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
@@ -132,7 +124,7 @@ public:
         }
 
         // Bridge template
-        writeln("template<Any (*invoke)(Object*, unsigned, unsigned, ...), unsigned I = 0, class B = %s%s>",
+        writeln("template<Any (*invoke)(Object*, unsigned, unsigned, const char*, unsigned, ...), unsigned I = 0, class B = %s%s>",
                 getEscapedName(node->getName()).c_str(),
                 implementList->empty() ? "" : "_Mixin");
         write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
@@ -183,6 +175,7 @@ public:
         indent();
 
         methodNumber = 0;
+        offset = node->getMeta().length();
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
@@ -223,6 +216,7 @@ public:
             }
             write(");\n");
         writeln("}");
+        offset += node->getMetaGetter().length();
 
         if (node->isReadonly() && !node->isPutForwards() && !node->isReplaceable())
         {
@@ -243,8 +237,10 @@ public:
         writetab();
         CPlusPlus::setter(node);
         writeln("{");
-            writeln("invoke(this, I, %u, %s);", methodNumber, name.c_str());
+            writeln("invoke(this, I, %u, %s::getMetaData(), %u, %s);",
+                    methodNumber, className.c_str(), offset, name.c_str());
         writeln("}");
+        offset += node->getMetaSetter().length();
 
         ++methodNumber;
     }
@@ -277,6 +273,7 @@ public:
             write(");\n");
 
         writeln("}");
+        offset += node->getMetaOp(optionalStage).length();
     }
 };
 
