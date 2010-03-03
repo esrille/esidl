@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,7 @@
  */
 
 #include "esidl.h"
+#include "meta.h"
 
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -306,6 +307,9 @@ int main(int argc, char* argv[])
 
     AdjustMethodCount adjustMethodCount(Node::getFlatNamespace());
     getSpecification()->accept(&adjustMethodCount);
+
+    Meta meta(objectTypeName);
+    getSpecification()->accept(&meta);
 
     for (int i = 1; i < argc; ++i)
     {

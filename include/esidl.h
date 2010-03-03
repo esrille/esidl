@@ -90,6 +90,8 @@ protected:
     int                 lastLine;
     int                 lastColumn;
 
+    mutable std::string meta;           // TODO: meta should not be mutable. fix later.
+
     static int          level;          // current include level
     static const char*  baseObjectName; // default base object name
     static const char*  namespaceName;  // flat namespace name if non zero
@@ -248,6 +250,11 @@ public:
     const std::string& getSource() const
     {
         return source;
+    }
+
+    std::string& getMeta() const
+    {
+        return meta;
     }
 
     uint32_t getAttr() const
@@ -1394,6 +1401,9 @@ class Attribute : public Member
     Node* setraises;
     std::string putForwards;
 
+    mutable std::string metaGetter;
+    mutable std::string metaSetter;
+
 public:
     Attribute(std::string identifier, Node* spec, bool readonly = false) :
         Member(identifier, spec, 0),
@@ -1401,6 +1411,16 @@ public:
         getraises(0),
         setraises(0)
     {
+    }
+
+    std::string& getMetaGetter() const
+    {
+        return metaGetter;
+    }
+
+    std::string& getMetaSetter() const
+    {
+        return metaSetter;
     }
 
     bool isReadonly() const

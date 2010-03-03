@@ -32,6 +32,7 @@ esidl_SOURCES = \
 	include/formatter.h \
 	include/forward.h \
 	include/info.h \
+	include/meta.h \
 	include/java.h \
 	include/reflect.h \
 	include/utf.h \

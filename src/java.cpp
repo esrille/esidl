@@ -237,11 +237,6 @@ public:
         }
 #endif
 
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            visitInterfaceElement(node, *i);
-        }
-
         // Expand supplementals
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
@@ -249,10 +244,6 @@ public:
                 i != interfaceList.end();
                 ++i)
         {
-            if (*i == node)
-            {
-                continue;
-            }
             writeln("// %s", (*i)->getName().c_str());
             const Node* saved = currentNode;
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
@@ -558,7 +549,6 @@ public:
             prefixedName = module->getPrefixedName();
         }
         visitChildren(node->getExtends());
-        visitChildren(node);
         // Expand supplementals
         std::list<const Interface*> interfaceList;
         node->collectMixins(&interfaceList, node);
@@ -566,10 +556,6 @@ public:
              i != interfaceList.end();
              ++i)
         {
-            if (*i == node)
-            {
-                continue;
-            }
             currentNode = *i;
             visitChildren(*i);
         }

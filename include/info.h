@@ -18,8 +18,6 @@
 #ifndef ESIDL_INFO_H_INCLUDED
 #define ESIDL_INFO_H_INCLUDED
 
-#include <stdarg.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <map>
 #include <string>
@@ -41,11 +39,6 @@ protected:
 
     int paramCount;  // The number of parameters of the previously evaluated operation
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
-
-    void writeName(const Node* node)
-    {
-        write("%zu%s", node->getName().length(), node->getName().c_str());
-    }
 
     int getParamCount() const
     {
@@ -93,396 +86,35 @@ public:
     {
     }
 
-    virtual void at(const Node* node)
-    {
-        if (0 < node->getName().size())
-        {
-            assert(!node->isInterface(currentNode));
-            std::string name = node->getName();
-            Node* resolved = resolve(currentNode, name);
-            if (resolved)
-            {
-                name = resolved->getQualifiedName();
-            }
-            write("%zu%s", name.length(), name.c_str());
-        }
-        else
-        {
-            printChildren(node);
-        }
-    }
-
-    virtual void at(const ScopedName* node)
-    {
-        Node* resolved = node->search(currentNode);
-        node->check(resolved, "%s could not resolved.", node->getName().c_str());
-        if (dynamic_cast<ExceptDcl*>(resolved))
-        {
-            std::string name = resolved->getQualifiedName();
-            write("%zu%s", name.length(), name.c_str());
-        }
-        else if (dynamic_cast<Interface*>(resolved))
-        {
-            std::string name = resolved->getQualifiedName();
-            name = getInterfaceName(name);
-            write("%c%zu%s", Reflect::kObject, name.length(), name.c_str());
-        }
-        else
-        {
-            const Node* saved = currentNode;
-            currentNode = resolved->getParent();
-            resolved->accept(this);
-            currentNode = saved;
-        }
-    }
-
     virtual void at(const Module* node)
     {
         // Info{} visiter should be applied for interfaces.
     }
 
-    virtual void at(const Type* node)
-    {
-        if (node->getName() == "void")
-        {
-            write("%c", Reflect::kVoid);
-        }
-        else if (node->getName() == "boolean")
-        {
-            write("%c", Reflect::kBoolean);
-        }
-        else if (node->getName() == "octet")
-        {
-            write("%c", Reflect::kOctet);
-        }
-        else if (node->getName() == "byte")
-        {
-            write("%c", Reflect::kByte);
-        }
-        else if (node->getName() == "unsigned byte")
-        {
-            write("%c", Reflect::kUnsignedByte);
-        }
-        else if (node->getName() == "short")
-        {
-            write("%c", Reflect::kShort);
-        }
-        else if (node->getName() == "unsigned short")
-        {
-            write("%c", Reflect::kUnsignedShort);
-        }
-        else if (node->getName() == "long")
-        {
-            write("%c", Reflect::kLong);
-        }
-        else if (node->getName() == "unsigned long")
-        {
-            write("%c", Reflect::kUnsignedLong);
-        }
-        else if (node->getName() == "long long")
-        {
-            write("%c", Reflect::kLongLong);
-        }
-        else if (node->getName() == "unsigned long long")
-        {
-            write("%c", Reflect::kUnsignedLongLong);
-        }
-        else if (node->getName() == "float")
-        {
-            write("%c", Reflect::kFloat);
-        }
-        else if (node->getName() == "double")
-        {
-            write("%c", Reflect::kDouble);
-        }
-        else if (node->getName() == "any")
-        {
-            write("%c", Reflect::kAny);
-        }
-        else if (node->getName() == "string")
-        {
-            write("%c", Reflect::kString);
-        }
-        else
-        {
-            fprintf(stderr, "Unsupported type name: %s.\n",
-                    node->getName().c_str());
-            exit(EXIT_FAILURE);
-        }
-        if (node->getAttr() & Node::Nullable)
-        {
-            write("%c", Reflect::kNullable);
-        }
-    }
-
-    virtual void at(const NativeType* node)
-    {
-        if (node->getName() == "void_pointer")
-        {
-            write("%c", Reflect::kPointer);  // XXX To be unsupported
-        }
-        else
-        {
-            fprintf(stderr, "Unsupported type name: %s.\n",
-                    node->getName().c_str());
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    virtual void at(const SequenceType* node)
-    {
-        write("%c", Reflect::kSequence);
-        if (node->getMax())
-        {
-            write("%u", const_cast<SequenceType*>(node)->getLength(currentNode));
-        }
-        Node* spec = node->getSpec();
-        spec->accept(this);
-        if (node->getAttr() & Node::Nullable)
-        {
-            write("%c", Reflect::kNullable);
-        }
-    }
-
-    virtual void at(const ArrayType* node)
-    {
-        write("%c", Reflect::kArray);
-        if (node->getMax())
-        {
-            write("%u", const_cast<ArrayType*>(node)->getLength(currentNode));
-        }
-        Node* spec = node->getSpec();
-        spec->accept(this);
-    }
-
-    void getter(const Attribute* node)
-    {
-        static Type replaceable("any");
-        Node* spec = node->getSpec();
-        if (node->isReplaceable())
-        {
-            spec = &replaceable;
-        }
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-
-        write("%c", Reflect::kGetter);
-        if (node->isStringifier())
-        {
-            write("%c", Reflect::kSpecialStringifier);
-        }
-        write("0");
-
-        if (seq)
-        {
-            spec->accept(this);
-        }
-        else if (NativeType* nativeType = spec->isNative(node->getParent()))
-        {
-            nativeType->accept(this);
-        }
-        else
-        {
-            spec->accept(this);
-        }
-        writeName(node);
-
-        if (node->getGetRaises())
-        {
-            for (NodeList::iterator i = node->getGetRaises()->begin();
-                 i != node->getGetRaises()->end();
-                 ++i)
-            {
-                write("%c", Reflect::kRaises);
-                (*i)->accept(this);
-            }
-        }
-    }
-
-    bool setter(const Attribute* node)
-    {
-        if (node->isReadonly() && !node->isPutForwards() && !node->isReplaceable())
-        {
-            return false;
-        }
-
-        static Type replaceable("any");
-        Node* spec = node->getSpec();
-        if (node->isReplaceable())
-        {
-            spec = &replaceable;
-        }
-        else if (node->isPutForwards())
-        {
-            Interface* target = dynamic_cast<Interface*>(dynamic_cast<ScopedName*>(spec)->search(node->getParent()));
-            assert(target);
-            Attribute* forwards = dynamic_cast<Attribute*>(target->search(node->getPutForwards()));
-            assert(forwards);
-            spec = forwards->getSpec();
-        }
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-
-        write("%c1%c", Reflect::kSetter, Reflect::kVoid);
-        writeName(node);
-        if (seq)
-        {
-            spec->accept(this);
-        }
-        else if (NativeType* nativeType = spec->isNative(node->getParent()))
-        {
-            nativeType->accept(this);
-        }
-        else
-        {
-            spec->accept(this);
-        }
-
-        if (node->getSetRaises())
-        {
-            for (NodeList::iterator i = node->getSetRaises()->begin();
-                 i != node->getSetRaises()->end();
-                 ++i)
-            {
-                write("%c", Reflect::kRaises);
-                (*i)->accept(this);
-            }
-        }
-        return true;
-    }
-
     virtual void at(const Attribute* node)
     {
         writetab();
-        write("\"");
-        getter(node);
-        write("\"");
-
+        write("\"%s\"", node->getMetaGetter().c_str());
         if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
         {
             writeln("");
             writetab();
-            write("\"");
-            setter(node);
-            write("\"");
+            write("\"%s\"", node->getMetaSetter().c_str());
         }
     }
 
     virtual void at(const OpDcl* node)
     {
         writetab();
-        write("\"");
         if (constructorMode)
         {
-            write("%c", Reflect::kConstructor);
+            write("\"%c%s\"", Reflect::kConstructor, node->getMeta().c_str() + 1);
+
         }
         else
         {
-            write("%c", Reflect::kOperation);
+            write("\"%c%s\"", Reflect::kOperation, node->getMeta().c_str() + 1);
         }
-
-        if (node->getAttr() & OpDcl::Omittable)
-        {
-            write("%c", Reflect::kSpecialOmittable);
-        }
-
-        if (node->getAttr() & OpDcl::IndexGetter)
-        {
-            write("%c", Reflect::kSpecialGetter);
-        }
-        if (node->getAttr() & OpDcl::IndexSetter)
-        {
-            write("%c", Reflect::kSpecialSetter);
-        }
-        if (node->getAttr() & OpDcl::IndexCreator)
-        {
-            write("%c", Reflect::kSpecialCreator);
-        }
-        if (node->getAttr() & OpDcl::IndexDeleter)
-        {
-            write("%c", Reflect::kSpecialDeleter);
-        }
-        if (node->getAttr() & OpDcl::Caller)
-        {
-            write("%c", Reflect::kSpecialCaller);
-        }
-        if (node->getAttr() & OpDcl::Stringifier)
-        {
-            write("%c", Reflect::kSpecialStringifier);
-        }
-
-        NodeList::reverse_iterator last = node->rbegin();
-        if (last != node->rend())
-        {
-            const ParamDcl* param = dynamic_cast<const ParamDcl*>(*last);
-            if (param && param->isVariadic())
-            {
-                write("%c", Reflect::kVariadic);
-            }
-        }
-
-        write("%u", node->getParamCount(optionalStage));
-
-        Node* spec = node->getSpec();
-        spec->accept(this);
-        writeName(node);
-
-        paramCount = 0;
-        variadicParam = 0;
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
-            assert(param);
-            if (param->isOptional())
-            {
-                ++optionalCount;
-                if (optionalStage < optionalCount)
-                {
-                    break;
-                }
-            }
-            ++paramCount;
-            param->accept(this);
-        }
-
-        if (node->getRaises())
-        {
-            for (NodeList::iterator i = node->getRaises()->begin(); i != node->getRaises()->end(); ++i)
-            {
-                write("%c", Reflect::kRaises);
-                (*i)->accept(this);
-            }
-        }
-        write("\"");
-    }
-
-    virtual void at(const ParamDcl* node)
-    {
-        Node* spec = node->getSpec();
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
-        if (seq)
-        {
-            spec->accept(this);
-        }
-        else if (spec->isStruct(node->getParent()))
-        {
-            spec->accept(this);
-        }
-        else if (spec->isArray(node->getParent()))
-        {
-            spec->accept(this);
-        }
-        else if (NativeType* nativeType = spec->isNative(node->getParent()))
-        {
-            nativeType->accept(this);
-        }
-        else if (spec->isInterface(node->getParent()))
-        {
-            spec->accept(this);
-        }
-        else
-        {
-            spec->accept(this);
-        }
-        writeName(node);
     }
 
     void visitInterfaceElement(const Interface* interface, Node* element)
@@ -513,48 +145,9 @@ public:
 
         currentNode = node;
 
-        write("\n");
+        writeln("");
         writetab();
-        write("\"%c", Reflect::kInterface);
-        writeName(node);
-        write("\"");
-
-        if (node->getExtends())
-        {
-            for (NodeList::iterator i = node->getExtends()->begin();
-                 i != node->getExtends()->end();
-                 ++i)
-            {
-                ScopedName* scopedName = static_cast<ScopedName*>(*i);
-                Node* resolved = scopedName->search(node->getParent());
-                scopedName->check(resolved, "could not resolve '%s'.", scopedName->getName().c_str());
-                std::string name = resolved->getQualifiedName();
-                write("\n");
-                writetab();
-                write("\"%c", Reflect::kExtends);
-                name = getInterfaceName(name);
-                write("%zu%s", name.length(), name.c_str());
-                write("\"");
-            }
-        }
-
-        for (std::list<const Interface*>::const_iterator i = node->getImplements()->begin();
-             i != node->getImplements()->end();
-             ++i)
-        {
-            std::string name = (*i)->getQualifiedName();
-            write("\n");
-            writetab();
-            write("\"%c", Reflect::kImplements);
-            name = getInterfaceName(name);
-            write("%zu%s", name.length(), name.c_str());
-            write("\"");
-        }
-
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            visitInterfaceElement(node, *i);
-        }
+        write("\"%s\"", node->getMeta().c_str());
 
         // Expand supplementals
         std::list<const Interface*> interfaceList;
@@ -588,90 +181,8 @@ public:
 
     virtual void at(const ConstDcl* node)
     {
-        Type* type = node->getType();
-        assert(type);
         writetab();
-        write("\"C");
-        type->accept(this);
-        writeName(node);
-        if (type->getName() == "boolean")
-        {
-            EvalInteger<bool> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%u ", eval.getValue());
-        }
-        else if (type->getName() == "octet")
-        {
-            EvalInteger<uint8_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%u ", eval.getValue());
-        }
-        else if (type->getName() == "byte")
-        {
-            EvalInteger<int8_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%d ", eval.getValue());
-        }
-        else if (type->getName() == "unsigned byte")
-        {
-            EvalInteger<uint8_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%u ", eval.getValue());
-        }
-        else if (type->getName() == "short")
-        {
-            EvalInteger<int16_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%d ", eval.getValue());
-        }
-        else if (type->getName() == "unsigned short")
-        {
-            EvalInteger<uint16_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%u ", eval.getValue());
-        }
-        else if (type->getName() == "long")
-        {
-            EvalInteger<int32_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%d ", eval.getValue());
-        }
-        else if (type->getName() == "unsigned long")
-        {
-            EvalInteger<uint32_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%u ", eval.getValue());
-        }
-        else if (type->getName() == "long long")
-        {
-            EvalInteger<int64_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%lld ", eval.getValue());
-        }
-        else if (type->getName() == "unsigned long long")
-        {
-            EvalInteger<uint64_t> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%llu ", eval.getValue());
-        }
-        else if (type->getName() == "float")
-        {
-            EvalFloat<float> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%.10g ", eval.getValue());
-        }
-        else if (type->getName() == "double")
-        {
-            EvalFloat<double> eval(node->getParent());
-            node->getExp()->accept(&eval);
-            write("%.20g ", eval.getValue());
-        }
-        else
-        {
-            fprintf(stderr, "Inv. const type.\n");
-            exit(EXIT_FAILURE);
-        }
-        write("\"");
+        write("\"%s\"", node->getMeta().c_str());
     }
 
     virtual void at(const Member* node)
