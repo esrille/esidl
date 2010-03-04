@@ -124,7 +124,7 @@ public:
         }
 
         // Bridge template
-        writeln("template<Any (*invoke)(Object*, unsigned, unsigned, const char*, unsigned, ...), unsigned I = 0, class B = %s%s>",
+        writeln("template<class ARGUMENT, Any (*invoke)(Object*, unsigned, unsigned, const char*, unsigned, unsigned, ARGUMENT*), unsigned I = 0, class B = %s%s>",
                 getEscapedName(node->getName()).c_str(),
                 implementList->empty() ? "" : "_Mixin");
         write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
@@ -160,7 +160,7 @@ public:
             name = getInterfaceName(name);
             name = getScopedName(qualifiedModuleName, name);
             ++baseCount;
-            write("%s_Bridge<invoke, I + %u, ", name.c_str(), interfaceCount);
+            write("%s_Bridge<ARGUMENT, invoke, I + %u, ", name.c_str(), interfaceCount);
             interfaceCount += (*i)->getInterfaceCount();
         }
         write("B");
@@ -210,6 +210,7 @@ public:
         CPlusPlus::getter(node);
         writeln("{");
             int hasCast = writeInvoke(node, spec, node);
+            write(", 0, 0");
             while (0 < hasCast--)
             {
                 write(")");
@@ -237,8 +238,9 @@ public:
         writetab();
         CPlusPlus::setter(node);
         writeln("{");
-            writeln("invoke(this, I, %u, %s::getMetaData(), %u, %s);",
-                    methodNumber, className.c_str(), offset, name.c_str());
+            writeln("ARGUMENT _argument = %s;", name.c_str());
+            writeln("invoke(this, I, %u, %s::getMetaData(), %u, 1, &_argument);",
+                    methodNumber, className.c_str(), offset);
         writeln("}");
         offset += node->getMetaSetter().length();
 
@@ -255,17 +257,20 @@ public:
         writeln("{");
 
             // Invoke
-            Node* spec = node->getSpec();
-
-            int hasCast = writeInvoke(node, spec, spec);
-
-            NodeList::iterator it = node->begin();
-            for (int i = 0; i < getParamCount(); ++i, ++it)
+            if (0 < getParamCount())
             {
-                ParamDcl* param = static_cast<ParamDcl*>(*it);
-                write(", %s", getEscapedName(param->getName()).c_str());
+                writeln("ARGUMENT _arguments[%u];", getParamCount());
+                NodeList::iterator it = node->begin();
+                for (int i = 0; i < getParamCount(); ++i, ++it)
+                {
+                    ParamDcl* param = static_cast<ParamDcl*>(*it);
+                    writeln("_arguments[%d] = %s;", i, getEscapedName(param->getName()).c_str());
+                }
             }
-
+            Node* spec = node->getSpec();
+            int hasCast = writeInvoke(node, spec, spec);
+            write(", %u", getParamCount());
+            write((0 < getParamCount()) ? ", _arguments" : ", 0");
             while (0 < hasCast--)
             {
                 write(")");
