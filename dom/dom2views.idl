@@ -11,16 +11,19 @@
 module views {
 
   typedef dom::Document Document;
+  typedef html::Window Window;
 
   // Introduced in DOM Level 2:
-  [PrototypeRoot]
+  // [PrototypeRoot]
   interface AbstractView {
-    readonly attribute DocumentView     document;
+    // readonly attribute DocumentView     document;
   };
+
+  Window implements AbstractView;
 
   // Introduced in DOM Level 2:
   interface DocumentView {
-    readonly attribute AbstractView     defaultView;
+    // readonly attribute AbstractView     defaultView;
   };
 
   Document implements DocumentView;

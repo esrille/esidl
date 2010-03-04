@@ -12,6 +12,7 @@ w3c_idl_files = \
 	dom2ranges.idl \
 	dom2stylesheets.idl \
 	dom2traversal.idl \
+	dom2views.idl \
 	dom3core.idl \
 	dom3ls.idl \
 	dom3validation.idl \
