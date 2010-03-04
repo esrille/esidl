@@ -479,7 +479,9 @@ public:
 
         output.str("");
         output << Reflect::kInterface;
-        writeName(node);
+        std::string name = node->getQualifiedName();
+        name = getInterfaceName(name);
+        output << name.length() << name;
 
         if (node->getExtends())
         {
@@ -490,8 +492,8 @@ public:
                 ScopedName* scopedName = static_cast<ScopedName*>(*i);
                 Node* resolved = scopedName->search(node->getParent());
                 scopedName->check(resolved, "could not resolve '%s'.", scopedName->getName().c_str());
-                std::string name = resolved->getQualifiedName();
                 output << Reflect::kExtends;
+                std::string name = resolved->getQualifiedName();
                 name = getInterfaceName(name);
                 output << name.length() << name;
             }
@@ -501,8 +503,8 @@ public:
              i != node->getImplements()->end();
              ++i)
         {
-            std::string name = (*i)->getQualifiedName();
             output << Reflect::kImplements;
+            std::string name = (*i)->getQualifiedName();
             name = getInterfaceName(name);
             output << name.length() << name;
         }
