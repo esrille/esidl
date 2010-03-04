@@ -832,9 +832,12 @@ public:
          */
         std::string getName() const
         {
-            unsigned length;
-            const char* name = skipDigits(info + 1, &length);
-            return std::string(name, length);
+            const char* colon = std::strrchr(qualifiedName, ':');
+            if (!colon)
+            {
+                return qualifiedName;
+            }
+            return colon + 1;
         }
 
         /**
