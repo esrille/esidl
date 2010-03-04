@@ -16,6 +16,7 @@ typedef dom::Document Document;
 typedef dom::Element Element;
 typedef events::MouseEvent MouseEvent;
 typedef ranges::Range Range;
+typedef html::Window Window;
 
 [NoInterfaceObject] interface AbstractView {
   readonly attribute DocumentView document;
@@ -46,6 +47,8 @@ interface Media {
   // output device
   readonly attribute Screen screen;
 };
+
+Window implements ScreenView;  // TODO: needs to check if this is correct or not.
 
 interface Screen {
   readonly attribute unsigned long availWidth;

@@ -1038,7 +1038,7 @@ public:
     void implements(Interface* mixin, bool importImplements)
     {
         // cf. http://lists.w3.org/Archives/Public/public-webapps/2009JulSep/0528.html
-        if (!(mixin->attr & (Supplemental | NoInterfaceObject)))
+        if (!(mixin->attr & Supplemental))
         {
             implementList.push_back(mixin);
         }

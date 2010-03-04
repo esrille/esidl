@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 #include "w3c/stylesheets.h"
 #include "w3c/cssomview.h"
 #include "w3c/css.h"
+#include "w3c/geolocation.h"
 #include "w3c/ranges.h"
 #include "w3c/traversal.h"
 #include "w3c/ls.h"
@@ -34,6 +35,7 @@
 #include "w3c/stylesheets.template.h"
 #include "w3c/cssomview.template.h"
 #include "w3c/css.template.h"
+#include "w3c/geolocation.template.h"
 #include "w3c/ranges.template.h"
 #include "w3c/traversal.template.h"
 #include "w3c/ls.template.h"
