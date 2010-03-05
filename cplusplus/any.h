@@ -24,6 +24,7 @@
 #include <string>
 
 #include <nullable.h>
+#include <sequence.h>
 
 class Object;
 
@@ -165,7 +166,7 @@ class Any : private AnyBase
         return *this;
     }
 
-    Any& assign(const std::string value)
+    Any& assign(std::string value)
     {
         new (stringValue) std::string(value);
         type = TypeString;
@@ -214,7 +215,7 @@ public:
     }
 
     template <typename T>
-    Any(const T value)
+    Any(T value)
     {
         assign(value);
     }
@@ -224,6 +225,12 @@ public:
     {
         assign(nullable.value());
         type |= FlagNullable;
+    }
+
+    template <typename T>
+    Any(const Sequence<T> sequence)
+    {
+        // TODO: Implement me!
     }
 
     ~Any()

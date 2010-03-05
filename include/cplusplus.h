@@ -19,6 +19,7 @@
 #define ESIDL_CPLUSPLUS_H_INCLUDED
 
 #define USE_CONSTRUCTOR
+#define USE_VIRTUAL_BASE
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -349,10 +350,6 @@ public:
             {
                 write("*");
             }
-            else if (spec->isAny(node->getParent()) || spec->isSequence(node->getParent()))
-            {
-                write("&");
-            }
             write(" %s)", name.c_str());
         }
         if (useExceptions && node->getSetRaises())
@@ -444,10 +441,6 @@ public:
         if (spec->isInterface(node->getParent()))
         {
             write("*");
-        }
-        else if (spec->isAny(node->getParent()) || spec->isSequence(node->getParent()))
-        {
-            write("&");
         }
         write(" %s", getEscapedName(node->getName()).c_str());
     }
