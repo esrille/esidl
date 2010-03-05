@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,20 @@
 #ifndef ES_NULLABLE_H_INCLUDED
 #define ES_NULLABLE_H_INCLUDED
 
+#include <string>
+
+class Any;
+class Object;
+
 template <typename T>
 class Nullable
 {
     T    value_;
     bool hasValue_;
+
+    Nullable(Object* object);
+    template <typename U>
+    Nullable(const Nullable<U>&);
 
 public:
     bool hasValue() const
@@ -38,22 +47,30 @@ public:
         return value_;
     }
 
-    Nullable()
+    Nullable() :
+        hasValue_(false)
     {
-        hasValue_ = false;
     }
 
     Nullable(const T& value) :
-        value_(value)
+        value_(value),
+        hasValue_(true)
     {
-        hasValue_ = true;
     }
 
     Nullable(const Nullable<T>& nullable) :
-        hasValue_(nullable.hasValue_),
-        value_(nullable.value_)
+        value_(nullable.value_),
+        hasValue_(nullable.hasValue_)
     {
     }
+
+    Nullable(const char* str) :
+        value_(std::string(str)),
+        hasValue_(true)
+    {
+    }
+
+    Nullable(const Any& any);
 };
 
 #endif  // ES_NULLABLE_H_INCLUDED
