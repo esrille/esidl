@@ -74,6 +74,7 @@ EXTRA_DIST = \
 	dom/html5.idl \
 	dom/idl_scraper.pl \
 	dom/NOTICE \
+	dom/webdatabase.idl \
 	dom/webgl.idl \
 	dom/webstorage.idl \
 	dom/websocket.idl \
