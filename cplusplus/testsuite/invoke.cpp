@@ -55,7 +55,7 @@ public:
 
 Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
            const char* meta, unsigned offset,
-           unsigned paramCount, Any* arguments)
+           unsigned argumentCount, Any* arguments)
 {
     Reflect::Interface interface(meta);
     cout << interface.getName() << endl;
