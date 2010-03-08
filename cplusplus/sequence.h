@@ -20,6 +20,8 @@
 #include <org/w3c/dom/ObjectArray.h>
 #include <new>
 
+class Any;
+
 // The sequence type for Web IDL
 // TODO: This implementation is not multi-thread safe.
 template <typename T>
@@ -73,7 +75,7 @@ class Sequence
             init(size);
         }
 
-        Rep(org::w3c::dom::ObjectArray<T>* array) 
+        Rep(org::w3c::dom::ObjectArray<T>* array)
         {
             init(0);
             this->array = array;
@@ -96,7 +98,7 @@ class Sequence
             }
             return sequence[index];
         }
-        
+
         virtual void setElement(unsigned int index, const T value)
         {
             if (array)
@@ -106,7 +108,7 @@ class Sequence
             }
             sequence[index] = value;
         }
-        
+
         virtual unsigned int getLength()
         {
             if (array)
@@ -115,7 +117,7 @@ class Sequence
             }
             return length;
         }
-        
+
         virtual void setLength(unsigned int length)
         {
             if (array)
@@ -166,7 +168,7 @@ public:
     {
         rep = new Rep(size);
     }
-    
+
     Sequence(org::w3c::dom::ObjectArray<T>* array)
     {
         rep = new Rep(array);
@@ -245,6 +247,8 @@ public:
     {
         return rep;
     }
+
+    Sequence(const Any& any);
 };
 
 #endif  // ES_SEQUENCE_INCLUDED

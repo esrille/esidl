@@ -44,9 +44,9 @@ struct AnyBase
         double      doubleValue;
         Object*     objectValue;
         char        stringValue[sizeof(std::string)];
-        // TODO: Support sequence<>
+        char        sequenceValue[sizeof(std::string)];
     };
-    unsigned     type;
+    unsigned        type;
 };
 
 // The any type for Web IDL
@@ -166,10 +166,19 @@ class Any : private AnyBase
         return *this;
     }
 
-    Any& assign(std::string value)
+    Any& assign(const std::string& value)
     {
         new (stringValue) std::string(value);
         type = TypeString;
+        return *this;
+    }
+
+    template <typename T>
+    Any& assign(const Sequence<T>& sequence)
+    {
+        new (sequenceValue) Sequence<T>(sequence);
+        // TODO: set type for T
+        type = FlagSequence;
         return *this;
     }
 
@@ -203,6 +212,7 @@ public:
         TypeDouble,
         TypeString,
         TypeObject,
+        FlagSequence,
         PrimitiveMask = 0x0fffffff,
         FlagAny = 0x40000000,
         FlagNullable = 0x80000000
@@ -227,12 +237,6 @@ public:
         type |= FlagNullable;
     }
 
-    template <typename T>
-    Any(const Sequence<T> sequence)
-    {
-        // TODO: Implement me!
-    }
-
     ~Any()
     {
         if (getType() == TypeString)
@@ -247,6 +251,7 @@ public:
     Any& operator=(const Any& value)
     {
         assign(value);
+        return *this;
     }
 
     operator unsigned char() const
@@ -357,10 +362,21 @@ public:
         return (type & PrimitiveMask) == TypeVoid;
     }
 
+    bool isSequence() const
+    {
+        return (type & FlagSequence);
+    }
+
     bool hasValue() const
     {
         return (type & PrimitiveMask) != TypeVoid;
     }
+
+    template <typename T>
+    const Sequence<T>* getSequence() const
+    {
+        return reinterpret_cast<const Sequence<T>*>(&sequenceValue);
+    };
 };
 
 template <typename T>
@@ -375,6 +391,18 @@ Nullable<T>::Nullable(const Any& any)
     {
         value_ = static_cast<T>(any);
     }
+}
+
+template <typename T>
+Sequence<T>::Sequence(const Any& any)
+{
+    if (!any.isSequence())
+    {
+        // TODO: Raise an exception
+    }
+    const Sequence<T>* value = any.getSequence<T>();
+    ++value->rep->count;
+    rep = value->rep;
 }
 
 #endif // ESNPAPI_ANY_H_INCLUDED
