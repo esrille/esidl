@@ -18,10 +18,6 @@
 #include "sample.h"
 #include "proxyImpl.h"
 
-#include <any.h>
-#include <reflect.h>
-#include <org/w3c/dom.h>
-
 using namespace org::w3c::dom;
 
 #include <math.h>
@@ -165,14 +161,10 @@ void drawCharts(Document* document)
 
 void PluginInstance::test()
 {
-    NPVariant document;
-    VOID_TO_NPVARIANT(document);
-    NPN_GetProperty(npp, window, NPN_GetStringIdentifier("document"), &document);
-    if (NPVARIANT_IS_OBJECT(document))
+    Document* document = window->getDocument();
+    if (document)
     {
-        std::string interfaceName = getInterfaceName(npp, NPVARIANT_TO_OBJECT(document));
-        printf("'%s'\n", interfaceName.c_str());
-        drawCharts(dynamic_cast<Document*>(createProxy(npp, NPVARIANT_TO_OBJECT(document))));
+        drawCharts(document);
+        document->release();
     }
-    NPN_ReleaseVariantValue(&document);
 }

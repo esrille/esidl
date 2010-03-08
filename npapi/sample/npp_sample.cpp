@@ -65,6 +65,9 @@ NPError NPP_Initialize()
     registerMetaData(html::CanvasRenderingContext2D::getMetaData(),
                      reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::CanvasRenderingContext2D_Bridge<Any, invoke> >::createInstance));
 
+    registerMetaData(html::Window::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::Window_Bridge<Any, invoke> >::createInstance));
+
     // This steps should be automated with Document.
     registerMetaData(Document::getMetaData(),
                      reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance),

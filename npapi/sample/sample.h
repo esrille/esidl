@@ -19,10 +19,14 @@
 
 #include "esnpapi.h"
 
+#include <any.h>
+#include <reflect.h>
+#include <org/w3c/dom.h>
+
 class PluginInstance
 {
     NPP npp;
-    NPObject* window;
+    org::w3c::dom::html::Window* window;
 
     void test();
 
@@ -31,7 +35,11 @@ public:
         npp(npp),
         window(0)
     {
-        NPN_GetValue(npp, NPNVWindowNPObject, &window);
+        NPObject* npWindow;
+        NPN_GetValue(npp, NPNVWindowNPObject, &npWindow);
+        std::string name = getInterfaceName(npp, npWindow);
+        printf("'%s'\n", name.c_str());
+        window = dynamic_cast<org::w3c::dom::html::Window*>(createProxy(npp, npWindow));
         test();
     }
 
@@ -39,7 +47,7 @@ public:
     {
         if (window)
         {
-            NPN_ReleaseObject(window);
+            window->release();
         }
     }
 
