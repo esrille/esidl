@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Google Inc.
+ * Copyright 2009-2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 #include "esnpapi.h"
 #include "reflect.h"
 #include "proxyImpl.h"
+
+#include <stdio.h>
 
 #include <algorithm>
 #include <map>
@@ -242,8 +244,7 @@ Reflect::Interface* getInterfaceData(const std::string className)
 {
     std::map<std::string, Reflect::Interface>::iterator i;
 
-    std::string interfaceName = "::es::" + className;
-    i = metaDataMap.find(interfaceName);
+    i = metaDataMap.find(className);
     if (i == metaDataMap.end())
     {
         return 0;
@@ -263,32 +264,26 @@ Reflect::Interface* getInterfaceData(const char* iid)
     return &((*i).second);
 }
 
-void addInterfaceData(const char* iid, const char* info)
+void addInterfaceData(const char* metaData, std::string name)
 {
-    metaDataMap[std::string(iid)] = Reflect::Interface(info, iid);
-
-    unsigned inheritedMethodCount = 0;
-    Reflect::Interface* interface = getInterfaceData(iid);
-    Reflect::Interface* super = interface;
-    while (super)
-    {
-        std::string superName = super->getQualifiedSuperName();
-        if (superName == "")
-        {
-            break;
-        }
-        super = getInterfaceData(superName.c_str());
-        if (super)
-        {
-            inheritedMethodCount += super->getMethodCount();
-        }
-    }
-    if (interface)
-    {
-        interface->setInheritedMethodCount(inheritedMethodCount);
-    }
-    printf("%s %d\n", iid, inheritedMethodCount);
+    metaDataMap[name] = Reflect::Interface(metaData);
 }
+
+void registerMetaData(const char* meta,
+                      Object* (*createProxy)(ProxyObject object),
+                      const char* alias)
+{
+    Reflect::Interface interface(meta);
+    std::string name = interface.getName();
+    if (alias)
+    {
+        name = alias;
+    }
+    addInterfaceData(meta, name);
+    addProxyConstructor(name, createProxy);
+    printf("%s\n", name.c_str());
+}
+
 
 NPObject* createStub(NPP npp, const char* interfaceName, Object* object)
 {
@@ -310,14 +305,13 @@ Object* createProxy(NPP npp, NPObject* object)
     }
 
     std::string className = getInterfaceName(npp, object);
+
     if (className == "Function" || className == "Object")
     {
         // TODO: We should define 'Object' interface
         return 0;
     }
 
-    // Convert className into qualified name.
-    className = "::es::" + className;
     std::map<std::string, Object* (*)(ProxyObject object)>::iterator it;
     it = proxyConstructorMap.find(className);
     if (it != proxyConstructorMap.end())

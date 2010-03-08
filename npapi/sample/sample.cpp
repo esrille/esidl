@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2006, 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,33 +18,36 @@
 #include "sample.h"
 #include "proxyImpl.h"
 
-#include "w3c/html5.h"
-#include "w3c/svg.h"
+#include <any.h>
+#include <reflect.h>
+#include <org/w3c/dom.h>
+
+using namespace org::w3c::dom;
 
 #include <math.h>
 
 namespace
 {
 
-void drawCharts(es::Document* document)
+void drawCharts(Document* document)
 {
     // Test dynamic_cast implied by the 'implements' statement while Document does
     // not inherit DocumentEvent.
-    es::DocumentEvent* documentEvent = dynamic_cast<es::DocumentEvent*>(document);
+    events::DocumentEvent* documentEvent = dynamic_cast<events::DocumentEvent*>(document);
     printf("documentEvent = %p\n", documentEvent);
 
-    std::string title = document->getTitle();
+    std::string title = dynamic_cast<html::HTMLDocument*>(document)->getTitle();
     printf("title = %s\n", title.c_str());
 
-    es::Element* element = document->createElement("div");
+    Element* element = document->createElement("div");
     if (element)
     {
-        if (es::Node* node = document->createTextNode("hello, world."))
+        if (Node* node = document->createTextNode("hello, world."))
         {
             element->appendChild(node);
             node->release();
         }
-        if (es::HTMLElement* body = document->getBody())
+        if (html::HTMLElement* body = dynamic_cast<html::HTMLDocument*>(document)->getBody())
         {
             body->appendChild(element);
             body->release();
@@ -52,13 +55,13 @@ void drawCharts(es::Document* document)
         element->release();
     }
 
-    es::HTMLCanvasElement* canvas = dynamic_cast<es::HTMLCanvasElement*>(document->getElementById("canvas"));
+    html::HTMLCanvasElement* canvas = dynamic_cast<html::HTMLCanvasElement*>(document->getElementById("canvas"));
     if (!canvas)
     {
         return;
     }
 
-    es::CanvasRenderingContext2D* context = dynamic_cast<es::CanvasRenderingContext2D*>(canvas->getContext("2d"));
+    html::CanvasRenderingContext2D* context = dynamic_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
     if (!context)
     {
         canvas->release();
@@ -156,14 +159,6 @@ void drawCharts(es::Document* document)
 
     context->release();
     canvas->release();
-
-    es::SVGCircleElement* circle = dynamic_cast<es::SVGCircleElement*>(document->getElementById("circle"));
-    if (circle)
-    {
-        circle->setAttribute("r", "20");
-        circle->setAttribute("fill", "pink");
-        circle->release();
-    }
 }
 
 }  // namespace
@@ -177,7 +172,7 @@ void PluginInstance::test()
     {
         std::string interfaceName = getInterfaceName(npp, NPVARIANT_TO_OBJECT(document));
         printf("'%s'\n", interfaceName.c_str());
-        drawCharts(dynamic_cast<es::Document*>(createProxy(npp, NPVARIANT_TO_OBJECT(document))));
+        drawCharts(dynamic_cast<Document*>(createProxy(npp, NPVARIANT_TO_OBJECT(document))));
     }
     NPN_ReleaseVariantValue(&document);
 }

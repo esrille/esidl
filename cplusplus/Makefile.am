@@ -36,3 +36,8 @@ $(w3c_generated_files) : $(w3c_idl_files)
 clean-local:
 	rm -rf org *.h
 
+EXTRA_DIST = \
+	any.h \
+	nullable.h \
+	sequence.h
+

@@ -55,9 +55,13 @@ class Any : private AnyBase
     Any& assign(const Any& value)
     {
         type = value.type;
-        if ((type & PrimitiveMask) == TypeString)
+        if (type & FlagSequence)
         {
-            new (stringValue) std::string(static_cast<const std::string>(value));
+            new (sequenceValue) Sequence<std::string>(reinterpret_cast<const Sequence<std::string>*>(value.sequenceValue));
+        }
+        else if ((type & PrimitiveMask) == TypeString)
+        {
+            new (stringValue) std::string(*reinterpret_cast<const std::string*>(value.stringValue));
         }
         else
         {
@@ -212,8 +216,8 @@ public:
         TypeDouble,
         TypeString,
         TypeObject,
-        FlagSequence,
         PrimitiveMask = 0x0fffffff,
+        FlagSequence = 0x20000000,
         FlagAny = 0x40000000,
         FlagNullable = 0x80000000
     };
@@ -235,6 +239,12 @@ public:
     {
         assign(nullable.value());
         type |= FlagNullable;
+    }
+
+    // Copy constructor
+    Any(const Any& value)
+    {
+        assign(value);
     }
 
     ~Any()
@@ -324,7 +334,7 @@ public:
 
     operator const std::string() const
     {
-        return *reinterpret_cast<const std::string*>(&stringValue);
+        return *reinterpret_cast<const std::string*>(stringValue);
     }
 
     operator Object*() const
@@ -334,7 +344,7 @@ public:
 
     int getType() const
     {
-        return (type & ~FlagAny);
+        return (type & PrimitiveMask);
     }
 
     void makeAny()

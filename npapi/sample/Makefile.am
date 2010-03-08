@@ -7,6 +7,8 @@ AM_CPPFLAGS = \
 	-I ../include/w3c \
 	-I $(srcdir)/../include \
 	-I $(srcdir)/../../include \
+	-I ../../cplusplus \
+	-I $(srcdir)/../../cplusplus \
 	-g \
 	-DXP_UNIX
 

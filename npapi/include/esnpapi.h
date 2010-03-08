@@ -166,10 +166,16 @@ void addStubConstructor(const std::string interfaceName, NPObject* (*createStub)
 NPObject* createStub(NPP npp, const char* interfaceName, Object* object);
 Object* createProxy(NPP npp, NPObject* object);
 
-Any invoke(Object* object, const char* iid, unsigned baseNumber, unsigned methodNumber, unsigned paramCount, Any* paramArray);
+Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
+           const char* meta, unsigned offset,
+           unsigned argumentCount, Any* arguments);
 
-void addInterfaceData(const char* iid, const char* info);
+void addInterfaceData(const char* mataData, const char* name = 0);
 Reflect::Interface* getInterfaceData(const std::string interfaceName);
 Reflect::Interface* getInterfaceData(const char* iid);
+
+void registerMetaData(const char* meta,
+                      Object* (*createProxy)(ProxyObject object),
+                      const char* alias = 0);
 
 #endif  // ESIDL_ESNPAPI_H_INCLUDED

@@ -17,31 +17,11 @@
 #include "sample.h"
 #include "proxyImpl.h"
 
-#include "w3c/dom.h"
-#include "w3c/events.h"
-#include "w3c/stylesheets.h"
-#include "w3c/cssomview.h"
-#include "w3c/css.h"
-#include "w3c/geolocation.h"
-#include "w3c/ranges.h"
-#include "w3c/traversal.h"
-#include "w3c/ls.h"
-#include "w3c/html5.h"
-#include "w3c/smil.h"
-#include "w3c/svg.h"
+#include <any.h>
+#include <reflect.h>
+#include <org/w3c/dom.h>
 
-#include "w3c/dom.template.h"
-#include "w3c/events.template.h"
-#include "w3c/stylesheets.template.h"
-#include "w3c/cssomview.template.h"
-#include "w3c/css.template.h"
-#include "w3c/geolocation.template.h"
-#include "w3c/ranges.template.h"
-#include "w3c/traversal.template.h"
-#include "w3c/ls.template.h"
-#include "w3c/html5.template.h"
-#include "w3c/smil.template.h"
-#include "w3c/svg.template.h"
+using namespace org::w3c::dom;
 
 #include <new>
 
@@ -55,79 +35,43 @@ NPError NPP_Initialize()
 {
     printf("%s\n", __func__);
 
-    addInterfaceData(es::Node::iid(),
-                     es::Node::info());
-    addProxyConstructor(es::Node::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Node_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(Node::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Node_Bridge<Any, invoke> >::createInstance));
 
-    addInterfaceData(es::CharacterData::iid(),
-                     es::CharacterData::info());
-    addProxyConstructor(es::CharacterData::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::CharacterData_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(CharacterData::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, CharacterData_Bridge<Any, invoke> >::createInstance));
 
-    addInterfaceData(es::Text::iid(),
-                     es::Text::info());
-    addProxyConstructor(es::Text::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Text_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(Text::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Text_Bridge<Any, invoke> >::createInstance));
 
-    addInterfaceData(es::Document::iid(),
-                     es::Document::info());
-    addProxyConstructor(es::Document::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Document_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(Document::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance));
 
-    // This steps should be automated with es::Document.
-    addInterfaceData("::es::HTMLDocument",
-                     es::Document::info());
-    addProxyConstructor("::es::HTMLDocument",
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Document_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(Element::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Element_Bridge<Any, invoke> >::createInstance));
 
-    // This steps should be automated with es::Document.
-    addInterfaceData("::es::XMLDocument",
-                     es::Document::info());
-    addProxyConstructor("::es::XMLDocument",
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Document_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(html::HTMLElement::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLElement_Bridge<Any, invoke> >::createInstance));
 
-    addInterfaceData(es::Element::iid(),
-                     es::Element::info());
-    addProxyConstructor(es::Element::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::Element_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(html::HTMLBodyElement::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLBodyElement_Bridge<Any, invoke> >::createInstance));
 
-    addInterfaceData(es::HTMLElement::iid(),
-                     es::HTMLElement::info());
-    addProxyConstructor(es::HTMLElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::HTMLElement_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(html::HTMLDivElement::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLDivElement_Bridge<Any, invoke> >::createInstance));
 
-    addInterfaceData(es::HTMLBodyElement::iid(),
-                     es::HTMLBodyElement::info());
-    addProxyConstructor(es::HTMLBodyElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::HTMLBodyElement_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(html::HTMLCanvasElement::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLCanvasElement_Bridge<Any, invoke> >::createInstance));
 
-    addInterfaceData(es::HTMLDivElement::iid(),
-                     es::HTMLDivElement::info());
-    addProxyConstructor(es::HTMLDivElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::HTMLDivElement_Proxy<Object*, invoke> >::createInstance));
+    registerMetaData(html::CanvasRenderingContext2D::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::CanvasRenderingContext2D_Bridge<Any, invoke> >::createInstance));
 
-    addInterfaceData(es::HTMLCanvasElement::iid(),
-                     es::HTMLCanvasElement::info());
-    addProxyConstructor(es::HTMLCanvasElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::HTMLCanvasElement_Proxy<Object*, invoke> >::createInstance));
+    // This steps should be automated with Document.
+    registerMetaData(Document::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance),
+                     "HTMLDocument");
 
-    addInterfaceData(es::CanvasRenderingContext2D::iid(),
-                     es::CanvasRenderingContext2D::info());
-    addProxyConstructor(es::CanvasRenderingContext2D::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::CanvasRenderingContext2D_Proxy<Object*, invoke> >::createInstance));
 
-    addInterfaceData(es::SVGElement::iid(),
-                     es::SVGElement::info());
-    addProxyConstructor(es::SVGElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::SVGElement_Proxy<Object*, invoke> >::createInstance));
-
-    addInterfaceData(es::SVGCircleElement::iid(),
-                     es::SVGCircleElement::info());
-    addProxyConstructor(es::SVGCircleElement::iid(),
-                        reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, es::SVGCircleElement_Proxy<Object*, invoke> >::createInstance));
-
-     return NPERR_NO_ERROR;
+    return NPERR_NO_ERROR;
 }
 
 // Invoked from NP_Shutdown()
