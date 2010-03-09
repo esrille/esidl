@@ -1,14 +1,15 @@
-// File: smil.idl
-#ifndef _SMIL_IDL_
-#define _SMIL_IDL_
-
-#include "dom.idl"
-#include "events.idl"
+/*
+ * smil.idl
+ *
+ * SMIL Animation IDL definitions, rewritten in Web IDL.
+ *
+ * Original OMG IDL:
+ *
+ *   http://www.w3.org/TR/2001/REC-smil-animation-20010904/
+ */
 
 module smil
 {
-
-
   interface ElementTimeControl {
     void            beginElement();
     void            beginElementAt(in float offset);
@@ -24,5 +25,4 @@ module smil
                                      in long detailArg);
   };
 };
-
-#endif // _SMIL_IDL_
+	

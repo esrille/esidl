@@ -20,6 +20,7 @@ w3c_idl_files = \
 	eventsource.idl \
 	file.idl \
 	html5.idl \
+	smil.idl \
 	webdatabase.idl \
 	webgl.idl \
 	webstorage.idl \

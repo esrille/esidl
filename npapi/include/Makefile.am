@@ -1,4 +1,4 @@
-SUBDIRS = . w3c
+SUBDIRS = .
 
 SUFFIXES = .h .idl
 
