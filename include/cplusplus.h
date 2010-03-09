@@ -99,7 +99,7 @@ protected:
             name = name.substr(pos + 2);
         }
         name[0] = tolower(name[0]);
-        return name;
+        return getEscapedName(name);
     }
 
     bool hasCustomStringType() const
@@ -380,7 +380,7 @@ public:
 
             write("const ");
             spec->accept(this);
-            write(" %s(", node->getName().c_str());
+            write(" %s(", getEscapedName(node->getName()).c_str());
             write("void* %s, int %sLength", name.c_str(), name.c_str());
         }
         else
@@ -390,7 +390,7 @@ public:
             {
                 write("*");
             }
-            write(" %s(", node->getName().c_str());
+            write(" %s(", getEscapedName(node->getName()).c_str());
             needComma = false;
         }
 
