@@ -23,6 +23,7 @@ w3c_idl_files = \
 	geolocation.idl \
 	html5.idl \
 	indexeddb.idl \
+	progress-events.idl \
 	smil.idl \
 	svg.idl \
 	webdatabase.idl \

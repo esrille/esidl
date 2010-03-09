@@ -76,6 +76,7 @@ EXTRA_DIST = \
 	dom/idl_scraper.pl \
 	dom/indexeddb.idl \
 	dom/NOTICE \
+	dom/progress-events.idl \
 	dom/smil.idl \
 	dom/svg.idl \
 	dom/webdatabase.idl \

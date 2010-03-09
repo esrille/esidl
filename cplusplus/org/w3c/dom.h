@@ -83,6 +83,7 @@
 #include <org/w3c/dom/events/EventTarget.h>
 #include <org/w3c/dom/events/MouseEvent.h>
 #include <org/w3c/dom/events/MutationEvent.h>
+#include <org/w3c/dom/events/ProgressEvent.h>
 #include <org/w3c/dom/eventsource/EventSource.h>
 #include <org/w3c/dom/events/UIEvent.h>
 #include <org/w3c/dom/file/Blob.h>
