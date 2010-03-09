@@ -22,6 +22,7 @@ w3c_idl_files = \
 	geolocation.idl \
 	html5.idl \
 	smil.idl \
+	svg.idl \
 	webdatabase.idl \
 	webgl.idl \
 	webstorage.idl \

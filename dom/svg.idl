@@ -1,22 +1,12 @@
-// File: svg.idl
-#ifndef _SVG_IDL_
-#define _SVG_IDL_
-
-
-// For access to DOM2 core
-#include "dom.idl"
-
-// For access to DOM2 events
-#include "events.idl"
-
-// For access to those parts from DOM2 CSS OM used by SVG DOM.
-#include "css.idl"
-
-// For access to those parts from DOM2 Views OM used by SVG DOM.
-#include "views.idl"
-
-// For access to the SMIL OM used by SVG DOM.
-#include "smil.idl"
+/*
+ * svg.idl
+ *
+ * Scalable Vector Graphics (SVG) 1.1 IDL definitions scraped from the W3C specification, , rewritten in Web IDL.
+ *
+ * Original W3C Recommendation 14 January 2003:
+ *
+ *   http://www.w3.org/TR/2003/REC-SVG11-20030114/
+ */
 
 module svg
 {
@@ -363,7 +353,7 @@ module svg
     const unsigned short RENDERING_INTENT_ABSOLUTE_COLORIMETRIC = 5;
   };
 
-  interface SVGDocument : Document {
+  interface SVGDocument {
 
     readonly attribute DOMString    title;
     readonly attribute DOMString     referrer;
@@ -371,6 +361,7 @@ module svg
     readonly attribute DOMString      URL;
     readonly attribute SVGSVGElement rootElement;
   };
+  Document implements SVGDocument;
 
   interface SVGSVGElement :
                 SVGElement,
@@ -1698,4 +1689,3 @@ module svg
 
 };
 
-#endif // _SVG_IDL_
