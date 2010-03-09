@@ -3,7 +3,6 @@ SUBDIRS = .
 SUFFIXES = .h .idl
 
 noinst_HEADERS = \
-	any.h \
 	esnpapi.h \
 	proxyImpl.h \
 	npapi/npapi.h \

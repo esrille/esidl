@@ -1,4 +1,4 @@
-SUBDIRS = . sample
+SUBDIRS = include . sample
 
 lib_LIBRARIES = libesnpapi.a
 
