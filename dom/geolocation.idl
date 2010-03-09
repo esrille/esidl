@@ -1,10 +1,14 @@
-#ifndef _GEOLOCATION_IDL_
-#define _GEOLOCATION_IDL_
+/*
+ * geolocation.idl
+ *
+ * Geolocation API IDL definitions scraped from the W3C specification, revised for esidl.
+ *
+ * Original Editor's Draft 10 February 2010:
+ *
+ *   http://dev.w3.org/geo/api/spec-source.html
+ */
 
-#include "html5.idl"
-
-module geolocation
-{
+module geolocation {
 
  typedef dom::DOMTimeStamp DOMTimeStamp;
  typedef html::Navigator Navigator;
@@ -17,6 +21,8 @@ module geolocation
  Navigator implements NavigatorGeolocation;
   
 
+
+ [NoInterfaceObject]
  interface Geolocation { 
    void getCurrentPosition(in PositionCallback successCallback,
                            in optional PositionErrorCallback errorCallback,
@@ -71,7 +77,6 @@ module geolocation
 
 
   interface PositionError {
-    const unsigned short UNKNOWN_ERROR = 0;
     const unsigned short PERMISSION_DENIED = 1;
     const unsigned short POSITION_UNAVAILABLE = 2;
     const unsigned short TIMEOUT = 3;
@@ -80,6 +85,4 @@ module geolocation
   };
   
 };
-
-#endif  // _GEOLOCATION_IDL_
 

@@ -71,6 +71,7 @@ EXTRA_DIST = \
 	dom/dom3xpath.idl \
 	dom/eventsource.idl \
 	dom/file.idl \
+	dom/geolocation.idl \
 	dom/html5.idl \
 	dom/idl_scraper.pl \
 	dom/NOTICE \

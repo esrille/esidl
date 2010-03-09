@@ -195,6 +195,7 @@ w3c_idl_files = \
 	dom3xpath.idl \
 	eventsource.idl \
 	file.idl \
+	geolocation.idl \
 	html5.idl \
 	smil.idl \
 	webdatabase.idl \
