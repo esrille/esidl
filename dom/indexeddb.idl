@@ -1,0 +1,232 @@
+/*
+ * indexed.idl
+ *
+ * Indexed Database API
+ *
+ * Original W3W3C Working Draft 05 January 2010:
+ *
+ *   http://www.w3.org/TR/2010/WD-IndexedDB-20100105/
+ */
+
+module indexeddb {
+
+interface ObjectStore {
+    const unsigned short READ_WRITE = 0;
+    const unsigned short READ_ONLY = 1;
+    const unsigned short SNAPSHOT_READ = 2;
+    readonly attribute unsigned short mode;
+    readonly attribute DOMString      name;
+    readonly attribute DOMString      keyPath;
+    readonly attribute DOMStringList  indexNames;
+};
+
+
+interface Index {
+    readonly attribute DOMString name;
+    readonly attribute DOMString storeName;
+    readonly attribute DOMString keyPath;
+    readonly attribute boolean   unique;
+};
+
+
+interface Database {
+    readonly attribute DOMString     name;
+    readonly attribute DOMString     description;
+    readonly attribute DOMString     version;
+    readonly attribute DOMStringList objectStores;
+    readonly attribute DOMStringList indexes;
+    readonly attribute Transaction   currentTransaction;
+};
+
+
+interface KeyRange {
+    const unsigned short SINGLE = 0;
+    const unsigned short LEFT_OPEN = 1;
+    const unsigned short RIGHT_OPEN = 2;
+    const unsigned short LEFT_BOUND = 4;
+    const unsigned short RIGHT_BOUND = 8;
+    readonly attribute any            left;
+    readonly attribute any            right;
+    readonly attribute unsigned short flags;
+    KeyRange only (in any value);
+    KeyRange leftBound (in any bound, in optional boolean open);
+    KeyRange rightBound (in any bound, in optional boolean open);
+    KeyRange bound (in any left, in any right, in optional boolean openLeft, in optional boolean openRight);
+};
+
+
+interface Cursor {
+    const unsigned short NEXT = 0;
+    const unsigned short NEXT_NO_DUPLICATE = 1;
+    const unsigned short PREV = 2;
+    const unsigned short PREV_NO_DUPLICATE = 3;
+    readonly attribute unsigned short direction;
+};
+
+
+interface Transaction {
+    attribute boolean  static;
+    attribute Database db;
+};
+
+
+WorkerUtils implements EnvironmentSync;
+
+interface EnvironmentSync {
+    readonly attribute IndexedDatabase indexedDB;
+};
+
+
+interface IndexedDatabase {
+    DatabaseSync open (in DOMString name, in DOMString description, in optional boolean modifyDatabase) raises (DatabaseException);
+};
+
+
+interface DatabaseSync : Database {
+    ObjectStoreSync createObjectStore ([Null=Empty] in DOMString name, [Null=Null] in DOMString keyPath, in optional boolean autoIncrement) raises (DatabaseException);
+    ObjectStoreSync openObjectStore (in DOMString name, in optional unsigned short mode) raises (DatabaseException);
+    IndexSync       createIndex ([Null=Empty] in DOMString name, [Null=Empty] in DOMString storeName, in DOMString keyPath, in optional boolean unique) raises (DatabaseException);
+    IndexSync       openIndex (in DOMString name) raises (DatabaseException);
+    void            removeObjectStore (in DOMString storeName) raises (DatabaseException);
+    void            removeIndex (in DOMString indexName) raises (DatabaseException);
+    void            setVersion ([Null=Null] in DOMString version);
+    TransactionSync transaction (in optional DOMStringList storeNames, in optional unsigned int timeout) raises (DatabaseException);
+};
+
+
+interface ObjectStoreSync : ObjectStore {
+    any        put (in any value, in optional any key, in optional boolean noOverwrite) raises (DatabaseException);
+    void       delete (in any key) raises (DatabaseException);
+    any        get (in any key) raises (DatabaseException);
+    CursorSync openCursor (in optional KeyRange range, in optional unsigned short direction) raises (DatabaseException);
+};
+
+
+interface IndexSync {
+    void openObjectCursor (in optional KeyRange range, in optional unsigned short direction) raises (DatabaseException);
+    void openCursor (in optional KeyRange range, in optional unsigned short direction) raises (DatabaseException);
+    any  put (in any value, in optional any key, in optional boolean noOverwrite) raises (DatabaseException);
+    any  getObject (in any key) raises (DatabaseException);
+    any  get (in any key) raises (DatabaseException);
+    void delete (in any key) raises (DatabaseException);
+};
+
+
+interface CursorSync {
+    readonly attribute any                key;
+             attribute any                value setraises (DatabaseException);
+    readonly attribute unsigned long long count;
+    bool continue (in optional any key);
+    void delete () raises (DatabaseException);
+};
+
+
+interface TransactionSync : Transaction {
+    void abort () raises (DatabaseException);
+    void commit () raises (DatabaseException);
+};
+
+
+exception DatabaseException {
+    const unsigned short UNKNOWN_ERR = 0;
+    const unsigned short NON_TRANSIENT_ERR = 1;
+    const unsigned short NOT_FOUND_ERR = 2;
+    const unsigned short CONSTRAINT_ERR = 3;
+    const unsigned short DATA_ERR = 4;
+    const unsigned short NOT_ALLOWED_ERR = 5;
+    const unsigned short SERIAL_ERR = 11;
+    const unsigned short RECOVERABLE_ERR = 21;
+    const unsigned shrot TRANSIENT_ERR = 31;
+    const unsigned short TIMEOUT_ERR = 32;
+    const unsigned short DEADLOCK_ERR = 33;
+    attribute unsigned short code;
+    attribute DOMString      message;
+};
+
+
+interface DBRequest {
+    void abort ();
+    const unsigned short INITIAL = 0;
+    const unsigned short LOADING = 1;
+    const unsigned short DONE = 2;
+    readonly attribute unsigned short readyState;
+    readonly attribute DatabaseError  error;
+    readonly attribute any            result;
+             attribute Function       onsuccess;
+             attribute Function       onerror;
+};
+
+
+DBRequest implements EventTarget;
+
+Window implements Environment;
+
+interface Environment {
+    readonly attribute IndexedDatabaseRequest indexedDB;
+};
+
+
+interface IndexedDatabaseRequest {
+    readonly attribute DBRequest request;
+    void open (in DOMString name, in DOMString description, in optional boolean modifyDatabase) raises (DatabaseException);
+};
+
+
+interface DatabaseRequest : Database {
+    readonly attribute DBRequest request;
+    void createObjectStore ([Null=Empty] in DOMString name, [Null=Null] in DOMString keyPath, in optional boolean autoIncrement);
+    void openObjectStore (in DOMString name, in optional unsigned short mode);
+    void createIndex ([Null=Empty] in DOMString name, [Null=Empty] in DOMString storeName, in DOMString keyPath, in optional boolean unique);
+    void openIndex (in DOMString name);
+    void removeObjectStore (in DOMString storeName);
+    void removeIndex (in DOMString indexName);
+    void setVersion ([Null=Null] in DOMString version);
+    void transaction (in optional DOMStringList storeNames, in optional unsigned int timeout);
+};
+
+
+interface ObjectStoreRequest : ObjectStore {
+    readonly attribute DBRequest request;
+    void put (in any value, in optional any key, in optional boolean noOverwrite);
+    void delete (in any key);
+    void get (in any key);
+    void openCursor (in optional KeyRange range, in optional unsigned short direction);
+};
+
+
+interface IndexRequest : Index {
+    readonly attribute DBRequest request;
+    void openObjectCursor (in optional KeyRange range, in optional unsigned short direction);
+    void openCursor (in optional KeyRange range, in optional unsigned short direction);
+    void put (in any value, in optional any key, in optional boolean noOverwrite);
+    void getObject (in any key);
+    void get (in any key);
+    void delete (in any key);
+};
+
+
+interface CursorRequest : Cursor {
+    readonly attribute DBRequest          request;
+    readonly attribute any                key;
+    readonly attribute any                value;
+    readonly attribute unsigned long long count;
+    void update (in any value);
+    void continue (in optional any key);
+    void delete ();
+};
+
+
+interface TransactionRequest : Transaction {
+    readonly attribute DBRequest request;
+    void abort ();
+    void commit ();
+};
+
+
+interface DatabaseError {
+    attribute unsigned short code;
+    attribute DOMString      message;
+};
+
+};
+
