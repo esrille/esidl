@@ -329,6 +329,7 @@ EXTRA_DIST = \
 	dom/geolocation.idl \
 	dom/html5.idl \
 	dom/idl_scraper.pl \
+	dom/indexeddb.idl \
 	dom/NOTICE \
 	dom/smil.idl \
 	dom/svg.idl \
