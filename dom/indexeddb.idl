@@ -10,6 +10,12 @@
 
 module indexeddb {
 
+typedef dom::DOMStringList DOMStringList;
+typedef events::EventTarget EventTarget;
+typedef html::Function Function;
+typedef html::Window Window;
+typedef workers::WorkerUtils WorkerUtils;
+
 interface ObjectStore {
     const unsigned short READ_WRITE = 0;
     const unsigned short READ_ONLY = 1;
@@ -83,14 +89,14 @@ interface IndexedDatabase {
 
 
 interface DatabaseSync : Database {
-    ObjectStoreSync createObjectStore ([Null=Empty] in DOMString name, [Null=Null] in DOMString keyPath, in optional boolean autoIncrement) raises (DatabaseException);
+    ObjectStoreSync createObjectStore ([TreatNullAs=EmptyString] in DOMString name, in DOMString? keyPath, in optional boolean autoIncrement) raises (DatabaseException);
     ObjectStoreSync openObjectStore (in DOMString name, in optional unsigned short mode) raises (DatabaseException);
-    IndexSync       createIndex ([Null=Empty] in DOMString name, [Null=Empty] in DOMString storeName, in DOMString keyPath, in optional boolean unique) raises (DatabaseException);
+    IndexSync       createIndex ([TreatNullAs=EmptyString] in DOMString name, [TreatNullAs=EmptyString] in DOMString storeName, in DOMString keyPath, in optional boolean unique) raises (DatabaseException);
     IndexSync       openIndex (in DOMString name) raises (DatabaseException);
     void            removeObjectStore (in DOMString storeName) raises (DatabaseException);
     void            removeIndex (in DOMString indexName) raises (DatabaseException);
-    void            setVersion ([Null=Null] in DOMString version);
-    TransactionSync transaction (in optional DOMStringList storeNames, in optional unsigned int timeout) raises (DatabaseException);
+    void            setVersion (in DOMString? version);
+    TransactionSync transaction (in optional DOMStringList storeNames, in optional unsigned long timeout) raises (DatabaseException);
 };
 
 
@@ -116,7 +122,7 @@ interface CursorSync {
     readonly attribute any                key;
              attribute any                value setraises (DatabaseException);
     readonly attribute unsigned long long count;
-    bool continue (in optional any key);
+    boolean continue (in optional any key);
     void delete () raises (DatabaseException);
 };
 
@@ -136,11 +142,11 @@ exception DatabaseException {
     const unsigned short NOT_ALLOWED_ERR = 5;
     const unsigned short SERIAL_ERR = 11;
     const unsigned short RECOVERABLE_ERR = 21;
-    const unsigned shrot TRANSIENT_ERR = 31;
+    const unsigned short TRANSIENT_ERR = 31;
     const unsigned short TIMEOUT_ERR = 32;
     const unsigned short DEADLOCK_ERR = 33;
-    attribute unsigned short code;
-    attribute DOMString      message;
+    unsigned short code;
+    // attribute DOMString      message;
 };
 
 
@@ -174,14 +180,14 @@ interface IndexedDatabaseRequest {
 
 interface DatabaseRequest : Database {
     readonly attribute DBRequest request;
-    void createObjectStore ([Null=Empty] in DOMString name, [Null=Null] in DOMString keyPath, in optional boolean autoIncrement);
+    void createObjectStore ([TreatNullAs=EmptyString] in DOMString name, in DOMString? keyPath, in optional boolean autoIncrement);
     void openObjectStore (in DOMString name, in optional unsigned short mode);
-    void createIndex ([Null=Empty] in DOMString name, [Null=Empty] in DOMString storeName, in DOMString keyPath, in optional boolean unique);
+    void createIndex ([TreatNullAs=EmptyString] in DOMString name, [TreatNullAs=EmptyString] in DOMString storeName, in DOMString keyPath, in optional boolean unique);
     void openIndex (in DOMString name);
     void removeObjectStore (in DOMString storeName);
     void removeIndex (in DOMString indexName);
-    void setVersion ([Null=Null] in DOMString version);
-    void transaction (in optional DOMStringList storeNames, in optional unsigned int timeout);
+    void setVersion (in DOMString? version);
+    void transaction (in optional DOMStringList storeNames, in optional unsigned long timeout);
 };
 
 
