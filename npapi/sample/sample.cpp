@@ -159,7 +159,7 @@ void drawCharts(Document* document)
 
 }  // namespace
 
-void PluginInstance::test()
+void PluginInstance::initialize()
 {
     Document* document = window->getDocument();
     if (document)

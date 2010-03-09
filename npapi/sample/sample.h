@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Google Inc.
+ * Copyright 2009-2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,22 +25,15 @@
 
 class PluginInstance
 {
-    NPP npp;
     org::w3c::dom::html::Window* window;
 
-    void test();
+    void initialize();
 
 public:
-    PluginInstance(NPP npp) :
-        npp(npp),
-        window(0)
+    PluginInstance(org::w3c::dom::html::Window* window) :
+        window(window)
     {
-        NPObject* npWindow;
-        NPN_GetValue(npp, NPNVWindowNPObject, &npWindow);
-        std::string name = getInterfaceName(npp, npWindow);
-        printf("'%s'\n", name.c_str());
-        window = dynamic_cast<org::w3c::dom::html::Window*>(createProxy(npp, npWindow));
-        test();
+        initialize();
     }
 
     ~PluginInstance()
