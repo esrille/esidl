@@ -440,6 +440,8 @@
 #include <org/w3c/dom/webgl/WebGLUnsignedByteArray.h>
 #include <org/w3c/dom/webgl/WebGLUnsignedIntArray.h>
 #include <org/w3c/dom/webgl/WebGLUnsignedShortArray.h>
+#include <org/w3c/dom/webnotifications/NotificationCenter.h>
+#include <org/w3c/dom/webnotifications/Notification.h>
 #include <org/w3c/dom/websocket/WebSocket.h>
 #include <org/w3c/dom/webstorage/StorageEvent.h>
 #include <org/w3c/dom/webstorage/Storage.h>

@@ -25,6 +25,7 @@ w3c_idl_files = \
 	svg.idl \
 	webdatabase.idl \
 	webgl.idl \
+	webnotifications.idl \
 	webstorage.idl \
 	websocket.idl \
 	workers.idl \

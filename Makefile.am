@@ -79,6 +79,7 @@ EXTRA_DIST = \
 	dom/svg.idl \
 	dom/webdatabase.idl \
 	dom/webgl.idl \
+	dom/webnotifications.idl \
 	dom/webstorage.idl \
 	dom/websocket.idl \
 	dom/wget_webidl_dom \

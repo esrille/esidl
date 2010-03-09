@@ -1,0 +1,50 @@
+/*
+ * webnotifications.idl
+ *
+ * Web Notifications IDL definitions scraped from the W3C specification, revised for esidl.
+ *
+ * Original W3C Editor's Draft 10 February 2010:
+ *
+ *   http://dev.w3.org/2006/webapi/WebNotifications/publish/
+ */
+
+module webnotifications {
+
+typedef events::EventTarget EventTarget;
+typedef html::Window Window;
+typedef html::Function Function;
+typedef workers::WorkerGlobalScope WorkerGlobalScope;
+
+interface Notification : EventTarget {
+
+  void               show();
+  void               cancel();
+           attribute Function  onclick;
+           attribute Function  ondisplay;
+           attribute Function  onerror;
+           attribute Function  onclose;
+};
+
+interface NotificationCenter {
+  // permission values
+  const unsigned long      PERMISSION_ALLOWED      = 0;
+  const unsigned long      PERMISSION_UNKNOWN      = 1;
+  const unsigned long      PERMISSION_DENIED       = 2;
+
+           attribute unsigned long  permissionLevel;
+  Notification       createNotification(in DOMString iconUrl, in DOMString title, in DOMString body);
+                                        // raises(Exception);
+  Notification       createHTMLNotification(in DOMString url);
+  void               requestPermission(in Function callback);
+                                        // raises(Exception);
+};
+
+[Supplemental] interface Window {
+           attribute NotificationCenter  notifications;
+};
+
+[Supplemental] interface WorkerGlobalScope {
+           attribute NotificationCenter  notifications;
+};
+
+};
