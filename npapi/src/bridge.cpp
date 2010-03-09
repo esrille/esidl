@@ -140,7 +140,7 @@ double toNumber(const NPVariant* variant)
     }
 }
 
-long long ToInteger(const NPVariant* variant)
+long long toInteger(const NPVariant* variant)
 {
     double value = toNumber(variant);
     if (isnan(value) || value == 0.0 || isinf(value))
@@ -355,37 +355,37 @@ bool convertToBool(const NPVariant* variant)
 
 uint8_t convertToOctet(const NPVariant* variant)
 {
-    return static_cast<uint8_t>(ToInteger(variant));
+    return static_cast<uint8_t>(toInteger(variant));
 }
 
 int16_t convertToShort(const NPVariant* variant)
 {
-    return static_cast<int16_t>(ToInteger(variant));
+    return static_cast<int16_t>(toInteger(variant));
 }
 
 uint16_t convertToUnsignedShort(const NPVariant* variant)
 {
-    return static_cast<uint16_t>(ToInteger(variant));
+    return static_cast<uint16_t>(toInteger(variant));
 }
 
 int32_t convertToLong(const NPVariant* variant)
 {
-    return static_cast<int32_t>(ToInteger(variant));
+    return static_cast<int32_t>(toInteger(variant));
 }
 
 uint32_t convertToUnsignedLong(const NPVariant* variant)
 {
-    return static_cast<uint32_t>(ToInteger(variant));
+    return static_cast<uint32_t>(toInteger(variant));
 }
 
 int64_t convertToLongLong(const NPVariant* variant)
 {
-    return static_cast<int64_t>(ToInteger(variant));
+    return static_cast<int64_t>(toInteger(variant));
 }
 
 uint64_t convertToUnsignedLongLong(const NPVariant* variant)
 {
-    return static_cast<uint64_t>(ToInteger(variant));
+    return static_cast<uint64_t>(toInteger(variant));
 }
 
 float convertToFloat(const NPVariant* variant)
