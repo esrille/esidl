@@ -264,7 +264,7 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = . sample
+SUBDIRS = include . sample
 lib_LIBRARIES = libesnpapi.a
 AM_CPPFLAGS = \
 	-fPIC -fshort-wchar \
