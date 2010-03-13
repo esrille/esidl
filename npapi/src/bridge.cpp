@@ -35,7 +35,7 @@ std::map<const std::string, Reflect::Interface> metaDataMap;
 
 bool isStub(const NPObject* object)
 {
-    return object->_class->deallocate == StubObject::Deallocate;
+    return object->_class == &StubObject::npclass;
 }
 
 bool toBoolean(const NPVariant* variant)

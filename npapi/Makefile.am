@@ -14,5 +14,7 @@ libesnpapi_a_SOURCES = \
 	include/esnpapi.h \
 	include/proxyImpl.h \
 	src/bridge.cpp \
-	src/invoke.cpp
+	src/invoke.cpp \
+	src/resolve.cpp
+
 

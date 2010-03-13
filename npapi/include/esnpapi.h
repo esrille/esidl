@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Google Inc.
+ * Copyright 2009-2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,53 +79,35 @@ public:
 
 class StubObject : public NPObject
 {
+    Object* object;
+    
 public:
-    virtual Object* getObject() const = 0;
-    virtual void invalidate() = 0;
-    virtual bool hasMethod(NPIdentifier name) = 0;
-    virtual bool invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result) = 0;
-    virtual bool invokeDefault(const NPVariant* args, uint32_t arg_count, NPVariant* result) = 0;
-    virtual bool hasProperty(NPIdentifier name) = 0;
-    virtual bool getProperty(NPIdentifier name, NPVariant* result) = 0;
-    virtual bool setProperty(NPIdentifier name, const NPVariant* value) = 0;
-    virtual bool removeProperty(NPIdentifier name) = 0;
-
-    static void Deallocate(NPObject* object)
+    StubObject() :
+        object(0)
     {
-        delete static_cast<StubObject*>(object);
     }
-    static void Invalidate(NPObject* object)
+    
+    Object* getObject() const
     {
-        static_cast<StubObject*>(object)->invalidate();
+        return object;
     }
-    static bool HasMethod(NPObject* object, NPIdentifier name)
+    void setObject(Object* object)
     {
-        return static_cast<StubObject*>(object)->hasMethod(name);
+        this->object = object;
     }
-    static bool Invoke(NPObject* object, NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result)
-    {
-        return static_cast<StubObject*>(object)->invoke(name, args, arg_count, result);
-    }
-    static bool InvokeDefault(NPObject* object, const NPVariant* args, uint32_t arg_count, NPVariant* result)
-    {
-        return static_cast<StubObject*>(object)->invokeDefault(args, arg_count, result);
-    }
-    static bool HasProperty(NPObject* object, NPIdentifier name)
-    {
-        return static_cast<StubObject*>(object)->hasProperty(name);
-    }
-    static bool GetProperty(NPObject* object, NPIdentifier name, NPVariant* result)
-    {
-        return static_cast<StubObject*>(object)->getProperty(name, result);
-    }
-    static bool SetProperty(NPObject* object, NPIdentifier name, const NPVariant* value)
-    {
-        return static_cast<StubObject*>(object)->setProperty(name, value);
-    }
-    static bool RemoveProperty(NPObject* object, NPIdentifier name)
-    {
-        return static_cast<StubObject*>(object)->removeProperty(name);
-    }
+    
+    void invalidate();
+    bool hasMethod(NPIdentifier name);
+    bool invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result);
+    bool invokeDefault(const NPVariant* args, uint32_t arg_count, NPVariant* result);
+    bool hasProperty(NPIdentifier name);
+    bool getProperty(NPIdentifier name, NPVariant* result);
+    bool setProperty(NPIdentifier name, const NPVariant* value);
+    bool removeProperty(NPIdentifier name);
+    bool enumeration(NPIdentifier** value, uint32_t* count);
+    bool construct(const NPVariant* args, uint32_t argCount, NPVariant* result);
+    
+    static NPClass npclass;
 };
 
 std::string getInterfaceName(NPP npp, NPObject* object);

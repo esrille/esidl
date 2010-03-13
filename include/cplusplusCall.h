@@ -51,16 +51,16 @@ public:
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
-        writeln("template <class ARGUMENTS, void (*resolve)(Object*, const char*, ARGUMENTS&, unsigned*, unsigned*)>");
-        writeln("Any call(const char* method, ARGUMENTS& arguments) {");
+        writeln("template <class ARGUMENT, void (*resolve)(Object*, const char*, unsigned, ARGUMENT*, unsigned*, unsigned*)>");
+        writeln("Any call(const char* method, unsigned argumentCount, ARGUMENT* arguments) {");
             writeln("unsigned interfaceNumber;");
             writeln("unsigned methodNumber;");
-            writeln("resolve(this, method, arguments, &interfaceNumber, &methodNumber);");
-            writeln("return call(interfaceNumber, methodNumber, arguments);");
+            writeln("resolve(this, method, argumentCount, arguments, &interfaceNumber, &methodNumber);");
+            writeln("return call(interfaceNumber, methodNumber, argumentCount, arguments);");
         writeln("}");
 
-        writeln("template <class ARGUMENTS>");
-        writeln("Any call(unsigned interfaceNumber, unsigned methodNumber, ARGUMENTS& arguments) {");
+        writeln("template <class ARGUMENT>");
+        writeln("Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, ARGUMENT* arguments) {");
             writeln("switch (interfaceNumber) {");
             unsigned interfaceNumber = 0;
             std::list<const Interface*> list;
@@ -72,13 +72,13 @@ public:
                 unindent();
                 writeln("case %u:", interfaceNumber);
                 indent();
-                writeln("return %s::call(methodNumber, arguments);", getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
+                writeln("return %s::call(methodNumber, argumentCount, arguments);", getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
             }
             writeln("}");
         writeln("}");
 
-        writeln("template <class ARGUMENTS>");
-        writeln("Any call(unsigned methodNumber, ARGUMENTS& arguments) {");
+        writeln("template <class ARGUMENT>");
+        writeln("Any call(unsigned methodNumber, unsigned argumentCount, ARGUMENT* arguments) {");
             writeln("switch (methodNumber) {");
             unindent();
             methodNumber = 0;

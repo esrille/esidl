@@ -113,7 +113,6 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
             --argumentCount;
             Sequence<int> sequence(arguments[argumentCount]);  // TODO: make sure this works ignoring T
             variadicCount = sequence.getLength();
-printf("variadicCount %u %u\n", variadicCount, argumentCount);
         }
 
         unsigned variantCount = argumentCount + variadicCount;
