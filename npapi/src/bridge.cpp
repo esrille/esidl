@@ -403,7 +403,7 @@ std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribut
   return toString(npp, variant, attribute);
 }
 
-Object* convertToObject(NPP npp, const NPVariant* variant, char* buffer, size_t length)
+Object* convertToObject(NPP npp, const NPVariant* variant)
 {
     // If the embedded NPObject is a stub object, set the original interface
     // pointer to any. Otherwise, call toString() method to retrieve the class
@@ -428,7 +428,7 @@ Object* convertToObject(NPP npp, const NPVariant* variant, char* buffer, size_t 
     }
 }
 
-Any convertToAny(NPP npp, const NPVariant* variant, void* buffer, size_t length)
+Any convertToAny(NPP npp, const NPVariant* variant)
 {
     switch (variant->type)
     {
@@ -450,7 +450,7 @@ Any convertToAny(NPP npp, const NPVariant* variant, void* buffer, size_t length)
         break;
     case NPVariantType_Object:
     {
-        Object* object = convertToObject(npp, variant, static_cast<char*>(buffer), length);
+        Object* object = convertToObject(npp, variant);
         if (!object)
         {
             return Any();
@@ -509,7 +509,7 @@ Any convertToAny(NPP npp, const NPVariant* variant, int type, void* buffer, size
         break;
     case Any::TypeObject:
     {
-        Object* object = convertToObject(npp, variant, static_cast<char*>(buffer), length);
+        Object* object = convertToObject(npp, variant);
         if (!object)
         {
             return Any();
@@ -597,10 +597,16 @@ void convertToVariant(NPP npp, Object* value, NPVariant* variant)
 
 void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
 {
+    if (any.isSequence())
+    {
+        // TODO: Implement me!
+        return;
+    }
+
     switch (any.getType())
     {
     case Any::TypeVoid:
-        VOID_TO_NPVARIANT(*variant);
+        NULL_TO_NPVARIANT(*variant);
         break;
     case Any::TypeBool:
         convertToVariant(npp, static_cast<bool>(any), variant);
@@ -639,7 +645,7 @@ void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
         convertToVariant(npp, static_cast<Object*>(any), variant);
         break;
     default:
-        NULL_TO_NPVARIANT(*variant);
+        VOID_TO_NPVARIANT(*variant);
         break;
     }
 }

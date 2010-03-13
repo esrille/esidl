@@ -27,16 +27,16 @@ class Any;
 template <typename T>
 class Sequence
 {
-    class Rep : public org::w3c::dom::ObjectArray<T>
+    class Rep // : public org::w3c::dom::ObjectArray<T>
     {
         friend class Sequence;
-        // stub
-        T* sequence;
-        unsigned int length;
-        // proxy
-        org::w3c::dom::ObjectArray<T>* array;
         // reference count
         unsigned count;
+        // stub
+        unsigned int length;
+        T* sequence;
+        // proxy
+        org::w3c::dom::ObjectArray<T>* array;
 
         void init(unsigned int size)
         {
@@ -68,6 +68,15 @@ class Sequence
         {
             init(length);
             copy(sequence, length);
+        }
+
+        Rep(const char** array, unsigned int length)
+        {
+            init(length);
+            for (unsigned int i = 0; i < length; ++i)
+            {
+                sequence[i] = array[i];
+            }
         }
 
         Rep(unsigned int size)
@@ -164,6 +173,12 @@ public:
         rep = new Rep(array, size);
     }
 
+    // For std::string
+    Sequence(const char** array, unsigned int size)
+    {
+        rep = new Rep(array, size);
+    }
+
     Sequence(unsigned int size)
     {
         rep = new Rep(size);
@@ -243,10 +258,12 @@ public:
         return rep->getLength();
     }
 
+#if 0
     operator org::w3c::dom::ObjectArray<T>*()
     {
         return rep;
     }
+#endif    
 
     Sequence(const Any& any);
 };

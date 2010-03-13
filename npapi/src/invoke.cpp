@@ -40,15 +40,21 @@ NPIdentifier getSpecialIdentifier(const Any& any)
     return id;
 }
 
+template <typename T>
+void expandSequence(NPP npp, const Sequence<T> sequence, NPVariant* variantArray)
+{
+    for (unsigned i = 0; i < sequence.getLength(); ++i)
+    {
+        convertToVariant(npp, sequence[i], variantArray + i);
+    }
+}
+
 }  // namespace
 
 Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
            const char* meta, unsigned offset,
            unsigned argumentCount, Any* arguments)
 {
-    void* buffer;   // TODO for sequence
-    size_t length;  // TODO for sequence
-
     ProxyObject* proxy = dynamic_cast<ProxyObject*>(object);  // XXX
     if (!proxy)
     {
@@ -69,7 +75,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
         id = NPN_GetStringIdentifier(method.getName().c_str());
         if (NPN_GetProperty(proxy->getNPP(), proxy->getNPObject(), id, &result))
         {
-            return convertToAny(proxy->getNPP(), &result, buffer, length);
+            return convertToAny(proxy->getNPP(), &result);
         }
     }
     else if (method.isSetter())
@@ -84,7 +90,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
         id = getSpecialIdentifier(arguments[argumentCount - 1]);
         if (NPN_GetProperty(proxy->getNPP(), proxy->getNPObject(), id, &result))
         {
-            return convertToAny(proxy->getNPP(), &result, buffer, length);
+            return convertToAny(proxy->getNPP(), &result);
         }
     }
     else if (method.isSpecialSetter() || method.isSpecialCreator())
@@ -102,156 +108,79 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
     else
     {
         unsigned variadicCount = 0;
-#if 0
         if (method.isVariadic())
         {
-            variadicCount = static_cast<unsigned>(arguments[argumentCount - 1]);
-            argumentCount -= 1;
+            --argumentCount;
+            Sequence<int> sequence(arguments[argumentCount]);  // TODO: make sure this works ignoring T
+            variadicCount = sequence.getLength();
+printf("variadicCount %u %u\n", variadicCount, argumentCount);
         }
-#endif
+
         unsigned variantCount = argumentCount + variadicCount;
         NPVariant variantArray[variantCount];
         for (int i = 0; i < argumentCount; ++i)
         {
             convertToVariant(proxy->getNPP(), arguments[i], &variantArray[i]);
         }
-#if 0
-        if (argumentCount < variadicCount)
+
+        if (0 < variadicCount)
         {
             Reflect::Parameter param = method.listParameter();
             for (int i = 0; i < method.getParameterCount(); ++i)
             {
                 param.next();
             }
+            // TODO: Check Nullable, too.
             switch (param.getType().getType())
             {
             case Reflect::kBoolean:
-            {
-                const bool* variadic = reinterpret_cast<const bool*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<bool>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kOctet:
-            {
-                const uint8_t* variadic = reinterpret_cast<const uint8_t*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<uint8_t>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kShort:
-            {
-                const int16_t* variadic = reinterpret_cast<const int16_t*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<int16_t>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kUnsignedShort:
-            {
-                const uint16_t* variadic = reinterpret_cast<const uint16_t*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<uint16_t>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kLong:
-            {
-                const int32_t* variadic = reinterpret_cast<const int32_t*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<int32_t>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kUnsignedLong:
-            {
-                const uint32_t* variadic = reinterpret_cast<const uint32_t*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<uint32_t>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kLongLong:
-            {
-                const int64_t* variadic = reinterpret_cast<const int64_t*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<int64_t>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kUnsignedLongLong:
-            {
-                const uint64_t* variadic = reinterpret_cast<const uint64_t*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<uint64_t>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kFloat:
-            {
-                const float* variadic = reinterpret_cast<const float*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<float>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kDouble:
-            {
-                const double* variadic = reinterpret_cast<const double*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<double>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kString:
-            {
-                const std::string* variadic = reinterpret_cast<const std::string*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<std::string>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
             case Reflect::kAny:
-            {
-                const Any* variadic = reinterpret_cast<const Any*>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
+                expandSequence(proxy->getNPP(), Sequence<Any>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
-            }
+            // TODO: kSequence???
             case Reflect::kObject:
-            {
-                Object** variadic = reinterpret_cast<Object**>(static_cast<intptr_t>(arguments[argumentCount]));
-                for (int i = argumentCount - 1; i < variantCount; ++i)
-                {
-                    convertToVariant(proxy->getNPP(), *variadic++, &variantArray[i]);
-                }
-                break;
-            }
             default:
-                // TODO: Are we going to support non-simple types with variadic?
+                expandSequence(proxy->getNPP(), Sequence<Object*>(arguments[argumentCount]), &variantArray[argumentCount]);
                 break;
             }
         }
-#endif
+
         id = NPN_GetStringIdentifier(method.getName().c_str());
         if (NPN_Invoke(proxy->getNPP(), proxy->getNPObject(), id, variantArray, variantCount, &result))
         {
-            return convertToAny(proxy->getNPP(), &result, buffer, length);
+            return convertToAny(proxy->getNPP(), &result);
         }
     }
     return Any();

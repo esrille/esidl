@@ -237,7 +237,15 @@ public:
     template <typename T>
     Any(const Nullable<T> nullable)
     {
-        assign(nullable.value());
+        if (!nullable.hasValue())
+        {
+            longLongValue = 0;
+            type = TypeVoid;
+        }
+        else
+        {
+            assign(nullable.value());
+        }
         type |= FlagNullable;
     }
 
@@ -258,6 +266,13 @@ public:
         }
     }
 
+    template <typename T>
+    Any& operator=(T value)
+    {
+        assign(value);
+        return *this;
+    }
+    
     Any& operator=(const Any& value)
     {
         assign(value);

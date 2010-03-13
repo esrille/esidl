@@ -156,9 +156,9 @@ uint64_t convertToUnsignedLongLong(const NPVariant* variant);
 float convertToFloat(const NPVariant* variant);
 double convertToDouble(const NPVariant* variant);
 std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribute = 0);
-Object* convertToObject(NPP npp, const NPVariant* variant, char* buffer, size_t length);
-Any convertToAny(NPP npp, const NPVariant* variant, void* buffer, size_t length);
-Any convertToAny(NPP npp, const NPVariant* variant, int type, void* buffer, size_t length);
+Object* convertToObject(NPP npp, const NPVariant* variant);
+Any convertToAny(NPP npp, const NPVariant* variant);
+Any convertToAny(NPP npp, const NPVariant* variant, int type);
 
 void addProxyConstructor(const std::string interfaceName, Object* (*createProxy)(ProxyObject object));
 void addStubConstructor(const std::string interfaceName, NPObject* (*createStub)(NPP npp, Object* object));

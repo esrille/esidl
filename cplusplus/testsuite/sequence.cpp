@@ -34,14 +34,12 @@ int main()
     test1(y);
     test2(y);
 
-#if 1
     string b[] = { "a", "b", "c" };
     Sequence<string> s(b, 3);
     cout << (string) s[0] << (string) s[1] << (string) s[2] << endl;
 
     Sequence<string> t = s;
     cout << (string) t[0] << (string) t[1] << (string) t[2] << endl;
-#endif
 
     cout << sizeof(Sequence<int>) << ' ' << sizeof(Sequence<string>) << endl;
 
@@ -51,4 +49,14 @@ int main()
     Any a1 = y;
     Sequence<int> y3 = a1;
     test1(y3);
+
+    Any a2 = s;
+    Sequence<string> y4 = a2;
+    cout << y4.getLength() << (string) y4[0] << (string) y4[1] << (string) y4[2] << endl;
+
+    Any array[1];
+    array[0] = s;
+    Sequence<string> z = array[0];
+    cout << z.getLength() << (string) z[0] << (string) z[1] << (string) z[2] << endl;
+    
 }
