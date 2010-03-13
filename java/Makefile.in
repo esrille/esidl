@@ -185,6 +185,7 @@ w3c_generated_files = \
 
 w3c_idl_files = \
 	arrays.idl \
+	console.idl \
 	cssomview.idl \
 	dom2css.idl \
 	dom2events.idl \

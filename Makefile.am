@@ -58,6 +58,7 @@ AM_CPPFLAGS = \
 EXTRA_DIST = \
 	LICENSE \
 	dom/COPYRIGHT.html \
+	dom/console.idl \
 	dom/cssomview.idl \
 	dom/dom2css.idl \
 	dom/dom2events.idl \
