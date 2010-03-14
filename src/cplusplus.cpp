@@ -257,7 +257,7 @@ public:
             write("return");
             flush();
             indent();
-            Info info(this, "Object");
+            Info info(source, this);
             const_cast<Interface*>(node)->accept(&info);
             info.flush();
             write(";\n");

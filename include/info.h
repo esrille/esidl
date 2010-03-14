@@ -23,59 +23,19 @@
 #include <string>
 #include "esidl.h"
 #include "expr.h"
-#include "formatter.h"
+#include "cplusplus.h"
 #include "reflect.h"
 
 // Generate the string-encoded interface information for reflection
-class Info : public Visitor, public Formatter
+class Info : public CPlusPlus
 {
 protected:
     bool constructorMode;
-    int optionalStage;
-    int optionalCount;
 
     std::string objectTypeName;
     const Node* currentNode;
 
-    int paramCount;  // The number of parameters of the previously evaluated operation
-    const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
-
     unsigned offset;
-
-    int getParamCount() const
-    {
-        return paramCount;
-    }
-
-    const ParamDcl* getVariadic() const
-    {
-        return variadicParam;
-    }
-
-    void printChildren(const Node* node)
-    {
-        if (node->isLeaf())
-        {
-            return;
-        }
-
-        const Node* saved = currentNode;
-        std::string separator;
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            if (1 < (*i)->getRank())
-            {
-                continue;
-            }
-            if ((*i)->isNative(node->getParent()))
-            {
-                continue;
-            }
-            currentNode = (*i);
-            (*i)->accept(this);
-        }
-        currentNode = saved;
-    }
 
     void visitInterfaceElement(const Interface* interface, Node* element)
     {
@@ -93,15 +53,13 @@ protected:
     }
 
 public:
-    Info(Formatter* f, const std::string& objectTypeName) :
-        Formatter(f),
+    Info(const char* source, Formatter* formatter) :
+        CPlusPlus(source, formatter, "std::string", "Object", true),
         constructorMode(false),
-        objectTypeName(objectTypeName),
         currentNode(getSpecification()),
-        paramCount(0),
-        variadicParam(0),
         offset(0)
     {
+        formatter->flush();
     }
 
     virtual void at(const Module* node)
@@ -190,6 +148,8 @@ public:
             }
             constructorMode = false;
         }
+
+        flush();
     }
 
     virtual void at(const ConstDcl* node)
@@ -202,15 +162,6 @@ public:
     {
         assert(node->isTypedef(node->getParent()));
         node->getSpec()->accept(this);
-    }
-
-    std::string getInterfaceName(std::string qualifiedName)
-    {
-        if (qualifiedName == Node::getBaseObjectName())
-        {
-            qualifiedName.replace(2, qualifiedName.length(), objectTypeName);
-        }
-        return qualifiedName;
     }
 };
 

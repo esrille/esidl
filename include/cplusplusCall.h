@@ -24,15 +24,14 @@
 #include <set>
 #include <vector>
 #include "cplusplus.h"
-#include "info.h"
 
 class CPlusPlusCall : public CPlusPlus
 {
     unsigned methodNumber;
 
 public:
-    CPlusPlusCall(const char* source, const Formatter* formattter) :
-        CPlusPlus(source, formattter, "std::string", "Object", true)
+    CPlusPlusCall(const char* source, Formatter* formatter) :
+        CPlusPlus(source, formatter, "std::string", "Object", true)
     {
         currentNode = 0;
     }
