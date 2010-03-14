@@ -29,12 +29,6 @@
 // Generate the string-encoded interface information for reflection
 class Info : public CPlusPlus
 {
-protected:
-    bool constructorMode;
-
-    std::string objectTypeName;
-    const Node* currentNode;
-
     unsigned offset;
 
     void visitInterfaceElement(const Interface* interface, Node* element)
@@ -55,11 +49,10 @@ protected:
 public:
     Info(const char* source, Formatter* formatter) :
         CPlusPlus(source, formatter, "std::string", "Object", true),
-        constructorMode(false),
-        currentNode(getSpecification()),
         offset(0)
     {
         formatter->flush();
+        currentNode = 0;
     }
 
     virtual void at(const Module* node)
