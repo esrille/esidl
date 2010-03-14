@@ -50,6 +50,51 @@ public:
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
+        unsigned interfaceNumber;
+        std::list<const Interface*> list;
+
+        writeln("static const char* getMetaData(unsigned interfaceNumber) {");
+            writeln("switch (interfaceNumber) {");
+            interfaceNumber = 0;
+            list.clear();
+            node->getInterfaceList(&list);
+            for (std::list<const Interface*>::const_iterator i = list.begin();
+                 i != list.end();
+                 ++i, ++interfaceNumber)
+            {
+                unindent();
+                writeln("case %u:", interfaceNumber);
+                indent();
+                writeln("return %s::getMetaData();", getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
+            }
+            unindent();
+            writeln("default:");
+            indent();
+                writeln("return 0;");  // TODO:  should raise an exception?
+            writeln("}");
+        writeln("}");
+        writeln("static const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) {");
+            writeln("switch (interfaceNumber) {");
+            interfaceNumber = 0;
+            list.clear();
+            node->getInterfaceList(&list);
+            for (std::list<const Interface*>::const_iterator i = list.begin();
+                 i != list.end();
+                 ++i, ++interfaceNumber)
+            {
+                unindent();
+                writeln("case %u:", interfaceNumber);
+                indent();
+                writeln("return %s::getSymbolTable();", getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
+            }
+            unindent();
+            writeln("default:");
+            indent();
+                writeln("return 0;");  // TODO:  should raise an exception?
+            writeln("}");
+        writeln("}");
+        writeln("");
+
         writeln("template <class ARGUMENT, void (*resolve)(Object*, const char*, unsigned, ARGUMENT*, unsigned*, unsigned*)>");
         writeln("Any call(const char* method, unsigned argumentCount, ARGUMENT* arguments) {");
             writeln("unsigned interfaceNumber;");
@@ -61,8 +106,8 @@ public:
         writeln("template <class ARGUMENT>");
         writeln("Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, ARGUMENT* arguments) {");
             writeln("switch (interfaceNumber) {");
-            unsigned interfaceNumber = 0;
-            std::list<const Interface*> list;
+            interfaceNumber = 0;
+            list.clear();
             node->getInterfaceList(&list);
             for (std::list<const Interface*>::const_iterator i = list.begin();
                  i != list.end();
@@ -73,6 +118,10 @@ public:
                 indent();
                 writeln("return %s::call(methodNumber, argumentCount, arguments);", getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
             }
+            unindent();
+            writeln("default:");
+            indent();
+                writeln("return Any();");  // TODO:  should raise an exception?
             writeln("}");
         writeln("}");
 
