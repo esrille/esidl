@@ -79,10 +79,12 @@ public:
 
 class StubObject : public NPObject
 {
+    NPP npp;
     Object* object;
     
 public:
-    StubObject() :
+    StubObject(NPP npp) :
+        npp(npp),
         object(0)
     {
     }

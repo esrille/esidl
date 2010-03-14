@@ -21,7 +21,7 @@ namespace
 
 NPObject* stubAllocate(NPP npp, NPClass* aClass)
 {
-    return new StubObject();
+    return new StubObject(npp);
 }
 
 void stubDeallocate(NPObject* object)
@@ -175,7 +175,40 @@ bool StubObject::hasProperty(NPIdentifier name)
 
 bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
 {
-    return false;
+    NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
+    if (!identifier)
+    {
+        return false;
+    }
+
+    bool found = false;
+    unsigned interfaceNumber = 0;
+    unsigned symbolNumber = 0;
+    for (;; ++symbolNumber)
+    {
+        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!offset)
+        {
+            break;
+        }
+        const char* metaData = object->getMetaData(interfaceNumber);
+        metaData += offset;
+        if (*metaData == Reflect::kConstant)
+        {
+            // TODO: eval the constant value
+            found = true;
+            break;
+        }
+        if (*metaData == Reflect::kGetter)
+        {
+            Any property = object->call(interfaceNumber, symbolNumber, 0, 0);
+            convertToVariant(npp, property, result);
+            found = true;
+            break;
+        }
+    }
+    NPN_MemFree(identifier);
+    return found;
 }
 
 bool StubObject::setProperty(NPIdentifier name, const NPVariant* value)
