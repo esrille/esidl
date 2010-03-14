@@ -19,7 +19,6 @@
 #define ESIDL_META_H_INCLUDED
 
 #include <stdlib.h>
-#include <map>
 #include <string>
 #include <sstream>
 #include "esidl.h"

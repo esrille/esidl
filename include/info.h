@@ -18,8 +18,6 @@
 #ifndef ESIDL_INFO_H_INCLUDED
 #define ESIDL_INFO_H_INCLUDED
 
-#include <stdlib.h>
-#include <map>
 #include <string>
 #include "esidl.h"
 #include "expr.h"

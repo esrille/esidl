@@ -24,7 +24,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <map>
 #include <string>
 #include "esidl.h"
 #include "formatter.h"

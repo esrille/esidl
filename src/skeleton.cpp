@@ -15,7 +15,6 @@
  */
 
 #include "cxx.h"
-#include <map>
 #include <set>
 
 namespace

@@ -18,7 +18,6 @@
 #ifndef ESIDL_CPLUSPLUS_META_H_INCLUDED
 #define ESIDL_CPLUSPLUS_META_H_INCLUDED
 
-#include <stdlib.h>
 #include <map>
 #include <string>
 #include "esidl.h"
@@ -30,6 +29,7 @@
 class CPlusPlusMeta : public CPlusPlus
 {
     unsigned offset;
+    std::map<std::string, unsigned> symbolTable;
 
     void visitInterfaceElement(const Interface* interface, Node* element)
     {
