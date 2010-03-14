@@ -30,6 +30,7 @@ class CPlusPlusMeta : public CPlusPlus
 {
     unsigned offset;
     std::map<std::string, unsigned> symbolTable;
+    std::map<std::string, unsigned> constantTable;
 
     void visitInterfaceElement(const Interface* interface, Node* element)
     {
@@ -49,6 +50,11 @@ class CPlusPlusMeta : public CPlusPlus
     void addSymbol(std::string symbol, unsigned offset)
     {
         symbolTable.insert(std::pair<std::string, unsigned>(symbol, offset));
+    }
+
+    void addConstant(std::string symbol, unsigned offset)
+    {
+        constantTable.insert(std::pair<std::string, unsigned>(symbol, offset));
     }
 
 public:
@@ -168,6 +174,12 @@ public:
                 {
                     writeln("{ \"%s\", %u },", (*i).first.c_str(), (*i).second);
                 }
+                for (std::map<std::string, unsigned>::iterator i = constantTable.begin();
+                    i != constantTable.end();
+                    ++i)
+                {
+                    writeln("{ \"%s\", %u },", (*i).first.c_str(), (*i).second);
+                }
                 writeln("{ 0, 0 },");
             writeln("};");
             writeln("return symbolTable;");
@@ -178,7 +190,7 @@ public:
 
     virtual void at(const ConstDcl* node)
     {
-        addSymbol(node->getName(), offset);
+        addConstant(node->getName(), offset);
         write("\"%s\"", node->getMeta().c_str());
         offset += node->getMeta().length();
     }

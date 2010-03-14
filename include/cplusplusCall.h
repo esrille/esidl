@@ -53,7 +53,7 @@ public:
         unsigned interfaceNumber;
         std::list<const Interface*> list;
 
-        writeln("static const char* getMetaData(unsigned interfaceNumber) {");
+        writeln("virtual const char* getMetaData(unsigned interfaceNumber) const {");
             writeln("switch (interfaceNumber) {");
             interfaceNumber = 0;
             list.clear();
@@ -73,7 +73,7 @@ public:
                 writeln("return 0;");  // TODO:  should raise an exception?
             writeln("}");
         writeln("}");
-        writeln("static const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) {");
+        writeln("virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const {");
             writeln("switch (interfaceNumber) {");
             interfaceNumber = 0;
             list.clear();
@@ -103,8 +103,7 @@ public:
             writeln("return call(interfaceNumber, methodNumber, argumentCount, arguments);");
         writeln("}");
 
-        writeln("template <class ARGUMENT>");
-        writeln("Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, ARGUMENT* arguments) {");
+        writeln("virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) {");
             writeln("switch (interfaceNumber) {");
             interfaceNumber = 0;
             list.clear();
@@ -116,7 +115,15 @@ public:
                 unindent();
                 writeln("case %u:", interfaceNumber);
                 indent();
-                writeln("return %s::call(methodNumber, argumentCount, arguments);", getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
+                if (interfaceNumber == 0)
+                {
+                    writeln("return call(methodNumber, argumentCount, arguments);");
+                }
+                else
+                {
+                    writeln("return dynamic_cast<%s*>(this)->call(methodNumber, argumentCount, arguments);",
+                            getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
+                }
             }
             unindent();
             writeln("default:");
@@ -125,8 +132,10 @@ public:
             writeln("}");
         writeln("}");
 
-        writeln("template <class ARGUMENT>");
-        writeln("Any call(unsigned methodNumber, unsigned argumentCount, ARGUMENT* arguments) {");
+#if 1
+        writeln("Any call(unsigned methodNumber, unsigned argumentCount, Any* arguments);");
+#else
+        writeln("Any call(unsigned methodNumber, unsigned argumentCount, Any* arguments) {");
             writeln("switch (methodNumber) {");
             unindent();
             methodNumber = 0;
@@ -149,6 +158,7 @@ public:
                 writeln("return Any();");  // TODO:  should raise an exception?
             writeln("}");
         writeln("}");
+#endif        
     }
 
     virtual void at(const Attribute* node)
@@ -217,7 +227,12 @@ public:
         writeln("case %u:", methodNumber);
         indent();
             writetab();
-            write("return %s(", getEscapedName(node->getName()).c_str());
+            Node* spec = node->getSpec();
+            if (!spec->isVoid(interface))
+            {
+                write("return ");
+            }
+            write("%s(", getEscapedName(node->getName()).c_str());
 
             // TODO: Move this to CPlusPlus
             paramCount = 0;
@@ -244,6 +259,12 @@ public:
             // End of the block
 
             write(");\n");
+
+            if (spec->isVoid(interface))
+            {
+                writeln("return Any();");
+            }
+            
         unindent();
         ++methodNumber;
     }

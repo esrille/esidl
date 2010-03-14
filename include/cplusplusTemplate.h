@@ -109,8 +109,8 @@ public:
                   getEscapedName(node->getName()).c_str(),
                   getEscapedName(node->getName()).c_str());
             for (std::list<const Interface*>::const_iterator i = implementList->begin();
-                i != implementList->end();
-                ++i)
+                 i != implementList->end();
+                 ++i)
             {
                 std::string name = (*i)->getQualifiedName();
                 name = getInterfaceName(name);
@@ -118,6 +118,24 @@ public:
                 write(", public %s", name.c_str());
             }
             writeln("{");
+            unindent();
+            writeln("public:");
+            indent();
+
+                writeln("virtual const char* getQualifiedName() const {");
+                    writeln("return %s::getQualifiedName();", getEscapedName(node->getName()).c_str());
+                writeln("}");
+
+                writeln("virtual const char* getMetaData(unsigned interfaceNumber) const {");
+                    writeln("return %s::getMetaData(interfaceNumber);", getEscapedName(node->getName()).c_str());
+                writeln("}");
+                writeln("virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const {");
+                    writeln("return %s::getSymbolTable(interfaceNumber);", getEscapedName(node->getName()).c_str());
+                writeln("}");
+                writeln("virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) {");
+                    writeln("return %s::call(interfaceNumber, methodNumber, argumentCount, arguments);", getEscapedName(node->getName()).c_str());
+                writeln("}");
+
             writeln("};");
             writeln("");
         }

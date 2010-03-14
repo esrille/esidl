@@ -15,7 +15,6 @@
  */
 
 #include "esnpapi.h"
-#include "reflect.h"
 
 namespace
 {
@@ -80,6 +79,24 @@ bool stubConstruct(NPObject* object, const NPVariant* args, uint32_t argCount, N
     return static_cast<StubObject*>(object)->construct(args, argCount, result);
 }
 
+unsigned lookupSymbolTalbe(Object* object, const char* identifier, unsigned& interfaceNumber, unsigned& symbolNumber)
+{
+    const Reflect::SymbolData* symbolTable;
+    while (symbolTable = object->getSymbolTable(interfaceNumber))
+    {
+        unsigned offset = 0;
+        for (symbolTable += symbolNumber; symbolTable->symbol; ++symbolNumber, ++symbolTable)
+        {
+            if (!std::strcmp(symbolTable->symbol, identifier))
+            {
+                return symbolTable->offset;
+            }
+        }
+        ++interfaceNumber;
+    }
+    return 0;
+}
+
 }   // namespace
 
 void StubObject::invalidate()
@@ -88,7 +105,32 @@ void StubObject::invalidate()
 
 bool StubObject::hasMethod(NPIdentifier name)
 {
-    return false;
+    NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
+    if (!identifier)
+    {
+        return false;
+    }
+
+    bool found = false;
+    unsigned interfaceNumber = 0;
+    unsigned symbolNumber = 0;
+    for (;; ++symbolNumber)
+    {
+        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!offset)
+        {
+            break;
+        }
+        const char* metaData = object->getMetaData(interfaceNumber);
+        metaData += offset;
+        if (*metaData == Reflect::kOperation)
+        {
+            found = true;
+            break;
+        }
+    }
+    NPN_MemFree(identifier);
+    return found;
 }
 
 bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result)
@@ -103,7 +145,32 @@ bool StubObject::invokeDefault(const NPVariant* args, uint32_t arg_count, NPVari
 
 bool StubObject::hasProperty(NPIdentifier name)
 {
-    return false;
+    NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
+    if (!identifier)
+    {
+        return false;
+    }
+
+    bool found = false;
+    unsigned interfaceNumber = 0;
+    unsigned symbolNumber = 0;
+    for (;; ++symbolNumber)
+    {
+        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!offset)
+        {
+            break;
+        }
+        const char* metaData = object->getMetaData(interfaceNumber);
+        metaData += offset;
+        if (*metaData == Reflect::kConstant || *metaData == Reflect::kGetter || *metaData == Reflect::kSetter)
+        {
+            found = true;
+            break;
+        }
+    }
+    NPN_MemFree(identifier);
+    return found;
 }
 
 bool StubObject::getProperty(NPIdentifier name, NPVariant* result)

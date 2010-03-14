@@ -248,7 +248,7 @@ public:
             currentNode = saved;
         }
 
-        writeln("static const char* getQualifiedName() {");
+        writeln("virtual const char* getQualifiedName() const {");
             writeln("return \"%s\";", node->getQualifiedName().c_str());
         writeln("}");
 

@@ -589,7 +589,7 @@ void convertToVariant(NPP npp, Object* value, NPVariant* variant)
     }
     else
     {
-        std::string interfaceName = value->getInterfaceName();
+        std::string interfaceName = value->getQualifiedName();
         NPObject* object = createStub(npp, interfaceName.c_str(), value);
         OBJECT_TO_NPVARIANT(object, *variant);
     }

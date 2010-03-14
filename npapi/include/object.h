@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, 2009 Google Inc.
+ * Copyright 2008-2010 Google Inc.
  * Copyright 2006, 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,22 @@
  * limitations under the License.
  */
 
-#ifndef ESNPAPI_OBJECT_IDL_INCLUDED
-#define ESNPAPI_OBJECT_IDL_INCLUDED
+#ifndef ESNPAPI_OBJECT_H_INCLUDED
+#define ESNPAPI_OBJECT_H_INCLUDED
 
-interface object
+#include <reflect.h>
+
+class Any;
+
+class Object
 {
-    readonly attribute DOMString interfaceName;
-    unsigned long retain();
-    unsigned long release();
+public:
+    virtual const char* getQualifiedName() const = 0;
+    virtual unsigned int retain() = 0;
+    virtual unsigned int release() = 0;
+    virtual const char* getMetaData(unsigned interfaceNumber) const = 0;
+    virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const = 0;
+    virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) = 0;
 };
 
-#endif // ESNPAPI_OBJECT_IDL_INCLUDED
+#endif  // ESNPAPI_OBJECT_H_INCLUDED
