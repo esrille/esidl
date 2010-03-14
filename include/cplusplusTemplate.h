@@ -24,7 +24,6 @@
 #include <set>
 #include <vector>
 #include "cplusplus.h"
-#include "info.h"
 
 class CPlusPlusTemplate : public CPlusPlus
 {

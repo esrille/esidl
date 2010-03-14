@@ -23,7 +23,7 @@
 #include "cplusplus.h"
 #include "cplusplusCall.h"
 #include "cplusplusTemplate.h"
-#include "info.h"
+#include "cplusplusMeta.h"
 
 namespace
 {
@@ -252,17 +252,8 @@ public:
             writeln("return \"%s\";", node->getQualifiedName().c_str());
         writeln("}");
 
-        writeln("static const char* getMetaData() {");
-            writetab();
-            write("return");
-            flush();
-            indent();
-            Info info(source, this);
-            const_cast<Interface*>(node)->accept(&info);
-            info.flush();
-            write(";\n");
-            unindent();
-        writeln("}");
+        CPlusPlusMeta meta(source, this);
+        const_cast<Interface*>(node)->accept(&meta);
 
 #ifdef USE_CONSTRUCTOR
         if (constructor)
