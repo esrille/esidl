@@ -46,6 +46,11 @@ class CPlusPlusMeta : public CPlusPlus
         element->accept(this);
     }
 
+    void addSymbol(std::string symbol, unsigned offset)
+    {
+        symbolTable.insert(std::pair<std::string, unsigned>(symbol, offset));
+    }
+
 public:
     CPlusPlusMeta(const char* source, Formatter* formatter) :
         CPlusPlus(source, formatter, "std::string", "Object", true),
@@ -62,6 +67,7 @@ public:
 
     virtual void at(const Attribute* node)
     {
+        addSymbol(node->getName(), offset);
         write("\"%s\"", node->getMetaGetter().c_str());
         offset += node->getMetaGetter().length();
         if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
@@ -69,6 +75,7 @@ public:
             writeln("");
             writetab();
             write("/* %u */ ", offset);
+            addSymbol(node->getName(), offset);
             write("\"%s\"", node->getMetaSetter().c_str());
             offset += node->getMetaSetter().length();
         }
@@ -90,6 +97,7 @@ public:
             }
             else
             {
+                addSymbol(node->getName(), offset);
                 write("\"%c%s\"", Reflect::kOperation, node->getMetaOp(i).c_str() + 1);
             }
             offset += node->getMetaOp(i).length();
@@ -110,7 +118,7 @@ public:
             writetab();
             write("return");
             indent();
-        
+       
             writeln("");
             writetab();
             write("/* %u */ ", offset);
@@ -151,11 +159,26 @@ public:
             unindent();
         writeln("}");
 
+
+        writeln("static const Reflect::SymbolData* const getSymbolTable() {");
+            writeln("static const Reflect::SymbolData symbolTable[] = {");
+                for (std::map<std::string, unsigned>::iterator i = symbolTable.begin();
+                    i != symbolTable.end();
+                    ++i)
+                {
+                    writeln("{ \"%s\", %u },", (*i).first.c_str(), (*i).second);
+                }
+                writeln("{ 0, 0 },");
+            writeln("};");
+            writeln("return symbolTable;");
+        writeln("}");
+            
         flush();
     }
 
     virtual void at(const ConstDcl* node)
     {
+        addSymbol(node->getName(), offset);
         write("\"%s\"", node->getMeta().c_str());
         offset += node->getMeta().length();
     }

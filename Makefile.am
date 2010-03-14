@@ -25,15 +25,16 @@ bin_PROGRAMS = esidl
 esidl_SOURCES = \
 	include/cplusplus.h\
 	include/cplusplusCall.h \
+	include/cplusplusMeta.h \
 	include/cplusplusTemplate.h \
-	include/esidl.h \
 	include/cxx.h \
+	include/esidl.h \
 	include/expr.h \
 	include/formatter.h \
 	include/forward.h \
 	include/info.h \
-	include/meta.h \
 	include/java.h \
+	include/meta.h \
 	include/reflect.h \
 	include/utf.h \
 	src/cplusplus.cpp \

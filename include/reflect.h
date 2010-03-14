@@ -1098,6 +1098,12 @@ public:
             return max;
         }
     };
+
+    struct SymbolData
+    {
+        const char* symbol;
+        unsigned offset;
+    };
 };
 
 #endif  // ESIDL_REFLECT_H_INCLUDED
