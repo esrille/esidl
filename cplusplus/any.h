@@ -33,6 +33,7 @@ struct AnyBase
     union
     {
         bool        boolValue;
+        int8_t      byteValue;
         uint8_t     octetValue;
         int16_t     shortValue;
         uint16_t    unsignedShortValue;
@@ -74,6 +75,13 @@ class Any : private AnyBase
     {
         boolValue = value;
         type = TypeBool;
+        return *this;
+    }
+
+    Any& assign(signed char value)
+    {
+        byteValue = value;
+        type = TypeByte;
         return *this;
     }
 
@@ -205,6 +213,7 @@ public:
     {
         TypeVoid,
         TypeBool,
+        TypeByte,
         TypeOctet,
         TypeShort,
         TypeUnsignedShort,
@@ -277,6 +286,11 @@ public:
     {
         assign(value);
         return *this;
+    }
+
+    operator signed char() const
+    {
+        return byteValue;
     }
 
     operator unsigned char() const
