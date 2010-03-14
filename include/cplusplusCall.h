@@ -18,11 +18,6 @@
 #ifndef ESIDL_CPLUSPLUS_CALL_H_INCLUDED
 #define ESIDL_CPLUSPLUS_CALL_H_INCLUDED
 
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <algorithm>
-#include <set>
-#include <vector>
 #include "cplusplus.h"
 
 class CPlusPlusCall : public CPlusPlus
@@ -52,12 +47,11 @@ public:
 
         unsigned interfaceNumber;
         std::list<const Interface*> list;
+        node->getInterfaceList(&list);
 
         writeln("virtual const char* getMetaData(unsigned interfaceNumber) const {");
             writeln("switch (interfaceNumber) {");
             interfaceNumber = 0;
-            list.clear();
-            node->getInterfaceList(&list);
             for (std::list<const Interface*>::const_iterator i = list.begin();
                  i != list.end();
                  ++i, ++interfaceNumber)
@@ -76,8 +70,6 @@ public:
         writeln("virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const {");
             writeln("switch (interfaceNumber) {");
             interfaceNumber = 0;
-            list.clear();
-            node->getInterfaceList(&list);
             for (std::list<const Interface*>::const_iterator i = list.begin();
                  i != list.end();
                  ++i, ++interfaceNumber)
@@ -106,8 +98,6 @@ public:
         writeln("virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) {");
             writeln("switch (interfaceNumber) {");
             interfaceNumber = 0;
-            list.clear();
-            node->getInterfaceList(&list);
             for (std::list<const Interface*>::const_iterator i = list.begin();
                  i != list.end();
                  ++i, ++interfaceNumber)
@@ -132,10 +122,8 @@ public:
             writeln("}");
         writeln("}");
 
-#if 1
-        writeln("Any call(unsigned methodNumber, unsigned argumentCount, Any* arguments);");
-#else
-        writeln("Any call(unsigned methodNumber, unsigned argumentCount, Any* arguments) {");
+        writeln("template <typename ARGUMENT>");
+        writeln("Any call(unsigned methodNumber, unsigned argumentCount, ARGUMENT* arguments) {");
             writeln("switch (methodNumber) {");
             unindent();
             methodNumber = 0;
@@ -158,7 +146,6 @@ public:
                 writeln("return Any();");  // TODO:  should raise an exception?
             writeln("}");
         writeln("}");
-#endif        
     }
 
     virtual void at(const Attribute* node)
