@@ -766,6 +766,29 @@ void Interface::getInterfaceList(std::list<const Interface*>* list) const
     list->push_front(this);
 }
 
+void Interface::collectMixins(std::list<const Interface*>* list) const
+{
+    for (std::list<const Interface*>::const_reverse_iterator i = implementList.rbegin();
+         i != implementList.rend();
+         ++i)
+    {
+        if (!((*i)->getAttr() & Interface::Supplemental))
+        {
+            list->push_back(*i);
+            (*i)->collectMixins(list);
+        }
+    }
+    for (std::list<const Interface*>::const_iterator i = superList.begin();
+         i != superList.end();
+         ++i)
+    {
+        if (!((*i)->getAttr() & Interface::Supplemental) && !(*i)->isBaseObject())
+        {
+            (*i)->collectMixins(list);
+        }
+    }
+}
+
 void Interface::adjustMethodCount()
 {
     if (extends)

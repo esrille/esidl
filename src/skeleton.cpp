@@ -54,7 +54,12 @@ public:
         }
 
         std::list<const Interface*> interfaceList;
-        node->collectMixins(&interfaceList);
+        for (const Interface* interface = node;
+             interface && !interface->isBaseObject();
+             interface = interface->getSuper())
+        {
+            interface->collectSupplementals(&interfaceList);
+        }
 
         writeln("class %s_Impl : public %s {", node->getName().c_str(), node->getName().c_str());
 

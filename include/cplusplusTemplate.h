@@ -100,16 +100,17 @@ public:
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
-        const std::list<const Interface*>* implementList = node->getImplements();
+        std::list<const Interface*> mixinList;
+        node->collectMixins(&mixinList);
 
         // Mixin interface
-        if (!implementList->empty())
+        if (!mixinList.empty())
         {
             write("class %s_Mixin : public %s",
                   getEscapedName(node->getName()).c_str(),
                   getEscapedName(node->getName()).c_str());
-            for (std::list<const Interface*>::const_iterator i = implementList->begin();
-                 i != implementList->end();
+            for (std::list<const Interface*>::const_iterator i = mixinList.begin();
+                 i != mixinList.end();
                  ++i)
             {
                 std::string name = (*i)->getQualifiedName();
@@ -143,12 +144,12 @@ public:
         // Bridge template
         writeln("template<class ARGUMENT, Any (*invoke)(Object*, unsigned, unsigned, const char*, unsigned, unsigned, ARGUMENT*), unsigned I = 0, class B = %s%s>",
                 getEscapedName(node->getName()).c_str(),
-                implementList->empty() ? "" : "_Mixin");
+                mixinList.empty() ? "" : "_Mixin");
         write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
 
         std::list<const Interface*> bridgeList;
-        for (std::list<const Interface*>::const_reverse_iterator i = implementList->rbegin();
-             i != implementList->rend();
+        for (std::list<const Interface*>::const_reverse_iterator i = mixinList.rbegin();
+             i != mixinList.rend();
              ++i)
         {
             bridgeList.push_front(*i);
