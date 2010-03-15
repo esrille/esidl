@@ -25,7 +25,39 @@ using namespace org::w3c::dom;
 namespace
 {
 
-void drawCharts(Document* document)
+void down(events::Event* evt)
+{
+    events::MouseEvent* mouse = dynamic_cast<events::MouseEvent*>(evt);
+    printf("down %p\n", mouse);
+    if (mouse)
+    {
+        printf("(%d, %d), (%d, %d), (%d, %d), (%d, %d), (%d, %d)\n",
+               mouse->getScreenX(), mouse->getScreenY(),
+               mouse->getClientX(), mouse->getClientY(),
+               mouse->getPageX(), mouse->getPageY(),
+               mouse->getX(), mouse->getY(),
+               mouse->getOffsetX(), mouse->getOffsetY());
+
+        html::HTMLCanvasElement* canvas = dynamic_cast<html::HTMLCanvasElement*>(mouse->getTarget());
+        if (canvas)
+        {
+            html::CanvasRenderingContext2D* context = dynamic_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
+            if (context)
+            {
+                int x = mouse->getClientX() - canvas->getOffsetLeft();
+                int y = mouse->getClientY() - canvas->getOffsetTop();
+                context->setFillStyle("blue");
+                context->fillRect(x, y, 5, 5);
+                context->release();
+            }
+            canvas->release();
+        }
+    }
+}
+
+}
+
+void PluginInstance::drawCharts(Document* document)
 {
     // Test dynamic_cast implied by the 'implements' statement while Document does
     // not inherit DocumentEvent.
@@ -154,13 +186,21 @@ void drawCharts(Document* document)
     context->fill();
 
     context->release();
+
+    events::EventTarget* eventTarget = dynamic_cast<events::EventTarget*>(canvas);
+    printf("eventTarget: %p # This must be a non-zero value.\n", eventTarget);
+    if (eventTarget)
+    {
+        eventTarget->addEventListener("mouseup", downHandler, true);
+    }
+
     canvas->release();
 }
 
-}  // namespace
-
 void PluginInstance::initialize()
 {
+    downHandler = new EventHandler(down);
+
     Document* document = window->getDocument();
     if (document)
     {

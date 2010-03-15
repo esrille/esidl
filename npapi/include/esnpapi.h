@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 Google Inc.
+ * Copyright 2009, 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,14 +81,14 @@ class StubObject : public NPObject
 {
     NPP npp;
     Object* object;
-    
+
 public:
     StubObject(NPP npp) :
         npp(npp),
         object(0)
     {
     }
-    
+
     Object* getObject() const
     {
         return object;
@@ -97,7 +97,7 @@ public:
     {
         this->object = object;
     }
-    
+
     void invalidate();
     bool hasMethod(NPIdentifier name);
     bool invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result);
@@ -108,7 +108,7 @@ public:
     bool removeProperty(NPIdentifier name);
     bool enumeration(NPIdentifier** value, uint32_t* count);
     bool construct(const NPVariant* args, uint32_t argCount, NPVariant* result);
-    
+
     static NPClass npclass;
 };
 
@@ -145,9 +145,8 @@ Any convertToAny(NPP npp, const NPVariant* variant);
 Any convertToAny(NPP npp, const NPVariant* variant, int type);
 
 void addProxyConstructor(const std::string interfaceName, Object* (*createProxy)(ProxyObject object));
-void addStubConstructor(const std::string interfaceName, NPObject* (*createStub)(NPP npp, Object* object));
 
-NPObject* createStub(NPP npp, const char* interfaceName, Object* object);
+NPObject* createStub(NPP npp, Object* object);
 Object* createProxy(NPP npp, NPObject* object);
 
 Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,

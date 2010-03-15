@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
 #include "esnpapi.h"
 
 namespace
@@ -111,6 +112,8 @@ bool StubObject::hasMethod(NPIdentifier name)
         return false;
     }
 
+    printf("%s(%s)\n", __func__, identifier);
+
     bool found = false;
     unsigned interfaceNumber = 0;
     unsigned symbolNumber = 0;
@@ -135,11 +138,53 @@ bool StubObject::hasMethod(NPIdentifier name)
 
 bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result)
 {
-    return false;
+    NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
+    if (!identifier)
+    {
+        return false;
+    }
+
+    printf("%s(%s)\n", __func__, identifier);
+
+    bool found = false;
+    unsigned interfaceNumber = 0;
+    unsigned symbolNumber = 0;
+    for (;; ++symbolNumber)
+    {
+        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!offset)
+        {
+            break;
+        }
+        const char* metaData = object->getMetaData(interfaceNumber);
+        metaData += offset;
+        if (*metaData == Reflect::kOperation)
+        {
+            Reflect::Method method(metaData);
+            unsigned argumentCount = method.getParameterCount();
+            // TODO: Support variadic operation
+            if (argumentCount != arg_count)
+            {
+                continue;
+            }
+            Any arguments[argumentCount];
+            for (unsigned i = 0; i < argumentCount; ++i)
+            {
+                arguments[i] = convertToAny(npp, &args[i]);  // TODO: Use , type)
+            }
+            Any value = object->call(interfaceNumber, symbolNumber, argumentCount, arguments);
+            convertToVariant(npp,value, result);
+            found = true;
+            break;
+        }
+    }
+    NPN_MemFree(identifier);
+    return found;
 }
 
 bool StubObject::invokeDefault(const NPVariant* args, uint32_t arg_count, NPVariant* result)
 {
+    printf("%s()\n", __func__);
     return false;
 }
 
@@ -150,6 +195,8 @@ bool StubObject::hasProperty(NPIdentifier name)
     {
         return false;
     }
+
+    printf("%s(%s)\n", __func__, identifier);
 
     bool found = false;
     unsigned interfaceNumber = 0;
@@ -180,6 +227,8 @@ bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
     {
         return false;
     }
+
+    printf("%s(%s)\n", __func__, identifier);
 
     bool found = false;
     unsigned interfaceNumber = 0;

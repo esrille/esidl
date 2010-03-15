@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 Google Inc.
+ * Copyright 2009, 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ namespace
 
 // Map from interfaceName to constructors.
 std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
-std::map<const std::string, NPObject* (*)(NPP npp, Object* object)> stubConstructorMap;
 std::map<const std::string, Reflect::Interface> metaDataMap;
 
 bool isStub(const NPObject* object)
@@ -235,11 +234,6 @@ void addProxyConstructor(const std::string interfaceName, Object* (*createProxy)
     proxyConstructorMap[interfaceName] = createProxy;
 }
 
-void addStubConstructor(const std::string interfaceName, NPObject* (*createStub)(NPP npp, Object* object))
-{
-    stubConstructorMap[interfaceName] = createStub;
-}
-
 Reflect::Interface* getInterfaceData(const std::string className)
 {
     std::map<std::string, Reflect::Interface>::iterator i;
@@ -285,16 +279,16 @@ void registerMetaData(const char* meta,
 }
 
 
-NPObject* createStub(NPP npp, const char* interfaceName, Object* object)
+NPObject* createStub(NPP npp, Object* object)
 {
-    // Invokes createInstance method of the corresponding stub class.
-    std::map<std::string, NPObject* (*)(NPP npp, Object* object)>::iterator i;
-    i = stubConstructorMap.find(interfaceName);
-    if (i == stubConstructorMap.end())
+    NPObject* npobject = NPN_CreateObject(npp, &StubObject::npclass);
+    if (!npobject)
     {
-        return NULL;
+        return 0;
     }
-    return (*i).second(npp, object);
+    StubObject* stub = static_cast<StubObject*>(npobject);
+    stub->setObject(object);
+    return stub;
 }
 
 Object* createProxy(NPP npp, NPObject* object)
@@ -467,7 +461,7 @@ Any convertToAny(NPP npp, const NPVariant* variant)
     }
 }
 
-Any convertToAny(NPP npp, const NPVariant* variant, int type, void* buffer, size_t length)
+Any convertToAny(NPP npp, const NPVariant* variant, int type)
 {
     switch (type)
     {
@@ -589,8 +583,7 @@ void convertToVariant(NPP npp, Object* value, NPVariant* variant)
     }
     else
     {
-        std::string interfaceName = value->getQualifiedName();
-        NPObject* object = createStub(npp, interfaceName.c_str(), value);
+        NPObject* object = createStub(npp, value);
         OBJECT_TO_NPVARIANT(object, *variant);
     }
 }

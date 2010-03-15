@@ -23,21 +23,47 @@
 #include <reflect.h>
 #include <org/w3c/dom.h>
 
+class EventHandler : public org::w3c::dom::events::EventListener
+{
+    void (*handler)(org::w3c::dom::events::Event* evt);
+
+public:
+    EventHandler(void (*handler)(org::w3c::dom::events::Event* evt)) :
+        handler(handler)
+    {
+    }
+    virtual void handleEvent(org::w3c::dom::events::Event* evt)
+    {
+        handler(evt);
+    }
+
+    unsigned int retain() {};
+    unsigned int release() {};
+};
+
 class PluginInstance
 {
     org::w3c::dom::html::Window* window;
 
+    EventHandler* downHandler;
+
     void initialize();
+    void drawCharts(org::w3c::dom::Document* document);
 
 public:
     PluginInstance(org::w3c::dom::html::Window* window) :
-        window(window)
+        window(window),
+        downHandler(0)
     {
         initialize();
     }
 
     ~PluginInstance()
     {
+        if (downHandler)
+        {
+            delete downHandler;  // XXX
+        }
         if (window)
         {
             window->release();

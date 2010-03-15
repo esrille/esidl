@@ -50,6 +50,9 @@ NPError NPP_Initialize()
     registerMetaData(Element::getMetaData(),
                      reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Element_Bridge<Any, invoke> >::createInstance));
 
+    registerMetaData(events::MouseEvent::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, events::MouseEvent_Bridge<Any, invoke> >::createInstance));
+
     registerMetaData(html::HTMLElement::getMetaData(),
                      reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLElement_Bridge<Any, invoke> >::createInstance));
 
