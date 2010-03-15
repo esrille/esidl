@@ -1050,16 +1050,16 @@ public:
         }
     }
 
-    void collectMixins(std::list<const Interface*>* interfaceList, const Interface* interface) const
+    void collectSupplementals(std::list<const Interface*>* interfaceList) const
     {
-        for (std::list<const Interface*>::const_reverse_iterator i = interface->getSupplementals()->rbegin();
-             i != interface->getSupplementals()->rend();
+        for (std::list<const Interface*>::const_reverse_iterator i = getSupplementals()->rbegin();
+             i != getSupplementals()->rend();
              ++i)
         {
             assert(!(*i)->isLeaf());
-            collectMixins(interfaceList, *i);
+            (*i)->collectSupplementals(interfaceList);
         }
-        interfaceList->push_front(interface);
+        interfaceList->push_front(this);
     }
 
     // Note: This is for the backward compatibility only. We should not use this any more.
@@ -1069,7 +1069,7 @@ public:
              interface && !interface->isBaseObject();
              interface = interface->getSuper())
         {
-            collectMixins(interfaceList, interface);
+            interface->collectSupplementals(interfaceList);
         }
     }
 

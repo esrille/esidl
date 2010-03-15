@@ -194,7 +194,7 @@ public:
         currentNode = node;
 
         std::list<const Interface*> interfaceList;
-        node->collectMixins(&interfaceList, node);
+        node->collectSupplementals(&interfaceList);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
              i != interfaceList.end();
              ++i)

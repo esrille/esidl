@@ -239,10 +239,10 @@ public:
 
         // Expand supplementals
         std::list<const Interface*> interfaceList;
-        node->collectMixins(&interfaceList, node);
+        node->collectSupplementals(&interfaceList);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
-                i != interfaceList.end();
-                ++i)
+             i != interfaceList.end();
+             ++i)
         {
             writeln("// %s", (*i)->getName().c_str());
             const Node* saved = currentNode;
@@ -551,7 +551,7 @@ public:
         visitChildren(node->getExtends());
         // Expand supplementals
         std::list<const Interface*> interfaceList;
-        node->collectMixins(&interfaceList, node);
+        node->collectSupplementals(&interfaceList);
         for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
              i != interfaceList.end();
              ++i)
