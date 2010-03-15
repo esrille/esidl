@@ -177,6 +177,8 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+@NACL_FALSE@esidl = ../esidl
+@NACL_TRUE@esidl = esidl
 SUFFIXES = .idl
 w3c_generated_files = \
 	org/w3c/dom/Node.h
@@ -455,7 +457,7 @@ uninstall-am:
 vpath %.idl = $(srcdir)/../dom
 
 $(w3c_generated_files) : $(w3c_idl_files)
-	../esidl -cplusplus -string std::string -object Object -fvirtualbase $^
+	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
 
 clean-local:
 	rm -rf org *.h

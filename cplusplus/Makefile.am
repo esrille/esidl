@@ -1,3 +1,9 @@
+if NACL
+esidl=esidl
+else
+esidl=../esidl
+endif
+
 SUFFIXES = .idl
 
 vpath %.idl = $(srcdir)/../dom
@@ -38,7 +44,7 @@ nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
 $(w3c_generated_files) : $(w3c_idl_files)
-	../esidl -cplusplus -string std::string -object Object -fvirtualbase $^
+	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
 
 clean-local:
 	rm -rf org *.h

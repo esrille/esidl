@@ -17,4 +17,3 @@ libesnpapi_a_SOURCES = \
 	src/invoke.cpp \
 	src/resolve.cpp
 
-

@@ -17,6 +17,9 @@ NPAPIDIR =
 endif
 
 SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR)
+DIST_SUBDIRS = testsuite java cplusplus npapi
+
+if !NACL
 
 BUILT_SOURCES = lexer.cc parser.cc parser.h
 
@@ -49,6 +52,14 @@ esidl_SOURCES = \
 	src/template.cpp
 
 esidl_CXXFLAGS = -D YYERROR_VERBOSE
+
+clean-local:
+	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
+
+dist-hook:
+	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.h
+
+endif
 
 AM_YFLAGS = -d -v -t
 
@@ -89,10 +100,4 @@ EXTRA_DIST = \
 	dom/wget_webidl_dom \
 	dom/workers.idl \
 	dom/xhr2.idl
-
-clean-local:
-	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
-
-dist-hook:
-	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.h
 

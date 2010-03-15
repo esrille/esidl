@@ -18,6 +18,10 @@ case ${target} in
   x86_64-*-*)
 	cpu_type=x86_64
 	;;
+  nacl-*-*)
+	nacl=yes
+	EXEEXT=.nacl
+	;;
   *)
 	echo 'unknown cpu type';
 	exit 1
@@ -26,6 +30,7 @@ esac
 
 AM_CONDITIONAL(I386, test x$cpu_type = xi386)
 AM_CONDITIONAL(X86_64, test x$cpu_type = xx86_64)
+AM_CONDITIONAL(NACL, test x$nacl = xyes)
 
 AC_MSG_CHECKING([whether to generate Java interfaces])
 AC_ARG_ENABLE(java, AC_HELP_STRING([--enable-java],

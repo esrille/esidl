@@ -1,3 +1,9 @@
+if NACL
+esidl=esidl
+else
+esidl=../esidl
+endif
+
 SUFFIXES = .java .idl
 
 vpath %.idl = $(srcdir)/../dom
@@ -39,7 +45,7 @@ nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
 $(w3c_generated_files) : $(w3c_idl_files)
-	../esidl -java $^
+	$(esidl) -java $^
 
 noinst_DATA = build.xml java-binding.zip
 
