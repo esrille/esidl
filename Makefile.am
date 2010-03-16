@@ -99,5 +99,7 @@ EXTRA_DIST = \
 	dom/websocket.idl \
 	dom/wget_webidl_dom \
 	dom/workers.idl \
-	dom/xhr2.idl
+	dom/xhr2.idl \
+	setup.nacl
+
 
