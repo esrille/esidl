@@ -25,6 +25,8 @@ using std::strlen;  // for STRINGZ_TO_NPVARIANT
 #include "npapi/npapi.h"
 #include "npapi/npruntime.h"
 
+extern "C" NPObject* NPP_GetScriptableInstance(NPP instance);
+
 #include "object.h"
 #include "any.h"
 #include "reflect.h"

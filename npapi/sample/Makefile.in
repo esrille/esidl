@@ -262,7 +262,7 @@ AM_CPPFLAGS = \
 
 @NACL_FALSE@lib_LTLIBRARIES = libnpessample.la
 @NACL_FALSE@AM_LDFLAGS = -L.. -ldl -lesnpapi
-@NACL_TRUE@AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_imc -lgoogle_nacl_npruntime -lpthread -lsrpc
+@NACL_TRUE@AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_npruntime -lgoogle_nacl_imc -lpthread -lsrpc
 @NACL_TRUE@npessample_CPPFLAGS = $(AM_CPPFLAGS)
 cpp_source_files = np_entry.cpp npp_gate.cpp npp_sample.cpp sample.cpp \
 	$(am__append_1)

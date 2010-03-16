@@ -15,7 +15,7 @@ lib_LTLIBRARIES = libnpessample.la
 AM_LDFLAGS = -L.. -ldl -lesnpapi
 else
 bin_PROGRAMS = npessample
-AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_imc -lgoogle_nacl_npruntime -lpthread -lsrpc
+AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_npruntime -lgoogle_nacl_imc -lpthread -lsrpc
 npessample_CPPFLAGS = $(AM_CPPFLAGS)
 endif
 
