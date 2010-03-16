@@ -20,7 +20,7 @@ case ${target} in
 	;;
   nacl-*-*)
 	nacl=yes
-	EXEEXT=.nacl
+	EXEEXT=.nexe
 	;;
   *)
 	echo 'unknown cpu type';
