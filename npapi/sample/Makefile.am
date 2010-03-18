@@ -40,5 +40,7 @@ npessample_SOURCES = $(cpp_source_files) $(header_files)
 endif
 
 EXTRA_DIST = \
-	sample.html
+	sample.html \
+	sample.nacl.html
+
 

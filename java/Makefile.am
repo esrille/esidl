@@ -58,5 +58,7 @@ java-binding.zip : $(w3c_generated_files)
 clean-local:
 	rm -rf org $(noinst_DATA)
 
-EXTRA_DIST = build.xml.src
+EXTRA_DIST = \
+	build.xml.src \
+	org/w3c/dom/ObjectArray.java
 

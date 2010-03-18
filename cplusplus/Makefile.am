@@ -52,5 +52,7 @@ clean-local:
 EXTRA_DIST = \
 	any.h \
 	nullable.h \
-	sequence.h
+	sequence.h \
+	org/w3c/dom.h \
+	org/w3c/dom/ObjectArray.h
 

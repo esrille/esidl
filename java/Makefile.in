@@ -219,7 +219,10 @@ nodist_noinst_HEADERS = \
 	$(w3c_generated_files)
 
 noinst_DATA = build.xml java-binding.zip
-EXTRA_DIST = build.xml.src
+EXTRA_DIST = \
+	build.xml.src \
+	org/w3c/dom/ObjectArray.java
+
 all: all-am
 
 .SUFFIXES:

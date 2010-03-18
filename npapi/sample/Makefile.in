@@ -272,7 +272,8 @@ header_files = \
 @NACL_FALSE@libnpessample_la_SOURCES = $(cpp_source_files) $(header_files)
 @NACL_TRUE@npessample_SOURCES = $(cpp_source_files) $(header_files)
 EXTRA_DIST = \
-	sample.html
+	sample.html \
+	sample.nacl.html
 
 all: all-am
 
