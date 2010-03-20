@@ -28,6 +28,7 @@ bin_PROGRAMS = esidl
 esidl_SOURCES = \
 	include/cplusplus.h\
 	include/cplusplusCall.h \
+	include/cplusplusInvoke.h \
 	include/cplusplusMeta.h \
 	include/cplusplusTemplate.h \
 	include/cxx.h \
