@@ -29,34 +29,13 @@ class CPlusPlusTemplate : public CPlusPlus
     std::string className;
     unsigned offset;
 
-    int writeInvoke(const Node* node, Node* spec)
+    void writeInvoke(const Node* node, Node* spec)
     {
-        int hasCast = 0;
-
         writetab();
-        if (spec->isVoid(node))
-        {
-        }
-        else if (spec->isAny(node))
+        if (!spec->isVoid(node))
         {
             write("return ");
         }
-        else if (spec->isInterface(node))
-        {
-            write("return interface_cast<");
-            spec->accept(this);
-            write("*>(static_cast<Object*>(");
-            hasCast = 2;
-        }
-        else
-        {
-            write("return static_cast<");
-            spec->accept(this);
-            write(" >(");
-            hasCast = 1;
-        }
-
-        return hasCast;
     }
 
 public:
@@ -235,16 +214,12 @@ public:
         writetab();
         CPlusPlus::getter(node);
         writeln("{");
-            int hasCast = writeInvoke(node, spec);
+            writeInvoke(node, spec);
             write("%s::get%s<ARGUMENT, invoke>(this, I, %u",
                   className.c_str(),
                   cap.c_str(),
                   methodNumber);
             ++methodNumber;
-            while (0 < hasCast--)
-            {
-                write(")");
-            }
             write(");\n");
         writeln("}");
         offset += node->getMetaGetter().length();
@@ -286,7 +261,7 @@ public:
         writeln("{");
 
             // Invoke
-            int hasCast = writeInvoke(node, node->getSpec());
+            writeInvoke(node, node->getSpec());
             write("%s::%s<ARGUMENT, invoke>(this, I, %u",
                   className.c_str(),
                   getEscapedName(node->getName()).c_str(),
@@ -301,10 +276,6 @@ public:
                     ParamDcl* param = static_cast<ParamDcl*>(*it);
                     write(", %s", getEscapedName(param->getName()).c_str());
                 }
-            }
-            while (0 < hasCast--)
-            {
-                write(")");
             }
             write(");\n");
 
