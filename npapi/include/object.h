@@ -25,12 +25,33 @@ class Any;
 class Object
 {
 public:
-    virtual const char* getQualifiedName() const = 0;
+    static const char* const getQualifiedName()
+    {
+        return "::Object";
+    }
+    virtual void* queryInterface(const char* qualifiedName)
+    {
+        if (qualifiedName == getQualifiedName())
+        {
+            return this;
+        }
+        return 0;
+    }
     virtual unsigned int retain() = 0;
     virtual unsigned int release() = 0;
     virtual const char* getMetaData(unsigned interfaceNumber) const = 0;
     virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const = 0;
     virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) = 0;
 };
+
+template <typename X>
+X interface_cast(Object* object)
+{
+    if (object)
+    {
+        return static_cast<X>(object->queryInterface(static_cast<X>(0)->getQualifiedName()));
+    }
+    return 0;
+}
 
 #endif  // ESNPAPI_OBJECT_H_INCLUDED

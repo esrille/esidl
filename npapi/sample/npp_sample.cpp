@@ -59,7 +59,7 @@ NPError NPP_New(NPMIMEType pluginType, NPP npp, uint16_t mode,
     NPN_GetValue(npp, NPNVWindowNPObject, &npWindow);
     std::string name = getInterfaceName(npp, npWindow);
     printf("'%s'\n", name.c_str());
-    org::w3c::dom::html::Window* window = dynamic_cast<org::w3c::dom::html::Window*>(createProxy(npp, npWindow));
+    org::w3c::dom::html::Window* window = interface_cast<org::w3c::dom::html::Window*>(createProxy(npp, npWindow));
     npp->pdata = new (std::nothrow) PluginInstance(window);
     if (!npp->pdata)
     {

@@ -27,7 +27,7 @@ namespace
 
 void down(events::Event* evt)
 {
-    events::MouseEvent* mouse = dynamic_cast<events::MouseEvent*>(evt);
+    events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
     printf("down %p\n", mouse);
     if (mouse)
     {
@@ -38,10 +38,10 @@ void down(events::Event* evt)
                mouse->getX(), mouse->getY(),
                mouse->getOffsetX(), mouse->getOffsetY());
 
-        html::HTMLCanvasElement* canvas = dynamic_cast<html::HTMLCanvasElement*>(mouse->getTarget());
+        html::HTMLCanvasElement* canvas = interface_cast<html::HTMLCanvasElement*>(mouse->getTarget());
         if (canvas)
         {
-            html::CanvasRenderingContext2D* context = dynamic_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
+            html::CanvasRenderingContext2D* context = interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
             if (context)
             {
                 int x = mouse->getClientX() - canvas->getOffsetLeft();
@@ -59,12 +59,12 @@ void down(events::Event* evt)
 
 void PluginInstance::drawCharts(Document* document)
 {
-    // Test dynamic_cast implied by the 'implements' statement while Document does
+    // Test interface_cast implied by the 'implements' statement while Document does
     // not inherit DocumentEvent.
-    events::DocumentEvent* documentEvent = dynamic_cast<events::DocumentEvent*>(document);
+    events::DocumentEvent* documentEvent = interface_cast<events::DocumentEvent*>(document);
     printf("documentEvent = %p\n", documentEvent);
 
-    std::string title = dynamic_cast<html::HTMLDocument*>(document)->getTitle();
+    std::string title = interface_cast<html::HTMLDocument*>(document)->getTitle();
     printf("title = %s\n", title.c_str());
 
     Element* element = document->createElement("div");
@@ -75,7 +75,7 @@ void PluginInstance::drawCharts(Document* document)
             element->appendChild(node);
             node->release();
         }
-        if (html::HTMLElement* body = dynamic_cast<html::HTMLDocument*>(document)->getBody())
+        if (html::HTMLElement* body = interface_cast<html::HTMLDocument*>(document)->getBody())
         {
             body->appendChild(element);
             body->release();
@@ -83,13 +83,13 @@ void PluginInstance::drawCharts(Document* document)
         element->release();
     }
 
-    html::HTMLCanvasElement* canvas = dynamic_cast<html::HTMLCanvasElement*>(document->getElementById("canvas"));
+    html::HTMLCanvasElement* canvas = interface_cast<html::HTMLCanvasElement*>(document->getElementById("canvas"));
     if (!canvas)
     {
         return;
     }
 
-    html::CanvasRenderingContext2D* context = dynamic_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
+    html::CanvasRenderingContext2D* context = interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
     if (!context)
     {
         canvas->release();
@@ -187,7 +187,7 @@ void PluginInstance::drawCharts(Document* document)
 
     context->release();
 
-    events::EventTarget* eventTarget = dynamic_cast<events::EventTarget*>(canvas);
+    events::EventTarget* eventTarget = interface_cast<events::EventTarget*>(canvas);
     printf("eventTarget: %p # This must be a non-zero value.\n", eventTarget);
     if (eventTarget)
     {

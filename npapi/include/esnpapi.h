@@ -77,6 +77,11 @@ public:
         NPN_ReleaseObject(object);
         return --count;
     }
+    static const char* const getQualifiedName()
+    {
+        static const char* qualifiedName = "ProxyObject";
+        return qualifiedName;
+    }
 };
 
 class StubObject : public NPObject

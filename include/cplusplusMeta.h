@@ -120,7 +120,7 @@ public:
         currentNode = node;
         offset = 0;
 
-        writeln("static const char* getMetaData() {");
+        writeln("static const char* const getMetaData() {");
             writetab();
             write("return");
             indent();

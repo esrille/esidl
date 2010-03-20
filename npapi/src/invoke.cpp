@@ -20,7 +20,6 @@
 
 #include <any.h>
 #include <reflect.h>
-#include <org/w3c/dom.h>
 
 namespace
 {
@@ -55,7 +54,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
            const char* meta, unsigned offset,
            unsigned argumentCount, Any* arguments)
 {
-    ProxyObject* proxy = dynamic_cast<ProxyObject*>(object);  // XXX
+    ProxyObject* proxy = interface_cast<ProxyObject*>(object);  // XXX
     if (!proxy)
     {
         return Any();

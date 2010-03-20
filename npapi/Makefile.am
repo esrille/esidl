@@ -9,7 +9,7 @@ AM_CPPFLAGS = \
 	-I $(srcdir)/../include \
 	-I ../cplusplus \
 	-I $(srcdir)/../cplusplus \
-	-fno-implicit-inline-templates -fno-default-inline -Os
+	-fno-implicit-inline-templates -fno-default-inline -Os -fno-rtti
 
 libesnpapi_a_SOURCES = \
 	include/esnpapi.h \

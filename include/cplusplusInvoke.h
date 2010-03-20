@@ -44,7 +44,7 @@ class CPlusPlusInvoke : public CPlusPlus
         }
         else if (spec->isInterface(node))
         {
-            write("return dynamic_cast<");
+            write("return interface_cast<");
             spec->accept(this);
             write("*>(static_cast<Object*>(invoke(_object");
             hasCast = 2;

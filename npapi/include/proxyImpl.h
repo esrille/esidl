@@ -49,6 +49,18 @@ public:
     {
         return new Proxy_Impl(object);
     }
+    virtual void* queryInterface(const char* qualifiedName)
+    {
+        if (qualifiedName == O::getQualifiedName())
+        {
+            return static_cast<O*>(this);
+        }
+        if (void* object = I::queryInterface(qualifiedName))
+        {
+            return object;
+        }
+        return 0;
+    }
 };
 
 #endif // ESNPAPI_PROXY_IMPL_H_INCLUDED

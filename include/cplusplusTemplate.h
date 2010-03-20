@@ -43,7 +43,7 @@ class CPlusPlusTemplate : public CPlusPlus
         }
         else if (spec->isInterface(node))
         {
-            write("return dynamic_cast<");
+            write("return interface_cast<");
             spec->accept(this);
             write("*>(static_cast<Object*>(");
             hasCast = 2;
@@ -116,10 +116,24 @@ public:
             writeln("public:");
             indent();
 
-                writeln("virtual const char* getQualifiedName() const {");
-                    writeln("return %s::getQualifiedName();", getEscapedName(node->getName()).c_str());
+                writeln("virtual void* queryInterface(const char* qualifiedName) {");
+                    writeln("if (void* object = %s::queryInterface(qualifiedName)) {",
+                            getEscapedName(node->getName()).c_str());
+                        writeln("return object;");
+                    writeln("}");
+                    for (std::list<const Interface*>::const_iterator i = mixinList.begin();
+                        i != mixinList.end();
+                        ++i)
+                    {
+                        std::string name = (*i)->getQualifiedName();
+                        name = getInterfaceName(name);
+                        name = getScopedName(qualifiedModuleName, name);
+                        writeln("if (void* object = %s::queryInterface(qualifiedName)) {", name.c_str());
+                            writeln("return object;");
+                        writeln("}");
+                    }
+                    writeln("return 0;");
                 writeln("}");
-
                 writeln("virtual const char* getMetaData(unsigned interfaceNumber) const {");
                     writeln("return %s::getMetaData(interfaceNumber);", getEscapedName(node->getName()).c_str());
                 writeln("}");

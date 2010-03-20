@@ -111,7 +111,7 @@ public:
                 }
                 else
                 {
-                    writeln("return dynamic_cast<%s*>(this)->call(methodNumber, argumentCount, arguments);",
+                    writeln("return interface_cast<%s*>(this)->call(methodNumber, argumentCount, arguments);",
                             getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
                 }
             }
@@ -189,7 +189,7 @@ public:
             write("set%s(", cap.c_str());
             if (spec->isInterface(node->getParent()))
             {
-                write("dynamic_cast<");
+                write("interface_cast<");
                 spec->accept(this);
                 write("*>(static_cast<Object*>(arguments[0]))");
             }
@@ -271,7 +271,7 @@ public:
 
         if (spec->isInterface(node->getParent()))
         {
-            write("dynamic_cast<");
+            write("interface_cast<");
             spec->accept(this);
             write("*>(static_cast<Object*>(arguments[%u]))", getParamCount());
         }

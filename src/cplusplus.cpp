@@ -249,8 +249,30 @@ public:
             currentNode = saved;
         }
 
-        writeln("virtual const char* getQualifiedName() const {");
-            writeln("return \"%s\";", node->getQualifiedName().c_str());
+        writeln("static const char* const getQualifiedName() {");
+            writeln("static const char* qualifiedName = \"%s\";", node->getQualifiedName().c_str());
+            writeln("return qualifiedName;");
+        writeln("}");
+
+        writeln("virtual void* queryInterface(const char* qualifiedName) {");
+            writeln("if (qualifiedName == getQualifiedName()) {");
+                writeln("return static_cast<%s*>(this);", getEscapedName(node->getName()).c_str());
+            writeln("}");
+            if (node->getExtends())
+            {
+                for (NodeList::iterator i = node->getExtends()->begin();
+                    i != node->getExtends()->end();
+                    ++i)
+                {
+                    writetab();
+                    write("if (void* object = ");
+                    (*i)->accept(this);
+                    write("::queryInterface(qualifiedName)) {\n");
+                        writeln("return object;");
+                    writeln("}");
+                }
+            }
+            writeln("return 0;");
         writeln("}");
 
         CPlusPlusMeta meta(source, this);

@@ -7,7 +7,8 @@ AM_CPPFLAGS = \
 	-I $(srcdir)/../../include \
 	-I ../../cplusplus \
 	-I $(srcdir)/../../cplusplus \
-	-DXP_UNIX
+	-DXP_UNIX \
+	-fno-implicit-inline-templates -fno-default-inline -Os -fno-rtti
 
 if !NACL
 lib_LTLIBRARIES = libnpessample.la
