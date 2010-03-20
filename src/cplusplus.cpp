@@ -22,6 +22,7 @@
 #include <vector>
 #include "cplusplus.h"
 #include "cplusplusCall.h"
+#include "cplusplusInvoke.h"
 #include "cplusplusTemplate.h"
 #include "cplusplusMeta.h"
 
@@ -275,6 +276,10 @@ public:
         writeln("");
         CPlusPlusCall call(source, this);
         call.at(node);
+
+        writeln("");
+        CPlusPlusInvoke invoke(source, this);
+        invoke.at(node);
 
         writeln("};");
     }

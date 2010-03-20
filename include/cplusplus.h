@@ -268,7 +268,7 @@ public:
     {
         static Type replaceable("any");
         std::string cap = node->getName().c_str();
-        cap[0] = toupper(cap[0]);   // XXX
+        cap[0] = toupper(cap[0]);
         Node* spec = node->getSpec();
         if (node->isReplaceable())
         {
@@ -277,29 +277,12 @@ public:
         std::string name = getBufferName(node);
 
         write("virtual ");
-        if (!hasCustomStringType() && spec->isString(node->getParent()))
+        spec->accept(this);
+        if (spec->isInterface(node->getParent()))
         {
-            write("const ", cap.c_str());
-            spec->accept(this);
-            write(" get%s(void* %s, int %sLength)", cap.c_str(), name.c_str(), name.c_str());
+            write("*");
         }
-        else
-        {
-            if (spec->isInterface(node->getParent()))
-            {
-                spec->accept(this);
-                write("*");
-            }
-            else if (NativeType* nativeType = spec->isNative(node->getParent()))
-            {
-                nativeType->accept(this);
-            }
-            else
-            {
-                spec->accept(this);
-            }
-            write(" get%s()", cap.c_str());
-        }
+        write(" get%s()", cap.c_str());
         if (useExceptions && node->getGetRaises())
         {
             write(" throw(");
@@ -317,7 +300,7 @@ public:
 
         static Type replaceable("any");
         std::string cap = node->getName().c_str();
-        cap[0] = toupper(cap[0]);   // XXX
+        cap[0] = toupper(cap[0]);
         Node* spec = node->getSpec();
         if (node->isReplaceable())
         {
@@ -335,22 +318,13 @@ public:
 
         // setter
         write("virtual ");
-        if (spec->isString(node->getParent()))
+        write("void set%s(", cap.c_str());
+        spec->accept(this);
+        if (spec->isInterface(node->getParent()))
         {
-            write("void set%s(const ", cap.c_str());
-            spec->accept(this);
-            write(" %s)", name.c_str());
+            write("*");
         }
-        else
-        {
-            write("void set%s(", cap.c_str());
-            spec->accept(this);
-            if (spec->isInterface(node->getParent()))
-            {
-                write("*");
-            }
-            write(" %s)", name.c_str());
-        }
+        write(" %s)", name.c_str());
         if (useExceptions && node->getSetRaises())
         {
             write(" throw(");
@@ -360,39 +334,8 @@ public:
         return true;
     }
 
-    virtual void at(const OpDcl* node)
+    void writeParameters(const OpDcl* node, bool needComma = false)
     {
-        if (!constructorMode)
-        {
-            write("virtual ");
-        }
-        else
-        {
-            write("static ");
-        }
-
-        bool needComma = true;  // true to write "," before the 1st parameter
-        Node* spec = node->getSpec();
-        if (!hasCustomStringType() && spec->isString(node->getParent()))
-        {
-            std::string name = getBufferName(spec);
-
-            write("const ");
-            spec->accept(this);
-            write(" %s(", getEscapedName(node->getName()).c_str());
-            write("void* %s, int %sLength", name.c_str(), name.c_str());
-        }
-        else
-        {
-            spec->accept(this);
-            if (spec->isInterface(node->getParent()))
-            {
-                write("*");
-            }
-            write(" %s(", getEscapedName(node->getName()).c_str());
-            needComma = false;
-        }
-
         paramCount = 0;
         variadicParam = 0;
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
@@ -414,7 +357,27 @@ public:
             ++paramCount;
             param->accept(this);
         }
+    }
 
+    virtual void at(const OpDcl* node)
+    {
+        if (!constructorMode)
+        {
+            write("virtual ");
+        }
+        else
+        {
+            write("static ");
+        }
+
+        Node* spec = node->getSpec();
+        spec->accept(this);
+        if (spec->isInterface(node->getParent()))
+        {
+            write("*");
+        }
+        write(" %s(", getEscapedName(node->getName()).c_str());
+        writeParameters(node);
         write(")");
         if (useExceptions && node->getRaises())
         {

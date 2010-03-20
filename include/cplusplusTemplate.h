@@ -18,8 +18,6 @@
 #ifndef ESIDL_CPLUSPLUS_TEMPLATE_H_INCLUDED
 #define ESIDL_CPLUSPLUS_TEMPLATE_H_INCLUDED
 
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <algorithm>
 #include <set>
 #include <vector>
@@ -31,37 +29,32 @@ class CPlusPlusTemplate : public CPlusPlus
     std::string className;
     unsigned offset;
 
-    int writeInvoke(const Node* node, Node* spec, const Node* nameNode)
+    int writeInvoke(const Node* node, Node* spec)
     {
         int hasCast = 0;
 
         writetab();
         if (spec->isVoid(node))
         {
-            write("invoke(this");
         }
         else if (spec->isAny(node))
         {
-            write("return invoke(this");
+            write("return ");
         }
         else if (spec->isInterface(node))
         {
             write("return dynamic_cast<");
             spec->accept(this);
-            write("*>(static_cast<Object*>(invoke(this");
+            write("*>(static_cast<Object*>(");
             hasCast = 2;
         }
         else
         {
             write("return static_cast<");
             spec->accept(this);
-            write(" >(invoke(this");
+            write(" >(");
             hasCast = 1;
         }
-
-        write(", I, %u, %s::getMetaData(), %u", methodNumber, className.c_str(), offset);
-
-        ++methodNumber;
 
         return hasCast;
     }
@@ -216,19 +209,24 @@ public:
     {
         // getter
         static Type replaceable("any");
+        std::string cap = node->getName().c_str();
+        cap[0] = toupper(cap[0]);
         Node* spec = node->getSpec();
         if (node->isReplaceable())
         {
             spec = &replaceable;
         }
-        SequenceType* seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
         std::string name = getBufferName(node);
 
         writetab();
         CPlusPlus::getter(node);
         writeln("{");
-            int hasCast = writeInvoke(node, spec, node);
-            write(", 0, 0");
+            int hasCast = writeInvoke(node, spec);
+            write("%s::get%s<ARGUMENT, invoke>(this, I, %u",
+                  className.c_str(),
+                  cap.c_str(),
+                  methodNumber);
+            ++methodNumber;
             while (0 < hasCast--)
             {
                 write(")");
@@ -251,14 +249,16 @@ public:
             assert(forwards);
             spec = forwards->getSpec();
         }
-        seq = const_cast<SequenceType*>(spec->isSequence(node->getParent()));
 
         writetab();
         CPlusPlus::setter(node);
         writeln("{");
-            writeln("ARGUMENT _argument = %s;", name.c_str());
-            writeln("invoke(this, I, %u, %s::getMetaData(), %u, 1, &_argument);",
-                    methodNumber, className.c_str(), offset);
+            writeln("%s::set%s<ARGUMENT, invoke>(this, I, %u, %s);",
+                    className.c_str(),
+                    cap.c_str(),
+                    methodNumber,
+                    name.c_str());
+            ++methodNumber;
         writeln("}");
         offset += node->getMetaSetter().length();
 
@@ -267,28 +267,27 @@ public:
 
     virtual void at(const OpDcl* node)
     {
-        Interface* interface = dynamic_cast<Interface*>(node->getParent());
-        assert(interface);
-
         writetab();
         CPlusPlus::at(node);
         writeln("{");
 
             // Invoke
+            int hasCast = writeInvoke(node, node->getSpec());
+            write("%s::%s<ARGUMENT, invoke>(this, I, %u",
+                  className.c_str(),
+                  getEscapedName(node->getName()).c_str(),
+                  methodNumber);
+            ++methodNumber;
+
             if (0 < getParamCount())
             {
-                writeln("ARGUMENT _arguments[%u];", getParamCount());
                 NodeList::iterator it = node->begin();
                 for (int i = 0; i < getParamCount(); ++i, ++it)
                 {
                     ParamDcl* param = static_cast<ParamDcl*>(*it);
-                    writeln("_arguments[%d] = %s;", i, getEscapedName(param->getName()).c_str());
+                    write(", %s", getEscapedName(param->getName()).c_str());
                 }
             }
-            Node* spec = node->getSpec();
-            int hasCast = writeInvoke(node, spec, spec);
-            write(", %u", getParamCount());
-            write((0 < getParamCount()) ? ", _arguments" : ", 0");
             while (0 < hasCast--)
             {
                 write(")");
