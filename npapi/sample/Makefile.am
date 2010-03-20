@@ -7,7 +7,6 @@ AM_CPPFLAGS = \
 	-I $(srcdir)/../../include \
 	-I ../../cplusplus \
 	-I $(srcdir)/../../cplusplus \
-	-g \
 	-DXP_UNIX
 
 if !NACL

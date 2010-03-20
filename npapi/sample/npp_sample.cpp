@@ -35,48 +35,7 @@ NPError NPP_Initialize()
 {
     printf("%s\n", __func__);
 
-    registerMetaData(Node::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Node_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(CharacterData::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, CharacterData_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(Text::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Text_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(Document::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(Element::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Element_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(events::MouseEvent::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, events::MouseEvent_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(html::HTMLElement::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLElement_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(html::HTMLBodyElement::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLBodyElement_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(html::HTMLDivElement::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLDivElement_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(html::HTMLCanvasElement::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLCanvasElement_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(html::CanvasRenderingContext2D::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::CanvasRenderingContext2D_Bridge<Any, invoke> >::createInstance));
-
-    registerMetaData(html::Window::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::Window_Bridge<Any, invoke> >::createInstance));
-
-    // This steps should be automated with Document.
-    registerMetaData(Document::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance),
-                     "HTMLDocument");
-
-
+    initializeMetaData();
     return NPERR_NO_ERROR;
 }
 

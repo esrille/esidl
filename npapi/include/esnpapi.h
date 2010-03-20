@@ -159,6 +159,7 @@ void addInterfaceData(const char* mataData, const char* name = 0);
 Reflect::Interface* getInterfaceData(const std::string interfaceName);
 Reflect::Interface* getInterfaceData(const char* iid);
 
+void initializeMetaData();
 void registerMetaData(const char* meta,
                       Object* (*createProxy)(ProxyObject object),
                       const char* alias = 0);

@@ -71,7 +71,7 @@ ARFLAGS = cru
 libesnpapi_a_AR = $(AR) $(ARFLAGS)
 libesnpapi_a_LIBADD =
 am_libesnpapi_a_OBJECTS = bridge.$(OBJEXT) invoke.$(OBJEXT) \
-	resolve.$(OBJEXT)
+	metadata.$(OBJEXT) resolve.$(OBJEXT)
 libesnpapi_a_OBJECTS = $(am_libesnpapi_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -273,7 +273,8 @@ AM_CPPFLAGS = \
 	-I $(srcdir)/include \
 	-I $(srcdir)/../include \
 	-I ../cplusplus \
-	-I $(srcdir)/../cplusplus
+	-I $(srcdir)/../cplusplus \
+	-fno-implicit-inline-templates -fno-default-inline -O1
 
 libesnpapi_a_SOURCES = \
 	include/esnpapi.h \
@@ -285,6 +286,7 @@ libesnpapi_a_SOURCES = \
 	include/npapi/npupp.h \
 	src/bridge.cpp \
 	src/invoke.cpp \
+	src/metadata.cpp \
 	src/resolve.cpp
 
 all: all-recursive
@@ -366,6 +368,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bridge.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/invoke.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/resolve.Po@am__quote@
 
 .cpp.o:
@@ -416,6 +419,20 @@ invoke.obj: src/invoke.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/invoke.cpp' object='invoke.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o invoke.obj `if test -f 'src/invoke.cpp'; then $(CYGPATH_W) 'src/invoke.cpp'; else $(CYGPATH_W) '$(srcdir)/src/invoke.cpp'; fi`
+
+metadata.o: src/metadata.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadata.o -MD -MP -MF $(DEPDIR)/metadata.Tpo -c -o metadata.o `test -f 'src/metadata.cpp' || echo '$(srcdir)/'`src/metadata.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadata.Tpo $(DEPDIR)/metadata.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadata.cpp' object='metadata.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadata.o `test -f 'src/metadata.cpp' || echo '$(srcdir)/'`src/metadata.cpp
+
+metadata.obj: src/metadata.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadata.obj -MD -MP -MF $(DEPDIR)/metadata.Tpo -c -o metadata.obj `if test -f 'src/metadata.cpp'; then $(CYGPATH_W) 'src/metadata.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadata.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadata.Tpo $(DEPDIR)/metadata.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadata.cpp' object='metadata.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadata.obj `if test -f 'src/metadata.cpp'; then $(CYGPATH_W) 'src/metadata.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadata.cpp'; fi`
 
 resolve.o: src/resolve.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT resolve.o -MD -MP -MF $(DEPDIR)/resolve.Tpo -c -o resolve.o `test -f 'src/resolve.cpp' || echo '$(srcdir)/'`src/resolve.cpp

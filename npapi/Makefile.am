@@ -8,7 +8,8 @@ AM_CPPFLAGS = \
 	-I $(srcdir)/include \
 	-I $(srcdir)/../include \
 	-I ../cplusplus \
-	-I $(srcdir)/../cplusplus
+	-I $(srcdir)/../cplusplus \
+	-fno-implicit-inline-templates -fno-default-inline -O1
 
 libesnpapi_a_SOURCES = \
 	include/esnpapi.h \
@@ -20,5 +21,6 @@ libesnpapi_a_SOURCES = \
 	include/npapi/npupp.h \
 	src/bridge.cpp \
 	src/invoke.cpp \
+	src/metadata.cpp \
 	src/resolve.cpp
 
