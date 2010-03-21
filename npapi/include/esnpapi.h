@@ -151,18 +151,12 @@ Object* convertToObject(NPP npp, const NPVariant* variant);
 Any convertToAny(NPP npp, const NPVariant* variant);
 Any convertToAny(NPP npp, const NPVariant* variant, int type);
 
-void addProxyConstructor(const std::string interfaceName, Object* (*createProxy)(ProxyObject object));
-
 NPObject* createStub(NPP npp, Object* object);
 Object* createProxy(NPP npp, NPObject* object);
 
 Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
            const char* meta, unsigned offset,
            unsigned argumentCount, Any* arguments);
-
-void addInterfaceData(const char* mataData, const char* name = 0);
-Reflect::Interface* getInterfaceData(const std::string interfaceName);
-Reflect::Interface* getInterfaceData(const char* iid);
 
 void registerMetaData(const char* meta,
                       Object* (*createProxy)(ProxyObject object),

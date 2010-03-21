@@ -30,7 +30,6 @@ namespace
 
 // Map from interfaceName to constructors.
 std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
-std::map<const std::string, Reflect::Interface> metaDataMap;
 
 bool isStub(const NPObject* object)
 {
@@ -229,40 +228,6 @@ std::string toString(NPP npp, const NPVariant* variant, char attribute = 0)
 
 }  // namespace
 
-void addProxyConstructor(const std::string interfaceName, Object* (*createProxy)(ProxyObject object))
-{
-    proxyConstructorMap[interfaceName] = createProxy;
-}
-
-Reflect::Interface* getInterfaceData(const std::string className)
-{
-    std::map<std::string, Reflect::Interface>::iterator i;
-
-    i = metaDataMap.find(className);
-    if (i == metaDataMap.end())
-    {
-        return 0;
-    }
-    return &((*i).second);
-}
-
-Reflect::Interface* getInterfaceData(const char* iid)
-{
-    std::map<std::string, Reflect::Interface>::iterator i;
-
-    i = metaDataMap.find(iid);
-    if (i == metaDataMap.end())
-    {
-        return 0;
-    }
-    return &((*i).second);
-}
-
-void addInterfaceData(const char* metaData, std::string name)
-{
-    metaDataMap[name] = Reflect::Interface(metaData);
-}
-
 void registerMetaData(const char* meta,
                       Object* (*createProxy)(ProxyObject object),
                       const char* alias)
@@ -273,8 +238,7 @@ void registerMetaData(const char* meta,
     {
         name = alias;
     }
-    addInterfaceData(meta, name);
-    addProxyConstructor(name, createProxy);
+    proxyConstructorMap[name] = createProxy;
     printf("%s\n", name.c_str());
 }
 
