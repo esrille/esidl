@@ -1,5 +1,5 @@
 AM_CPPFLAGS = \
-	-fPIC -fshort-wchar \
+	-fshort-wchar \
 	-I $(srcdir) \
 	-I ../include \
 	-I ../include/w3c \
@@ -11,6 +11,7 @@ AM_CPPFLAGS = \
 	-fno-implicit-inline-templates -fno-default-inline -Os -fno-rtti
 
 if !NACL
+AM_CPPFLAGS += -fPIC
 lib_LTLIBRARIES = libnpessample.la
 AM_LDFLAGS = -L.. -ldl -lesnpapi
 else

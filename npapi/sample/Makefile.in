@@ -36,8 +36,9 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
+@NACL_FALSE@am__append_1 = -fPIC
 @NACL_TRUE@bin_PROGRAMS = npessample$(EXEEXT)
-@NACL_FALSE@am__append_1 = \
+@NACL_FALSE@am__append_2 = \
 @NACL_FALSE@	npn_gate.cpp
 
 subdir = npapi/sample
@@ -248,24 +249,18 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = \
-	-fPIC -fshort-wchar \
-	-I $(srcdir) \
-	-I ../include \
-	-I ../include/w3c \
-	-I $(srcdir)/../include \
-	-I $(srcdir)/../../include \
-	-I ../../cplusplus \
-	-I $(srcdir)/../../cplusplus \
-	-DXP_UNIX \
-	-fno-implicit-inline-templates -fno-default-inline -Os -fno-rtti
-
+AM_CPPFLAGS = -fshort-wchar -I $(srcdir) -I ../include -I \
+	../include/w3c -I $(srcdir)/../include -I \
+	$(srcdir)/../../include -I ../../cplusplus -I \
+	$(srcdir)/../../cplusplus -DXP_UNIX \
+	-fno-implicit-inline-templates -fno-default-inline -Os \
+	-fno-rtti $(am__append_1)
 @NACL_FALSE@lib_LTLIBRARIES = libnpessample.la
 @NACL_FALSE@AM_LDFLAGS = -L.. -ldl -lesnpapi
 @NACL_TRUE@AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_npruntime -lgoogle_nacl_imc -lpthread -lsrpc
 @NACL_TRUE@npessample_CPPFLAGS = $(AM_CPPFLAGS)
 cpp_source_files = np_entry.cpp npp_gate.cpp npp_sample.cpp sample.cpp \
-	$(am__append_1)
+	$(am__append_2)
 header_files = \
 	sample.h
 

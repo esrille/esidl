@@ -35,6 +35,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
+@NACL_FALSE@am__append_1 = -fPIC
 subdir = npapi
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -73,7 +74,11 @@ libesnpapi_a_LIBADD =
 am_libesnpapi_a_OBJECTS = bridge.$(OBJEXT) invoke.$(OBJEXT) \
 	metadata.$(OBJEXT) metadataFile.$(OBJEXT) \
 	metadataGeolocation.$(OBJEXT) metadataHtml.$(OBJEXT) \
-	metadataSvg.$(OBJEXT) metadataWebDatabase.$(OBJEXT) \
+	metadataHtmlA_G.$(OBJEXT) metadataHtmlH_N.$(OBJEXT) \
+	metadataHtmlO_U.$(OBJEXT) metadataHtmlV_Z.$(OBJEXT) \
+	metadataSvg.$(OBJEXT) metadataSvgA_G.$(OBJEXT) \
+	metadataSvgH_N.$(OBJEXT) metadataSvgO_U.$(OBJEXT) \
+	metadataSvgV_Z.$(OBJEXT) metadataWebDatabase.$(OBJEXT) \
 	metadataWebGL.$(OBJEXT) metadataWorkers.$(OBJEXT) \
 	resolve.$(OBJEXT)
 libesnpapi_a_OBJECTS = $(am_libesnpapi_a_OBJECTS)
@@ -271,15 +276,10 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = . sample
 lib_LIBRARIES = libesnpapi.a
-AM_CPPFLAGS = \
-	-fPIC -fshort-wchar \
-	-I include \
-	-I $(srcdir)/include \
-	-I $(srcdir)/../include \
-	-I ../cplusplus \
-	-I $(srcdir)/../cplusplus \
-	-fno-implicit-inline-templates -fno-default-inline -Os -fno-rtti
-
+AM_CPPFLAGS = -fshort-wchar -I include -I $(srcdir)/include -I \
+	$(srcdir)/../include -I ../cplusplus -I $(srcdir)/../cplusplus \
+	-fno-implicit-inline-templates -fno-default-inline -Os \
+	-fno-rtti $(am__append_1)
 libesnpapi_a_SOURCES = \
 	include/esnpapi.h \
 	include/object.h \
@@ -294,7 +294,15 @@ libesnpapi_a_SOURCES = \
 	src/metadataFile.cpp \
 	src/metadataGeolocation.cpp \
 	src/metadataHtml.cpp \
+	src/metadataHtmlA_G.cpp \
+	src/metadataHtmlH_N.cpp \
+	src/metadataHtmlO_U.cpp \
+	src/metadataHtmlV_Z.cpp \
 	src/metadataSvg.cpp \
+	src/metadataSvgA_G.cpp \
+	src/metadataSvgH_N.cpp \
+	src/metadataSvgO_U.cpp \
+	src/metadataSvgV_Z.cpp \
 	src/metadataWebDatabase.cpp \
 	src/metadataWebGL.cpp \
 	src/metadataWorkers.cpp \
@@ -383,7 +391,15 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataFile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataGeolocation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataHtml.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataHtmlA_G.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataHtmlH_N.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataHtmlO_U.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataHtmlV_Z.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataSvg.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataSvgA_G.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataSvgH_N.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataSvgO_U.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataSvgV_Z.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataWebDatabase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataWebGL.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataWorkers.Po@am__quote@
@@ -494,6 +510,62 @@ metadataHtml.obj: src/metadataHtml.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtml.obj `if test -f 'src/metadataHtml.cpp'; then $(CYGPATH_W) 'src/metadataHtml.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtml.cpp'; fi`
 
+metadataHtmlA_G.o: src/metadataHtmlA_G.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataHtmlA_G.o -MD -MP -MF $(DEPDIR)/metadataHtmlA_G.Tpo -c -o metadataHtmlA_G.o `test -f 'src/metadataHtmlA_G.cpp' || echo '$(srcdir)/'`src/metadataHtmlA_G.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataHtmlA_G.Tpo $(DEPDIR)/metadataHtmlA_G.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataHtmlA_G.cpp' object='metadataHtmlA_G.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtmlA_G.o `test -f 'src/metadataHtmlA_G.cpp' || echo '$(srcdir)/'`src/metadataHtmlA_G.cpp
+
+metadataHtmlA_G.obj: src/metadataHtmlA_G.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataHtmlA_G.obj -MD -MP -MF $(DEPDIR)/metadataHtmlA_G.Tpo -c -o metadataHtmlA_G.obj `if test -f 'src/metadataHtmlA_G.cpp'; then $(CYGPATH_W) 'src/metadataHtmlA_G.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtmlA_G.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataHtmlA_G.Tpo $(DEPDIR)/metadataHtmlA_G.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataHtmlA_G.cpp' object='metadataHtmlA_G.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtmlA_G.obj `if test -f 'src/metadataHtmlA_G.cpp'; then $(CYGPATH_W) 'src/metadataHtmlA_G.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtmlA_G.cpp'; fi`
+
+metadataHtmlH_N.o: src/metadataHtmlH_N.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataHtmlH_N.o -MD -MP -MF $(DEPDIR)/metadataHtmlH_N.Tpo -c -o metadataHtmlH_N.o `test -f 'src/metadataHtmlH_N.cpp' || echo '$(srcdir)/'`src/metadataHtmlH_N.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataHtmlH_N.Tpo $(DEPDIR)/metadataHtmlH_N.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataHtmlH_N.cpp' object='metadataHtmlH_N.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtmlH_N.o `test -f 'src/metadataHtmlH_N.cpp' || echo '$(srcdir)/'`src/metadataHtmlH_N.cpp
+
+metadataHtmlH_N.obj: src/metadataHtmlH_N.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataHtmlH_N.obj -MD -MP -MF $(DEPDIR)/metadataHtmlH_N.Tpo -c -o metadataHtmlH_N.obj `if test -f 'src/metadataHtmlH_N.cpp'; then $(CYGPATH_W) 'src/metadataHtmlH_N.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtmlH_N.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataHtmlH_N.Tpo $(DEPDIR)/metadataHtmlH_N.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataHtmlH_N.cpp' object='metadataHtmlH_N.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtmlH_N.obj `if test -f 'src/metadataHtmlH_N.cpp'; then $(CYGPATH_W) 'src/metadataHtmlH_N.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtmlH_N.cpp'; fi`
+
+metadataHtmlO_U.o: src/metadataHtmlO_U.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataHtmlO_U.o -MD -MP -MF $(DEPDIR)/metadataHtmlO_U.Tpo -c -o metadataHtmlO_U.o `test -f 'src/metadataHtmlO_U.cpp' || echo '$(srcdir)/'`src/metadataHtmlO_U.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataHtmlO_U.Tpo $(DEPDIR)/metadataHtmlO_U.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataHtmlO_U.cpp' object='metadataHtmlO_U.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtmlO_U.o `test -f 'src/metadataHtmlO_U.cpp' || echo '$(srcdir)/'`src/metadataHtmlO_U.cpp
+
+metadataHtmlO_U.obj: src/metadataHtmlO_U.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataHtmlO_U.obj -MD -MP -MF $(DEPDIR)/metadataHtmlO_U.Tpo -c -o metadataHtmlO_U.obj `if test -f 'src/metadataHtmlO_U.cpp'; then $(CYGPATH_W) 'src/metadataHtmlO_U.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtmlO_U.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataHtmlO_U.Tpo $(DEPDIR)/metadataHtmlO_U.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataHtmlO_U.cpp' object='metadataHtmlO_U.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtmlO_U.obj `if test -f 'src/metadataHtmlO_U.cpp'; then $(CYGPATH_W) 'src/metadataHtmlO_U.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtmlO_U.cpp'; fi`
+
+metadataHtmlV_Z.o: src/metadataHtmlV_Z.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataHtmlV_Z.o -MD -MP -MF $(DEPDIR)/metadataHtmlV_Z.Tpo -c -o metadataHtmlV_Z.o `test -f 'src/metadataHtmlV_Z.cpp' || echo '$(srcdir)/'`src/metadataHtmlV_Z.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataHtmlV_Z.Tpo $(DEPDIR)/metadataHtmlV_Z.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataHtmlV_Z.cpp' object='metadataHtmlV_Z.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtmlV_Z.o `test -f 'src/metadataHtmlV_Z.cpp' || echo '$(srcdir)/'`src/metadataHtmlV_Z.cpp
+
+metadataHtmlV_Z.obj: src/metadataHtmlV_Z.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataHtmlV_Z.obj -MD -MP -MF $(DEPDIR)/metadataHtmlV_Z.Tpo -c -o metadataHtmlV_Z.obj `if test -f 'src/metadataHtmlV_Z.cpp'; then $(CYGPATH_W) 'src/metadataHtmlV_Z.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtmlV_Z.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataHtmlV_Z.Tpo $(DEPDIR)/metadataHtmlV_Z.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataHtmlV_Z.cpp' object='metadataHtmlV_Z.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataHtmlV_Z.obj `if test -f 'src/metadataHtmlV_Z.cpp'; then $(CYGPATH_W) 'src/metadataHtmlV_Z.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataHtmlV_Z.cpp'; fi`
+
 metadataSvg.o: src/metadataSvg.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvg.o -MD -MP -MF $(DEPDIR)/metadataSvg.Tpo -c -o metadataSvg.o `test -f 'src/metadataSvg.cpp' || echo '$(srcdir)/'`src/metadataSvg.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvg.Tpo $(DEPDIR)/metadataSvg.Po
@@ -507,6 +579,62 @@ metadataSvg.obj: src/metadataSvg.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvg.cpp' object='metadataSvg.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvg.obj `if test -f 'src/metadataSvg.cpp'; then $(CYGPATH_W) 'src/metadataSvg.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvg.cpp'; fi`
+
+metadataSvgA_G.o: src/metadataSvgA_G.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvgA_G.o -MD -MP -MF $(DEPDIR)/metadataSvgA_G.Tpo -c -o metadataSvgA_G.o `test -f 'src/metadataSvgA_G.cpp' || echo '$(srcdir)/'`src/metadataSvgA_G.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvgA_G.Tpo $(DEPDIR)/metadataSvgA_G.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvgA_G.cpp' object='metadataSvgA_G.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvgA_G.o `test -f 'src/metadataSvgA_G.cpp' || echo '$(srcdir)/'`src/metadataSvgA_G.cpp
+
+metadataSvgA_G.obj: src/metadataSvgA_G.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvgA_G.obj -MD -MP -MF $(DEPDIR)/metadataSvgA_G.Tpo -c -o metadataSvgA_G.obj `if test -f 'src/metadataSvgA_G.cpp'; then $(CYGPATH_W) 'src/metadataSvgA_G.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvgA_G.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvgA_G.Tpo $(DEPDIR)/metadataSvgA_G.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvgA_G.cpp' object='metadataSvgA_G.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvgA_G.obj `if test -f 'src/metadataSvgA_G.cpp'; then $(CYGPATH_W) 'src/metadataSvgA_G.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvgA_G.cpp'; fi`
+
+metadataSvgH_N.o: src/metadataSvgH_N.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvgH_N.o -MD -MP -MF $(DEPDIR)/metadataSvgH_N.Tpo -c -o metadataSvgH_N.o `test -f 'src/metadataSvgH_N.cpp' || echo '$(srcdir)/'`src/metadataSvgH_N.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvgH_N.Tpo $(DEPDIR)/metadataSvgH_N.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvgH_N.cpp' object='metadataSvgH_N.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvgH_N.o `test -f 'src/metadataSvgH_N.cpp' || echo '$(srcdir)/'`src/metadataSvgH_N.cpp
+
+metadataSvgH_N.obj: src/metadataSvgH_N.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvgH_N.obj -MD -MP -MF $(DEPDIR)/metadataSvgH_N.Tpo -c -o metadataSvgH_N.obj `if test -f 'src/metadataSvgH_N.cpp'; then $(CYGPATH_W) 'src/metadataSvgH_N.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvgH_N.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvgH_N.Tpo $(DEPDIR)/metadataSvgH_N.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvgH_N.cpp' object='metadataSvgH_N.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvgH_N.obj `if test -f 'src/metadataSvgH_N.cpp'; then $(CYGPATH_W) 'src/metadataSvgH_N.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvgH_N.cpp'; fi`
+
+metadataSvgO_U.o: src/metadataSvgO_U.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvgO_U.o -MD -MP -MF $(DEPDIR)/metadataSvgO_U.Tpo -c -o metadataSvgO_U.o `test -f 'src/metadataSvgO_U.cpp' || echo '$(srcdir)/'`src/metadataSvgO_U.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvgO_U.Tpo $(DEPDIR)/metadataSvgO_U.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvgO_U.cpp' object='metadataSvgO_U.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvgO_U.o `test -f 'src/metadataSvgO_U.cpp' || echo '$(srcdir)/'`src/metadataSvgO_U.cpp
+
+metadataSvgO_U.obj: src/metadataSvgO_U.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvgO_U.obj -MD -MP -MF $(DEPDIR)/metadataSvgO_U.Tpo -c -o metadataSvgO_U.obj `if test -f 'src/metadataSvgO_U.cpp'; then $(CYGPATH_W) 'src/metadataSvgO_U.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvgO_U.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvgO_U.Tpo $(DEPDIR)/metadataSvgO_U.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvgO_U.cpp' object='metadataSvgO_U.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvgO_U.obj `if test -f 'src/metadataSvgO_U.cpp'; then $(CYGPATH_W) 'src/metadataSvgO_U.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvgO_U.cpp'; fi`
+
+metadataSvgV_Z.o: src/metadataSvgV_Z.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvgV_Z.o -MD -MP -MF $(DEPDIR)/metadataSvgV_Z.Tpo -c -o metadataSvgV_Z.o `test -f 'src/metadataSvgV_Z.cpp' || echo '$(srcdir)/'`src/metadataSvgV_Z.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvgV_Z.Tpo $(DEPDIR)/metadataSvgV_Z.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvgV_Z.cpp' object='metadataSvgV_Z.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvgV_Z.o `test -f 'src/metadataSvgV_Z.cpp' || echo '$(srcdir)/'`src/metadataSvgV_Z.cpp
+
+metadataSvgV_Z.obj: src/metadataSvgV_Z.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataSvgV_Z.obj -MD -MP -MF $(DEPDIR)/metadataSvgV_Z.Tpo -c -o metadataSvgV_Z.obj `if test -f 'src/metadataSvgV_Z.cpp'; then $(CYGPATH_W) 'src/metadataSvgV_Z.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvgV_Z.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/metadataSvgV_Z.Tpo $(DEPDIR)/metadataSvgV_Z.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataSvgV_Z.cpp' object='metadataSvgV_Z.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataSvgV_Z.obj `if test -f 'src/metadataSvgV_Z.cpp'; then $(CYGPATH_W) 'src/metadataSvgV_Z.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataSvgV_Z.cpp'; fi`
 
 metadataWebDatabase.o: src/metadataWebDatabase.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadataWebDatabase.o -MD -MP -MF $(DEPDIR)/metadataWebDatabase.Tpo -c -o metadataWebDatabase.o `test -f 'src/metadataWebDatabase.cpp' || echo '$(srcdir)/'`src/metadataWebDatabase.cpp

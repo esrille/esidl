@@ -23,15 +23,11 @@
 
 using namespace org::w3c::dom;
 
-void initializeSvgMetaData()
+void initializeSvgMetaDataV_Z()
 {
-    registerMetaData(smil::ElementTimeControl::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, smil::ElementTimeControl_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(smil::TimeEvent::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, smil::TimeEvent_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(svg::GetSVGDocument::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::GetSVGDocument_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(svg::SVGViewElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::SVGViewElement_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(svg::SVGViewSpec::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::SVGViewSpec_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(svg::SVGVKernElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::SVGVKernElement_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(svg::SVGZoomAndPan::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::SVGZoomAndPan_Bridge<Any, invoke> >::createInstance));
     registerMetaData(svg::SVGZoomEvent::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::SVGZoomEvent_Bridge<Any, invoke> >::createInstance));
-
-    initializeSvgMetaDataA_G();
-    initializeSvgMetaDataH_N();
-    initializeSvgMetaDataO_U();
-    initializeSvgMetaDataV_Z();
 }

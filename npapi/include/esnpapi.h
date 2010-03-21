@@ -168,6 +168,18 @@ void registerMetaData(const char* meta,
                       Object* (*createProxy)(ProxyObject object),
                       const char* alias = 0);
 
+// The following four functions are called from initializeHtmlMetaData();
+void initializeHtmlMetaDataA_G();
+void initializeHtmlMetaDataH_N();
+void initializeHtmlMetaDataO_U();
+void initializeHtmlMetaDataV_Z();
+
+// The following four functions are called from initializeSvgMetaData();
+void initializeSvgMetaDataA_G();
+void initializeSvgMetaDataH_N();
+void initializeSvgMetaDataO_U();
+void initializeSvgMetaDataV_Z();
+
 void initializeMetaData();
 void initializeFileMetaData();
 void initializeGeolocationMetaData();
