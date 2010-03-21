@@ -121,11 +121,8 @@ public:
         offset = 0;
 
         writeln("static const char* const getMetaData() {");
-            writetab();
-            write("return");
+            writeln("static const char* metaData =");
             indent();
-
-            writeln("");
             writetab();
             write("/* %u */ ", offset);
             write("\"%s\"", node->getMeta().c_str());
@@ -161,8 +158,8 @@ public:
                 constructorMode = false;
             }
             write(";\n");
-
             unindent();
+            writeln("return metaData;");
         writeln("}");
 
 
