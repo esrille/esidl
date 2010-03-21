@@ -22,5 +22,12 @@ libesnpapi_a_SOURCES = \
 	src/bridge.cpp \
 	src/invoke.cpp \
 	src/metadata.cpp \
+	src/metadataFile.cpp \
+	src/metadataGeolocation.cpp \
+	src/metadataHtml.cpp \
+	src/metadataSvg.cpp \
+	src/metadataWebDatabase.cpp \
+	src/metadataWebGL.cpp \
+	src/metadataWorkers.cpp \
 	src/resolve.cpp
 

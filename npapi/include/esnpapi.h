@@ -164,9 +164,18 @@ void addInterfaceData(const char* mataData, const char* name = 0);
 Reflect::Interface* getInterfaceData(const std::string interfaceName);
 Reflect::Interface* getInterfaceData(const char* iid);
 
-void initializeMetaData();
 void registerMetaData(const char* meta,
                       Object* (*createProxy)(ProxyObject object),
                       const char* alias = 0);
+
+void initializeMetaData();
+void initializeFileMetaData();
+void initializeGeolocationMetaData();
+void initializeHtmlMetaData();
+void initializeIndexedDBMetaData();
+void initializeSvgMetaData();
+void initializeWebDatabaseMetaData();
+void initializeWebGLMetaData();
+void initializeWorkersMetaData();
 
 #endif  // ESIDL_ESNPAPI_H_INCLUDED

@@ -36,6 +36,8 @@ NPError NPP_Initialize()
     printf("%s\n", __func__);
 
     initializeMetaData();
+    initializeHtmlMetaData();
+
     return NPERR_NO_ERROR;
 }
 
