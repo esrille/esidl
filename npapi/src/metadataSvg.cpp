@@ -34,4 +34,8 @@ void initializeSvgMetaData()
     initializeSvgMetaDataH_N();
     initializeSvgMetaDataO_U();
     initializeSvgMetaDataV_Z();
+
+    registerMetaData(Document::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance),
+                     "XMLDocument");
 }
