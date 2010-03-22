@@ -278,8 +278,8 @@ SUBDIRS = . sample
 lib_LIBRARIES = libesnpapi.a
 AM_CPPFLAGS = -fshort-wchar -I include -I $(srcdir)/include -I \
 	$(srcdir)/../include -I ../cplusplus -I $(srcdir)/../cplusplus \
-	-fno-implicit-inline-templates -fno-default-inline -Os \
-	-fno-rtti $(am__append_1)
+	-DXP_UNIX -fno-implicit-inline-templates -fno-default-inline \
+	$(am__append_1)
 libesnpapi_a_SOURCES = \
 	include/esnpapi.h \
 	include/object.h \

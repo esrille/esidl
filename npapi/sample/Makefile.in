@@ -253,8 +253,8 @@ AM_CPPFLAGS = -fshort-wchar -I $(srcdir) -I ../include -I \
 	../include/w3c -I $(srcdir)/../include -I \
 	$(srcdir)/../../include -I ../../cplusplus -I \
 	$(srcdir)/../../cplusplus -DXP_UNIX \
-	-fno-implicit-inline-templates -fno-default-inline -Os \
-	-fno-rtti $(am__append_1)
+	-fno-implicit-inline-templates -fno-default-inline \
+	$(am__append_1)
 @NACL_FALSE@lib_LTLIBRARIES = libnpessample.la
 @NACL_FALSE@AM_LDFLAGS = -L.. -ldl -lesnpapi
 @NACL_TRUE@AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_npruntime -lgoogle_nacl_imc -lpthread -lsrpc

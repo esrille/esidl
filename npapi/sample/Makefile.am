@@ -8,7 +8,7 @@ AM_CPPFLAGS = \
 	-I ../../cplusplus \
 	-I $(srcdir)/../../cplusplus \
 	-DXP_UNIX \
-	-fno-implicit-inline-templates -fno-default-inline -Os -fno-rtti
+	-fno-implicit-inline-templates -fno-default-inline
 
 if !NACL
 AM_CPPFLAGS += -fPIC

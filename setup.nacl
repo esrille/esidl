@@ -20,7 +20,7 @@ export PATH=~/nacl/esidl/bin:~/nacl/build/native_client/src/third_party/nacl_sdk
 cd ..
 mkdir nacl
 cd nacl
-../src/configure --disable-java --host=nacl --target=nacl
+CXXFLAGS='-Os -fno-rtti -fno-exceptions' ../src/configure --disable-java --host=nacl --target=nacl
 make
 cp npapi/sample/npessample.nexe ~/nacl/build/native_client/scons-out/nacl-x86-32/staging/
 cp ../src/npapi/sample/sample.nacl.html ~/nacl/build/native_client/scons-out/nacl-x86-32/staging/
