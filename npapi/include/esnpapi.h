@@ -168,8 +168,9 @@ void initializeHtmlMetaDataH_N();
 void initializeHtmlMetaDataO_U();
 void initializeHtmlMetaDataV_Z();
 
-// The following four functions are called from initializeSvgMetaData();
-void initializeSvgMetaDataA_G();
+// The following five functions are called from initializeSvgMetaData();
+void initializeSvgMetaDataA_E();
+void initializeSvgMetaDataF_G();
 void initializeSvgMetaDataH_N();
 void initializeSvgMetaDataO_U();
 void initializeSvgMetaDataV_Z();

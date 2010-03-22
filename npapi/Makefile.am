@@ -34,7 +34,8 @@ libesnpapi_a_SOURCES = \
 	src/metadataHtmlO_U.cpp \
 	src/metadataHtmlV_Z.cpp \
 	src/metadataSvg.cpp \
-	src/metadataSvgA_G.cpp \
+	src/metadataSvgA_E.cpp \
+	src/metadataSvgF_G.cpp \
 	src/metadataSvgH_N.cpp \
 	src/metadataSvgO_U.cpp \
 	src/metadataSvgV_Z.cpp \

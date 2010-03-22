@@ -30,7 +30,8 @@ void initializeSvgMetaData()
     registerMetaData(svg::GetSVGDocument::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::GetSVGDocument_Bridge<Any, invoke> >::createInstance));
     registerMetaData(svg::SVGZoomEvent::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::SVGZoomEvent_Bridge<Any, invoke> >::createInstance));
 
-    initializeSvgMetaDataA_G();
+    initializeSvgMetaDataA_E();
+    initializeSvgMetaDataF_G();
     initializeSvgMetaDataH_N();
     initializeSvgMetaDataO_U();
     initializeSvgMetaDataV_Z();
