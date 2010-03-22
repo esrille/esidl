@@ -30,8 +30,6 @@
 class Java : public Visitor, public Formatter
 {
 protected:
-    const char* source;
-
     bool useExceptions;
 
     int optionalStage;
@@ -85,9 +83,8 @@ protected:
     }
 
 public:
-    Java(const char* source, FILE* file, const char* indent = "es") :
+    Java(FILE* file, const char* indent = "es") :
         Formatter(file, indent),
-        source(source),
         useExceptions(true),
         currentNode(0),
         paramCount(0),

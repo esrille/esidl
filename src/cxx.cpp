@@ -135,7 +135,7 @@ public:
                 write("static const char* const info =");
                 flush();
                 indent();
-                Info info(source, this);
+                Info info(this);
                 const_cast<Interface*>(node)->accept(&info);
                 info.flush();
                 write(";\n");

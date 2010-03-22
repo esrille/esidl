@@ -25,8 +25,8 @@ class CPlusPlusCall : public CPlusPlus
     unsigned methodNumber;
 
 public:
-    CPlusPlusCall(const char* source, Formatter* formatter) :
-        CPlusPlus(source, formatter, "std::string", "Object", true)
+    CPlusPlusCall(Formatter* formatter) :
+        CPlusPlus(formatter, "std::string", "Object", true)
     {
         currentNode = 0;
     }

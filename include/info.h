@@ -21,12 +21,14 @@
 #include <string>
 #include "esidl.h"
 #include "expr.h"
-#include "cplusplus.h"
+#include "formatter.h"
 #include "reflect.h"
 
 // Generate the string-encoded interface information for reflection
-class Info : public CPlusPlus
+class Info : public Visitor, public Formatter
 {
+    const Node* currentNode;
+    bool constructorMode;
     unsigned offset;
 
     void visitInterfaceElement(const Interface* interface, Node* element)
@@ -45,12 +47,13 @@ class Info : public CPlusPlus
     }
 
 public:
-    Info(const char* source, Formatter* formatter) :
-        CPlusPlus(source, formatter, "std::string", "Object", true),
+    Info(Formatter* f) :
+        Formatter(f),
+        currentNode(0),
+        constructorMode(false),
         offset(0)
     {
-        formatter->flush();
-        currentNode = 0;
+        flush();
     }
 
     virtual void at(const Module* node)

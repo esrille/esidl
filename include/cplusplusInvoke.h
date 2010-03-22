@@ -70,8 +70,8 @@ class CPlusPlusInvoke : public CPlusPlus
     }
 
 public:
-    CPlusPlusInvoke(const char* source, const Formatter* formattter) :
-        CPlusPlus(source, formattter, "std::string", "Object", true)
+    CPlusPlusInvoke(const Formatter* formattter) :
+        CPlusPlus(formattter, "std::string", "Object", true)
     {
         currentNode = 0;
     }

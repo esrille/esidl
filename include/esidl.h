@@ -1985,15 +1985,16 @@ public:
     }
 };
 
+int printJava(const char* indent);
+int printCPlusPlus(const char* stringTypeName, const char* objectTypeName,
+                   bool useExceptions, bool useVirtualBase, const char* indent);
+
 extern void print();
-extern void printCPlusPlus(const char* source, const char* stringTypeName, const char* objectTypeName,
-                           bool useExceptions, bool useVirtualBase, const char* indent);
 extern void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName,
                      bool useExceptions, bool useVirtualBase, const char* indent);
 extern void printSkeleton(const char* source, bool isystem, const char* indent);
 extern void printTemplate(const char* source, const char* stringTypeName, const char* objectTypeName,
                           bool useExceptions, bool isystem, const char* indent);
-extern void printJava(const char* source, const char* indent);
 
 extern std::string getOutputFilename(std::string, const char* suffix);
 extern std::string getIncludedName(const std::string& header);
@@ -2010,8 +2011,6 @@ extern int output(const char* filename,
                   bool isystem, bool useExceptions, bool useMultipleInheritance,
                   const char* stringTypeName, const char* objectTypeName, const char* indent,
                   bool skeleton,
-                  bool generic,
-                  bool java,
-                  bool cplusplus);
+                  bool generic);
 
 #endif  // ESIDL_H_INCLUDED

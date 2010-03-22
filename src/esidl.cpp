@@ -934,33 +934,20 @@ int output(const char* filename,
            const char* objectTypeName,
            const char* indent,
            bool skeleton,
-           bool generic,
-           bool java,
-           bool cplusplus)
+           bool generic)
 {
     Forward forward(filename);
     getSpecification()->accept(&forward);
     forward.generateForwardDeclarations();
 
-    if (java)
+    printCxx(filename, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+    if (skeleton)
     {
-        printJava(filename, indent);
+        printSkeleton(filename, isystem, indent);
     }
-    else if (cplusplus)
+    if (generic)
     {
-        printCPlusPlus(filename, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
-    }
-    else
-    {
-        printCxx(filename, stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
-        if (skeleton)
-        {
-            printSkeleton(filename, isystem, indent);
-        }
-        if (generic)
-        {
-            printTemplate(filename, stringTypeName, objectTypeName, useExceptions, isystem, indent);
-        }
+        printTemplate(filename, stringTypeName, objectTypeName, useExceptions, isystem, indent);
     }
     return EXIT_SUCCESS;
 }

@@ -39,14 +39,14 @@ class CPlusPlusTemplate : public CPlusPlus
     }
 
 public:
-    CPlusPlusTemplate(const char* source, FILE* file, const char* indent = "es") :
-        CPlusPlus(source, file, "std::string", "Object", true, indent)
+    CPlusPlusTemplate(FILE* file, const char* indent = "es") :
+        CPlusPlus(file, "std::string", "Object", true, indent)
     {
         currentNode = 0;
     }
 
-    CPlusPlusTemplate(const char* source, const Formatter* formattter) :
-        CPlusPlus(source, formattter, "std::string", "Object", true)
+    CPlusPlusTemplate(const Formatter* formattter) :
+        CPlusPlus(formattter, "std::string", "Object", true)
     {
         currentNode = 0;
     }

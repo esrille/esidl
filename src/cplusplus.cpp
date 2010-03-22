@@ -149,14 +149,14 @@ std::string CPlusPlus::getEscapedName(std::string name)
 class CPlusPlusInterface : public CPlusPlus
 {
 public:
-    CPlusPlusInterface(const char* source, FILE* file, const char* indent = "es") :
-        CPlusPlus(source, file, "std::string", "Object", true, indent)
+    CPlusPlusInterface(FILE* file, const char* indent = "es") :
+        CPlusPlus(file, "std::string", "Object", true, indent)
     {
         currentNode = 0;
     }
 
-    CPlusPlusInterface(const char* source, const Formatter* formattter) :
-        CPlusPlus(source, formattter, "std::string", "Object", true)
+    CPlusPlusInterface(const Formatter* formattter) :
+        CPlusPlus(formattter, "std::string", "Object", true)
     {
         currentNode = 0;
     }
@@ -275,7 +275,7 @@ public:
             writeln("return 0;");
         writeln("}");
 
-        CPlusPlusMeta meta(source, this);
+        CPlusPlusMeta meta(this);
         const_cast<Interface*>(node)->accept(&meta);
 
 #ifdef USE_CONSTRUCTOR
@@ -296,11 +296,11 @@ public:
 #endif
 
         writeln("");
-        CPlusPlusCall call(source, this);
+        CPlusPlusCall call(this);
         call.at(node);
 
         writeln("");
-        CPlusPlusInvoke invoke(source, this);
+        CPlusPlusInvoke invoke(this);
         invoke.at(node);
 
         writeln("};");
@@ -434,14 +434,14 @@ class CPlusPlusInclude: public CPlusPlus
     std::set<const Node*> includeSet;
 
 public:
-    CPlusPlusInclude(const char* source, FILE* file, const char* indent = "es") :
-        CPlusPlus(source, file, "std::string", "Object", true, indent)
+    CPlusPlusInclude(FILE* file, const char* indent = "es") :
+        CPlusPlus(file, "std::string", "Object", true, indent)
     {
         currentNode = 0;
     }
 
-    CPlusPlusInclude(const char* source, const Formatter* formattter) :
-        CPlusPlus(source, formattter, "std::string", "Object", true)
+    CPlusPlusInclude(const Formatter* formattter) :
+        CPlusPlus(formattter, "std::string", "Object", true)
     {
         currentNode = 0;
     }
@@ -671,8 +671,6 @@ public:
 // Print the required class forward declarations and typedef statments.
 class CPlusPlusImport : public Visitor, public Formatter
 {
-    const char* source;
-
     std::string package;
     const Node* currentNode;
     bool printed;
@@ -685,9 +683,8 @@ class CPlusPlusImport : public Visitor, public Formatter
 
 public:
     CPlusPlusImport(std::string package,
-                    const char* source, FILE* file, const char* indent,
+                    FILE* file, const char* indent,
                     CPlusPlusNameSpace* ns) :
-        source(source),
         Formatter(file, indent),
         package(package),
         currentNode(0),
@@ -837,7 +834,7 @@ public:
             {
                 std::string name = CPlusPlus::getPackageName(module->getPrefixedName()) + "." + (*i)->getName();
                 size_t pos = ns->enter(name);
-                CPlusPlusInterface cplusplusInterface(source, this);
+                CPlusPlusInterface cplusplusInterface(this);
                 cplusplusInterface.at(*i);
                 newline = true;
             }
@@ -852,14 +849,12 @@ public:
 
 class CPlusPlusVisitor : public Visitor
 {
-    const char* source;
     const char* indent;
 
     std::string prefixedName;
 
 public:
-    CPlusPlusVisitor(const char* source, const char* indent = "es") :
-        source(source),
+    CPlusPlusVisitor(const char* indent = "es") :
         indent(indent)
     {
     }
@@ -883,7 +878,7 @@ public:
 
     virtual void at(const ExceptDcl* node)
     {
-        if (1 < node->getRank() || node->isLeaf() || !node->isDefinedIn(source))
+        if (1 < node->getRank() || node->isLeaf())
         {
             return;
         }
@@ -909,7 +904,7 @@ public:
         CPlusPlusNameSpace ns(file, indent);
         ns.enter(name);
 
-        CPlusPlusInterface cplusplusInterface(source, file, indent);
+        CPlusPlusInterface cplusplusInterface(file, indent);
         cplusplusInterface.at(node);
 
         ns.closeAll();
@@ -921,7 +916,7 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if (1 < node->getRank() || node->isLeaf() || !node->isDefinedIn(source) ||
+        if (1 < node->getRank() || node->isLeaf() ||
             (node->getAttr() & Interface::Supplemental))
         {
             return;
@@ -947,24 +942,24 @@ public:
         // body
 
         // The base classes and exception classes need to be defined.
-        CPlusPlusInclude include(source, file, indent);
+        CPlusPlusInclude include(file, indent);
         include.at(node);
         include.print();
 
         CPlusPlusNameSpace ns(file, indent);
 
-        CPlusPlusImport import(CPlusPlus::getPackageName(prefixedName), source, file, indent, &ns);
+        CPlusPlusImport import(CPlusPlus::getPackageName(prefixedName), file, indent, &ns);
         import.at(node);
         import.print();
 
         ns.enter(name);
 
-        CPlusPlusInterface cplusplusInterface(source, file, indent);
+        CPlusPlusInterface cplusplusInterface(file, indent);
         cplusplusInterface.at(node);
 
         fprintf(file, "\n");
 
-        CPlusPlusTemplate cplusplusTemplate(0, file, indent);
+        CPlusPlusTemplate cplusplusTemplate(file, indent);
         cplusplusTemplate.at(node);
 
         ns.closeAll();
@@ -975,9 +970,10 @@ public:
     }
 };
 
-void printCPlusPlus(const char* source, const char* stringTypeName, const char* objectTypeName,
-                    bool useExceptions, bool useVirtualBase, const char* indent)
+int printCPlusPlus(const char* stringTypeName, const char* objectTypeName,
+                   bool useExceptions, bool useVirtualBase, const char* indent)
 {
-    CPlusPlusVisitor visitor(source, indent);
+    CPlusPlusVisitor visitor(indent);
     getSpecification()->accept(&visitor);
+    return 0;
 }

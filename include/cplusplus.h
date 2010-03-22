@@ -31,8 +31,6 @@
 class CPlusPlus : public Visitor, public Formatter
 {
 protected:
-    const char* source;
-
     std::string stringTypeName;
     std::string objectTypeName;
     bool useExceptions;
@@ -68,10 +66,6 @@ protected:
         const Node* saved = currentNode;
         for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
         {
-            if (!(*i)->isDefinedIn(source))
-            {
-                continue;
-            }
             if ((*i)->isNative(node->getParent()))
             {
                 continue;
@@ -124,10 +118,9 @@ protected:
     }
 
 public:
-    CPlusPlus(const char* source, FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
+    CPlusPlus(FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
               bool useExceptions = true, const char* indent = "es") :
         Formatter(file, indent),
-        source(source),
         stringTypeName(stringTypeName),
         objectTypeName(objectTypeName),
         useExceptions(useExceptions),
@@ -139,10 +132,9 @@ public:
         qualifiedModuleName = currentNode->getQualifiedModuleName();
     }
 
-    CPlusPlus(const char* source, const Formatter* formatter, const char* stringTypeName = "char*", const char* objectTypeName = "object",
+    CPlusPlus(const Formatter* formatter, const char* stringTypeName = "char*", const char* objectTypeName = "object",
               bool useExceptions = true) :
         Formatter(formatter),
-        source(source),
         stringTypeName(stringTypeName),
         objectTypeName(objectTypeName),
         useExceptions(useExceptions),

@@ -311,26 +311,36 @@ int main(int argc, char* argv[])
     Meta meta(objectTypeName);
     getSpecification()->accept(&meta);
 
-    for (int i = 1; i < argc; ++i)
+    if (java)
     {
-        if (argv[i][0] == '-')
-        {
-            if (strcmp(argv[i], "-I") == 0 ||
-                strcmp(argv[i], "-include") == 0 ||
-                strcmp(argv[i], "-indent") == 0 ||
-                strcmp(argv[i], "-isystem") == 0 ||
-                strcmp(argv[i], "-namespace") == 0 ||
-                strcmp(argv[i], "-object") == 0 ||
-                strcmp(argv[i], "-string") == 0)
-            {
-                ++i;
-            }
-            continue;
-        }
-        result = output(argv[i], isystem, useExceptions, useVirtualBase,
-                        stringTypeName, objectTypeName, indent,
-                        skeleton, generic, java, cplusplus);
+        result = printJava(indent);
     }
-
+    else if (cplusplus)
+    {
+        result = printCPlusPlus(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+    }
+    else
+    {
+        for (int i = 1; i < argc; ++i)
+        {
+            if (argv[i][0] == '-')
+            {
+                if (strcmp(argv[i], "-I") == 0 ||
+                    strcmp(argv[i], "-include") == 0 ||
+                    strcmp(argv[i], "-indent") == 0 ||
+                    strcmp(argv[i], "-isystem") == 0 ||
+                    strcmp(argv[i], "-namespace") == 0 ||
+                    strcmp(argv[i], "-object") == 0 ||
+                    strcmp(argv[i], "-string") == 0)
+                {
+                    ++i;
+                }
+                continue;
+            }
+            result = output(argv[i], isystem, useExceptions, useVirtualBase,
+                            stringTypeName, objectTypeName, indent,
+                            skeleton, generic);
+        }
+    }
     return result;
 }

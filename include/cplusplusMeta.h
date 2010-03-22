@@ -58,8 +58,8 @@ class CPlusPlusMeta : public CPlusPlus
     }
 
 public:
-    CPlusPlusMeta(const char* source, Formatter* formatter) :
-        CPlusPlus(source, formatter, "std::string", "Object", true),
+    CPlusPlusMeta(Formatter* formatter) :
+        CPlusPlus(formatter, "std::string", "Object", true),
         offset(0)
     {
         formatter->flush();
