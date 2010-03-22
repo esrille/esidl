@@ -262,7 +262,36 @@ bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
 
 bool StubObject::setProperty(NPIdentifier name, const NPVariant* value)
 {
-    return false;
+    NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
+    if (!identifier)
+    {
+        return false;
+    }
+
+    printf("%s(%s)\n", __func__, identifier);
+
+    bool found = false;
+    unsigned interfaceNumber = 0;
+    unsigned symbolNumber = 0;
+    for (;; ++symbolNumber)
+    {
+        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!offset)
+        {
+            break;
+        }
+        const char* metaData = object->getMetaData(interfaceNumber);
+        metaData += offset;
+        if (*metaData == Reflect::kSetter)
+        {
+            Any argument = convertToAny(npp, value);  // TODO: Use , type)
+            object->call(interfaceNumber, symbolNumber, 1, &argument);
+            found = true;
+            break;
+        }
+    }
+    NPN_MemFree(identifier);
+    return found;
 }
 
 bool StubObject::removeProperty(NPIdentifier name)
