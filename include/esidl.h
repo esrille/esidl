@@ -129,6 +129,8 @@ public:
     // [Undefined]
     static const uint32_t UndefinedIsEmpty =         0x00020000;
     static const uint32_t UndefinedIsNull =          0x00040000;
+    // [AllowAny]
+    static const uint32_t AllowAny =                 0x00080000;  // TODO: Update meta
     // [Replaceable]
     static const uint32_t Replaceable =              0x00100000;
     // [Optional]
@@ -139,6 +141,8 @@ public:
     static const uint32_t Supplemental =             0x02000000;
     // [Constructor]
     static const uint32_t Constructor =              0x04000000;
+    // [OverrideBuiltins]
+    static const uint32_t OverrideBuiltins=          0x08000000;  // TODO: Update meta
 
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);

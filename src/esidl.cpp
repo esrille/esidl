@@ -335,6 +335,10 @@ void Module::processExtendedAttributes()
         {
             ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }
+        else
+        {
+            ext->report("Warning: unknown extended attribute '%s'.", ext->getName().c_str());
+        }
     }
 }
 
@@ -407,6 +411,10 @@ void Interface::processExtendedAttributes()
             }
             constructor->add(op);
         }
+        else if (ext->getName() == "OverrideBuiltins")
+        {
+            attr |= OverrideBuiltins;
+        }
         else if (ext->getName() == "Supplemental")
         {
             attr |= Supplemental;
@@ -417,6 +425,10 @@ void Interface::processExtendedAttributes()
                  ext->getName() == "Stringifies")
         {
             ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
+        }
+        else
+        {
+            ext->report("Warning: unknown extended attribute '%s'.", ext->getName().c_str());
         }
     }
 
@@ -480,6 +492,10 @@ void Attribute::processExtendedAttributes()
         {
             ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }
+        else
+        {
+            ext->report("Warning: unknown extended attribute '%s'.", ext->getName().c_str());
+        }
     }
     setAttr(attr);
 }
@@ -533,6 +549,10 @@ void OpDcl::processExtendedAttributes()
         {
             ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }
+        else
+        {
+            ext->report("Warning: unknown extended attribute '%s'.", ext->getName().c_str());
+        }
     }
     setAttr(attr);
 }
@@ -573,12 +593,20 @@ void ParamDcl::processExtendedAttributes()
                 }
             }
         }
+        else if (ext->getName() == "AllowAny")
+        {
+            attr |= AllowAny;
+        }
         else if (ext->getName() == "Null" ||
                  ext->getName() == "Undefined" ||
                  ext->getName() == "Optional" ||
                  ext->getName() == "Variadic")
         {
             ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
+        }
+        else
+        {
+            ext->report("Warning: unknown extended attribute '%s'.", ext->getName().c_str());
         }
     }
     setAttr(attr);
