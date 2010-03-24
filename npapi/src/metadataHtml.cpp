@@ -69,4 +69,9 @@ void initializeHtmlMetaData()
     registerMetaData(Document::getMetaData(),
                      reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance),
                      "HTMLDocument");
+
+    // WebKit uses "DOMWindow" instead of "Window"
+    registerMetaData(html::Window::getMetaData(),
+                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::Window_Bridge<Any, invoke> >::createInstance),
+                     "DOMWindow");
 }
