@@ -1,0 +1,22 @@
+#!/bin/bash -v
+cd
+mkdir nacl
+cd nacl
+wget http://build.chromium.org/buildbot/snapshots/nacl/sdk-linux/naclsdk_linux.tgz
+tar -zxvf naclsdk_linux.tgz
+export PATH=`pwd`/sdk/nacl-sdk/bin:$PATH
+mkdir esidl
+cd esidl
+svn checkout http://es-operating-system.googlecode.com/svn/trunk/esidl src
+mkdir obj
+cd obj
+../src/configure --prefix=`pwd`/../../sdk/nacl-sdk --disable-java --disable-cplusplus --disable-npapi
+make
+make install
+cd ..
+mkdir nacl
+cd nacl
+CXXFLAGS='-Os -fno-rtti -fno-exceptions' ../src/configure --disable-java --host=nacl --target=nacl
+make
+# install npapi/sample/npessample.nexe and ../src/npapi/sample/sample.nacl.html
+
