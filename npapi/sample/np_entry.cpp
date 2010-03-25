@@ -177,11 +177,9 @@ NP_Initialize(NPNetscapeFuncs* pFuncs
 #ifdef OJI
   pluginFuncs->javaClass  = NPP_GetJavaClass();
 #endif
-
-  NPP_Initialize();
 #endif
 
-  return NPERR_NO_ERROR;
+  return NPP_Initialize();
 }
 
 NPError OSCALL NP_Shutdown()
