@@ -25,9 +25,9 @@ using namespace org::w3c::dom;
 
 void initializeFileMetaData()
 {
-    registerMetaData(file::Blob::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, file::Blob_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(file::FileError::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, file::FileError_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(file::File::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, file::File_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(file::FileReader::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, file::FileReader_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(file::FileReaderSync::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, file::FileReaderSync_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(file::Blob::getMetaData(), Proxy_Impl<ProxyObject, file::Blob_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(file::FileError::getMetaData(), Proxy_Impl<ProxyObject, file::FileError_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(file::File::getMetaData(), Proxy_Impl<ProxyObject, file::File_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(file::FileReader::getMetaData(), Proxy_Impl<ProxyObject, file::FileReader_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(file::FileReaderSync::getMetaData(), Proxy_Impl<ProxyObject, file::FileReaderSync_Bridge<Any, invoke> >::createInstance);
 }

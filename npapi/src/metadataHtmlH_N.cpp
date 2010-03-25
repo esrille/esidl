@@ -25,23 +25,23 @@ using namespace org::w3c::dom;
 
 void initializeHtmlMetaDataH_N()
 {
-    registerMetaData(html::HTMLHeadElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLHeadElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLHeadingElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLHeadingElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLHRElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLHRElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLHtmlElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLHtmlElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLIFrameElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLIFrameElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLImageElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLImageElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLInputElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLInputElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLKeygenElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLKeygenElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLLabelElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLLabelElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLLegendElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLLegendElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLLIElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLLIElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLLinkElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLLinkElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLMapElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLMapElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLMarqueeElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLMarqueeElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLMediaElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLMediaElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLMenuElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLMenuElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLMetaElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLMetaElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLMeterElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLMeterElement_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(html::HTMLModElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLModElement_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(html::HTMLHeadElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLHeadElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLHeadingElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLHeadingElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLHRElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLHRElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLHtmlElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLHtmlElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLIFrameElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLIFrameElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLImageElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLImageElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLInputElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLInputElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLKeygenElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLKeygenElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLLabelElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLLabelElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLLegendElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLLegendElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLLIElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLLIElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLLinkElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLLinkElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLMapElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLMapElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLMarqueeElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLMarqueeElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLMediaElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLMediaElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLMenuElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLMenuElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLMetaElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLMetaElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLMeterElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLMeterElement_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(html::HTMLModElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLModElement_Bridge<Any, invoke> >::createInstance);
 }

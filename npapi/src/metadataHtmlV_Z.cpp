@@ -25,5 +25,5 @@ using namespace org::w3c::dom;
 
 void initializeHtmlMetaDataV_Z()
 {
-    registerMetaData(html::HTMLVideoElement::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, html::HTMLVideoElement_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(html::HTMLVideoElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLVideoElement_Bridge<Any, invoke> >::createInstance);
 }

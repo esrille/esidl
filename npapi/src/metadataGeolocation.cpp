@@ -25,12 +25,12 @@ using namespace org::w3c::dom;
 
 void initializeGeolocationMetaData()
 {
-    registerMetaData(geolocation::Coordinates::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, geolocation::Coordinates_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(geolocation::Geolocation::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, geolocation::Geolocation_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(geolocation::NavigatorGeolocation::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, geolocation::NavigatorGeolocation_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(geolocation::PositionCallback::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, geolocation::PositionCallback_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(geolocation::PositionErrorCallback::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, geolocation::PositionErrorCallback_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(geolocation::PositionError::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, geolocation::PositionError_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(geolocation::Position::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, geolocation::Position_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(geolocation::PositionOptions::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, geolocation::PositionOptions_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(geolocation::Coordinates::getMetaData(), Proxy_Impl<ProxyObject, geolocation::Coordinates_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(geolocation::Geolocation::getMetaData(), Proxy_Impl<ProxyObject, geolocation::Geolocation_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(geolocation::NavigatorGeolocation::getMetaData(), Proxy_Impl<ProxyObject, geolocation::NavigatorGeolocation_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(geolocation::PositionCallback::getMetaData(), Proxy_Impl<ProxyObject, geolocation::PositionCallback_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(geolocation::PositionErrorCallback::getMetaData(), Proxy_Impl<ProxyObject, geolocation::PositionErrorCallback_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(geolocation::PositionError::getMetaData(), Proxy_Impl<ProxyObject, geolocation::PositionError_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(geolocation::Position::getMetaData(), Proxy_Impl<ProxyObject, geolocation::Position_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(geolocation::PositionOptions::getMetaData(), Proxy_Impl<ProxyObject, geolocation::PositionOptions_Bridge<Any, invoke> >::createInstance);
 }

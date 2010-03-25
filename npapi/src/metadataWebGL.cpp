@@ -25,26 +25,26 @@ using namespace org::w3c::dom;
 
 void initializeWebGLMetaData()
 {
-    registerMetaData(webgl::WebGLActiveInfo::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLActiveInfo_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLArrayBuffer::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLArrayBuffer_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLArray_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLBuffer::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLBuffer_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLByteArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLByteArray_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLContextAttributes::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLContextAttributes_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLFloatArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLFloatArray_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLFramebuffer::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLFramebuffer_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLIntArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLIntArray_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLObjectArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLObjectArray_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLObject::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLObject_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLProgram::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLProgram_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLRenderbuffer::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLRenderbuffer_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLRenderingContext::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLRenderingContext_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLResourceLostEvent::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLResourceLostEvent_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLShader::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLShader_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLShortArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLShortArray_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLTexture::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLTexture_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLUniformLocation::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLUniformLocation_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLUnsignedByteArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLUnsignedByteArray_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLUnsignedIntArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLUnsignedIntArray_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(webgl::WebGLUnsignedShortArray::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, webgl::WebGLUnsignedShortArray_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(webgl::WebGLActiveInfo::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLActiveInfo_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLArrayBuffer::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLArrayBuffer_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLArray_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLBuffer::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLBuffer_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLByteArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLByteArray_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLContextAttributes::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLContextAttributes_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLFloatArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLFloatArray_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLFramebuffer::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLFramebuffer_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLIntArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLIntArray_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLObjectArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLObjectArray_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLObject::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLObject_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLProgram::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLProgram_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLRenderbuffer::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLRenderbuffer_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLRenderingContext::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLRenderingContext_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLResourceLostEvent::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLResourceLostEvent_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLShader::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLShader_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLShortArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLShortArray_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLTexture::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLTexture_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLUniformLocation::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUniformLocation_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLUnsignedByteArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedByteArray_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLUnsignedIntArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedIntArray_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLUnsignedShortArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedShortArray_Bridge<Any, invoke> >::createInstance);
 }

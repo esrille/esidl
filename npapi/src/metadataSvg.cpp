@@ -25,10 +25,10 @@ using namespace org::w3c::dom;
 
 void initializeSvgMetaData()
 {
-    registerMetaData(smil::ElementTimeControl::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, smil::ElementTimeControl_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(smil::TimeEvent::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, smil::TimeEvent_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(svg::GetSVGDocument::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::GetSVGDocument_Bridge<Any, invoke> >::createInstance));
-    registerMetaData(svg::SVGZoomEvent::getMetaData(), reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, svg::SVGZoomEvent_Bridge<Any, invoke> >::createInstance));
+    registerMetaData(smil::ElementTimeControl::getMetaData(), Proxy_Impl<ProxyObject, smil::ElementTimeControl_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(smil::TimeEvent::getMetaData(), Proxy_Impl<ProxyObject, smil::TimeEvent_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(svg::GetSVGDocument::getMetaData(), Proxy_Impl<ProxyObject, svg::GetSVGDocument_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(svg::SVGZoomEvent::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGZoomEvent_Bridge<Any, invoke> >::createInstance);
 
     initializeSvgMetaDataA_E();
     initializeSvgMetaDataF_G();
@@ -37,6 +37,6 @@ void initializeSvgMetaData()
     initializeSvgMetaDataV_Z();
 
     registerMetaData(Document::getMetaData(),
-                     reinterpret_cast<Object* (*)(ProxyObject)>(Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance),
+                     Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance,
                      "XMLDocument");
 }
