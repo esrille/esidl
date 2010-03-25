@@ -270,12 +270,12 @@ Object* createProxy(NPP npp, NPObject* object)
         return 0;
     }
 
-    std::map<std::string, Object* (*)(ProxyObject object)>::iterator it;
+    std::map<const std::string, Object* (*)(ProxyObject object)>::iterator it;
     it = proxyConstructorMap.find(className);
     if (it != proxyConstructorMap.end())
     {
         std::string interfaceName = getInterfaceName(npp, object);
-        ProxyObject browserObject = ProxyObject(object, npp, interfaceName);
+        ProxyObject browserObject(object, npp, interfaceName);
         return (*it).second(browserObject);
     }
     return 0;
