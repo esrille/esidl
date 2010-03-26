@@ -22,8 +22,15 @@
 
 using std::strlen;  // for STRINGZ_TO_NPVARIANT
 
+#ifdef __native_client__
+#include "nacl/npapi.h"
+#include "nacl/npruntime.h"
+#define utf8characters UTF8Characters
+#define utf8length     UTF8Length
+#else
 #include "npapi/npapi.h"
 #include "npapi/npruntime.h"
+#endif
 
 extern "C" NPObject* NPP_GetScriptableInstance(NPP instance);
 
