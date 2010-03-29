@@ -102,6 +102,5 @@ EXTRA_DIST = \
 	dom/wget_webidl_dom \
 	dom/workers.idl \
 	dom/xhr2.idl \
-	setup.nacl \
 	setup.pepper
 
