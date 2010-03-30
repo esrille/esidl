@@ -635,18 +635,18 @@ Operation :
                 if (($1 & OpDcl::IndexGetter) || ($1 & OpDcl::IndexDeleter))
                 {
                     op->check(op->getParamCount() == 1,
-                            "Getters and deleters MUST be declared to take a single argument.");
+                              "Getters and deleters MUST be declared to take a single argument.");
                 }
                 if (($1 & OpDcl::IndexCreator) || ($1 & OpDcl::IndexSetter))
                 {
                     op->check(op->getParamCount() == 2,
-                            "Setters and creators MUST be declared to take two arguments.");
+                              "Setters and creators MUST be declared to take two arguments.");
                 }
                 if ($1 & OpDcl::IndexMask)
                 {
                     Node* spec = dynamic_cast<ParamDcl*>(*(op->begin()))->getSpec();
                     op->check(spec->getName() == "unsigned long" || spec->getName() == "string",
-                            "The first argument MUST be an unsigned long or a DOMString.");
+                              "The first argument MUST be an unsigned long or a DOMString.");
                 }
                 attr |= $1;
                 op->setAttr(attr);
@@ -710,15 +710,7 @@ OperationRest :
             OpDcl* op = static_cast<OpDcl*>(getCurrent());
             op->setRaises($7);
             setCurrent(op->getParent());
-            if ($2)
-            {
-                $$ = op;
-            }
-            else
-            {
-                $$ = 0;
-                getCurrent()->remove(op);
-            }
+            $$ = op;
         }
     ;
 

@@ -144,6 +144,11 @@ public:
     // [OverrideBuiltins]
     static const uint32_t OverrideBuiltins=          0x08000000;  // TODO: Update meta
 
+    // misc. bits
+    static const uint32_t HasIndexedProperties =     0x10000000;
+    static const uint32_t HasNamedProperties =       0x20000000;
+    static const uint32_t UnnamedProperty =          0x40000000;  // This should be banned.
+
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);
 
@@ -1550,6 +1555,10 @@ public:
         methodCount(1)
     {
         children = new NodeList;
+        if (identifier == "")
+        {
+            attr |= UnnamedProperty;
+        }
     }
 
     virtual void add(Node* node);
@@ -1921,23 +1930,22 @@ public:
 
     virtual void at(const Interface* node)
     {
+        if (!node->isLeaf())
+        {
+            for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
+            {
+                (*i)->accept(this);
+                if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
+                {
+                    const_cast<Interface*>(node)->processExtendedAttributes(op);
+                }
+                else if (Attribute* attr = dynamic_cast<Attribute*>(*i))
+                {
+                    const_cast<Interface*>(node)->processExtendedAttributes(attr);
+                }
+            }
+        }
         const_cast<Interface*>(node)->processExtendedAttributes();
-        if (node->isLeaf())
-        {
-            return;
-        }
-        for (NodeList::iterator i = node->begin(); i != node->end(); ++i)
-        {
-            (*i)->accept(this);
-            if (OpDcl* op = dynamic_cast<OpDcl*>(*i))
-            {
-                const_cast<Interface*>(node)->processExtendedAttributes(op);
-            }
-            else if (Attribute* attr = dynamic_cast<Attribute*>(*i))
-            {
-                const_cast<Interface*>(node)->processExtendedAttributes(attr);
-            }
-        }
     }
 
     virtual void at(const Attribute* node)

@@ -502,12 +502,52 @@ void Attribute::processExtendedAttributes()
 
 void OpDcl::processExtendedAttributes()
 {
+    uint32_t attr = getAttr();
+
+    // Check indexed/named properties
+    if (attr & IndexMask)
+    {
+        Node* spec = dynamic_cast<ParamDcl*>(*(begin()))->getSpec();
+        Node* interface = getParent();
+        if (spec->getName() == "unsigned long")
+        {
+            interface->setAttr(interface->getAttr() | HasIndexedProperties);
+        }
+        else if (spec->getName() == "string")
+        {
+            interface->setAttr(interface->getAttr() | HasNamedProperties);
+        }
+        if (attr & UnnamedProperty)
+        {
+            if (attr & IndexGetter)
+            {
+                getName() = "getElement";
+            }
+            else if (attr & IndexSetter)
+            {
+                getName() = "setElement";
+            }
+            else if (attr & IndexCreator)
+            {
+                getName() = "createElement";
+            }
+            else if (attr & IndexDeleter)
+            {
+                getName() = "deleteElement";
+            }
+        }
+    }
+    if ((attr & UnnamedProperty) && (attr & Stringifier))
+    {
+        getName() = "toString";
+    }
+
+    // Process extended attributes
     NodeList* list = getExtendedAttributes();
     if (!list)
     {
         return;
     }
-    uint32_t attr = getAttr();
     for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
