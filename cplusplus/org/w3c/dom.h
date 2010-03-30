@@ -47,6 +47,7 @@
 #include <org/w3c/dom/NodeList.h>
 #include <org/w3c/dom/Notation.h>
 #include <org/w3c/dom/ObjectArray.h>
+#include <org/w3c/dom/ObjectMap.h>
 #include <org/w3c/dom/ProcessingInstruction.h>
 #include <org/w3c/dom/Text.h>
 #include <org/w3c/dom/TypeInfo.h>
