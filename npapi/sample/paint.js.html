@@ -1,0 +1,79 @@
+<html>
+
+<head>
+<title>Paint</title>
+
+<style type="text/css">
+.pen { cursor: url(pen.png) 2 20, pointer }
+.eraser { cursor: url(eraser.png) 14 23, pointer }
+</style>
+
+<script type="text/javascript">
+
+function down(e)
+{
+    var context = e.target.getContext("2d");
+    context.beginPath();
+    context.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+    e.target.addEventListener('mousemove', move, true);
+}
+
+function move(e)
+{
+    var context = e.target.getContext("2d");
+    context.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+    context.stroke();
+}
+
+function up(e)
+{
+    e.target.removeEventListener('mousemove', move, true);
+    var context = e.target.getContext("2d");
+    context.closePath();
+}
+
+function select(e)
+{
+    var y = e.clientY - e.target.offsetTop;
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    if (y < 24)
+    {
+        context.strokeStyle = "black";
+        context.lineWidth = 1;
+        canvas.setAttribute("class", "pen");
+    }
+    else
+    {
+        context.strokeStyle = "white";
+        context.lineWidth = 10;
+        canvas.setAttribute("class", "eraser");
+    }
+}
+
+function init()
+{
+    document.onselectstart = function () { return false ; };
+
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+
+    context.fillStyle = "rgb(255, 255, 255)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    canvas.addEventListener('mousedown', down, true);
+    canvas.addEventListener('mouseup', up, true);
+
+    var tools = document.getElementById("tools");
+    tools.addEventListener('mousedown', select, true);
+}
+
+</script>
+
+</head>
+<body bgcolor="#edeceb" onload="init();">
+<img id="tools" src="tools.png" align="top">
+<canvas id="canvas" width="320" height="240" class="pen"></canvas>
+</body>
+
+</html>
