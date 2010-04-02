@@ -151,7 +151,9 @@ NP_Initialize(NPNetscapeFuncs* pFuncs
   NPNFuncs.hasmethod               = pFuncs->hasmethod;
   NPNFuncs.releasevariantvalue     = pFuncs->releasevariantvalue;
   NPNFuncs.setexception            = pFuncs->setexception;
+  NPNFuncs.enumerate               = pFuncs->enumerate;
   NPNFuncs.pluginthreadasynccall   = pFuncs->pluginthreadasynccall;
+  NPNFuncs.construct               = pFuncs->construct;
 
 #ifdef XP_UNIX
   /*
