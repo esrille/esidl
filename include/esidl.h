@@ -1308,7 +1308,7 @@ public:
         delete spec;
     }
 
-    Node* getSpec() const
+    virtual Node* getSpec() const
     {
         return spec;
     }
@@ -1612,6 +1612,8 @@ public:
         assert(0 <= i && i < methodCount);
         return (methodCount == 1) ? paramCount : paramCounts[i];
     }
+
+    virtual Node* getSpec() const;
 
     virtual void accept(Visitor* visitor);
 };

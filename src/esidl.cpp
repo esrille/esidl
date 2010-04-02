@@ -303,6 +303,23 @@ void OpDcl::adjustMethodCount()
     interface->addMethodCount(methodCount - 1);
 }
 
+Node* OpDcl::getSpec() const
+{
+    static Type any("any");
+
+    Node* interface = getParent();
+    if (interface)
+    {
+        if ((interface->getAttr() & Interface::OverrideBuiltins) &&
+            (getAttr() & OpDcl::IndexGetter) &&
+            dynamic_cast<ParamDcl*>(*(this->begin()))->getSpec()->getName() == "string")
+        {
+            return &any;
+        }
+    }
+    return Member::getSpec();
+}
+
 void Implements::resolve(bool importImplements)
 {
     Interface* interface = dynamic_cast<Interface*>(getFirst()->search(getParent()));
