@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<title>XMLHttpRequest</title>
+<script type="text/javascript">
+function load(e)
+{
+    xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', display, true);
+    xhr.open("GET", "xhr.txt", true);
+    xhr.send();
+}
+
+function display(e)
+{
+    document.form.result.value = e.target.responseText;
+}
+
+function init()
+{
+    document.form.button.addEventListener('click', load, true);
+}
+</script>
+</head>
+<body onload="init()">
+<form name="form">
+<input type="text" name="result"></input><br>
+<button type="button" name="button">Load</button>
+</form>
+</body>
+</html>
+

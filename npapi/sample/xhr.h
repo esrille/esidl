@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef SAMPLE_PAINT_H_
-#define SAMPLE_PAINT_H_
+#ifndef SAMPLE_XHR_H_
+#define SAMPLE_XHR_H_
 
 #include "esnpapi.h"
 
@@ -28,8 +28,7 @@ class EventHandler;
 class PluginInstance {
  public:
   explicit PluginInstance(org::w3c::dom::html::Window* window)
-      : window(window),
-        penDown(false) {
+      : window(window) {
     initialize();
   }
   ~PluginInstance();
@@ -41,18 +40,12 @@ class PluginInstance {
  private:
   org::w3c::dom::html::Window* window;
 
-  EventHandler* downHandler;
-  EventHandler* moveHandler;
-  EventHandler* upHandler;
-  EventHandler* selectHandler;
-
-  bool penDown;
+  EventHandler* loadHandler;
+  EventHandler* displayHandler;
 
   void initialize();
-  void down(org::w3c::dom::events::Event* evt);
-  void move(org::w3c::dom::events::Event* evt);
-  void up(org::w3c::dom::events::Event* evt);
-  void select(org::w3c::dom::events::Event* evt);
+  void load(org::w3c::dom::events::Event* evt);
+  void display(org::w3c::dom::events::Event* evt);
 };
 
 class EventHandler : public org::w3c::dom::events::EventListener {
@@ -77,4 +70,4 @@ class EventHandler : public org::w3c::dom::events::EventListener {
   void (PluginInstance::*handler)(org::w3c::dom::events::Event* evt);
 };
 
-#endif  // SAMPLE_PAINT_H_
+#endif  // SAMPLE_XHR_H_

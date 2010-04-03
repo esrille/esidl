@@ -37,7 +37,8 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 @NACL_FALSE@am__append_1 = -fPIC
-@NACL_TRUE@bin_PROGRAMS = npessample$(EXEEXT) npespaint$(EXEEXT)
+@NACL_TRUE@bin_PROGRAMS = npessample$(EXEEXT) npespaint$(EXEEXT) \
+@NACL_TRUE@	npesxhr$(EXEEXT)
 @NACL_FALSE@am__append_2 = \
 @NACL_FALSE@	npn_gate.cpp
 
@@ -89,6 +90,13 @@ am__libnpessample_la_SOURCES_DIST = np_entry.cpp npp_gate.cpp \
 @NACL_FALSE@	npp_sample.lo sample.lo
 libnpessample_la_OBJECTS = $(am_libnpessample_la_OBJECTS)
 @NACL_FALSE@am_libnpessample_la_rpath = -rpath $(libdir)
+libnpesxhr_la_LIBADD =
+am__libnpesxhr_la_SOURCES_DIST = np_entry.cpp npp_gate.cpp \
+	npn_gate.cpp npp_xhr.cpp xhr.cc xhr.h
+@NACL_FALSE@am_libnpesxhr_la_OBJECTS = $(am__objects_2) npp_xhr.lo \
+@NACL_FALSE@	xhr.lo
+libnpesxhr_la_OBJECTS = $(am_libnpesxhr_la_OBJECTS)
+@NACL_FALSE@am_libnpesxhr_la_rpath = -rpath $(libdir)
 PROGRAMS = $(bin_PROGRAMS)
 am__npespaint_SOURCES_DIST = np_entry.cpp npp_gate.cpp npn_gate.cpp \
 	npp_paint.cpp paint.cc paint.h
@@ -110,6 +118,15 @@ am__objects_6 = npessample-np_entry.$(OBJEXT) \
 @NACL_TRUE@	npessample-sample.$(OBJEXT)
 npessample_OBJECTS = $(am_npessample_OBJECTS)
 npessample_LDADD = $(LDADD)
+am__npesxhr_SOURCES_DIST = np_entry.cpp npp_gate.cpp npn_gate.cpp \
+	npp_xhr.cpp xhr.cc xhr.h
+@NACL_FALSE@am__objects_7 = npesxhr-npn_gate.$(OBJEXT)
+am__objects_8 = npesxhr-np_entry.$(OBJEXT) npesxhr-npp_gate.$(OBJEXT) \
+	$(am__objects_7)
+@NACL_TRUE@am_npesxhr_OBJECTS = $(am__objects_8) \
+@NACL_TRUE@	npesxhr-npp_xhr.$(OBJEXT) npesxhr-xhr.$(OBJEXT)
+npesxhr_OBJECTS = $(am_npesxhr_OBJECTS)
+npesxhr_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -133,10 +150,13 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(libnpespaint_la_SOURCES) $(libnpessample_la_SOURCES) \
-	$(npespaint_SOURCES) $(npessample_SOURCES)
+	$(libnpesxhr_la_SOURCES) $(npespaint_SOURCES) \
+	$(npessample_SOURCES) $(npesxhr_SOURCES)
 DIST_SOURCES = $(am__libnpespaint_la_SOURCES_DIST) \
 	$(am__libnpessample_la_SOURCES_DIST) \
-	$(am__npespaint_SOURCES_DIST) $(am__npessample_SOURCES_DIST)
+	$(am__libnpesxhr_la_SOURCES_DIST) \
+	$(am__npespaint_SOURCES_DIST) $(am__npessample_SOURCES_DIST) \
+	$(am__npesxhr_SOURCES_DIST)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -273,22 +293,28 @@ AM_CPPFLAGS = -fshort-wchar -I $(srcdir) -I ../include -I \
 	$(srcdir)/../../cplusplus -DXP_UNIX \
 	-fno-implicit-inline-templates -fno-default-inline \
 	$(am__append_1)
-@NACL_FALSE@lib_LTLIBRARIES = libnpessample.la libnpespaint.la
+@NACL_FALSE@lib_LTLIBRARIES = libnpessample.la libnpespaint.la libnpesxhr.la
 @NACL_FALSE@AM_LDFLAGS = -L.. -ldl -lesnpapi
 @NACL_TRUE@AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_npruntime -lgoogle_nacl_imc -lpthread -lsrpc
 @NACL_TRUE@npessample_CPPFLAGS = $(AM_CPPFLAGS)
 @NACL_TRUE@npespaint_CPPFLAGS = $(AM_CPPFLAGS)
+@NACL_TRUE@npesxhr_CPPFLAGS = $(AM_CPPFLAGS)
 cpp_source_files = np_entry.cpp npp_gate.cpp $(am__append_2)
 @NACL_FALSE@libnpessample_la_SOURCES = $(cpp_source_files) $(header_files) npp_sample.cpp sample.cpp sample.h
 @NACL_FALSE@libnpespaint_la_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
+@NACL_FALSE@libnpesxhr_la_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 @NACL_TRUE@npessample_SOURCES = $(cpp_source_files) $(header_files) npp_sample.cpp sample.cpp sample.h
 @NACL_TRUE@npespaint_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
+@NACL_TRUE@npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 EXTRA_DIST = \
 	paint.html \
 	paint.nacl.html \
+	eraser.png pen.png tools.png \
 	sample.html \
 	sample.nacl.html \
-	eraser.png pen.png tools.png
+	xhr.html \
+	xhr.nacl.html \
+	xhr.txt
 
 all: all-am
 
@@ -359,6 +385,8 @@ libnpespaint.la: $(libnpespaint_la_OBJECTS) $(libnpespaint_la_DEPENDENCIES)
 	$(CXXLINK) $(am_libnpespaint_la_rpath) $(libnpespaint_la_OBJECTS) $(libnpespaint_la_LIBADD) $(LIBS)
 libnpessample.la: $(libnpessample_la_OBJECTS) $(libnpessample_la_DEPENDENCIES) 
 	$(CXXLINK) $(am_libnpessample_la_rpath) $(libnpessample_la_OBJECTS) $(libnpessample_la_LIBADD) $(LIBS)
+libnpesxhr.la: $(libnpesxhr_la_OBJECTS) $(libnpesxhr_la_DEPENDENCIES) 
+	$(CXXLINK) $(am_libnpesxhr_la_rpath) $(libnpesxhr_la_OBJECTS) $(libnpesxhr_la_LIBADD) $(LIBS)
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
@@ -408,6 +436,9 @@ npespaint$(EXEEXT): $(npespaint_OBJECTS) $(npespaint_DEPENDENCIES)
 npessample$(EXEEXT): $(npessample_OBJECTS) $(npessample_DEPENDENCIES) 
 	@rm -f npessample$(EXEEXT)
 	$(CXXLINK) $(npessample_OBJECTS) $(npessample_LDADD) $(LIBS)
+npesxhr$(EXEEXT): $(npesxhr_OBJECTS) $(npesxhr_DEPENDENCIES) 
+	@rm -f npesxhr$(EXEEXT)
+	$(CXXLINK) $(npesxhr_OBJECTS) $(npesxhr_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -426,12 +457,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npessample-npp_gate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npessample-npp_sample.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npessample-sample.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesxhr-np_entry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesxhr-npn_gate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesxhr-npp_gate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesxhr-npp_xhr.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesxhr-xhr.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npn_gate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_gate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_paint.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_sample.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_xhr.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/paint.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sample.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xhr.Plo@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -593,6 +631,76 @@ npessample-sample.obj: sample.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='sample.cpp' object='npessample-sample.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npessample_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npessample-sample.obj `if test -f 'sample.cpp'; then $(CYGPATH_W) 'sample.cpp'; else $(CYGPATH_W) '$(srcdir)/sample.cpp'; fi`
+
+npesxhr-np_entry.o: np_entry.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-np_entry.o -MD -MP -MF $(DEPDIR)/npesxhr-np_entry.Tpo -c -o npesxhr-np_entry.o `test -f 'np_entry.cpp' || echo '$(srcdir)/'`np_entry.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-np_entry.Tpo $(DEPDIR)/npesxhr-np_entry.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='np_entry.cpp' object='npesxhr-np_entry.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-np_entry.o `test -f 'np_entry.cpp' || echo '$(srcdir)/'`np_entry.cpp
+
+npesxhr-np_entry.obj: np_entry.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-np_entry.obj -MD -MP -MF $(DEPDIR)/npesxhr-np_entry.Tpo -c -o npesxhr-np_entry.obj `if test -f 'np_entry.cpp'; then $(CYGPATH_W) 'np_entry.cpp'; else $(CYGPATH_W) '$(srcdir)/np_entry.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-np_entry.Tpo $(DEPDIR)/npesxhr-np_entry.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='np_entry.cpp' object='npesxhr-np_entry.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-np_entry.obj `if test -f 'np_entry.cpp'; then $(CYGPATH_W) 'np_entry.cpp'; else $(CYGPATH_W) '$(srcdir)/np_entry.cpp'; fi`
+
+npesxhr-npp_gate.o: npp_gate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-npp_gate.o -MD -MP -MF $(DEPDIR)/npesxhr-npp_gate.Tpo -c -o npesxhr-npp_gate.o `test -f 'npp_gate.cpp' || echo '$(srcdir)/'`npp_gate.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-npp_gate.Tpo $(DEPDIR)/npesxhr-npp_gate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npp_gate.cpp' object='npesxhr-npp_gate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-npp_gate.o `test -f 'npp_gate.cpp' || echo '$(srcdir)/'`npp_gate.cpp
+
+npesxhr-npp_gate.obj: npp_gate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-npp_gate.obj -MD -MP -MF $(DEPDIR)/npesxhr-npp_gate.Tpo -c -o npesxhr-npp_gate.obj `if test -f 'npp_gate.cpp'; then $(CYGPATH_W) 'npp_gate.cpp'; else $(CYGPATH_W) '$(srcdir)/npp_gate.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-npp_gate.Tpo $(DEPDIR)/npesxhr-npp_gate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npp_gate.cpp' object='npesxhr-npp_gate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-npp_gate.obj `if test -f 'npp_gate.cpp'; then $(CYGPATH_W) 'npp_gate.cpp'; else $(CYGPATH_W) '$(srcdir)/npp_gate.cpp'; fi`
+
+npesxhr-npn_gate.o: npn_gate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-npn_gate.o -MD -MP -MF $(DEPDIR)/npesxhr-npn_gate.Tpo -c -o npesxhr-npn_gate.o `test -f 'npn_gate.cpp' || echo '$(srcdir)/'`npn_gate.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-npn_gate.Tpo $(DEPDIR)/npesxhr-npn_gate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npn_gate.cpp' object='npesxhr-npn_gate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-npn_gate.o `test -f 'npn_gate.cpp' || echo '$(srcdir)/'`npn_gate.cpp
+
+npesxhr-npn_gate.obj: npn_gate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-npn_gate.obj -MD -MP -MF $(DEPDIR)/npesxhr-npn_gate.Tpo -c -o npesxhr-npn_gate.obj `if test -f 'npn_gate.cpp'; then $(CYGPATH_W) 'npn_gate.cpp'; else $(CYGPATH_W) '$(srcdir)/npn_gate.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-npn_gate.Tpo $(DEPDIR)/npesxhr-npn_gate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npn_gate.cpp' object='npesxhr-npn_gate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-npn_gate.obj `if test -f 'npn_gate.cpp'; then $(CYGPATH_W) 'npn_gate.cpp'; else $(CYGPATH_W) '$(srcdir)/npn_gate.cpp'; fi`
+
+npesxhr-npp_xhr.o: npp_xhr.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-npp_xhr.o -MD -MP -MF $(DEPDIR)/npesxhr-npp_xhr.Tpo -c -o npesxhr-npp_xhr.o `test -f 'npp_xhr.cpp' || echo '$(srcdir)/'`npp_xhr.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-npp_xhr.Tpo $(DEPDIR)/npesxhr-npp_xhr.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npp_xhr.cpp' object='npesxhr-npp_xhr.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-npp_xhr.o `test -f 'npp_xhr.cpp' || echo '$(srcdir)/'`npp_xhr.cpp
+
+npesxhr-npp_xhr.obj: npp_xhr.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-npp_xhr.obj -MD -MP -MF $(DEPDIR)/npesxhr-npp_xhr.Tpo -c -o npesxhr-npp_xhr.obj `if test -f 'npp_xhr.cpp'; then $(CYGPATH_W) 'npp_xhr.cpp'; else $(CYGPATH_W) '$(srcdir)/npp_xhr.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-npp_xhr.Tpo $(DEPDIR)/npesxhr-npp_xhr.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npp_xhr.cpp' object='npesxhr-npp_xhr.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-npp_xhr.obj `if test -f 'npp_xhr.cpp'; then $(CYGPATH_W) 'npp_xhr.cpp'; else $(CYGPATH_W) '$(srcdir)/npp_xhr.cpp'; fi`
+
+npesxhr-xhr.o: xhr.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-xhr.o -MD -MP -MF $(DEPDIR)/npesxhr-xhr.Tpo -c -o npesxhr-xhr.o `test -f 'xhr.cc' || echo '$(srcdir)/'`xhr.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-xhr.Tpo $(DEPDIR)/npesxhr-xhr.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xhr.cc' object='npesxhr-xhr.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-xhr.o `test -f 'xhr.cc' || echo '$(srcdir)/'`xhr.cc
+
+npesxhr-xhr.obj: xhr.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesxhr-xhr.obj -MD -MP -MF $(DEPDIR)/npesxhr-xhr.Tpo -c -o npesxhr-xhr.obj `if test -f 'xhr.cc'; then $(CYGPATH_W) 'xhr.cc'; else $(CYGPATH_W) '$(srcdir)/xhr.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesxhr-xhr.Tpo $(DEPDIR)/npesxhr-xhr.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xhr.cc' object='npesxhr-xhr.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesxhr_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesxhr-xhr.obj `if test -f 'xhr.cc'; then $(CYGPATH_W) 'xhr.cc'; else $(CYGPATH_W) '$(srcdir)/xhr.cc'; fi`
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

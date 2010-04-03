@@ -12,13 +12,14 @@ AM_CPPFLAGS = \
 
 if !NACL
 AM_CPPFLAGS += -fPIC
-lib_LTLIBRARIES = libnpessample.la libnpespaint.la
+lib_LTLIBRARIES = libnpessample.la libnpespaint.la libnpesxhr.la
 AM_LDFLAGS = -L.. -ldl -lesnpapi
 else
-bin_PROGRAMS = npessample npespaint
+bin_PROGRAMS = npessample npespaint npesxhr
 AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_npruntime -lgoogle_nacl_imc -lpthread -lsrpc
 npessample_CPPFLAGS = $(AM_CPPFLAGS)
 npespaint_CPPFLAGS = $(AM_CPPFLAGS)
+npesxhr_CPPFLAGS = $(AM_CPPFLAGS)
 endif
 
 cpp_source_files = \
@@ -33,17 +34,21 @@ endif
 if !NACL
 libnpessample_la_SOURCES = $(cpp_source_files) $(header_files) npp_sample.cpp sample.cpp sample.h
 libnpespaint_la_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
+libnpesxhr_la_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 else
 npessample_SOURCES = $(cpp_source_files) $(header_files) npp_sample.cpp sample.cpp sample.h
 npespaint_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
+npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 endif
 
 EXTRA_DIST = \
 	paint.html \
 	paint.nacl.html \
+	eraser.png pen.png tools.png \
 	sample.html \
 	sample.nacl.html \
-	eraser.png pen.png tools.png
-
+	xhr.html \
+	xhr.nacl.html \
+	xhr.txt
 
 
