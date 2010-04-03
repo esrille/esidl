@@ -68,7 +68,7 @@ public:
         {
             currentNode = node->getParent();
             qualifiedModuleName = currentNode->getQualifiedModuleName();
-            className = node->getName();
+            className = getClassName(node);
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
@@ -129,9 +129,9 @@ public:
 
         // Bridge template
         writeln("template<class ARGUMENT, Any (*invoke)(Object*, unsigned, unsigned, const char*, unsigned, unsigned, ARGUMENT*), unsigned I = 0, class B = %s%s>",
-                getEscapedName(node->getName()).c_str(),
+                getEscapedName(getClassName(node)).c_str(),
                 mixinList.empty() ? "" : "_Mixin");
-        write("class %s_Bridge : ", getEscapedName(node->getName()).c_str());
+        write("class %s_Bridge : ", getEscapedName(getClassName(node)).c_str());
 
         std::list<const Interface*> bridgeList;
         for (std::list<const Interface*>::const_reverse_iterator i = mixinList.rbegin();

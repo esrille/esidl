@@ -137,11 +137,13 @@ public:
                 ++i)
             {
                 const Node* saved = currentNode;
+                constructorMode = node->isConstructor();
                 for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
                 {
                     currentNode = *i;
                     visitInterfaceElement(*i, *j);
                 }
+                constructorMode = false;
                 currentNode = saved;
             }
 

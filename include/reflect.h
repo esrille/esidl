@@ -521,6 +521,11 @@ public:
             return (getType() == kOperation) ? true : false;
         }
 
+        bool isConstructor() const
+        {
+            return (getType() == kConstructor) ? true : false;
+        }
+
         bool isGetter() const
         {
             return (getType() == kGetter) ? true : false;

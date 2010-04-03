@@ -176,6 +176,28 @@ void Node::setLocation(struct YYLTYPE* first, struct YYLTYPE* last)
     lastColumn = last->last_column;
 }
 
+std::string Node::getQualifiedName() const
+{
+    if (name.compare(0, 2, "::") == 0)
+    {
+        return name;
+    }
+
+    std::string qualifiedName;
+    for (const Node* node = this; node && node->name != ""; node = node->getParent())
+    {
+        if (node->isConstructor())
+        {
+            qualifiedName = "_" + node->name + qualifiedName;
+        }
+        else
+        {
+            qualifiedName = "::" + node->name + qualifiedName;
+        }
+    }
+    return qualifiedName;
+}
+
 std::string Node::getQualifiedModuleName() const
 {
     const Node* node = this;

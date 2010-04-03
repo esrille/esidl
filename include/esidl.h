@@ -387,20 +387,7 @@ public:
         return name;
     }
 
-    std::string getQualifiedName() const
-    {
-        if (name.compare(0, 2, "::") == 0)
-        {
-            return name;
-        }
-
-        std::string qualifiedName;
-        for (const Node* node = this; node && node->name != ""; node = node->getParent())
-        {
-            qualifiedName = "::" + node->name + qualifiedName;
-        }
-        return qualifiedName;
-    }
+    std::string getQualifiedName() const;
 
     std::string getQualifiedModuleName() const;
 
@@ -521,6 +508,11 @@ public:
     virtual NativeType* isNative(const Node* scope)
     {
         return 0;
+    }
+
+    virtual bool isConstructor() const
+    {
+        return false;
     }
 
     size_t getOffset() const
@@ -1015,6 +1007,11 @@ public:
             }
         }
         return super;
+    }
+
+    virtual bool isConstructor() const
+    {
+        return dynamic_cast<const Interface*>(getParent());
     }
 
     Interface* getConstructor() const

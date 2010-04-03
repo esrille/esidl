@@ -472,6 +472,18 @@ public:
         return prefixedName;
     }
 
+    static std::string getClassName(const Node* node)
+    {
+        std::string className =node->getName();
+#ifdef USE_CONSTRUCTOR
+        if (node->getAttr() & Node::Constructor)
+        {
+            className = node->getParent()->getName() + "_" + className;
+        }
+#endif
+        return className;
+    }
+
     static std::string getEscapedName(std::string name);
 };
 
