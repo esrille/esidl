@@ -176,9 +176,25 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
         }
 
         id = NPN_GetStringIdentifier(method.getName().c_str());
-        if (NPN_Invoke(proxy->getNPP(), proxy->getNPObject(), id, variantArray, variantCount, &result))
+        if (method.isOperation())
         {
-            return convertToAny(proxy->getNPP(), &result);
+            if (NPN_Invoke(proxy->getNPP(), proxy->getNPObject(), id, variantArray, variantCount, &result))
+            {
+                return convertToAny(proxy->getNPP(), &result);
+            }
+        }
+        else if (method.isConstructor())
+        {
+            // Chrome uses NPN_Construct()
+            if (NPN_Construct(proxy->getNPP(), proxy->getNPObject(), variantArray, variantCount, &result))
+            {
+                return convertToAny(proxy->getNPP(), &result);
+            }
+            // Firefox uses NPN_InvokeDefault()
+            if (NPN_InvokeDefault(proxy->getNPP(), proxy->getNPObject(), variantArray, variantCount, &result))
+            {
+                return convertToAny(proxy->getNPP(), &result);
+            }
         }
     }
     return Any();

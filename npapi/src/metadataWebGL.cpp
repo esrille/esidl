@@ -47,4 +47,13 @@ void initializeWebGLMetaData()
     registerMetaData(webgl::WebGLUnsignedByteArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedByteArray_Bridge<Any, invoke> >::createInstance);
     registerMetaData(webgl::WebGLUnsignedIntArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedIntArray_Bridge<Any, invoke> >::createInstance);
     registerMetaData(webgl::WebGLUnsignedShortArray::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedShortArray_Bridge<Any, invoke> >::createInstance);
+
+    registerMetaData(webgl::WebGLArrayBuffer_Constructor::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLArrayBuffer_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLByteArray_Constructor::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLByteArray_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLFloatArray_Constructor::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLFloatArray_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLIntArray_Constructor::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLIntArray_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLShortArray_Constructor::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLShortArray_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLUnsignedByteArray_Constructor::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedByteArray_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLUnsignedIntArray_Constructor::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedIntArray_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(webgl::WebGLUnsignedShortArray_Constructor::getMetaData(), Proxy_Impl<ProxyObject, webgl::WebGLUnsignedShortArray_Constructor_Bridge<Any, invoke> >::createInstance);
 }

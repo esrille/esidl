@@ -32,4 +32,7 @@ void initializeWorkersMetaData()
     registerMetaData(workers::WorkerGlobalScope::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerGlobalScope_Bridge<Any, invoke> >::createInstance);
     registerMetaData(workers::WorkerLocation::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerLocation_Bridge<Any, invoke> >::createInstance);
     registerMetaData(workers::WorkerNavigator::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerNavigator_Bridge<Any, invoke> >::createInstance);
+
+    registerMetaData(workers::SharedWorker_Constructor::getMetaData(), Proxy_Impl<ProxyObject, workers::SharedWorker_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(workers::Worker_Constructor::getMetaData(), Proxy_Impl<ProxyObject, workers::Worker_Constructor_Bridge<Any, invoke> >::createInstance);
 }

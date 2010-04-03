@@ -263,7 +263,6 @@ Object* createProxy(NPP npp, NPObject* object)
     }
 
     std::string className = getInterfaceName(npp, object);
-
     if (className == "Function" || className == "Object")
     {
         // TODO: We should define 'Object' interface
@@ -274,8 +273,7 @@ Object* createProxy(NPP npp, NPObject* object)
     it = proxyConstructorMap.find(className);
     if (it != proxyConstructorMap.end())
     {
-        std::string interfaceName = getInterfaceName(npp, object);
-        ProxyObject browserObject(object, npp, interfaceName);
+        ProxyObject browserObject(object, npp, className);
         return (*it).second(browserObject);
     }
     return 0;
@@ -285,25 +283,58 @@ std::string getInterfaceName(NPP npp, NPObject* object)
 {
     std::string className;
     NPVariant result;
+    bool asConstructor = true;  // true if object can be a constructor
 
     VOID_TO_NPVARIANT(result);
     NPN_Invoke(npp, object, NPN_GetStringIdentifier("toString"), 0, 0, &result);
-    if (NPVARIANT_IS_STRING(result))
+    for (;;)
     {
-        className = std::string(NPVARIANT_TO_STRING(result).utf8characters,
-                                NPVARIANT_TO_STRING(result).utf8length);
+        if (NPVARIANT_IS_STRING(result))
+        {
+            className = std::string(NPVARIANT_TO_STRING(result).utf8characters,
+                                    NPVARIANT_TO_STRING(result).utf8length);
+        }
+        NPN_ReleaseVariantValue(&result);
+        if (className.compare(0, 9, "function ") == 0)
+        {
+            // In Chrome, a [Constructor] object is represented as a 'Function'.
+            className = className.substr(9);
+            size_t pos = className.find('(');
+            if (pos != std::string::npos)
+            {
+                className = className.substr(0, pos);
+                break;
+            }
+            return "Function";
+        }
+        if (className.compare(0, 8, "[object ", 8) == 0 && className[className.length() - 1] == ']')
+        {
+            className = className.substr(8, className.length() - 9);
+            break;
+        }
+        // This object is likely to have a stringifier. Check the constructor name directly.
+        NPVariant constructor;
+        VOID_TO_NPVARIANT(constructor);
+        if (asConstructor && NPN_GetProperty(npp, object, NPN_GetStringIdentifier("constructor"), &constructor))
+        {
+            if (NPVARIANT_IS_OBJECT(constructor) &&
+                NPN_Invoke(npp, NPVARIANT_TO_OBJECT(constructor), NPN_GetStringIdentifier("toString"), 0, 0, &result))
+            {
+                NPN_ReleaseVariantValue(&constructor);
+                asConstructor = false;
+                continue;
+            }
+            NPN_ReleaseVariantValue(&constructor);
+        }
+        return "Object";
     }
-    NPN_ReleaseVariantValue(&result);
-    if (className.compare(0, 9, "function ") == 0)
+    // In Firefox, the constructor and an instance object cannot be distinguished by toString().
+    // Check if object has a 'prototype' to see if it is a constructor.
+    if (asConstructor && NPN_HasProperty(npp, object, NPN_GetStringIdentifier("prototype")))
     {
-        return "Function";
+        className += "_Constructor";
     }
-    if (className.compare(0, 8, "[object ", 8) != 0 ||
-        className[className.length() - 1] != ']')
-    {
-        return "Object";  // TODO: should we return a better name?
-    }
-    return className.substr(8, className.length() - 9);
+    return className;
 }
 
 bool convertToBool(const NPVariant* variant)

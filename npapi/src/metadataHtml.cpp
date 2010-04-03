@@ -64,6 +64,12 @@ void initializeHtmlMetaData()
     initializeHtmlMetaDataO_U();
     initializeHtmlMetaDataV_Z();
 
+    // Register [Constructor] interfaces:
+    registerMetaData(html::HTMLAudioElement_Constructor::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLAudioElement_Constructor_Bridge<Any, invoke> >::createInstance, "Audio");
+    registerMetaData(html::HTMLImageElement_Constructor::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLImageElement_Constructor_Bridge<Any, invoke> >::createInstance, "Image");
+    registerMetaData(html::HTMLOptionElement_Constructor::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLOptionElement_Constructor_Bridge<Any, invoke> >::createInstance, "Option");
+    registerMetaData(html::MessageChannel_Constructor::getMetaData(), Proxy_Impl<ProxyObject, html::MessageChannel_Constructor_Bridge<Any, invoke> >::createInstance);
+
     // In HTML5, HTMLDocument is a mixin of Document, but historically it was a separate interface extended from Document.
     // Existing browsers uses HTMLDocument as a class name, and we need to register 'HTMLDocument' as a valid interface name for Document.
     registerMetaData(Document::getMetaData(),

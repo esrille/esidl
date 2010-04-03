@@ -59,6 +59,29 @@ void down(events::Event* evt)
 
 void PluginInstance::drawCharts(Document* document)
 {
+    // Test [Constructor]
+    XMLHttpRequest_Constructor* xmlHttpRequest = interface_cast<XMLHttpRequest_Constructor*>(window->getElement("XMLHttpRequest"));
+    printf("XMLHttpRequest = %p\n", xmlHttpRequest);
+    if (xmlHttpRequest)
+    {
+        XMLHttpRequest* xhr = xmlHttpRequest->createInstance();
+        if (xhr)
+        {
+            printf("XMLHttpRequest.getReadyState() = %u\n", xhr->getReadyState());
+            xhr->release();
+        }
+        xmlHttpRequest->release();
+    }
+
+    // Test 'stringifier'
+    html::HTMLAnchorElement* anchor = interface_cast<html::HTMLAnchorElement*>(document->getElementById("anchor"));
+    printf("anchor = %p\n", anchor);
+    if (anchor)
+    {
+        printf("anchor.getHref() = \"%s\"\n", anchor->getHref().c_str());
+        anchor->release();
+    }
+
     // Test interface_cast implied by the 'implements' statement while Document does
     // not inherit DocumentEvent.
     events::DocumentEvent* documentEvent = interface_cast<events::DocumentEvent*>(document);

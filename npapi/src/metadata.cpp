@@ -126,4 +126,8 @@ void initializeMetaData()
     registerMetaData(xpath::XPathNamespace::getMetaData(), Proxy_Impl<ProxyObject, xpath::XPathNamespace_Bridge<Any, invoke> >::createInstance);
     registerMetaData(xpath::XPathNSResolver::getMetaData(), Proxy_Impl<ProxyObject, xpath::XPathNSResolver_Bridge<Any, invoke> >::createInstance);
     registerMetaData(xpath::XPathResult::getMetaData(), Proxy_Impl<ProxyObject, xpath::XPathResult_Bridge<Any, invoke> >::createInstance);
+
+    registerMetaData(eventsource::EventSource_Constructor::getMetaData(), Proxy_Impl<ProxyObject, eventsource::EventSource_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(websocket::WebSocket_Constructor::getMetaData(), Proxy_Impl<ProxyObject, websocket::WebSocket_Constructor_Bridge<Any, invoke> >::createInstance);
+    registerMetaData(XMLHttpRequest_Constructor::getMetaData(), Proxy_Impl<ProxyObject, XMLHttpRequest_Constructor_Bridge<Any, invoke> >::createInstance);
 }
