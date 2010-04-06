@@ -42,20 +42,17 @@ class ProxyObject
 {
     NPObject*         object;
     NPP               npp;
-    const std::string interfaceName;
     unsigned int      count;
 public:
-    ProxyObject(NPObject* object, NPP npp, const std::string& interfaceName) :
+    ProxyObject(NPObject* object, NPP npp) :
         object(object),
         npp(npp),
-        interfaceName(interfaceName),
         count(1)
     {
     }
     ProxyObject(const ProxyObject& original) :
         object(original.object),
         npp(original.npp),
-        interfaceName(original.interfaceName),
         count(1)
     {
     }
@@ -69,10 +66,6 @@ public:
     NPP getNPP()
     {
         return npp;
-    }
-    std::string getInterfaceName()
-    {
-        return interfaceName;
     }
     unsigned int retain()
     {

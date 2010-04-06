@@ -242,7 +242,6 @@ void registerMetaData(const char* meta,
     printf("%s\n", name.c_str());
 }
 
-
 NPObject* createStub(NPP npp, Object* object)
 {
     NPObject* npobject = NPN_CreateObject(npp, &StubObject::npclass);
@@ -273,7 +272,7 @@ Object* createProxy(NPP npp, NPObject* object)
     it = proxyConstructorMap.find(className);
     if (it != proxyConstructorMap.end())
     {
-        ProxyObject browserObject(object, npp, className);
+        ProxyObject browserObject(object, npp);
         return (*it).second(browserObject);
     }
     return 0;

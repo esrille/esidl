@@ -30,10 +30,6 @@ public:
     virtual ~Proxy_Impl()
     {
     }
-    virtual std::string getInterfaceName()
-    {
-        return O::getInterfaceName();
-    }
     virtual unsigned int retain()
     {
         return O::retain();
