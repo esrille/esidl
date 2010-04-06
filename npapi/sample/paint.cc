@@ -62,15 +62,9 @@ void PluginInstance::initialize() {
 }
 
 PluginInstance::~PluginInstance() {
-  if (downHandler) {
-    delete downHandler;
-  }
-  if (moveHandler) {
-    delete moveHandler;
-  }
-  if (upHandler) {
-    delete upHandler;
-  }
+  delete downHandler;
+  delete moveHandler;
+  delete upHandler;
   if (selectHandler) {
     delete selectHandler;
   }

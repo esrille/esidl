@@ -60,10 +60,7 @@ public:
 
     ~PluginInstance()
     {
-        if (downHandler)
-        {
-            delete downHandler;  // XXX
-        }
+        delete downHandler;  // XXX
         if (window)
         {
             window->release();

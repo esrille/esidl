@@ -41,12 +41,8 @@ void PluginInstance::initialize() {
 }
 
 PluginInstance::~PluginInstance() {
-  if (loadHandler) {
-    delete loadHandler;
-  }
-  if (displayHandler) {
-    delete displayHandler;
-  }
+  delete loadHandler;
+  delete displayHandler;
   if (window) {
     window->release();
   }
