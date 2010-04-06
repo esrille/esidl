@@ -80,7 +80,7 @@ am_libesnpapi_a_OBJECTS = bridge.$(OBJEXT) invoke.$(OBJEXT) \
 	metadataSvgF_G.$(OBJEXT) metadataSvgH_N.$(OBJEXT) \
 	metadataSvgO_U.$(OBJEXT) metadataSvgV_Z.$(OBJEXT) \
 	metadataWebDatabase.$(OBJEXT) metadataWebGL.$(OBJEXT) \
-	metadataWorkers.$(OBJEXT) resolve.$(OBJEXT)
+	metadataWorkers.$(OBJEXT) proxy.$(OBJEXT) resolve.$(OBJEXT)
 libesnpapi_a_OBJECTS = $(am_libesnpapi_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -307,6 +307,7 @@ libesnpapi_a_SOURCES = \
 	src/metadataWebDatabase.cpp \
 	src/metadataWebGL.cpp \
 	src/metadataWorkers.cpp \
+	src/proxy.cpp \
 	src/resolve.cpp
 
 all: all-recursive
@@ -405,6 +406,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataWebDatabase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataWebGL.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metadataWorkers.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/proxy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/resolve.Po@am__quote@
 
 .cpp.o:
@@ -693,6 +695,20 @@ metadataWorkers.obj: src/metadataWorkers.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataWorkers.cpp' object='metadataWorkers.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataWorkers.obj `if test -f 'src/metadataWorkers.cpp'; then $(CYGPATH_W) 'src/metadataWorkers.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataWorkers.cpp'; fi`
+
+proxy.o: src/proxy.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT proxy.o -MD -MP -MF $(DEPDIR)/proxy.Tpo -c -o proxy.o `test -f 'src/proxy.cpp' || echo '$(srcdir)/'`src/proxy.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/proxy.Tpo $(DEPDIR)/proxy.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/proxy.cpp' object='proxy.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o proxy.o `test -f 'src/proxy.cpp' || echo '$(srcdir)/'`src/proxy.cpp
+
+proxy.obj: src/proxy.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT proxy.obj -MD -MP -MF $(DEPDIR)/proxy.Tpo -c -o proxy.obj `if test -f 'src/proxy.cpp'; then $(CYGPATH_W) 'src/proxy.cpp'; else $(CYGPATH_W) '$(srcdir)/src/proxy.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/proxy.Tpo $(DEPDIR)/proxy.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/proxy.cpp' object='proxy.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o proxy.obj `if test -f 'src/proxy.cpp'; then $(CYGPATH_W) 'src/proxy.cpp'; else $(CYGPATH_W) '$(srcdir)/src/proxy.cpp'; fi`
 
 resolve.o: src/resolve.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT resolve.o -MD -MP -MF $(DEPDIR)/resolve.Tpo -c -o resolve.o `test -f 'src/resolve.cpp' || echo '$(srcdir)/'`src/resolve.cpp

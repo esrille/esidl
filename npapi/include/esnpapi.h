@@ -40,25 +40,18 @@ extern "C" NPObject* NPP_GetScriptableInstance(NPP instance);
 
 class ProxyObject
 {
-    NPObject*         object;
-    NPP               npp;
-    unsigned int      count;
+    NPObject*    object;
+    NPP          npp;
+    unsigned int count;
+
 public:
-    ProxyObject(NPObject* object, NPP npp) :
-        object(object),
-        npp(npp),
-        count(1)
-    {
-    }
-    ProxyObject(const ProxyObject& original) :
-        object(original.object),
-        npp(original.npp),
-        count(1)
-    {
-    }
-    ~ProxyObject()
-    {
-    }
+    ProxyObject(NPObject* object, NPP npp);
+    ProxyObject(const ProxyObject& original);
+    ~ProxyObject();
+
+    unsigned int retain();
+    unsigned int release();
+
     NPObject* getNPObject()
     {
         return object;
@@ -67,16 +60,7 @@ public:
     {
         return npp;
     }
-    unsigned int retain()
-    {
-        NPN_RetainObject(object);
-        return ++count;
-    }
-    unsigned int release()
-    {
-        NPN_ReleaseObject(object);
-        return --count;
-    }
+    
     static const char* const getQualifiedName()
     {
         static const char* qualifiedName = "ProxyObject";

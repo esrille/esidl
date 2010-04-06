@@ -43,5 +43,6 @@ libesnpapi_a_SOURCES = \
 	src/metadataWebDatabase.cpp \
 	src/metadataWebGL.cpp \
 	src/metadataWorkers.cpp \
+	src/proxy.cpp \
 	src/resolve.cpp
 
