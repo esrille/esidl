@@ -44,5 +44,5 @@ libesnpapi_a_SOURCES = \
 	src/metadataWebGL.cpp \
 	src/metadataWorkers.cpp \
 	src/proxy.cpp \
-	src/resolve.cpp
+	src/stub.cpp
 

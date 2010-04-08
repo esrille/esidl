@@ -347,9 +347,6 @@ std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribut
 
 Object* convertToObject(NPP npp, const NPVariant* variant)
 {
-    // If the embedded NPObject is a stub object, set the original interface
-    // pointer to any. Otherwise, call toString() method to retrieve the class
-    // name and create a corresponding proxy and set it to any.
     if (!NPVARIANT_IS_OBJECT(*variant))
     {
         return 0;
