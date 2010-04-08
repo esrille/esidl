@@ -18,9 +18,6 @@
 
 #include "esnpapi.h"
 
-#include <any.h>
-#include <reflect.h>
-
 namespace
 {
 

@@ -16,6 +16,52 @@
 
 #include <esnpapi.h>
 
+#include <map>
+
+namespace
+{
+    // Map from interfaceName to constructors.
+    std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
+};
+
+void registerMetaData(const char* meta,
+                      Object* (*createProxy)(ProxyObject object),
+                      const char* alias)
+{
+    Reflect::Interface interface(meta);
+    std::string name = interface.getName();
+    if (alias)
+    {
+        name = alias;
+    }
+    proxyConstructorMap[name] = createProxy;
+    printf("%s\n", name.c_str());
+}
+
+Object* createProxy(NPP npp, NPObject* object)
+{
+    if (!object)
+    {
+        return 0;
+    }
+
+    std::string className = getInterfaceName(npp, object);
+    if (className == "Function" || className == "Object")
+    {
+        // TODO: We should define 'Object' interface
+        return 0;
+    }
+
+    std::map<const std::string, Object* (*)(ProxyObject object)>::iterator it;
+    it = proxyConstructorMap.find(className);
+    if (it != proxyConstructorMap.end())
+    {
+        ProxyObject browserObject(object, npp);
+        return (*it).second(browserObject);
+    }
+    return 0;
+}
+
 ProxyObject::ProxyObject(NPObject* object, NPP npp) :
     object(object),
     npp(npp),

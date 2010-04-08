@@ -15,21 +15,13 @@
  */
 
 #include "esnpapi.h"
-#include "reflect.h"
-#include "proxyImpl.h"
 
-#include <stdio.h>
-
-#include <algorithm>
-#include <map>
 #include <ctype.h>
 #include <math.h>
+#include <stdio.h>
 
 namespace
 {
-
-// Map from interfaceName to constructors.
-std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
 
 bool isStub(const NPObject* object)
 {
@@ -228,20 +220,6 @@ std::string toString(NPP npp, const NPVariant* variant, char attribute = 0)
 
 }  // namespace
 
-void registerMetaData(const char* meta,
-                      Object* (*createProxy)(ProxyObject object),
-                      const char* alias)
-{
-    Reflect::Interface interface(meta);
-    std::string name = interface.getName();
-    if (alias)
-    {
-        name = alias;
-    }
-    proxyConstructorMap[name] = createProxy;
-    printf("%s\n", name.c_str());
-}
-
 NPObject* createStub(NPP npp, Object* object)
 {
     NPObject* npobject = NPN_CreateObject(npp, &StubObject::npclass);
@@ -252,30 +230,6 @@ NPObject* createStub(NPP npp, Object* object)
     StubObject* stub = static_cast<StubObject*>(npobject);
     stub->setObject(object);
     return stub;
-}
-
-Object* createProxy(NPP npp, NPObject* object)
-{
-    if (!object)
-    {
-        return 0;
-    }
-
-    std::string className = getInterfaceName(npp, object);
-    if (className == "Function" || className == "Object")
-    {
-        // TODO: We should define 'Object' interface
-        return 0;
-    }
-
-    std::map<const std::string, Object* (*)(ProxyObject object)>::iterator it;
-    it = proxyConstructorMap.find(className);
-    if (it != proxyConstructorMap.end())
-    {
-        ProxyObject browserObject(object, npp);
-        return (*it).second(browserObject);
-    }
-    return 0;
 }
 
 std::string getInterfaceName(NPP npp, NPObject* object)
