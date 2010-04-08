@@ -17,30 +17,22 @@
 #ifndef SAMPLE_PAINT_H_
 #define SAMPLE_PAINT_H_
 
-#include "esnpapi.h"
+#include <esnpapi.h>
 
-#include <any.h>
-#include <reflect.h>
 #include <org/w3c/dom.h>
 
 class EventHandler;
 
-class PluginInstance {
+class PaintInstance : public PluginInstance {
  public:
-  explicit PluginInstance(org::w3c::dom::html::Window* window)
-      : window(window),
+  PaintInstance(NPP npp, NPObject* window)
+      : PluginInstance(npp, window),
         penDown(false) {
     initialize();
   }
-  ~PluginInstance();
-
-  NPObject* getScriptableInstance() {
-    return 0;
-  }
+  ~PaintInstance();
 
  private:
-  org::w3c::dom::html::Window* window;
-
   EventHandler* downHandler;
   EventHandler* moveHandler;
   EventHandler* upHandler;
@@ -57,8 +49,8 @@ class PluginInstance {
 
 class EventHandler : public org::w3c::dom::events::EventListener {
  public:
-  EventHandler(PluginInstance* instance,
-               void (PluginInstance::*handler)(org::w3c::dom::events::Event*))
+  EventHandler(PaintInstance* instance,
+               void (PaintInstance::*handler)(org::w3c::dom::events::Event*))
       : instance(instance),
         handler(handler) {
   }
@@ -73,8 +65,8 @@ class EventHandler : public org::w3c::dom::events::EventListener {
   };
 
  private:
-  PluginInstance* instance;
-  void (PluginInstance::*handler)(org::w3c::dom::events::Event* evt);
+  PaintInstance* instance;
+  void (PaintInstance::*handler)(org::w3c::dom::events::Event* evt);
 };
 
 #endif  // SAMPLE_PAINT_H_

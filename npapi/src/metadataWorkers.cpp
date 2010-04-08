@@ -25,14 +25,14 @@ using namespace org::w3c::dom;
 
 void initializeWorkersMetaData()
 {
-    registerMetaData(workers::AbstractWorker::getMetaData(), Proxy_Impl<ProxyObject, workers::AbstractWorker_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(workers::ErrorEvent::getMetaData(), Proxy_Impl<ProxyObject, workers::ErrorEvent_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(workers::SharedWorker::getMetaData(), Proxy_Impl<ProxyObject, workers::SharedWorker_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(workers::Worker::getMetaData(), Proxy_Impl<ProxyObject, workers::Worker_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(workers::WorkerGlobalScope::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerGlobalScope_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(workers::WorkerLocation::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerLocation_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(workers::WorkerNavigator::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerNavigator_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::AbstractWorker::getMetaData(), Proxy_Impl<ProxyObject, workers::AbstractWorker_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::ErrorEvent::getMetaData(), Proxy_Impl<ProxyObject, workers::ErrorEvent_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::SharedWorker::getMetaData(), Proxy_Impl<ProxyObject, workers::SharedWorker_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::Worker::getMetaData(), Proxy_Impl<ProxyObject, workers::Worker_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::WorkerGlobalScope::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerGlobalScope_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::WorkerLocation::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerLocation_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::WorkerNavigator::getMetaData(), Proxy_Impl<ProxyObject, workers::WorkerNavigator_Bridge<Any, invoke> >::createInstance);
 
-    registerMetaData(workers::SharedWorker_Constructor::getMetaData(), Proxy_Impl<ProxyObject, workers::SharedWorker_Constructor_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(workers::Worker_Constructor::getMetaData(), Proxy_Impl<ProxyObject, workers::Worker_Constructor_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::SharedWorker_Constructor::getMetaData(), Proxy_Impl<ProxyObject, workers::SharedWorker_Constructor_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(workers::Worker_Constructor::getMetaData(), Proxy_Impl<ProxyObject, workers::Worker_Constructor_Bridge<Any, invoke> >::createInstance);
 }

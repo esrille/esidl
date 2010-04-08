@@ -15,30 +15,16 @@
  */
 
 #include <esnpapi.h>
+#include <org/w3c/dom.h>
 
-#include <map>
+std::map<const std::string, Object* (*)(ProxyObject object)> ProxyControl::proxyConstructorMap;
 
-namespace
+ProxyControl::ProxyControl(NPP npp) :
+    npp(npp)
 {
-    // Map from interfaceName to constructors.
-    std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
-};
-
-void registerMetaData(const char* meta,
-                      Object* (*createProxy)(ProxyObject object),
-                      const char* alias)
-{
-    Reflect::Interface interface(meta);
-    std::string name = interface.getName();
-    if (alias)
-    {
-        name = alias;
-    }
-    proxyConstructorMap[name] = createProxy;
-    printf("%s\n", name.c_str());
 }
 
-Object* createProxy(NPP npp, NPObject* object)
+Object* ProxyControl::createProxy(NPObject* object)
 {
     if (!object)
     {
@@ -46,7 +32,7 @@ Object* createProxy(NPP npp, NPObject* object)
     }
 
     std::string className = getInterfaceName(npp, object);
-    if (className == "Function" || className == "Object")
+    if (className == "Object")
     {
         // TODO: We should define 'Object' interface
         return 0;
@@ -60,6 +46,18 @@ Object* createProxy(NPP npp, NPObject* object)
         return (*it).second(browserObject);
     }
     return 0;
+}
+
+void ProxyControl::registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias)
+{
+    Reflect::Interface interface(meta);
+    std::string name = interface.getName();
+    if (alias)
+    {
+        name = alias;
+    }
+    proxyConstructorMap[name] = createProxy;
+    printf("%s\n", name.c_str());
 }
 
 ProxyObject::ProxyObject(NPObject* object, NPP npp) :
@@ -91,3 +89,20 @@ unsigned int ProxyObject::release()
     NPN_ReleaseObject(object);
     return --count;
 }
+
+PluginInstance::PluginInstance(NPP npp, NPObject* window) :
+    proxyControl(npp),
+    window(0)
+{
+    npp->pdata = this;
+    this->window = interface_cast<org::w3c::dom::html::Window*>(proxyControl.createProxy(window));
+}
+
+PluginInstance::~PluginInstance()
+{
+    if (window)
+    {
+        window->release();
+    }
+}
+

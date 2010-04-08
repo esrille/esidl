@@ -17,18 +17,16 @@
 #include "esnpapi.h"
 #include "proxyImpl.h"
 
-#include <any.h>
-#include <reflect.h>
 #include <org/w3c/dom.h>
 
 using namespace org::w3c::dom;
 
 void initializeSvgMetaData()
 {
-    registerMetaData(smil::ElementTimeControl::getMetaData(), Proxy_Impl<ProxyObject, smil::ElementTimeControl_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(smil::TimeEvent::getMetaData(), Proxy_Impl<ProxyObject, smil::TimeEvent_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::GetSVGDocument::getMetaData(), Proxy_Impl<ProxyObject, svg::GetSVGDocument_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGZoomEvent::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGZoomEvent_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(smil::ElementTimeControl::getMetaData(), Proxy_Impl<ProxyObject, smil::ElementTimeControl_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(smil::TimeEvent::getMetaData(), Proxy_Impl<ProxyObject, smil::TimeEvent_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::GetSVGDocument::getMetaData(), Proxy_Impl<ProxyObject, svg::GetSVGDocument_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGZoomEvent::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGZoomEvent_Bridge<Any, invoke> >::createInstance);
 
     initializeSvgMetaDataA_E();
     initializeSvgMetaDataF_G();
@@ -36,7 +34,7 @@ void initializeSvgMetaData()
     initializeSvgMetaDataO_U();
     initializeSvgMetaDataV_Z();
 
-    registerMetaData(Document::getMetaData(),
+    ProxyControl::registerMetaData(Document::getMetaData(),
                      Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance,
                      "XMLDocument");
 }

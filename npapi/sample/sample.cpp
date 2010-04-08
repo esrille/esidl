@@ -57,7 +57,7 @@ void down(events::Event* evt)
 
 }
 
-void PluginInstance::drawCharts(Document* document)
+void SampleInstance::drawCharts(Document* document)
 {
     // Test [Constructor]
     XMLHttpRequest_Constructor* xmlHttpRequest = interface_cast<XMLHttpRequest_Constructor*>(window->getElement("XMLHttpRequest"));
@@ -220,7 +220,7 @@ void PluginInstance::drawCharts(Document* document)
     canvas->release();
 }
 
-void PluginInstance::initialize()
+void SampleInstance::initialize()
 {
     downHandler = new EventHandler(down);
 

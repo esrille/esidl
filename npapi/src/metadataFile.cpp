@@ -17,20 +17,18 @@
 #include "esnpapi.h"
 #include "proxyImpl.h"
 
-#include <any.h>
-#include <reflect.h>
 #include <org/w3c/dom.h>
 
 using namespace org::w3c::dom;
 
 void initializeFileMetaData()
 {
-    registerMetaData(file::Blob::getMetaData(), Proxy_Impl<ProxyObject, file::Blob_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(file::FileError::getMetaData(), Proxy_Impl<ProxyObject, file::FileError_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(file::File::getMetaData(), Proxy_Impl<ProxyObject, file::File_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(file::FileReader::getMetaData(), Proxy_Impl<ProxyObject, file::FileReader_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(file::FileReaderSync::getMetaData(), Proxy_Impl<ProxyObject, file::FileReaderSync_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(file::Blob::getMetaData(), Proxy_Impl<ProxyObject, file::Blob_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(file::FileError::getMetaData(), Proxy_Impl<ProxyObject, file::FileError_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(file::File::getMetaData(), Proxy_Impl<ProxyObject, file::File_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(file::FileReader::getMetaData(), Proxy_Impl<ProxyObject, file::FileReader_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(file::FileReaderSync::getMetaData(), Proxy_Impl<ProxyObject, file::FileReaderSync_Bridge<Any, invoke> >::createInstance);
 
-    registerMetaData(file::FileReader_Constructor::getMetaData(), Proxy_Impl<ProxyObject, file::FileReader_Constructor_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(file::FileReaderSync_Constructor::getMetaData(), Proxy_Impl<ProxyObject, file::FileReaderSync_Constructor_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(file::FileReader_Constructor::getMetaData(), Proxy_Impl<ProxyObject, file::FileReader_Constructor_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(file::FileReaderSync_Constructor::getMetaData(), Proxy_Impl<ProxyObject, file::FileReaderSync_Constructor_Bridge<Any, invoke> >::createInstance);
 }

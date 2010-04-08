@@ -17,13 +17,11 @@
 #include "esnpapi.h"
 #include "proxyImpl.h"
 
-#include <any.h>
-#include <reflect.h>
 #include <org/w3c/dom.h>
 
 using namespace org::w3c::dom;
 
 void initializeHtmlMetaDataV_Z()
 {
-    registerMetaData(html::HTMLVideoElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLVideoElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(html::HTMLVideoElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLVideoElement_Bridge<Any, invoke> >::createInstance);
 }

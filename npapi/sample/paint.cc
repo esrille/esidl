@@ -18,11 +18,11 @@
 
 using namespace org::w3c::dom;
 
-void PluginInstance::initialize() {
-  downHandler = new EventHandler(this, &PluginInstance::down);
-  moveHandler = new EventHandler(this, &PluginInstance::move);
-  upHandler = new EventHandler(this, &PluginInstance::up);
-  selectHandler = new EventHandler(this, &PluginInstance::select);
+void PaintInstance::initialize() {
+  downHandler = new EventHandler(this, &PaintInstance::down);
+  moveHandler = new EventHandler(this, &PaintInstance::move);
+  upHandler = new EventHandler(this, &PaintInstance::up);
+  selectHandler = new EventHandler(this, &PaintInstance::select);
 
   Document* document = window->getDocument();
   if (document) {
@@ -61,19 +61,16 @@ void PluginInstance::initialize() {
   }
 }
 
-PluginInstance::~PluginInstance() {
+PaintInstance::~PaintInstance() {
   delete downHandler;
   delete moveHandler;
   delete upHandler;
   if (selectHandler) {
     delete selectHandler;
   }
-  if (window) {
-    window->release();
-  }
 }
 
-void PluginInstance::down(events::Event* evt) {
+void PaintInstance::down(events::Event* evt) {
   events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
   printf("down %p\n", mouse);
   if (!mouse) {
@@ -97,7 +94,7 @@ void PluginInstance::down(events::Event* evt) {
   }
 }
 
-void PluginInstance::move(events::Event* evt) {
+void PaintInstance::move(events::Event* evt) {
   events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
   printf("move %p\n", mouse);
   if (!mouse) {
@@ -122,7 +119,7 @@ void PluginInstance::move(events::Event* evt) {
   }
 }
 
-void PluginInstance::up(events::Event* evt) {
+void PaintInstance::up(events::Event* evt) {
   events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
   printf("up %p\n", mouse);
   if (!mouse) {
@@ -146,7 +143,7 @@ void PluginInstance::up(events::Event* evt) {
   }
 }
 
-void PluginInstance::select(events::Event* evt) {
+void PaintInstance::select(events::Event* evt) {
   events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
   printf("select %p\n", mouse);
   if (!mouse) {

@@ -17,29 +17,27 @@
 #include "esnpapi.h"
 #include "proxyImpl.h"
 
-#include <any.h>
-#include <reflect.h>
 #include <org/w3c/dom.h>
 
 using namespace org::w3c::dom;
 
 void initializeSvgMetaDataH_N()
 {
-    registerMetaData(svg::SVGHKernElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGHKernElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGICCColor::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGICCColor_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGImageElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGImageElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGLangSpace::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLangSpace_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGLength::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLength_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGLengthList::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLengthList_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGLinearGradientElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLinearGradientElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGLineElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLineElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGLocatable::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLocatable_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGMarkerElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMarkerElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGMaskElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMaskElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGMatrix::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMatrix_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGMetadataElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMetadataElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGMissingGlyphElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMissingGlyphElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGMPathElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMPathElement_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGNumber::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGNumber_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(svg::SVGNumberList::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGNumberList_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGHKernElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGHKernElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGICCColor::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGICCColor_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGImageElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGImageElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGLangSpace::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLangSpace_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGLength::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLength_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGLengthList::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLengthList_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGLinearGradientElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLinearGradientElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGLineElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLineElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGLocatable::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGLocatable_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGMarkerElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMarkerElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGMaskElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMaskElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGMatrix::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMatrix_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGMetadataElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMetadataElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGMissingGlyphElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMissingGlyphElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGMPathElement::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGMPathElement_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGNumber::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGNumber_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(svg::SVGNumberList::getMetaData(), Proxy_Impl<ProxyObject, svg::SVGNumberList_Bridge<Any, invoke> >::createInstance);
 }

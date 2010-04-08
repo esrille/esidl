@@ -56,15 +56,12 @@ NPError NPP_New(NPMIMEType pluginType, NPP npp, uint16_t mode,
         return NPERR_INVALID_INSTANCE_ERROR;
     }
 
-    NPObject* npWindow;
-    NPN_GetValue(npp, NPNVWindowNPObject, &npWindow);
-    std::string name = getInterfaceName(npp, npWindow);
-    printf("'%s'\n", name.c_str());
-    org::w3c::dom::html::Window* window = interface_cast<org::w3c::dom::html::Window*>(createProxy(npp, npWindow));
-    npp->pdata = new (std::nothrow) PluginInstance(window);
+    NPObject* window;
+    NPN_GetValue(npp, NPNVWindowNPObject, &window);
+        npp->pdata = new (std::nothrow) XHRInstance(npp, window);
     if (!npp->pdata)
     {
-        window->release();
+        NPN_ReleaseObject(window);
         return NPERR_INVALID_INSTANCE_ERROR;
     }
     return NPERR_NO_ERROR;
@@ -77,7 +74,7 @@ NPError NPP_Destroy(NPP npp, NPSavedData** save)
     {
         return NPERR_INVALID_INSTANCE_ERROR;
     }
-    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
+    XHRInstance* instance = static_cast<XHRInstance*>(npp->pdata);
     if (instance)
     {
         delete instance;
@@ -111,7 +108,7 @@ NPObject* NPP_GetScriptableInstance(NPP npp)
     {
         return 0;
     }
-    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
+    XHRInstance* instance = static_cast<XHRInstance*>(npp->pdata);
     if (instance)
     {
         return instance->getScriptableInstance();

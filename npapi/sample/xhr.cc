@@ -18,9 +18,9 @@
 
 using namespace org::w3c::dom;
 
-void PluginInstance::initialize() {
-  loadHandler = new EventHandler(this, &PluginInstance::load);
-  displayHandler = new EventHandler(this, &PluginInstance::display);
+void XHRInstance::initialize() {
+  loadHandler = new EventHandler(this, &XHRInstance::load);
+  displayHandler = new EventHandler(this, &XHRInstance::display);
 
   html::HTMLDocument* document = interface_cast<html::HTMLDocument*>(window->getDocument());
   if (document) {
@@ -40,15 +40,12 @@ void PluginInstance::initialize() {
   }
 }
 
-PluginInstance::~PluginInstance() {
+XHRInstance::~XHRInstance() {
   delete loadHandler;
   delete displayHandler;
-  if (window) {
-    window->release();
-  }
 }
 
-void PluginInstance::load(events::Event* evt) {
+void XHRInstance::load(events::Event* evt) {
   XMLHttpRequest_Constructor* xmlHttpRequest = interface_cast<XMLHttpRequest_Constructor*>(window->getElement("XMLHttpRequest"));
   if (xmlHttpRequest) {
     XMLHttpRequest* xhr = xmlHttpRequest->createInstance();
@@ -62,7 +59,7 @@ void PluginInstance::load(events::Event* evt) {
   }
 }
 
-void PluginInstance::display(events::Event* evt) {
+void XHRInstance::display(events::Event* evt) {
   XMLHttpRequest* xhr = interface_cast<XMLHttpRequest*>(evt->getTarget());
   if (xhr) {
     html::HTMLDocument* document = interface_cast<html::HTMLDocument*>(window->getDocument());

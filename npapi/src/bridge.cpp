@@ -352,22 +352,28 @@ Object* convertToObject(NPP npp, const NPVariant* variant)
     // name and create a corresponding proxy and set it to any.
     if (!NPVARIANT_IS_OBJECT(*variant))
     {
-        return NULL;
+        return 0;
     }
     NPObject* object = NPVARIANT_TO_OBJECT(*variant);
     if (!object)
     {
-        return NULL;
+        return 0;
     }
     if (isStub(object))
     {
         StubObject* stub = static_cast<StubObject*>(object);
         return stub->getObject();
     }
-    else
+    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
+    if (instance)
     {
-        return createProxy(npp, object);
+        ProxyControl* proxyControl = instance->getProxyControl();
+        if (proxyControl)
+        {
+            return proxyControl->createProxy(object);
+        }
     }
+    return 0;
 }
 
 Any convertToAny(NPP npp, const NPVariant* variant)

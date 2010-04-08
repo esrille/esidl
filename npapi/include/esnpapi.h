@@ -19,6 +19,7 @@
 
 #include <cstring>
 #include <string>
+#include <map>
 
 using std::strlen;  // for STRINGZ_TO_NPVARIANT
 
@@ -32,11 +33,19 @@ using std::strlen;  // for STRINGZ_TO_NPVARIANT
 #include "npapi/npruntime.h"
 #endif
 
-extern "C" NPObject* NPP_GetScriptableInstance(NPP instance);
-
 #include "object.h"
 #include "any.h"
 #include "reflect.h"
+
+namespace org {
+namespace w3c {
+namespace dom {
+namespace html {
+class Window;
+}
+}
+}
+}
 
 class ProxyObject
 {
@@ -66,6 +75,20 @@ public:
         static const char* qualifiedName = "ProxyObject";
         return qualifiedName;
     }
+};
+
+class ProxyControl
+{
+    NPP npp;
+
+    // Map from interfaceName to constructors.
+    static std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
+
+public:
+    explicit ProxyControl(NPP npp);
+    Object* createProxy(NPObject* object);
+
+    static void registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias = 0);
 };
 
 class StubObject : public NPObject
@@ -103,6 +126,28 @@ public:
     static NPClass npclass;
 };
 
+class PluginInstance
+{
+    ProxyControl proxyControl;
+
+protected:
+    org::w3c::dom::html::Window* window;
+
+public:
+    PluginInstance(NPP npp, NPObject* window);
+    virtual ~PluginInstance();
+
+    virtual NPObject* getScriptableInstance()
+    {
+        return 0;
+    }
+
+    ProxyControl* getProxyControl()
+    {
+        return &proxyControl;
+    }
+};
+
 std::string getInterfaceName(NPP npp, NPObject* object);
 
 void convertToVariant(NPP npp, bool value, NPVariant* variant);
@@ -136,15 +181,10 @@ Any convertToAny(NPP npp, const NPVariant* variant);
 Any convertToAny(NPP npp, const NPVariant* variant, int type);
 
 NPObject* createStub(NPP npp, Object* object);
-Object* createProxy(NPP npp, NPObject* object);
 
 Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
            const char* meta, unsigned offset,
            unsigned argumentCount, Any* arguments);
-
-void registerMetaData(const char* meta,
-                      Object* (*createProxy)(ProxyObject object),
-                      const char* alias = 0);
 
 // The following four functions are called from initializeHtmlMetaData();
 void initializeHtmlMetaDataA_G();
@@ -168,5 +208,7 @@ void initializeSvgMetaData();
 void initializeWebDatabaseMetaData();
 void initializeWebGLMetaData();
 void initializeWorkersMetaData();
+
+extern "C" NPObject* NPP_GetScriptableInstance(NPP instance);
 
 #endif  // ESIDL_ESNPAPI_H_INCLUDED

@@ -17,26 +17,24 @@
 #include "esnpapi.h"
 #include "proxyImpl.h"
 
-#include <any.h>
-#include <reflect.h>
 #include <org/w3c/dom.h>
 
 using namespace org::w3c::dom;
 
 void initializeWebDatabaseMetaData()
 {
-    registerMetaData(webdatabase::DatabaseCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::DatabaseCallback_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::Database::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::Database_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::DatabaseSync::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::DatabaseSync_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLError::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLError_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLResultSet::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLResultSet_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLResultSetRowList::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLResultSetRowList_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLStatementCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLStatementCallback_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLStatementErrorCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLStatementErrorCallback_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLTransactionCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionCallback_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLTransactionErrorCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionErrorCallback_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLTransaction::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransaction_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLTransactionSyncCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionSyncCallback_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLTransactionSync::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionSync_Bridge<Any, invoke> >::createInstance);
-    registerMetaData(webdatabase::SQLVoidCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLVoidCallback_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::DatabaseCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::DatabaseCallback_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::Database::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::Database_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::DatabaseSync::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::DatabaseSync_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLError::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLError_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLResultSet::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLResultSet_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLResultSetRowList::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLResultSetRowList_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLStatementCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLStatementCallback_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLStatementErrorCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLStatementErrorCallback_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLTransactionCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionCallback_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLTransactionErrorCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionErrorCallback_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLTransaction::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransaction_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLTransactionSyncCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionSyncCallback_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLTransactionSync::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionSync_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(webdatabase::SQLVoidCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLVoidCallback_Bridge<Any, invoke> >::createInstance);
 }

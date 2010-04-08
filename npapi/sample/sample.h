@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef ESNPAPI_SAMPLE_H_INCLUDED
-#define ESNPAPI_SAMPLE_H_INCLUDED
+#ifndef SAMPLE_H_INCLUDED
+#define SAMPLE_H_INCLUDED
 
-#include "esnpapi.h"
+#include <esnpapi.h>
 
-#include <any.h>
-#include <reflect.h>
 #include <org/w3c/dom.h>
 
 class EventHandler : public org::w3c::dom::events::EventListener
@@ -41,36 +39,25 @@ public:
     unsigned int release() {};
 };
 
-class PluginInstance
+class SampleInstance: public PluginInstance
 {
-    org::w3c::dom::html::Window* window;
-
     EventHandler* downHandler;
 
     void initialize();
     void drawCharts(org::w3c::dom::Document* document);
 
 public:
-    PluginInstance(org::w3c::dom::html::Window* window) :
-        window(window),
+    SampleInstance(NPP npp, NPObject* window) :
+        PluginInstance(npp, window),
         downHandler(0)
     {
         initialize();
     }
 
-    ~PluginInstance()
+    ~SampleInstance()
     {
         delete downHandler;  // XXX
-        if (window)
-        {
-            window->release();
-        }
-    }
-
-    NPObject* getScriptableInstance()
-    {
-        return 0;
     }
 };
 
-#endif // ESNPAPI_SAMPLE_H_INCLUDED
+#endif // SAMPLE_H_INCLUDED
