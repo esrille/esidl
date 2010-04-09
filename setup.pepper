@@ -2,8 +2,8 @@
 cd
 mkdir nacl
 cd nacl
-wget http://build.chromium.org/buildbot/snapshots/nacl/sdk-linux/naclsdk_linux.tgz
-tar -zxvf naclsdk_linux.tgz
+wget http://build.chromium.org/buildbot/nacl_archive/nacl/toolchain/latest/naclsdk_linux_x86.tgz
+tar -zxvf naclsdk_linux_x86.tgz
 export PATH=`pwd`/sdk/nacl-sdk/bin:$PATH
 mkdir esidl
 cd esidl
@@ -16,7 +16,7 @@ make install
 cd ..
 mkdir nacl
 cd nacl
-CXXFLAGS='-Os -fno-rtti -fno-exceptions' ../src/configure --disable-java --host=nacl --target=nacl
+CXXFLAGS='-fno-rtti -fno-exceptions' ../src/configure --disable-java --host=nacl --target=nacl
 make
 # install npapi/sample/npessample.nexe and ../src/npapi/sample/sample.nacl.html
 
