@@ -17,11 +17,19 @@
 #include <esnpapi.h>
 #include <org/w3c/dom.h>
 
+#include <assert.h>
+
 std::map<const std::string, Object* (*)(ProxyObject object)> ProxyControl::proxyConstructorMap;
 
 ProxyControl::ProxyControl(NPP npp) :
-    npp(npp)
+    npp(npp),
+    nestingCount(1)
 {
+}
+
+ProxyControl::~ProxyControl()
+{
+    // TODO: Release objects in newList and oldList
 }
 
 Object* ProxyControl::createProxy(NPObject* object)
@@ -43,9 +51,36 @@ Object* ProxyControl::createProxy(NPObject* object)
     if (it != proxyConstructorMap.end())
     {
         ProxyObject browserObject(object, npp);
-        return (*it).second(browserObject);
+        if (Object* object = (*it).second(browserObject))
+        {
+            return track(object);
+        }
     }
     return 0;
+}
+
+long ProxyControl::enter()
+{
+    return ++nestingCount;
+}
+
+long ProxyControl::leave()
+{
+    --nestingCount;
+    assert(0 <= nestingCount);
+    if (nestingCount == 0)
+    {
+        while (!newList.empty())
+        {
+            Object* object = newList.front();
+            newList.pop_front();
+            if (0 < object->release())
+            {
+                oldList.push_back(object);
+            }
+        }
+    }
+    return nestingCount;
 }
 
 void ProxyControl::registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias)
@@ -63,14 +98,14 @@ void ProxyControl::registerMetaData(const char* meta, Object* (*createProxy)(Pro
 ProxyObject::ProxyObject(NPObject* object, NPP npp) :
     object(object),
     npp(npp),
-    count(1)
+    count(0)
 {
 }
 
 ProxyObject::ProxyObject(const ProxyObject& original) :
     object(original.object),
     npp(original.npp),
-    count(1)
+    count(original.count)
 {
 }
 
@@ -86,8 +121,22 @@ unsigned int ProxyObject::retain()
 
 unsigned int ProxyObject::release()
 {
-    NPN_ReleaseObject(object);
-    return --count;
+    if (0 < count)
+    {
+        NPN_ReleaseObject(object);
+        --count;
+    }
+    if (count == 0)
+    {
+        delete this;
+        return 0;
+    }
+    return count;
+}
+
+unsigned int ProxyObject::mark()
+{
+    return ++count;
 }
 
 PluginInstance::PluginInstance(NPP npp, NPObject* window) :
@@ -96,6 +145,12 @@ PluginInstance::PluginInstance(NPP npp, NPObject* window) :
 {
     npp->pdata = this;
     this->window = interface_cast<org::w3c::dom::html::Window*>(proxyControl.createProxy(window));
+    if (this->window)
+    {
+        ProxyObject* proxy = interface_cast<ProxyObject*>(this->window);
+        proxy->mark();
+        proxy->retain();
+    }
 }
 
 PluginInstance::~PluginInstance()

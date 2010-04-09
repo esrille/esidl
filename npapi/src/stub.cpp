@@ -100,6 +100,34 @@ unsigned lookupSymbolTalbe(Object* object, const char* identifier, unsigned& int
 
 }   // namespace
 
+long StubObject::enter()
+{
+    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
+    if (instance)
+    {
+        ProxyControl* proxyControl = instance->getProxyControl();
+        if (proxyControl)
+        {
+            return proxyControl->enter();
+        }
+    }
+    return 0;
+}
+
+long StubObject::leave()
+{
+    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
+    if (instance)
+    {
+        ProxyControl* proxyControl = instance->getProxyControl();
+        if (proxyControl)
+        {
+            return proxyControl->leave();
+        }
+    }
+    return 0;
+}
+
 void StubObject::invalidate()
 {
 }
@@ -167,6 +195,7 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
             {
                 continue;
             }
+            enter();
             Any arguments[argumentCount];
             for (unsigned i = 0; i < argumentCount; ++i)
             {
@@ -175,6 +204,7 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
             Any value = object->call(interfaceNumber, symbolNumber, argumentCount, arguments);
             convertToVariant(npp,value, result);
             found = true;
+            leave();
             break;
         }
     }
@@ -250,9 +280,11 @@ bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
         }
         if (*metaData == Reflect::kGetter)
         {
+            enter();
             Any property = object->call(interfaceNumber, symbolNumber, 0, 0);
             convertToVariant(npp, property, result);
             found = true;
+            leave();
             break;
         }
     }
@@ -284,9 +316,11 @@ bool StubObject::setProperty(NPIdentifier name, const NPVariant* value)
         metaData += offset;
         if (*metaData == Reflect::kSetter)
         {
+            enter();
             Any argument = convertToAny(npp, value);  // TODO: Use , type)
             object->call(interfaceNumber, symbolNumber, 1, &argument);
             found = true;
+            leave();
             break;
         }
     }

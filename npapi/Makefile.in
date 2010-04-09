@@ -72,15 +72,15 @@ ARFLAGS = cru
 libesnpapi_a_AR = $(AR) $(ARFLAGS)
 libesnpapi_a_LIBADD =
 am_libesnpapi_a_OBJECTS = bridge.$(OBJEXT) invoke.$(OBJEXT) \
-	metadata.$(OBJEXT) metadataFile.$(OBJEXT) \
-	metadataGeolocation.$(OBJEXT) metadataHtml.$(OBJEXT) \
-	metadataHtmlA_G.$(OBJEXT) metadataHtmlH_N.$(OBJEXT) \
-	metadataHtmlO_U.$(OBJEXT) metadataHtmlV_Z.$(OBJEXT) \
-	metadataSvg.$(OBJEXT) metadataSvgA_E.$(OBJEXT) \
-	metadataSvgF_G.$(OBJEXT) metadataSvgH_N.$(OBJEXT) \
-	metadataSvgO_U.$(OBJEXT) metadataSvgV_Z.$(OBJEXT) \
-	metadataWebDatabase.$(OBJEXT) metadataWebGL.$(OBJEXT) \
-	metadataWorkers.$(OBJEXT) proxy.$(OBJEXT) stub.$(OBJEXT)
+	proxy.$(OBJEXT) stub.$(OBJEXT) metadata.$(OBJEXT) \
+	metadataFile.$(OBJEXT) metadataGeolocation.$(OBJEXT) \
+	metadataHtml.$(OBJEXT) metadataHtmlA_G.$(OBJEXT) \
+	metadataHtmlH_N.$(OBJEXT) metadataHtmlO_U.$(OBJEXT) \
+	metadataHtmlV_Z.$(OBJEXT) metadataSvg.$(OBJEXT) \
+	metadataSvgA_E.$(OBJEXT) metadataSvgF_G.$(OBJEXT) \
+	metadataSvgH_N.$(OBJEXT) metadataSvgO_U.$(OBJEXT) \
+	metadataSvgV_Z.$(OBJEXT) metadataWebDatabase.$(OBJEXT) \
+	metadataWebGL.$(OBJEXT) metadataWorkers.$(OBJEXT)
 libesnpapi_a_OBJECTS = $(am_libesnpapi_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -290,6 +290,8 @@ libesnpapi_a_SOURCES = \
 	include/npapi/npupp.h \
 	src/bridge.cpp \
 	src/invoke.cpp \
+	src/proxy.cpp \
+	src/stub.cpp \
 	src/metadata.cpp \
 	src/metadataFile.cpp \
 	src/metadataGeolocation.cpp \
@@ -306,9 +308,7 @@ libesnpapi_a_SOURCES = \
 	src/metadataSvgV_Z.cpp \
 	src/metadataWebDatabase.cpp \
 	src/metadataWebGL.cpp \
-	src/metadataWorkers.cpp \
-	src/proxy.cpp \
-	src/stub.cpp
+	src/metadataWorkers.cpp
 
 all: all-recursive
 
@@ -457,6 +457,34 @@ invoke.obj: src/invoke.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/invoke.cpp' object='invoke.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o invoke.obj `if test -f 'src/invoke.cpp'; then $(CYGPATH_W) 'src/invoke.cpp'; else $(CYGPATH_W) '$(srcdir)/src/invoke.cpp'; fi`
+
+proxy.o: src/proxy.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT proxy.o -MD -MP -MF $(DEPDIR)/proxy.Tpo -c -o proxy.o `test -f 'src/proxy.cpp' || echo '$(srcdir)/'`src/proxy.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/proxy.Tpo $(DEPDIR)/proxy.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/proxy.cpp' object='proxy.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o proxy.o `test -f 'src/proxy.cpp' || echo '$(srcdir)/'`src/proxy.cpp
+
+proxy.obj: src/proxy.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT proxy.obj -MD -MP -MF $(DEPDIR)/proxy.Tpo -c -o proxy.obj `if test -f 'src/proxy.cpp'; then $(CYGPATH_W) 'src/proxy.cpp'; else $(CYGPATH_W) '$(srcdir)/src/proxy.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/proxy.Tpo $(DEPDIR)/proxy.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/proxy.cpp' object='proxy.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o proxy.obj `if test -f 'src/proxy.cpp'; then $(CYGPATH_W) 'src/proxy.cpp'; else $(CYGPATH_W) '$(srcdir)/src/proxy.cpp'; fi`
+
+stub.o: src/stub.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT stub.o -MD -MP -MF $(DEPDIR)/stub.Tpo -c -o stub.o `test -f 'src/stub.cpp' || echo '$(srcdir)/'`src/stub.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/stub.Tpo $(DEPDIR)/stub.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/stub.cpp' object='stub.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o stub.o `test -f 'src/stub.cpp' || echo '$(srcdir)/'`src/stub.cpp
+
+stub.obj: src/stub.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT stub.obj -MD -MP -MF $(DEPDIR)/stub.Tpo -c -o stub.obj `if test -f 'src/stub.cpp'; then $(CYGPATH_W) 'src/stub.cpp'; else $(CYGPATH_W) '$(srcdir)/src/stub.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/stub.Tpo $(DEPDIR)/stub.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/stub.cpp' object='stub.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o stub.obj `if test -f 'src/stub.cpp'; then $(CYGPATH_W) 'src/stub.cpp'; else $(CYGPATH_W) '$(srcdir)/src/stub.cpp'; fi`
 
 metadata.o: src/metadata.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT metadata.o -MD -MP -MF $(DEPDIR)/metadata.Tpo -c -o metadata.o `test -f 'src/metadata.cpp' || echo '$(srcdir)/'`src/metadata.cpp
@@ -695,34 +723,6 @@ metadataWorkers.obj: src/metadataWorkers.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/metadataWorkers.cpp' object='metadataWorkers.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o metadataWorkers.obj `if test -f 'src/metadataWorkers.cpp'; then $(CYGPATH_W) 'src/metadataWorkers.cpp'; else $(CYGPATH_W) '$(srcdir)/src/metadataWorkers.cpp'; fi`
-
-proxy.o: src/proxy.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT proxy.o -MD -MP -MF $(DEPDIR)/proxy.Tpo -c -o proxy.o `test -f 'src/proxy.cpp' || echo '$(srcdir)/'`src/proxy.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/proxy.Tpo $(DEPDIR)/proxy.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/proxy.cpp' object='proxy.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o proxy.o `test -f 'src/proxy.cpp' || echo '$(srcdir)/'`src/proxy.cpp
-
-proxy.obj: src/proxy.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT proxy.obj -MD -MP -MF $(DEPDIR)/proxy.Tpo -c -o proxy.obj `if test -f 'src/proxy.cpp'; then $(CYGPATH_W) 'src/proxy.cpp'; else $(CYGPATH_W) '$(srcdir)/src/proxy.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/proxy.Tpo $(DEPDIR)/proxy.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/proxy.cpp' object='proxy.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o proxy.obj `if test -f 'src/proxy.cpp'; then $(CYGPATH_W) 'src/proxy.cpp'; else $(CYGPATH_W) '$(srcdir)/src/proxy.cpp'; fi`
-
-stub.o: src/stub.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT stub.o -MD -MP -MF $(DEPDIR)/stub.Tpo -c -o stub.o `test -f 'src/stub.cpp' || echo '$(srcdir)/'`src/stub.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/stub.Tpo $(DEPDIR)/stub.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/stub.cpp' object='stub.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o stub.o `test -f 'src/stub.cpp' || echo '$(srcdir)/'`src/stub.cpp
-
-stub.obj: src/stub.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT stub.obj -MD -MP -MF $(DEPDIR)/stub.Tpo -c -o stub.obj `if test -f 'src/stub.cpp'; then $(CYGPATH_W) 'src/stub.cpp'; else $(CYGPATH_W) '$(srcdir)/src/stub.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/stub.Tpo $(DEPDIR)/stub.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/stub.cpp' object='stub.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o stub.obj `if test -f 'src/stub.cpp'; then $(CYGPATH_W) 'src/stub.cpp'; else $(CYGPATH_W) '$(srcdir)/src/stub.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

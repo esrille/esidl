@@ -23,11 +23,6 @@
 namespace
 {
 
-bool isStub(const NPObject* object)
-{
-    return object->_class == &StubObject::npclass;
-}
-
 bool toBoolean(const NPVariant* variant)
 {
     switch (variant->type)
@@ -219,6 +214,11 @@ std::string toString(NPP npp, const NPVariant* variant, char attribute = 0)
 }
 
 }  // namespace
+
+bool isStub(const NPObject* object)
+{
+    return object->_class == &StubObject::npclass;
+}
 
 NPObject* createStub(NPP npp, Object* object)
 {

@@ -48,9 +48,7 @@ void down(events::Event* evt)
                 int y = mouse->getClientY() - canvas->getOffsetTop();
                 context->setFillStyle("blue");
                 context->fillRect(x, y, 5, 5);
-                context->release();
             }
-            canvas->release();
         }
     }
 }
@@ -68,9 +66,7 @@ void SampleInstance::drawCharts(Document* document)
         if (xhr)
         {
             printf("XMLHttpRequest.getReadyState() = %u\n", xhr->getReadyState());
-            xhr->release();
         }
-        xmlHttpRequest->release();
     }
 
     // Test 'stringifier'
@@ -79,7 +75,6 @@ void SampleInstance::drawCharts(Document* document)
     if (anchor)
     {
         printf("anchor.getHref() = \"%s\"\n", anchor->getHref().c_str());
-        anchor->release();
     }
 
     // Test interface_cast implied by the 'implements' statement while Document does
@@ -96,14 +91,11 @@ void SampleInstance::drawCharts(Document* document)
         if (Node* node = document->createTextNode("hello, world."))
         {
             element->appendChild(node);
-            node->release();
         }
         if (html::HTMLElement* body = interface_cast<html::HTMLDocument*>(document)->getBody())
         {
             body->appendChild(element);
-            body->release();
         }
-        element->release();
     }
 
     html::HTMLCanvasElement* canvas = interface_cast<html::HTMLCanvasElement*>(document->getElementById("canvas"));
@@ -115,7 +107,6 @@ void SampleInstance::drawCharts(Document* document)
     html::CanvasRenderingContext2D* context = interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
     if (!context)
     {
-        canvas->release();
         return;
     }
 
@@ -208,16 +199,12 @@ void SampleInstance::drawCharts(Document* document)
     context->closePath();
     context->fill();
 
-    context->release();
-
     events::EventTarget* eventTarget = interface_cast<events::EventTarget*>(canvas);
     printf("eventTarget: %p # This must be a non-zero value.\n", eventTarget);
     if (eventTarget)
     {
         eventTarget->addEventListener("mouseup", downHandler, true);
     }
-
-    canvas->release();
 }
 
 void SampleInstance::initialize()
@@ -228,6 +215,5 @@ void SampleInstance::initialize()
     if (document)
     {
         drawCharts(document);
-        document->release();
     }
 }

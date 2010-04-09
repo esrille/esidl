@@ -26,6 +26,8 @@ libesnpapi_a_SOURCES = \
 	include/npapi/npupp.h \
 	src/bridge.cpp \
 	src/invoke.cpp \
+	src/proxy.cpp \
+	src/stub.cpp \
 	src/metadata.cpp \
 	src/metadataFile.cpp \
 	src/metadataGeolocation.cpp \
@@ -42,7 +44,5 @@ libesnpapi_a_SOURCES = \
 	src/metadataSvgV_Z.cpp \
 	src/metadataWebDatabase.cpp \
 	src/metadataWebGL.cpp \
-	src/metadataWorkers.cpp \
-	src/proxy.cpp \
-	src/stub.cpp
+	src/metadataWorkers.cpp
 

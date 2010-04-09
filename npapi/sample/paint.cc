@@ -36,7 +36,6 @@ void PaintInstance::initialize() {
       if (context) {
         context->setFillStyle("white");
         context->fillRect(0, 0, 320, 240);
-        context->release();
       }
       events::EventTarget* eventTarget =
         interface_cast<events::EventTarget*>(canvas);
@@ -45,7 +44,6 @@ void PaintInstance::initialize() {
         eventTarget->addEventListener("mousemove", moveHandler, true);
         eventTarget->addEventListener("mouseup", upHandler, true);
       }
-      canvas->release();
     }
     html::HTMLElement* tools =
       interface_cast<html::HTMLElement*>(document->getElementById("tools"));
@@ -55,9 +53,7 @@ void PaintInstance::initialize() {
       if (eventTarget) {
         eventTarget->addEventListener("mousedown", selectHandler, true);
       }
-      tools->release();
     }
-    document->release();
   }
 }
 
@@ -65,9 +61,7 @@ PaintInstance::~PaintInstance() {
   delete downHandler;
   delete moveHandler;
   delete upHandler;
-  if (selectHandler) {
-    delete selectHandler;
-  }
+  delete selectHandler;
 }
 
 void PaintInstance::down(events::Event* evt) {
@@ -86,10 +80,7 @@ void PaintInstance::down(events::Event* evt) {
       int x = mouse->getClientX() - canvas->getOffsetLeft();
       int y = mouse->getClientY() - canvas->getOffsetTop();
       context->moveTo(x, y);
-      context->release();
     }
-    canvas->release();
-
     penDown = true;
   }
 }
@@ -113,9 +104,7 @@ void PaintInstance::move(events::Event* evt) {
       int y = mouse->getClientY() - canvas->getOffsetTop();
       context->lineTo(x, y);
       context->stroke();
-      context->release();
     }
-    canvas->release();
   }
 }
 
@@ -135,10 +124,7 @@ void PaintInstance::up(events::Event* evt) {
       interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
     if (context) {
       context->closePath();
-      context->release();
     }
-    canvas->release();
-
     penDown = false;
   }
 }
@@ -169,10 +155,7 @@ void PaintInstance::select(events::Event* evt) {
           context->setLineWidth(10);
           canvas->setAttribute("class", "eraser");
         }
-        context->release();
       }
-      canvas->release();
     }
-    document->release();
   }
 }

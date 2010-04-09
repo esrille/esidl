@@ -18,10 +18,11 @@
 #define ESNPAPI_H_INCLUDED
 
 #include <cstring>
-#include <string>
-#include <map>
-
 using std::strlen;  // for STRINGZ_TO_NPVARIANT
+
+#include <list>
+#include <map>
+#include <string>
 
 #ifdef __native_client__
 #include "nacl/npapi.h"
@@ -56,10 +57,11 @@ class ProxyObject
 public:
     ProxyObject(NPObject* object, NPP npp);
     ProxyObject(const ProxyObject& original);
-    ~ProxyObject();
+    virtual ~ProxyObject();
 
     unsigned int retain();
     unsigned int release();
+    unsigned int mark();
 
     NPObject* getNPObject()
     {
@@ -80,13 +82,28 @@ public:
 class ProxyControl
 {
     NPP npp;
+    long nestingCount;  // more than zero if the control is in plugin module
+
+    std::list<Object*> oldList;
+    std::list<Object*> newList;
 
     // Map from interfaceName to constructors.
     static std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
 
 public:
     explicit ProxyControl(NPP npp);
+    ~ProxyControl();
+    
     Object* createProxy(NPObject* object);
+
+    long enter();
+    long leave();
+
+    Object* track(Object* object)
+    {
+        newList.push_back(object);
+        return object;
+    }
 
     static void registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias = 0);
 };
@@ -111,6 +128,9 @@ public:
     {
         this->object = object;
     }
+
+    long enter();
+    long leave();
 
     void invalidate();
     bool hasMethod(NPIdentifier name);
@@ -149,6 +169,8 @@ public:
 };
 
 std::string getInterfaceName(NPP npp, NPObject* object);
+
+bool isStub(const NPObject* object);
 
 void convertToVariant(NPP npp, bool value, NPVariant* variant);
 void convertToVariant(NPP npp, uint8_t value, NPVariant* variant);

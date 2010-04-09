@@ -32,11 +32,8 @@ void XHRInstance::initialize() {
         if (eventTarget) {
           eventTarget->addEventListener("click", loadHandler, true);
         }
-        button->release();
       }
-      form->release();
     }
-    document->release();
   }
 }
 
@@ -53,9 +50,7 @@ void XHRInstance::load(events::Event* evt) {
       xhr->addEventListener("load", displayHandler, true);
       xhr->open("GET", "xhr.txt", true);
       xhr->send();
-      xhr->release();
     }
-    xmlHttpRequest->release();
   }
 }
 
@@ -69,12 +64,8 @@ void XHRInstance::display(events::Event* evt) {
         html::HTMLInputElement* result = interface_cast<html::HTMLInputElement*>(form->namedItem("result"));
         if (result) {
             result->setValue(xhr->getResponseText());
-            result->release();
         }
-        form->release();
       }
-      document->release();
     }
-    xhr->release();
   }
 }

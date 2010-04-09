@@ -36,12 +36,7 @@ public:
     }
     virtual unsigned int release()
     {
-        unsigned int count = O::release();
-        if (count == 0)
-        {
-            delete this;
-        }
-        return count;
+        return O::release();
     }
     static Object* createInstance(O object)
     {

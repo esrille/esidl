@@ -396,6 +396,11 @@ public:
         return getType() == TypeString;
     }
 
+    bool isObject() const
+    {
+        return getType() == TypeObject;
+    }
+
     bool isNull() const
     {
         return (type & PrimitiveMask) == TypeVoid;

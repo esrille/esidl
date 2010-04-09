@@ -58,12 +58,17 @@ NPError NPP_New(NPMIMEType pluginType, NPP npp, uint16_t mode,
 
     NPObject* window;
     NPN_GetValue(npp, NPNVWindowNPObject, &window);
-        npp->pdata = new (std::nothrow) PaintInstance(npp, window);
-    if (!npp->pdata)
+    PaintInstance* instance = new (std::nothrow) PaintInstance(npp, window);
+    npp->pdata = instance;
+    if (!instance)
     {
         NPN_ReleaseObject(window);
         return NPERR_INVALID_INSTANCE_ERROR;
     }
+    if (ProxyControl* proxyControl = instance->getProxyControl())
+    {
+        proxyControl->leave();
+    }    
     return NPERR_NO_ERROR;
 }
 
