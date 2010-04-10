@@ -71,7 +71,7 @@ public:
     {
         return npp;
     }
-    
+
     static const char* const getQualifiedName()
     {
         static const char* qualifiedName = "ProxyObject";
@@ -93,7 +93,7 @@ class ProxyControl
 public:
     explicit ProxyControl(NPP npp);
     ~ProxyControl();
-    
+
     Object* createProxy(NPObject* object);
 
     long enter();
@@ -143,12 +143,30 @@ public:
     bool enumeration(NPIdentifier** value, uint32_t* count);
     bool construct(const NPVariant* args, uint32_t argCount, NPVariant* result);
 
+    static bool isStub(const NPObject* object)
+    {
+        return object->_class == &StubObject::npclass;
+    }
+
     static NPClass npclass;
+};
+
+class StubControl
+{
+    NPP npp;
+    std::map<Object*, StubObject*> stubMap;
+
+public:
+    explicit StubControl(NPP npp);
+    ~StubControl();
+
+    NPObject* createStub(Object* object);
 };
 
 class PluginInstance
 {
     ProxyControl proxyControl;
+    StubControl stubControl;
 
 protected:
     org::w3c::dom::html::Window* window;
@@ -166,11 +184,14 @@ public:
     {
         return &proxyControl;
     }
+
+    StubControl* getStubControl()
+    {
+        return &stubControl;
+    }
 };
 
 std::string getInterfaceName(NPP npp, NPObject* object);
-
-bool isStub(const NPObject* object);
 
 void convertToVariant(NPP npp, bool value, NPVariant* variant);
 void convertToVariant(NPP npp, uint8_t value, NPVariant* variant);
@@ -201,8 +222,6 @@ std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribut
 Object* convertToObject(NPP npp, const NPVariant* variant);
 Any convertToAny(NPP npp, const NPVariant* variant);
 Any convertToAny(NPP npp, const NPVariant* variant, int type);
-
-NPObject* createStub(NPP npp, Object* object);
 
 Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
            const char* meta, unsigned offset,

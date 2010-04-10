@@ -68,7 +68,7 @@ NPError NPP_New(NPMIMEType pluginType, NPP npp, uint16_t mode,
     if (ProxyControl* proxyControl = instance->getProxyControl())
     {
         proxyControl->leave();
-    }    
+    }
     return NPERR_NO_ERROR;
 }
 
@@ -90,7 +90,7 @@ NPError NPP_Destroy(NPP npp, NPSavedData** save)
 
 NPError NPP_SetWindow(NPP npp, NPWindow* window)
 {
-    printf("%s\n", __func__);
+    printf("%s(%p, %p)\n", __func__, npp, window);
     if (!npp)
     {
         return NPERR_INVALID_INSTANCE_ERROR;

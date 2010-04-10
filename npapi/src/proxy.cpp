@@ -141,6 +141,7 @@ unsigned int ProxyObject::mark()
 
 PluginInstance::PluginInstance(NPP npp, NPObject* window) :
     proxyControl(npp),
+    stubControl(npp),
     window(0)
 {
     npp->pdata = this;

@@ -27,11 +27,13 @@ NPObject* stubAllocate(NPP npp, NPClass* aClass)
 
 void stubDeallocate(NPObject* object)
 {
+    printf("%s\n", __func__);
     delete static_cast<StubObject*>(object);
 }
 
 void stubInvalidate(NPObject* object)
 {
+    printf("%s\n", __func__);
     return static_cast<StubObject*>(object)->invalidate();
 }
 
@@ -359,3 +361,25 @@ NPClass StubObject::npclass =
     stubEnumeration,
     stubConstruct
 };
+
+StubControl::StubControl(NPP npp) :
+    npp(npp)
+{
+}
+
+StubControl::~StubControl()
+{
+    // TODO: Invalidate stubs in stubMap
+}
+
+NPObject* StubControl::createStub(Object* object)
+{
+    NPObject* npobject = NPN_CreateObject(npp, &StubObject::npclass);
+    if (!npobject)
+    {
+        return 0;
+    }
+    StubObject* stub = static_cast<StubObject*>(npobject);
+    stub->setObject(object);
+    return stub;
+}

@@ -16,6 +16,7 @@
 
 #include "esnpapi.h"
 
+#include <assert.h>
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>
@@ -215,23 +216,6 @@ std::string toString(NPP npp, const NPVariant* variant, char attribute = 0)
 
 }  // namespace
 
-bool isStub(const NPObject* object)
-{
-    return object->_class == &StubObject::npclass;
-}
-
-NPObject* createStub(NPP npp, Object* object)
-{
-    NPObject* npobject = NPN_CreateObject(npp, &StubObject::npclass);
-    if (!npobject)
-    {
-        return 0;
-    }
-    StubObject* stub = static_cast<StubObject*>(npobject);
-    stub->setObject(object);
-    return stub;
-}
-
 std::string getInterfaceName(NPP npp, NPObject* object)
 {
     std::string className;
@@ -356,7 +340,7 @@ Object* convertToObject(NPP npp, const NPVariant* variant)
     {
         return 0;
     }
-    if (isStub(object))
+    if (StubObject::isStub(object))
     {
         StubObject* stub = static_cast<StubObject*>(object);
         return stub->getObject();
@@ -523,20 +507,26 @@ void convertToVariant(NPP npp, const std::string& value, NPVariant* variant)
 
 void convertToVariant(NPP npp, Object* value, NPVariant* variant)
 {
-    if (!value)
-    {
-        NULL_TO_NPVARIANT(*variant);
-        return;
-    }
+    assert(value);
     if (ProxyObject* proxy = interface_cast<ProxyObject*>(value))
     {
         OBJECT_TO_NPVARIANT(proxy->getNPObject(), *variant);
+        return;
     }
-    else
+    if (PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata))
     {
-        NPObject* object = createStub(npp, value);
-        OBJECT_TO_NPVARIANT(object, *variant);
+        StubControl* stubControl = instance->getStubControl();
+        if (stubControl)
+        {
+            NPObject* object = stubControl->createStub(value);
+            if (object)
+            {
+                OBJECT_TO_NPVARIANT(object, *variant);
+                return;
+            }
+        }
     }
+    NULL_TO_NPVARIANT(*variant);
 }
 
 void convertToVariant(NPP npp, const Any& any, NPVariant* variant)

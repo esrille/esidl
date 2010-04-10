@@ -54,7 +54,7 @@ Any processResult(NPP npp, NPVariant* variant)
         {
             NPN_ReleaseObject(NPVARIANT_TO_OBJECT(*variant));
         }
-        else if (!isStub(NPVARIANT_TO_OBJECT(*variant)))
+        else if (!StubObject::isStub(NPVARIANT_TO_OBJECT(*variant)))
         {
             ProxyObject* proxy = interface_cast<ProxyObject*>(static_cast<Object*>(result));
             if (proxy)
