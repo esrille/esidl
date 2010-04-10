@@ -45,7 +45,7 @@ void expandSequence(NPP npp, const Sequence<T> sequence, NPVariant* variantArray
     }
 }
 
-Any processResult(NPP npp, const NPVariant* variant)
+Any processResult(NPP npp, NPVariant* variant)
 {
     Any result = convertToAny(npp, variant);
     if (NPVARIANT_IS_OBJECT(*variant))
@@ -62,6 +62,10 @@ Any processResult(NPP npp, const NPVariant* variant)
                 proxy->mark();
             }
         }
+    }
+    else
+    {
+        NPN_ReleaseVariantValue(variant);
     }
     return result;
 }
