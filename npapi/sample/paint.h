@@ -26,8 +26,7 @@ class EventHandler;
 class PaintInstance : public PluginInstance {
  public:
   PaintInstance(NPP npp, NPObject* window)
-      : PluginInstance(npp, window),
-        penDown(false) {
+      : PluginInstance(npp, window) {
     initialize();
   }
   ~PaintInstance();
@@ -37,8 +36,6 @@ class PaintInstance : public PluginInstance {
   EventHandler* moveHandler;
   EventHandler* upHandler;
   EventHandler* selectHandler;
-
-  bool penDown;
 
   void initialize();
   void down(org::w3c::dom::events::Event* evt);
@@ -58,10 +55,10 @@ class EventHandler : public org::w3c::dom::events::EventListener {
     (instance->*handler)(evt);
   }
   unsigned int retain() {
-    return 1;
+    return instance->retain(this);
   };
   unsigned int release() {
-    return 1;
+    return instance->release(this);
   };
 
  private:

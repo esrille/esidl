@@ -15,14 +15,15 @@
  */
 
 #include "paint.h"
+#include <new>
 
 using namespace org::w3c::dom;
 
 void PaintInstance::initialize() {
-  downHandler = new EventHandler(this, &PaintInstance::down);
-  moveHandler = new EventHandler(this, &PaintInstance::move);
-  upHandler = new EventHandler(this, &PaintInstance::up);
-  selectHandler = new EventHandler(this, &PaintInstance::select);
+  downHandler = new (std::nothrow) EventHandler(this, &PaintInstance::down);
+  moveHandler = new (std::nothrow) EventHandler(this, &PaintInstance::move);
+  upHandler = new (std::nothrow) EventHandler(this, &PaintInstance::up);
+  selectHandler = new (std::nothrow) EventHandler(this, &PaintInstance::select);
 
   Document* document = window->getDocument();
   if (document) {
@@ -41,7 +42,6 @@ void PaintInstance::initialize() {
         interface_cast<events::EventTarget*>(canvas);
       if (eventTarget) {
         eventTarget->addEventListener("mousedown", downHandler, true);
-        eventTarget->addEventListener("mousemove", moveHandler, true);
         eventTarget->addEventListener("mouseup", upHandler, true);
       }
     }
@@ -58,10 +58,18 @@ void PaintInstance::initialize() {
 }
 
 PaintInstance::~PaintInstance() {
-  delete downHandler;
-  delete moveHandler;
-  delete upHandler;
-  delete selectHandler;
+  if (downHandler) {
+    downHandler->release();
+  }
+  if (moveHandler) {
+    moveHandler->release();
+  }
+  if (upHandler) {
+    upHandler->release();
+  }
+  if (selectHandler) {
+    selectHandler->release();
+  }
 }
 
 void PaintInstance::down(events::Event* evt) {
@@ -81,7 +89,11 @@ void PaintInstance::down(events::Event* evt) {
       int y = mouse->getClientY() - canvas->getOffsetTop();
       context->moveTo(x, y);
     }
-    penDown = true;
+    events::EventTarget* eventTarget =
+    interface_cast<events::EventTarget*>(canvas);
+    if (eventTarget) {
+      eventTarget->addEventListener("mousemove", moveHandler, true);
+    }
   }
 }
 
@@ -89,9 +101,6 @@ void PaintInstance::move(events::Event* evt) {
   events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
   printf("move %p\n", mouse);
   if (!mouse) {
-    return;
-  }
-  if (!penDown) {
     return;
   }
   html::HTMLCanvasElement* canvas =
@@ -114,9 +123,6 @@ void PaintInstance::up(events::Event* evt) {
   if (!mouse) {
     return;
   }
-  if (!penDown) {
-    return;
-  }
   html::HTMLCanvasElement* canvas =
     interface_cast<html::HTMLCanvasElement*>(mouse->getTarget());
   if (canvas) {
@@ -125,7 +131,11 @@ void PaintInstance::up(events::Event* evt) {
     if (context) {
       context->closePath();
     }
-    penDown = false;
+    events::EventTarget* eventTarget =
+    interface_cast<events::EventTarget*>(canvas);
+    if (eventTarget) {
+      eventTarget->removeEventListener("mousemove", moveHandler, true);
+    }
   }
 }
 

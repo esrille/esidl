@@ -21,23 +21,7 @@
 
 #include <org/w3c/dom.h>
 
-class EventHandler : public org::w3c::dom::events::EventListener
-{
-    void (*handler)(org::w3c::dom::events::Event* evt);
-
-public:
-    EventHandler(void (*handler)(org::w3c::dom::events::Event* evt)) :
-        handler(handler)
-    {
-    }
-    virtual void handleEvent(org::w3c::dom::events::Event* evt)
-    {
-        handler(evt);
-    }
-
-    unsigned int retain() {};
-    unsigned int release() {};
-};
+class EventHandler;
 
 class SampleInstance: public PluginInstance
 {
@@ -53,11 +37,35 @@ public:
     {
         initialize();
     }
+    ~SampleInstance();
 
-    ~SampleInstance()
-    {
-        delete downHandler;  // XXX
-    }
+    void down(org::w3c::dom::events::Event* evt);
 };
+
+class EventHandler : public org::w3c::dom::events::EventListener
+{
+    SampleInstance* instance;
+    void (SampleInstance::*handler)(org::w3c::dom::events::Event* evt);
+
+public:
+    EventHandler(SampleInstance* instance, void (SampleInstance::*handler)(org::w3c::dom::events::Event* evt)) :
+        instance(instance),
+        handler(handler)
+    {
+    }
+    virtual void handleEvent(org::w3c::dom::events::Event* evt)
+    {
+        (instance->*handler)(evt);
+    }
+    unsigned int retain()
+    {
+        return instance->retain(this);
+    };
+    unsigned int release()
+    {
+        return instance->release(this);
+    };
+};
+
 
 #endif // SAMPLE_H_INCLUDED

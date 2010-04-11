@@ -51,10 +51,10 @@ class EventHandler : public org::w3c::dom::events::EventListener {
     (instance->*handler)(evt);
   }
   unsigned int retain() {
-    return 1;
+    return instance->retain(this);
   };
   unsigned int release() {
-    return 1;
+    return instance->release(this);
   };
 
  private:

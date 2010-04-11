@@ -16,16 +16,13 @@
  */
 
 #include "sample.h"
-#include "proxyImpl.h"
 
 using namespace org::w3c::dom;
 
 #include <math.h>
+#include <new>
 
-namespace
-{
-
-void down(events::Event* evt)
+void SampleInstance::down(events::Event* evt)
 {
     events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
     printf("down %p\n", mouse);
@@ -51,8 +48,6 @@ void down(events::Event* evt)
             }
         }
     }
-}
-
 }
 
 void SampleInstance::drawCharts(Document* document)
@@ -201,7 +196,7 @@ void SampleInstance::drawCharts(Document* document)
 
     events::EventTarget* eventTarget = interface_cast<events::EventTarget*>(canvas);
     printf("eventTarget: %p # This must be a non-zero value.\n", eventTarget);
-    if (eventTarget)
+    if (eventTarget && downHandler)
     {
         eventTarget->addEventListener("mouseup", downHandler, true);
     }
@@ -209,11 +204,19 @@ void SampleInstance::drawCharts(Document* document)
 
 void SampleInstance::initialize()
 {
-    downHandler = new EventHandler(down);
+    downHandler = new (std::nothrow) EventHandler(this, &SampleInstance::down);
 
     Document* document = window->getDocument();
     if (document)
     {
         drawCharts(document);
+    }
+}
+
+SampleInstance::~SampleInstance()
+{
+    if (downHandler)
+    {
+        downHandler->release();
     }
 }

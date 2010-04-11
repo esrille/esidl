@@ -132,6 +132,7 @@ public:
     long enter();
     long leave();
 
+    void deallocate();
     void invalidate();
     bool hasMethod(NPIdentifier name);
     bool invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result);
@@ -160,7 +161,9 @@ public:
     explicit StubControl(NPP npp);
     ~StubControl();
 
+    NPObject* findStub(Object* object);
     NPObject* createStub(Object* object);
+    void remove(Object* object);
 };
 
 class PluginInstance
@@ -189,6 +192,9 @@ public:
     {
         return &stubControl;
     }
+
+    unsigned int retain(Object* stub);
+    unsigned int release(Object* stub);
 };
 
 std::string getInterfaceName(NPP npp, NPObject* object);

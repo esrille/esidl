@@ -15,12 +15,18 @@
  */
 
 #include "xhr.h"
+#include <new>
+
+#include <stdio.h>
+
+// Define TEST_STUBOBJECT_DEALLOCATE to test StubObject::deallocate().
+// #define TEST_STUBOBJECT_DEALLOCATE
 
 using namespace org::w3c::dom;
 
 void XHRInstance::initialize() {
-  loadHandler = new EventHandler(this, &XHRInstance::load);
-  displayHandler = new EventHandler(this, &XHRInstance::display);
+  loadHandler = new (std::nothrow) EventHandler(this, &XHRInstance::load);
+  displayHandler = new (std::nothrow) EventHandler(this, &XHRInstance::display);
 
   html::HTMLDocument* document = interface_cast<html::HTMLDocument*>(window->getDocument());
   if (document) {
@@ -38,8 +44,12 @@ void XHRInstance::initialize() {
 }
 
 XHRInstance::~XHRInstance() {
-  delete loadHandler;
-  delete displayHandler;
+  if (loadHandler) {
+      loadHandler->release();
+  }
+  if (displayHandler) {
+    displayHandler->release();
+  }
 }
 
 void XHRInstance::load(events::Event* evt) {
@@ -52,6 +62,19 @@ void XHRInstance::load(events::Event* evt) {
       xhr->send();
     }
   }
+
+#ifdef TEST_STUBOBJECT_DEALLOCATE
+  html::HTMLButtonElement* button =
+    interface_cast<html::HTMLButtonElement*>(evt->getTarget());
+  if (button) {
+    events::EventTarget* eventTarget = interface_cast<events::EventTarget*>(button);
+    if (eventTarget) {
+      eventTarget->removeEventListener("click", loadHandler, true);
+      unsigned count = loadHandler->release();
+      loadHandler = 0;
+    }
+  }
+#endif  // TEST_STUBOBJECT_DEALLOCATE
 }
 
 void XHRInstance::display(events::Event* evt) {

@@ -29,6 +29,9 @@ public:
     {
         return "::Object";
     }
+    virtual ~Object()
+    {
+    }
     virtual void* queryInterface(const char* qualifiedName)
     {
         if (qualifiedName == getQualifiedName())

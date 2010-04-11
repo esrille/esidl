@@ -27,14 +27,12 @@ NPObject* stubAllocate(NPP npp, NPClass* aClass)
 
 void stubDeallocate(NPObject* object)
 {
-    printf("%s\n", __func__);
-    delete static_cast<StubObject*>(object);
+    static_cast<StubObject*>(object)->deallocate();
 }
 
 void stubInvalidate(NPObject* object)
 {
-    printf("%s\n", __func__);
-    return static_cast<StubObject*>(object)->invalidate();
+    static_cast<StubObject*>(object)->invalidate();
 }
 
 bool stubHasMethod(NPObject* object, NPIdentifier name)
@@ -130,8 +128,26 @@ long StubObject::leave()
     return 0;
 }
 
+// Note deallocate() can be invoked after the plugin instance is destroyed.
+void StubObject::deallocate()
+{
+    printf("%s()\n", __func__);
+    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
+    if (instance)
+    {
+        StubControl* stubControl = instance->getStubControl();
+        if (stubControl)
+        {
+            stubControl->remove(object);
+        }
+    }
+    delete object;
+    delete this;
+}
+
 void StubObject::invalidate()
 {
+    printf("%s()\n", __func__);
 }
 
 bool StubObject::hasMethod(NPIdentifier name)
@@ -369,17 +385,62 @@ StubControl::StubControl(NPP npp) :
 
 StubControl::~StubControl()
 {
-    // TODO: Invalidate stubs in stubMap
+}
+
+NPObject* StubControl::findStub(Object* object)
+{
+    std::map<Object*, StubObject*>::iterator i;
+    i = stubMap.find(object);
+    if (i != stubMap.end())
+    {
+        return i->second;
+    }
+    return 0;
 }
 
 NPObject* StubControl::createStub(Object* object)
 {
-    NPObject* npobject = NPN_CreateObject(npp, &StubObject::npclass);
+    NPObject* npobject = findStub(object);
+    if (npobject)
+    {
+        return npobject;
+    }
+    npobject = NPN_CreateObject(npp, &StubObject::npclass);
     if (!npobject)
     {
         return 0;
     }
     StubObject* stub = static_cast<StubObject*>(npobject);
     stub->setObject(object);
+    stubMap.insert(std::pair<Object*, StubObject*>(object, stub));
     return stub;
+}
+
+void StubControl::remove(Object* object)
+{
+    stubMap.erase(object);
+}
+
+unsigned int PluginInstance::retain(Object* stub)
+{
+    NPObject* npobject = stubControl.findStub(stub);
+    if (!npobject)
+    {
+        return 1;
+    }
+    NPN_RetainObject(npobject);
+    return npobject->referenceCount;
+}
+
+unsigned int PluginInstance::release(Object* stub)
+{
+    NPObject* npobject = stubControl.findStub(stub);
+    if (!npobject)
+    {
+        delete stub;
+        return 0;
+    }
+    unsigned int count = npobject->referenceCount;
+    NPN_ReleaseObject(npobject);
+    return --count;
 }
