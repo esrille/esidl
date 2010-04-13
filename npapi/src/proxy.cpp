@@ -127,7 +127,7 @@ ProxyObject::ProxyObject(const ProxyObject& original) :
 
 ProxyObject::~ProxyObject()
 {
-    // TODO: Remove this from newList or oldList is it is still included
+    // TODO: Remove this from newList or oldList if it is still included
 }
 
 unsigned int ProxyObject::retain()
