@@ -17,8 +17,6 @@
 #include "md5sum.h"
 #include <new>
 
-#include <stdio.h>
-
 using namespace org::w3c::dom;
 
 void MD5SumInstance::initialize() {
