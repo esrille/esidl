@@ -138,12 +138,13 @@ NPError NPP_GetValue(NPP npp, NPPVariable variable, void* value)
         break;
     case NPPVpluginScriptableNPObject:
         *reinterpret_cast<NPObject**>(value) = NPP_GetScriptableInstance(npp);
-        if (*reinterpret_cast<NPObject**>(value))
+        if (!*reinterpret_cast<NPObject**>(value))
         {
             return NPERR_GENERIC_ERROR;
         }
         break;
     default:
+        return NPERR_GENERIC_ERROR;
         break;
     }
     return NPERR_NO_ERROR;
