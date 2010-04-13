@@ -45,9 +45,9 @@ void expandSequence(NPP npp, const Sequence<T> sequence, NPVariant* variantArray
     }
 }
 
-Any processResult(NPP npp, NPVariant* variant)
+Any processResult(NPP npp, NPVariant* variant, const Reflect::Type type)
 {
-    Any result = convertToAny(npp, variant);
+    Any result = convertToAny(npp, variant, type);
     if (NPVARIANT_IS_OBJECT(*variant))
     {
         if (!result.isObject())
@@ -85,7 +85,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
     Reflect::Method method = Reflect::Method(meta + offset);
     Reflect::Type type = method.getReturnType();
 
-    printf("invoke %s::%s %p\n", interface.getName().c_str(), method.getName().c_str(), proxy->getNPObject());
+    printf("invoke %s::%s %p : %s\n", interface.getName().c_str(), method.getName().c_str(), proxy->getNPObject(), type.getQualifiedName().c_str());
 
     NPIdentifier id;
     NPVariant result;
@@ -96,7 +96,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
         id = NPN_GetStringIdentifier(method.getName().c_str());
         if (NPN_GetProperty(proxy->getNPP(), proxy->getNPObject(), id, &result))
         {
-            return processResult(proxy->getNPP(), &result);
+            return processResult(proxy->getNPP(), &result, type);
         }
     }
     else if (method.isSetter())
@@ -111,7 +111,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
         id = getSpecialIdentifier(arguments[argumentCount - 1]);
         if (NPN_GetProperty(proxy->getNPP(), proxy->getNPObject(), id, &result))
         {
-            return processResult(proxy->getNPP(), &result);
+            return processResult(proxy->getNPP(), &result, type);
         }
     }
     else if (method.isSpecialSetter() || method.isSpecialCreator())
@@ -202,7 +202,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
         {
             if (NPN_Invoke(proxy->getNPP(), proxy->getNPObject(), id, variantArray, variantCount, &result))
             {
-                return processResult(proxy->getNPP(), &result);
+                return processResult(proxy->getNPP(), &result, type);
             }
         }
         else if (method.isConstructor())
@@ -210,12 +210,12 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
             // Chrome uses NPN_Construct()
             if (NPN_Construct(proxy->getNPP(), proxy->getNPObject(), variantArray, variantCount, &result))
             {
-                return processResult(proxy->getNPP(), &result);
+                return processResult(proxy->getNPP(), &result, type);
             }
             // Firefox uses NPN_InvokeDefault()
             if (NPN_InvokeDefault(proxy->getNPP(), proxy->getNPObject(), variantArray, variantCount, &result))
             {
-                return processResult(proxy->getNPP(), &result);
+                return processResult(proxy->getNPP(), &result, type);
             }
         }
     }

@@ -214,10 +214,12 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
                 continue;
             }
             enter();
+            Reflect::Parameter parameter = method.listParameter();
             Any arguments[argumentCount];
             for (unsigned i = 0; i < argumentCount; ++i)
             {
-                arguments[i] = convertToAny(npp, &args[i]);  // TODO: Use , type)
+                parameter.next();
+                arguments[i] = convertToAny(npp, &args[i], parameter.getType());
             }
             Any value = object->call(interfaceNumber, symbolNumber, argumentCount, arguments);
             convertToVariant(npp,value, result);
@@ -334,8 +336,11 @@ bool StubObject::setProperty(NPIdentifier name, const NPVariant* value)
         metaData += offset;
         if (*metaData == Reflect::kSetter)
         {
+            Reflect::Method method(metaData);
+            Reflect::Parameter parameter = method.listParameter();
+            parameter.next();
             enter();
-            Any argument = convertToAny(npp, value);  // TODO: Use , type)
+            Any argument = convertToAny(npp, value, parameter.getType());
             object->call(interfaceNumber, symbolNumber, 1, &argument);
             found = true;
             leave();

@@ -227,7 +227,7 @@ double convertToDouble(const NPVariant* variant);
 std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribute = 0);
 Object* convertToObject(NPP npp, const NPVariant* variant);
 Any convertToAny(NPP npp, const NPVariant* variant);
-Any convertToAny(NPP npp, const NPVariant* variant, int type);
+Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type);
 
 Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
            const char* meta, unsigned offset,

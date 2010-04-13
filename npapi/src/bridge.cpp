@@ -396,9 +396,9 @@ Any convertToAny(NPP npp, const NPVariant* variant)
     }
 }
 
-Any convertToAny(NPP npp, const NPVariant* variant, int type)
+Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
 {
-    switch (type)
+    switch (type.getType())
     {
     case Any::TypeVoid:
         return Any();
@@ -450,7 +450,7 @@ Any convertToAny(NPP npp, const NPVariant* variant, int type)
         break;
     }
     default:
-        return Any();
+        return convertToAny(npp, variant);
         break;
     }
 }
