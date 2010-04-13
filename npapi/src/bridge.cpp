@@ -329,7 +329,7 @@ std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribut
   return toString(npp, variant, attribute);
 }
 
-Object* convertToObject(NPP npp, const NPVariant* variant)
+Object* convertToObject(NPP npp, const NPVariant* variant, const Reflect::Type type)
 {
     if (!NPVARIANT_IS_OBJECT(*variant))
     {
@@ -351,7 +351,7 @@ Object* convertToObject(NPP npp, const NPVariant* variant)
         ProxyControl* proxyControl = instance->getProxyControl();
         if (proxyControl)
         {
-            return proxyControl->createProxy(object);
+            return proxyControl->createProxy(object, type);
         }
     }
     return 0;

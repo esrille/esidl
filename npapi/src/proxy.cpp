@@ -32,7 +32,7 @@ ProxyControl::~ProxyControl()
     // TODO: Release objects in newList and oldList
 }
 
-Object* ProxyControl::createProxy(NPObject* object)
+Object* ProxyControl::createProxy(NPObject* object, const Reflect::Type type)
 {
     if (!object)
     {
@@ -46,15 +46,31 @@ Object* ProxyControl::createProxy(NPObject* object)
         return 0;
     }
 
-    std::map<const std::string, Object* (*)(ProxyObject object)>::iterator it;
-    it = proxyConstructorMap.find(className);
-    if (it != proxyConstructorMap.end())
+    bool usedHint = false;
+    for (;;)
     {
-        ProxyObject browserObject(object, npp);
-        if (Object* object = (*it).second(browserObject))
+        std::map<const std::string, Object* (*)(ProxyObject object)>::iterator it;
+        it = proxyConstructorMap.find(className);
+        if (it != proxyConstructorMap.end())
         {
-            return track(object);
+            ProxyObject browserObject(object, npp);
+            if (Object* object = (*it).second(browserObject))
+            {
+                return track(object);
+            }
         }
+        if (!type.isObject() || usedHint)
+        {
+            break;
+        }
+        className = type.getQualifiedName();
+        size_t pos = className.rfind(':');
+        if (pos != std::string::npos)
+        {
+            className = className.substr(pos + 1);
+            printf("%s: use the class name '%s' as hinted.\n", __func__, className.c_str());
+        }
+        usedHint = true;
     }
     return 0;
 }
@@ -145,7 +161,7 @@ PluginInstance::PluginInstance(NPP npp, NPObject* window) :
     window(0)
 {
     npp->pdata = this;
-    this->window = interface_cast<org::w3c::dom::html::Window*>(proxyControl.createProxy(window));
+    this->window = interface_cast<org::w3c::dom::html::Window*>(proxyControl.createProxy(window, Reflect::Type("O14::html::Window")));
     if (this->window)
     {
         ProxyObject* proxy = interface_cast<ProxyObject*>(this->window);

@@ -94,7 +94,7 @@ public:
     explicit ProxyControl(NPP npp);
     ~ProxyControl();
 
-    Object* createProxy(NPObject* object);
+    Object* createProxy(NPObject* object, const Reflect::Type type);
 
     long enter();
     long leave();
@@ -225,7 +225,7 @@ uint64_t convertToUnsignedLongLong(const NPVariant* variant);
 float convertToFloat(const NPVariant* variant);
 double convertToDouble(const NPVariant* variant);
 std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribute = 0);
-Object* convertToObject(NPP npp, const NPVariant* variant);
+Object* convertToObject(NPP npp, const NPVariant* variant, const Reflect::Type type = Reflect::Type("v"));
 Any convertToAny(NPP npp, const NPVariant* variant);
 Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type);
 
