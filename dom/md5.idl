@@ -1,0 +1,14 @@
+/*
+ * md5.idl
+ */
+
+[Prefix=::com]
+module rsa
+{
+    [Constructor]
+    interface MD5 {
+        void update(DOMString input);
+        DOMString final();
+    };
+};
+

@@ -30,6 +30,7 @@ w3c_idl_files = \
 	geolocation.idl \
 	html5.idl \
 	indexeddb.idl \
+	md5.idl \
 	microdata.idl \
 	postmsg.idl \
 	progress-events.idl \

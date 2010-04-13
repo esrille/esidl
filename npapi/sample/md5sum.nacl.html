@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>MD5Sum</title>
+<script type="text/javascript">
+function sum(e)
+{
+    var md5 = new MD5();
+    md5.update(document.form.input.value);
+    document.form.result.value = md5.final();
+}
+
+function init()
+{
+    document.form.button.addEventListener('click', sum, true);
+}
+</script>
+</head>
+<body onload="init()">
+<form name="form">
+intput: <input type="text" name="input"></input><br>
+md5sum: <input type="text" name="result"></input><br>
+<button type="button" name="button">Load</button>
+</form>
+<embed type="application/x-nacl-srpc" width="0" height="0" src="npesmd5sum.nexe"></embed>
+</body>
+</html>

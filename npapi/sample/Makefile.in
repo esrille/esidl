@@ -38,7 +38,7 @@ host_triplet = @host@
 target_triplet = @target@
 @NACL_FALSE@am__append_1 = -fPIC
 @NACL_TRUE@bin_PROGRAMS = npessample$(EXEEXT) npespaint$(EXEEXT) \
-@NACL_TRUE@	npesxhr$(EXEEXT)
+@NACL_TRUE@	npesxhr$(EXEEXT) npesmd5sum$(EXEEXT)
 @NACL_FALSE@am__append_2 = \
 @NACL_FALSE@	npn_gate.cpp
 
@@ -74,11 +74,18 @@ am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
+libnpesmd5sum_la_LIBADD =
+am__libnpesmd5sum_la_SOURCES_DIST = np_entry.cpp npp_gate.cpp \
+	npn_gate.cpp npp_md5sum.cpp md5sum.cc md5sum.h
+@NACL_FALSE@am__objects_1 = npn_gate.lo
+am__objects_2 = np_entry.lo npp_gate.lo $(am__objects_1)
+@NACL_FALSE@am_libnpesmd5sum_la_OBJECTS = $(am__objects_2) \
+@NACL_FALSE@	npp_md5sum.lo md5sum.lo
+libnpesmd5sum_la_OBJECTS = $(am_libnpesmd5sum_la_OBJECTS)
+@NACL_FALSE@am_libnpesmd5sum_la_rpath = -rpath $(libdir)
 libnpespaint_la_LIBADD =
 am__libnpespaint_la_SOURCES_DIST = np_entry.cpp npp_gate.cpp \
 	npn_gate.cpp npp_paint.cpp paint.cc paint.h
-@NACL_FALSE@am__objects_1 = npn_gate.lo
-am__objects_2 = np_entry.lo npp_gate.lo $(am__objects_1)
 @NACL_FALSE@am_libnpespaint_la_OBJECTS = $(am__objects_2) npp_paint.lo \
 @NACL_FALSE@	paint.lo
 libnpespaint_la_OBJECTS = $(am_libnpespaint_la_OBJECTS)
@@ -98,32 +105,42 @@ am__libnpesxhr_la_SOURCES_DIST = np_entry.cpp npp_gate.cpp \
 libnpesxhr_la_OBJECTS = $(am_libnpesxhr_la_OBJECTS)
 @NACL_FALSE@am_libnpesxhr_la_rpath = -rpath $(libdir)
 PROGRAMS = $(bin_PROGRAMS)
+am__npesmd5sum_SOURCES_DIST = np_entry.cpp npp_gate.cpp npn_gate.cpp \
+	npp_md5sum.cpp md5sum.cc md5sum.h
+@NACL_FALSE@am__objects_3 = npesmd5sum-npn_gate.$(OBJEXT)
+am__objects_4 = npesmd5sum-np_entry.$(OBJEXT) \
+	npesmd5sum-npp_gate.$(OBJEXT) $(am__objects_3)
+@NACL_TRUE@am_npesmd5sum_OBJECTS = $(am__objects_4) \
+@NACL_TRUE@	npesmd5sum-npp_md5sum.$(OBJEXT) \
+@NACL_TRUE@	npesmd5sum-md5sum.$(OBJEXT)
+npesmd5sum_OBJECTS = $(am_npesmd5sum_OBJECTS)
+npesmd5sum_LDADD = $(LDADD)
 am__npespaint_SOURCES_DIST = np_entry.cpp npp_gate.cpp npn_gate.cpp \
 	npp_paint.cpp paint.cc paint.h
-@NACL_FALSE@am__objects_3 = npespaint-npn_gate.$(OBJEXT)
-am__objects_4 = npespaint-np_entry.$(OBJEXT) \
-	npespaint-npp_gate.$(OBJEXT) $(am__objects_3)
-@NACL_TRUE@am_npespaint_OBJECTS = $(am__objects_4) \
+@NACL_FALSE@am__objects_5 = npespaint-npn_gate.$(OBJEXT)
+am__objects_6 = npespaint-np_entry.$(OBJEXT) \
+	npespaint-npp_gate.$(OBJEXT) $(am__objects_5)
+@NACL_TRUE@am_npespaint_OBJECTS = $(am__objects_6) \
 @NACL_TRUE@	npespaint-npp_paint.$(OBJEXT) \
 @NACL_TRUE@	npespaint-paint.$(OBJEXT)
 npespaint_OBJECTS = $(am_npespaint_OBJECTS)
 npespaint_LDADD = $(LDADD)
 am__npessample_SOURCES_DIST = np_entry.cpp npp_gate.cpp npn_gate.cpp \
 	npp_sample.cpp sample.cpp sample.h
-@NACL_FALSE@am__objects_5 = npessample-npn_gate.$(OBJEXT)
-am__objects_6 = npessample-np_entry.$(OBJEXT) \
-	npessample-npp_gate.$(OBJEXT) $(am__objects_5)
-@NACL_TRUE@am_npessample_OBJECTS = $(am__objects_6) \
+@NACL_FALSE@am__objects_7 = npessample-npn_gate.$(OBJEXT)
+am__objects_8 = npessample-np_entry.$(OBJEXT) \
+	npessample-npp_gate.$(OBJEXT) $(am__objects_7)
+@NACL_TRUE@am_npessample_OBJECTS = $(am__objects_8) \
 @NACL_TRUE@	npessample-npp_sample.$(OBJEXT) \
 @NACL_TRUE@	npessample-sample.$(OBJEXT)
 npessample_OBJECTS = $(am_npessample_OBJECTS)
 npessample_LDADD = $(LDADD)
 am__npesxhr_SOURCES_DIST = np_entry.cpp npp_gate.cpp npn_gate.cpp \
 	npp_xhr.cpp xhr.cc xhr.h
-@NACL_FALSE@am__objects_7 = npesxhr-npn_gate.$(OBJEXT)
-am__objects_8 = npesxhr-np_entry.$(OBJEXT) npesxhr-npp_gate.$(OBJEXT) \
-	$(am__objects_7)
-@NACL_TRUE@am_npesxhr_OBJECTS = $(am__objects_8) \
+@NACL_FALSE@am__objects_9 = npesxhr-npn_gate.$(OBJEXT)
+am__objects_10 = npesxhr-np_entry.$(OBJEXT) npesxhr-npp_gate.$(OBJEXT) \
+	$(am__objects_9)
+@NACL_TRUE@am_npesxhr_OBJECTS = $(am__objects_10) \
 @NACL_TRUE@	npesxhr-npp_xhr.$(OBJEXT) npesxhr-xhr.$(OBJEXT)
 npesxhr_OBJECTS = $(am_npesxhr_OBJECTS)
 npesxhr_LDADD = $(LDADD)
@@ -149,14 +166,16 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libnpespaint_la_SOURCES) $(libnpessample_la_SOURCES) \
-	$(libnpesxhr_la_SOURCES) $(npespaint_SOURCES) \
+SOURCES = $(libnpesmd5sum_la_SOURCES) $(libnpespaint_la_SOURCES) \
+	$(libnpessample_la_SOURCES) $(libnpesxhr_la_SOURCES) \
+	$(npesmd5sum_SOURCES) $(npespaint_SOURCES) \
 	$(npessample_SOURCES) $(npesxhr_SOURCES)
-DIST_SOURCES = $(am__libnpespaint_la_SOURCES_DIST) \
+DIST_SOURCES = $(am__libnpesmd5sum_la_SOURCES_DIST) \
+	$(am__libnpespaint_la_SOURCES_DIST) \
 	$(am__libnpessample_la_SOURCES_DIST) \
 	$(am__libnpesxhr_la_SOURCES_DIST) \
-	$(am__npespaint_SOURCES_DIST) $(am__npessample_SOURCES_DIST) \
-	$(am__npesxhr_SOURCES_DIST)
+	$(am__npesmd5sum_SOURCES_DIST) $(am__npespaint_SOURCES_DIST) \
+	$(am__npessample_SOURCES_DIST) $(am__npesxhr_SOURCES_DIST)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -293,20 +312,25 @@ AM_CPPFLAGS = -fshort-wchar -I $(srcdir) -I ../include -I \
 	$(srcdir)/../../cplusplus -DXP_UNIX \
 	-fno-implicit-inline-templates -fno-default-inline \
 	$(am__append_1)
-@NACL_FALSE@lib_LTLIBRARIES = libnpessample.la libnpespaint.la libnpesxhr.la
+@NACL_FALSE@lib_LTLIBRARIES = libnpessample.la libnpespaint.la libnpesxhr.la libnpesmd5sum.la
 @NACL_FALSE@AM_LDFLAGS = -L.. -ldl -lesnpapi
 @NACL_TRUE@AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_npruntime -lgoogle_nacl_imc -lpthread -lsrpc
 @NACL_TRUE@npessample_CPPFLAGS = $(AM_CPPFLAGS)
 @NACL_TRUE@npespaint_CPPFLAGS = $(AM_CPPFLAGS)
 @NACL_TRUE@npesxhr_CPPFLAGS = $(AM_CPPFLAGS)
+@NACL_TRUE@npesmd5sum_CPPFLAGS = $(AM_CPPFLAGS)
 cpp_source_files = np_entry.cpp npp_gate.cpp $(am__append_2)
 @NACL_FALSE@libnpessample_la_SOURCES = $(cpp_source_files) $(header_files) npp_sample.cpp sample.cpp sample.h
 @NACL_FALSE@libnpespaint_la_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 @NACL_FALSE@libnpesxhr_la_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
+@NACL_FALSE@libnpesmd5sum_la_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h
 @NACL_TRUE@npessample_SOURCES = $(cpp_source_files) $(header_files) npp_sample.cpp sample.cpp sample.h
 @NACL_TRUE@npespaint_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 @NACL_TRUE@npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
+@NACL_TRUE@npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h
 EXTRA_DIST = \
+	md5sum.html \
+	md5sum.nacl.html \
 	paint.html \
 	paint.nacl.html \
 	eraser.png pen.png tools.png \
@@ -381,6 +405,8 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
+libnpesmd5sum.la: $(libnpesmd5sum_la_OBJECTS) $(libnpesmd5sum_la_DEPENDENCIES) 
+	$(CXXLINK) $(am_libnpesmd5sum_la_rpath) $(libnpesmd5sum_la_OBJECTS) $(libnpesmd5sum_la_LIBADD) $(LIBS)
 libnpespaint.la: $(libnpespaint_la_OBJECTS) $(libnpespaint_la_DEPENDENCIES) 
 	$(CXXLINK) $(am_libnpespaint_la_rpath) $(libnpespaint_la_OBJECTS) $(libnpespaint_la_LIBADD) $(LIBS)
 libnpessample.la: $(libnpessample_la_OBJECTS) $(libnpessample_la_DEPENDENCIES) 
@@ -430,6 +456,9 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+npesmd5sum$(EXEEXT): $(npesmd5sum_OBJECTS) $(npesmd5sum_DEPENDENCIES) 
+	@rm -f npesmd5sum$(EXEEXT)
+	$(CXXLINK) $(npesmd5sum_OBJECTS) $(npesmd5sum_LDADD) $(LIBS)
 npespaint$(EXEEXT): $(npespaint_OBJECTS) $(npespaint_DEPENDENCIES) 
 	@rm -f npespaint$(EXEEXT)
 	$(CXXLINK) $(npespaint_OBJECTS) $(npespaint_LDADD) $(LIBS)
@@ -446,7 +475,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/md5sum.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/np_entry.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesmd5sum-md5sum.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesmd5sum-np_entry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesmd5sum-npn_gate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesmd5sum-npp_gate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesmd5sum-npp_md5sum.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npespaint-np_entry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npespaint-npn_gate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npespaint-npp_gate.Po@am__quote@
@@ -464,6 +499,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npesxhr-xhr.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npn_gate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_gate.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_md5sum.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_paint.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_sample.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_xhr.Plo@am__quote@
@@ -491,6 +527,76 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
+
+npesmd5sum-np_entry.o: np_entry.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-np_entry.o -MD -MP -MF $(DEPDIR)/npesmd5sum-np_entry.Tpo -c -o npesmd5sum-np_entry.o `test -f 'np_entry.cpp' || echo '$(srcdir)/'`np_entry.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-np_entry.Tpo $(DEPDIR)/npesmd5sum-np_entry.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='np_entry.cpp' object='npesmd5sum-np_entry.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-np_entry.o `test -f 'np_entry.cpp' || echo '$(srcdir)/'`np_entry.cpp
+
+npesmd5sum-np_entry.obj: np_entry.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-np_entry.obj -MD -MP -MF $(DEPDIR)/npesmd5sum-np_entry.Tpo -c -o npesmd5sum-np_entry.obj `if test -f 'np_entry.cpp'; then $(CYGPATH_W) 'np_entry.cpp'; else $(CYGPATH_W) '$(srcdir)/np_entry.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-np_entry.Tpo $(DEPDIR)/npesmd5sum-np_entry.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='np_entry.cpp' object='npesmd5sum-np_entry.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-np_entry.obj `if test -f 'np_entry.cpp'; then $(CYGPATH_W) 'np_entry.cpp'; else $(CYGPATH_W) '$(srcdir)/np_entry.cpp'; fi`
+
+npesmd5sum-npp_gate.o: npp_gate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-npp_gate.o -MD -MP -MF $(DEPDIR)/npesmd5sum-npp_gate.Tpo -c -o npesmd5sum-npp_gate.o `test -f 'npp_gate.cpp' || echo '$(srcdir)/'`npp_gate.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-npp_gate.Tpo $(DEPDIR)/npesmd5sum-npp_gate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npp_gate.cpp' object='npesmd5sum-npp_gate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-npp_gate.o `test -f 'npp_gate.cpp' || echo '$(srcdir)/'`npp_gate.cpp
+
+npesmd5sum-npp_gate.obj: npp_gate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-npp_gate.obj -MD -MP -MF $(DEPDIR)/npesmd5sum-npp_gate.Tpo -c -o npesmd5sum-npp_gate.obj `if test -f 'npp_gate.cpp'; then $(CYGPATH_W) 'npp_gate.cpp'; else $(CYGPATH_W) '$(srcdir)/npp_gate.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-npp_gate.Tpo $(DEPDIR)/npesmd5sum-npp_gate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npp_gate.cpp' object='npesmd5sum-npp_gate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-npp_gate.obj `if test -f 'npp_gate.cpp'; then $(CYGPATH_W) 'npp_gate.cpp'; else $(CYGPATH_W) '$(srcdir)/npp_gate.cpp'; fi`
+
+npesmd5sum-npn_gate.o: npn_gate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-npn_gate.o -MD -MP -MF $(DEPDIR)/npesmd5sum-npn_gate.Tpo -c -o npesmd5sum-npn_gate.o `test -f 'npn_gate.cpp' || echo '$(srcdir)/'`npn_gate.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-npn_gate.Tpo $(DEPDIR)/npesmd5sum-npn_gate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npn_gate.cpp' object='npesmd5sum-npn_gate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-npn_gate.o `test -f 'npn_gate.cpp' || echo '$(srcdir)/'`npn_gate.cpp
+
+npesmd5sum-npn_gate.obj: npn_gate.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-npn_gate.obj -MD -MP -MF $(DEPDIR)/npesmd5sum-npn_gate.Tpo -c -o npesmd5sum-npn_gate.obj `if test -f 'npn_gate.cpp'; then $(CYGPATH_W) 'npn_gate.cpp'; else $(CYGPATH_W) '$(srcdir)/npn_gate.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-npn_gate.Tpo $(DEPDIR)/npesmd5sum-npn_gate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npn_gate.cpp' object='npesmd5sum-npn_gate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-npn_gate.obj `if test -f 'npn_gate.cpp'; then $(CYGPATH_W) 'npn_gate.cpp'; else $(CYGPATH_W) '$(srcdir)/npn_gate.cpp'; fi`
+
+npesmd5sum-npp_md5sum.o: npp_md5sum.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-npp_md5sum.o -MD -MP -MF $(DEPDIR)/npesmd5sum-npp_md5sum.Tpo -c -o npesmd5sum-npp_md5sum.o `test -f 'npp_md5sum.cpp' || echo '$(srcdir)/'`npp_md5sum.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-npp_md5sum.Tpo $(DEPDIR)/npesmd5sum-npp_md5sum.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npp_md5sum.cpp' object='npesmd5sum-npp_md5sum.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-npp_md5sum.o `test -f 'npp_md5sum.cpp' || echo '$(srcdir)/'`npp_md5sum.cpp
+
+npesmd5sum-npp_md5sum.obj: npp_md5sum.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-npp_md5sum.obj -MD -MP -MF $(DEPDIR)/npesmd5sum-npp_md5sum.Tpo -c -o npesmd5sum-npp_md5sum.obj `if test -f 'npp_md5sum.cpp'; then $(CYGPATH_W) 'npp_md5sum.cpp'; else $(CYGPATH_W) '$(srcdir)/npp_md5sum.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-npp_md5sum.Tpo $(DEPDIR)/npesmd5sum-npp_md5sum.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='npp_md5sum.cpp' object='npesmd5sum-npp_md5sum.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-npp_md5sum.obj `if test -f 'npp_md5sum.cpp'; then $(CYGPATH_W) 'npp_md5sum.cpp'; else $(CYGPATH_W) '$(srcdir)/npp_md5sum.cpp'; fi`
+
+npesmd5sum-md5sum.o: md5sum.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-md5sum.o -MD -MP -MF $(DEPDIR)/npesmd5sum-md5sum.Tpo -c -o npesmd5sum-md5sum.o `test -f 'md5sum.cc' || echo '$(srcdir)/'`md5sum.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-md5sum.Tpo $(DEPDIR)/npesmd5sum-md5sum.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='md5sum.cc' object='npesmd5sum-md5sum.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-md5sum.o `test -f 'md5sum.cc' || echo '$(srcdir)/'`md5sum.cc
+
+npesmd5sum-md5sum.obj: md5sum.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npesmd5sum-md5sum.obj -MD -MP -MF $(DEPDIR)/npesmd5sum-md5sum.Tpo -c -o npesmd5sum-md5sum.obj `if test -f 'md5sum.cc'; then $(CYGPATH_W) 'md5sum.cc'; else $(CYGPATH_W) '$(srcdir)/md5sum.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/npesmd5sum-md5sum.Tpo $(DEPDIR)/npesmd5sum-md5sum.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='md5sum.cc' object='npesmd5sum-md5sum.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npesmd5sum_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o npesmd5sum-md5sum.obj `if test -f 'md5sum.cc'; then $(CYGPATH_W) 'md5sum.cc'; else $(CYGPATH_W) '$(srcdir)/md5sum.cc'; fi`
 
 npespaint-np_entry.o: np_entry.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(npespaint_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT npespaint-np_entry.o -MD -MP -MF $(DEPDIR)/npespaint-np_entry.Tpo -c -o npespaint-np_entry.o `test -f 'np_entry.cpp' || echo '$(srcdir)/'`np_entry.cpp
