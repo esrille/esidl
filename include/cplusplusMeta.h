@@ -29,7 +29,8 @@
 class CPlusPlusMeta : public CPlusPlus
 {
     unsigned offset;
-    std::map<std::string, unsigned> symbolTable;
+    unsigned symbolNumber;
+    std::map<std::string, std::pair<unsigned, unsigned> > symbolTable;
     std::map<std::string, unsigned> constantTable;
 
     void visitInterfaceElement(const Interface* interface, Node* element)
@@ -49,7 +50,9 @@ class CPlusPlusMeta : public CPlusPlus
 
     void addSymbol(std::string symbol, unsigned offset)
     {
-        symbolTable.insert(std::pair<std::string, unsigned>(symbol, offset));
+        symbolTable.insert(std::pair<std::string, std::pair<unsigned, unsigned> >(symbol,
+            std::pair<unsigned, unsigned>(offset, symbolNumber)));
+        ++symbolNumber;
     }
 
     void addConstant(std::string symbol, unsigned offset)
@@ -60,7 +63,8 @@ class CPlusPlusMeta : public CPlusPlus
 public:
     CPlusPlusMeta(Formatter* formatter) :
         CPlusPlus(formatter, "std::string", "Object", true),
-        offset(0)
+        offset(0),
+        symbolNumber(0)
     {
         formatter->flush();
         currentNode = 0;
@@ -97,13 +101,13 @@ public:
                 writetab();
                 write("/* %u */ ", offset);
             }
+            addSymbol(node->getName(), offset);
             if (constructorMode)
             {
                 write("\"%c%s\"", Reflect::kConstructor, node->getMetaOp(i).c_str() + 1);
             }
             else
             {
-                addSymbol(node->getName(), offset);
                 write("\"%c%s\"", Reflect::kOperation, node->getMetaOp(i).c_str() + 1);
             }
             offset += node->getMetaOp(i).length();
@@ -146,19 +150,6 @@ public:
                 constructorMode = false;
                 currentNode = saved;
             }
-
-            if (Interface* constructor = node->getConstructor())
-            {
-                // Process constructors.
-                constructorMode = true;
-                for (NodeList::iterator i = constructor->begin();
-                    i != constructor->end();
-                    ++i)
-                {
-                    visitInterfaceElement(node, *i);
-                }
-                constructorMode = false;
-            }
             write(";\n");
             unindent();
             writeln("return metaData;");
@@ -167,11 +158,11 @@ public:
 
         writeln("static const Reflect::SymbolData* const getSymbolTable() {");
             writeln("static const Reflect::SymbolData symbolTable[] = {");
-                for (std::map<std::string, unsigned>::iterator i = symbolTable.begin();
+                for (std::map<std::string, std::pair<unsigned, unsigned> >::iterator i = symbolTable.begin();
                     i != symbolTable.end();
                     ++i)
                 {
-                    writeln("{ \"%s\", %u },", (*i).first.c_str(), (*i).second);
+                    writeln("{ \"%s\", %u, %u },", (*i).first.c_str(), (*i).second.first, (*i).second.second);
                 }
                 for (std::map<std::string, unsigned>::iterator i = constantTable.begin();
                     i != constantTable.end();

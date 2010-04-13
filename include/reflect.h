@@ -1107,7 +1107,8 @@ public:
     struct SymbolData
     {
         const char* symbol;
-        unsigned offset;
+        unsigned offset;  // offset to metadata
+        unsigned number;  // symbol number
     };
 };
 

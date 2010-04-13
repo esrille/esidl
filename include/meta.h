@@ -532,13 +532,7 @@ public:
 
         if (Interface* constructor = node->getConstructor())
         {
-            // Process constructors.
-            for (NodeList::iterator i = constructor->begin();
-                 i != constructor->end();
-                 ++i)
-            {
-                visitInterfaceElement(node, *i);
-            }
+            at(constructor);
         }
     }
 
