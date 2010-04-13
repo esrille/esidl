@@ -142,12 +142,15 @@ public:
     // [Constructor]
     static const uint32_t Constructor =              0x04000000;
     // [OverrideBuiltins]
-    static const uint32_t OverrideBuiltins=          0x08000000;  // TODO: Update meta
+    static const uint32_t OverrideBuiltins =         0x08000000;  // TODO: Update meta
+    // [ReplaceableNamedProperties]
+    // cf. http://www.w3.org/Bugs/Public/show_bug.cgi?id=8241
+    static const uint32_t ReplaceableNamedProperties=0x10000000;  // TODO: Update metat
 
     // misc. bits
-    static const uint32_t HasIndexedProperties =     0x10000000;
-    static const uint32_t HasNamedProperties =       0x20000000;
-    static const uint32_t UnnamedProperty =          0x40000000;  // This should be banned.
+    static const uint32_t HasIndexedProperties =     0x20000000;
+    static const uint32_t HasNamedProperties =       0x40000000;
+    static const uint32_t UnnamedProperty =          0x80000000;  // This should be banned.
 
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);

@@ -458,6 +458,10 @@ void Interface::processExtendedAttributes()
         {
             attr |= Supplemental;
         }
+        else if (ext->getName() == "ReplaceableNamedProperties")
+        {
+            attr |= ReplaceableNamedProperties;
+        }
         else if (ext->getName() == "NoIndexingOperations" ||
                  ext->getName() == "ImplementedOn" ||
                  ext->getName() == "Callable" ||
