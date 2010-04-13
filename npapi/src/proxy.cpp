@@ -245,4 +245,3 @@ PluginInstance::~PluginInstance()
         window->release();
     }
 }
-
