@@ -12,6 +12,7 @@ w3c_generated_files = \
 	org/w3c/dom/Node.java
 
 w3c_idl_files = \
+	2dcontext.idl \
 	arrays.idl \
 	console.idl \
 	cssomview.idl \
@@ -30,6 +31,8 @@ w3c_idl_files = \
 	geolocation.idl \
 	html5.idl \
 	indexeddb.idl \
+	microdata.idl \
+	postmsg.idl \
 	progress-events.idl \
 	smil.idl \
 	svg.idl \

@@ -71,6 +71,7 @@ AM_CPPFLAGS = \
 EXTRA_DIST = \
 	LICENSE \
 	dom/COPYRIGHT.html \
+	dom/2dcontext.idl \
 	dom/arrays.idl \
 	dom/console.idl \
 	dom/cssomview.idl \
@@ -90,7 +91,9 @@ EXTRA_DIST = \
 	dom/html5.idl \
 	dom/idl_scraper.pl \
 	dom/indexeddb.idl \
+	dom/microdata.idl \
 	dom/NOTICE \
+	dom/postmsg.idl \
 	dom/progress-events.idl \
 	dom/smil.idl \
 	dom/svg.idl \
