@@ -991,7 +991,8 @@ interface Window {
   readonly attribute Element frameElement;
   WindowProxy open(in optional DOMString url, in optional DOMString target, in optional DOMString features, in optional DOMString replace);
   getter WindowProxy (in unsigned long index);
-  getter WindowProxy (in DOMString name);
+  getter any (in DOMString name);  // cf. http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#the-window-object
+  setter void (in DOMString name, in any value);  // for [ReplaceableNamedProperties]
 
   // the user agent
   readonly attribute Navigator navigator; 
