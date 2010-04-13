@@ -210,6 +210,7 @@ void SampleInstance::initialize()
     if (document)
     {
         drawCharts(document);
+        document->release();  // This is not necessary. Just for testing the explicit release.
     }
 }
 

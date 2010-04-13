@@ -30,6 +30,8 @@ ProxyControl::ProxyControl(NPP npp) :
 ProxyControl::~ProxyControl()
 {
     // TODO: Release objects in newList and oldList
+    printf("%s: newList.size(): %u\n", __func__, newList.size());
+    printf("%s: oldList.size(): %u\n", __func__, oldList.size());
 }
 
 Object* ProxyControl::createProxy(NPObject* object, const Reflect::Type type)
@@ -56,7 +58,8 @@ Object* ProxyControl::createProxy(NPObject* object, const Reflect::Type type)
             ProxyObject browserObject(object, npp);
             if (Object* object = (*it).second(browserObject))
             {
-                return track(object);
+                track(interface_cast<ProxyObject*>(object));
+                return object;
             }
         }
         if (!type.isObject() || usedHint)
@@ -88,17 +91,44 @@ long ProxyControl::leave()
     {
         while (!newList.empty())
         {
-            Object* object = newList.front();
-            newList.pop_front();
-            if (0 < object->release())
+            ProxyObject* proxy = newList.front();
+            if (0 < proxy->release())
             {
-                oldList.push_back(object);
+                newList.pop_front();
+                assert(proxy);
+                assert(proxy->age == ProxyObject::NEW);
+                proxy->age = ProxyObject::OLD;
+                oldList.push_back(proxy);
             }
         }
     }
     return nestingCount;
 }
 
+void ProxyControl::track(ProxyObject* proxy)
+{
+    assert(proxy);
+    assert(proxy->age == ProxyObject::CREATED);
+    proxy->age = ProxyObject::NEW;
+    newList.push_back(proxy);
+}
+
+void ProxyControl::untrack(ProxyObject* proxy)
+{
+    assert(proxy);
+    switch (proxy->age)
+    {
+    case ProxyObject::NEW:
+        newList.remove(proxy);
+        break;
+    case ProxyObject::OLD:
+        oldList.remove(proxy);
+        break;
+    default:
+        break;
+    }
+}
+    
 void ProxyControl::registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias)
 {
     Reflect::Interface interface(meta);
@@ -114,20 +144,31 @@ void ProxyControl::registerMetaData(const char* meta, Object* (*createProxy)(Pro
 ProxyObject::ProxyObject(NPObject* object, NPP npp) :
     object(object),
     npp(npp),
-    count(0)
+    count(0),
+    age(CREATED)
 {
 }
 
 ProxyObject::ProxyObject(const ProxyObject& original) :
     object(original.object),
     npp(original.npp),
-    count(original.count)
+    count(original.count),
+    age(original.age)
 {
+    assert(age == CREATED);
 }
 
 ProxyObject::~ProxyObject()
 {
-    // TODO: Remove this from newList or oldList if it is still included
+    // Remove this from newList or oldList if it is still included
+    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
+    if (!instance)
+    {
+        return;
+    }
+    ProxyControl* proxyControl = instance->getProxyControl();
+    assert(proxyControl);
+    proxyControl->untrack(this);
 }
 
 unsigned int ProxyObject::retain()

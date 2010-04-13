@@ -50,9 +50,17 @@ class Window;
 
 class ProxyObject
 {
+    friend class ProxyControl;
+    
     NPObject*    object;
     NPP          npp;
     unsigned int count;
+    unsigned int age;
+
+    // age constants
+    static const unsigned int CREATED = 0;
+    static const unsigned int NEW = 1;
+    static const unsigned int OLD = 2;
 
 public:
     ProxyObject(NPObject* object, NPP npp);
@@ -84,8 +92,8 @@ class ProxyControl
     NPP npp;
     long nestingCount;  // more than zero if the control is in plugin module
 
-    std::list<Object*> oldList;
-    std::list<Object*> newList;
+    std::list<ProxyObject*> oldList;
+    std::list<ProxyObject*> newList;
 
     // Map from interfaceName to constructors.
     static std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
@@ -98,12 +106,8 @@ public:
 
     long enter();
     long leave();
-
-    Object* track(Object* object)
-    {
-        newList.push_back(object);
-        return object;
-    }
+    void track(ProxyObject* proxy);
+    void untrack(ProxyObject* proxy);
 
     static void registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias = 0);
 };
