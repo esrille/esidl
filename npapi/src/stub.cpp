@@ -15,6 +15,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include "esnpapi.h"
 
 namespace
@@ -80,7 +81,7 @@ bool stubConstruct(NPObject* object, const NPVariant* args, uint32_t argCount, N
     return static_cast<StubObject*>(object)->construct(args, argCount, result);
 }
 
-unsigned lookupSymbolTalbe(Object* object, const char* identifier, unsigned& interfaceNumber, unsigned& symbolNumber)
+const Reflect::SymbolData* lookupSymbolTalbe(Object* object, const char* identifier, unsigned& interfaceNumber, unsigned& symbolNumber)
 {
     const Reflect::SymbolData* symbolTable;
     while (symbolTable = object->getSymbolTable(interfaceNumber))
@@ -90,12 +91,35 @@ unsigned lookupSymbolTalbe(Object* object, const char* identifier, unsigned& int
         {
             if (!std::strcmp(symbolTable->symbol, identifier))
             {
-                return symbolTable->offset;
+                return symbolTable;
             }
         }
         ++interfaceNumber;
     }
     return 0;
+}
+
+void processResult(NPP npp, const Any& any, NPVariant* variant)
+{
+    if (any.getType() == Any::TypeString)
+    {
+        const std::string value = static_cast<const std::string>(any);
+        if (value.length() == 0)
+        {
+            STRINGN_TO_NPVARIANT(0, 0, *variant);
+            return;
+        }
+        void* buffer = NPN_MemAlloc(value.length());
+        if (!buffer)
+        {
+            STRINGN_TO_NPVARIANT(0, 0, *variant);
+            return;
+        }
+        memmove(buffer, value.c_str(), value.length());
+        STRINGN_TO_NPVARIANT(static_cast<NPUTF8*>(buffer), value.length(), *variant);
+        return;
+    }
+    convertToVariant(npp, any, variant);
 }
 
 }   // namespace
@@ -165,13 +189,13 @@ bool StubObject::hasMethod(NPIdentifier name)
     unsigned symbolNumber = 0;
     for (;; ++symbolNumber)
     {
-        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!offset)
+        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!data)
         {
             break;
         }
         const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += offset;
+        metaData += data->offset;
         if (*metaData == Reflect::kOperation)
         {
             found = true;
@@ -190,20 +214,19 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
         return false;
     }
 
-    printf("%s(%s)\n", __func__, identifier);
-
+    printf("%s(%s, %p, %u, %p)\n", __func__, identifier, args, arg_count, result);
     bool found = false;
     unsigned interfaceNumber = 0;
     unsigned symbolNumber = 0;
     for (;; ++symbolNumber)
     {
-        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!offset)
+        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!data)
         {
             break;
         }
         const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += offset;
+        metaData += data->offset;
         if (*metaData == Reflect::kOperation)
         {
             Reflect::Method method(metaData);
@@ -221,8 +244,8 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
                 parameter.next();
                 arguments[i] = convertToAny(npp, &args[i], parameter.getType());
             }
-            Any value = object->call(interfaceNumber, symbolNumber, argumentCount, arguments);
-            convertToVariant(npp,value, result);
+            Any value = object->call(interfaceNumber, data->number, argumentCount, arguments);
+            processResult(npp, value, result);
             found = true;
             leave();
             break;
@@ -253,13 +276,13 @@ bool StubObject::hasProperty(NPIdentifier name)
     unsigned symbolNumber = 0;
     for (;; ++symbolNumber)
     {
-        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!offset)
+        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!data)
         {
             break;
         }
         const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += offset;
+        metaData += data->offset;
         if (*metaData == Reflect::kConstant || *metaData == Reflect::kGetter || *metaData == Reflect::kSetter)
         {
             found = true;
@@ -285,13 +308,13 @@ bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
     unsigned symbolNumber = 0;
     for (;; ++symbolNumber)
     {
-        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!offset)
+        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!data)
         {
             break;
         }
         const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += offset;
+        metaData += data->offset;
         if (*metaData == Reflect::kConstant)
         {
             // TODO: eval the constant value
@@ -301,8 +324,8 @@ bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
         if (*metaData == Reflect::kGetter)
         {
             enter();
-            Any property = object->call(interfaceNumber, symbolNumber, 0, 0);
-            convertToVariant(npp, property, result);
+            Any property = object->call(interfaceNumber, data->number, 0, 0);
+            processResult(npp, property, result);
             found = true;
             leave();
             break;
@@ -327,13 +350,13 @@ bool StubObject::setProperty(NPIdentifier name, const NPVariant* value)
     unsigned symbolNumber = 0;
     for (;; ++symbolNumber)
     {
-        unsigned offset = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!offset)
+        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
+        if (!data)
         {
             break;
         }
         const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += offset;
+        metaData += data->offset;
         if (*metaData == Reflect::kSetter)
         {
             Reflect::Method method(metaData);
@@ -341,7 +364,7 @@ bool StubObject::setProperty(NPIdentifier name, const NPVariant* value)
             parameter.next();
             enter();
             Any argument = convertToAny(npp, value, parameter.getType());
-            object->call(interfaceNumber, symbolNumber, 1, &argument);
+            object->call(interfaceNumber, data->number, 1, &argument);
             found = true;
             leave();
             break;
@@ -361,9 +384,47 @@ bool StubObject::enumeration(NPIdentifier** value, uint32_t* count)
     return false;
 }
 
-bool StubObject::construct(const NPVariant* args, uint32_t argCount, NPVariant* result)
+bool StubObject::construct(const NPVariant* args, uint32_t arg_count, NPVariant* result)
 {
-    return false;
+    printf("%s(%p, %u, %p)\n", __func__, args, arg_count, result);
+
+    bool found = false;
+    unsigned interfaceNumber = 0;
+    unsigned symbolNumber = 0;
+    for (;; ++symbolNumber)
+    {
+        const Reflect::SymbolData* data = lookupSymbolTalbe(object, "createInstance", interfaceNumber, symbolNumber);
+        if (!data)
+        {
+            break;
+        }
+        const char* metaData = object->getMetaData(interfaceNumber);
+        metaData += data->offset;
+        if (*metaData == Reflect::kConstructor)
+        {
+            Reflect::Method method(metaData);
+            unsigned argumentCount = method.getParameterCount();
+            // TODO: Support variadic operation
+            if (argumentCount != arg_count)
+            {
+                continue;
+            }
+            enter();
+            Reflect::Parameter parameter = method.listParameter();
+            Any arguments[argumentCount];
+            for (unsigned i = 0; i < argumentCount; ++i)
+            {
+                parameter.next();
+                arguments[i] = convertToAny(npp, &args[i], parameter.getType());
+            }
+            Any value = object->call(interfaceNumber, data->number, argumentCount, arguments);
+            processResult(npp, value, result);
+            found = true;
+            leave();
+            break;
+        }
+    }
+    return found;
 }
 
 NPClass StubObject::npclass =
