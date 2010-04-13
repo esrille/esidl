@@ -70,6 +70,7 @@ public:
     unsigned int retain();
     unsigned int release();
     unsigned int mark();
+    void invalidate();
 
     NPObject* getNPObject()
     {

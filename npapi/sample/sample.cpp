@@ -206,11 +206,11 @@ void SampleInstance::initialize()
 {
     downHandler = new (std::nothrow) EventHandler(this, &SampleInstance::down);
 
-    Document* document = window->getDocument();
+    document = window->getDocument();
     if (document)
     {
         drawCharts(document);
-        document->release();  // This is not necessary. Just for testing the explicit release.
+        document->retain();  // Just for testing oldList
     }
 }
 

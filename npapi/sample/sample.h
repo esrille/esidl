@@ -26,6 +26,7 @@ class EventHandler;
 class SampleInstance: public PluginInstance
 {
     EventHandler* downHandler;
+    org::w3c::dom::Document* document;
 
     void initialize();
     void drawCharts(org::w3c::dom::Document* document);
@@ -33,7 +34,8 @@ class SampleInstance: public PluginInstance
 public:
     SampleInstance(NPP npp, NPObject* window) :
         PluginInstance(npp, window),
-        downHandler(0)
+        downHandler(0),
+        document(0)
     {
         initialize();
     }

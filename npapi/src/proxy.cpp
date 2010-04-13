@@ -29,9 +29,20 @@ ProxyControl::ProxyControl(NPP npp) :
 
 ProxyControl::~ProxyControl()
 {
-    // TODO: Release objects in newList and oldList
     printf("%s: newList.size(): %u\n", __func__, newList.size());
     printf("%s: oldList.size(): %u\n", __func__, oldList.size());
+    while (!newList.empty())
+    {
+        ProxyObject* proxy = newList.front();
+        proxy->invalidate();
+    }
+    while (!oldList.empty())
+    {
+        ProxyObject* proxy = oldList.front();
+        proxy->invalidate();
+    }
+    assert(newList.size() == 0);
+    assert(oldList.size() == 0);
 }
 
 Object* ProxyControl::createProxy(NPObject* object, const Reflect::Type type)
@@ -173,7 +184,10 @@ ProxyObject::~ProxyObject()
 
 unsigned int ProxyObject::retain()
 {
-    NPN_RetainObject(object);
+    if (count == 0)
+    {
+        NPN_RetainObject(object);
+    }
     return ++count;
 }
 
@@ -181,7 +195,10 @@ unsigned int ProxyObject::release()
 {
     if (0 < count)
     {
-        NPN_ReleaseObject(object);
+        if (count == 1)
+        {
+            NPN_ReleaseObject(object);
+        }
         --count;
     }
     if (count == 0)
@@ -195,6 +212,15 @@ unsigned int ProxyObject::release()
 unsigned int ProxyObject::mark()
 {
     return ++count;
+}
+
+void ProxyObject::invalidate()
+{
+    if (1 < count)
+    {
+        count = 1;  // Enforce delete by release()
+    }
+    release();
 }
 
 PluginInstance::PluginInstance(NPP npp, NPObject* window) :
