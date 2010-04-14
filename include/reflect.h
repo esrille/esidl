@@ -128,7 +128,6 @@ public:
 
     static const char kUndefinedIsNull = 'n';
     static const char kUndefinedIsEmpty = 'e';
-    static const char kNullIsNull = 'N';
     static const char kNullIsEmpty = 'E';
 
     // Obsolete

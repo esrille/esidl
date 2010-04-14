@@ -143,10 +143,6 @@ std::string toString(NPP npp, const NPVariant* variant, char attribute = 0)
     switch (variant->type)
     {
     case NPVariantType_Void:
-        if (attribute & Reflect::kUndefinedIsNull)
-        {
-            return "null";  // TODO should be something like NULL
-        }
         if (attribute & Reflect::kUndefinedIsEmpty)
         {
             return "";
@@ -154,10 +150,6 @@ std::string toString(NPP npp, const NPVariant* variant, char attribute = 0)
         return "undefined";
         break;
     case NPVariantType_Null:
-        if (attribute & Reflect::kNullIsNull)
-        {
-            return "null";  // TODO should be something like NULL
-        }
         if (attribute & Reflect::kNullIsEmpty)
         {
             return "";

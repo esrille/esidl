@@ -125,7 +125,6 @@ public:
     static const uint32_t PrototypeRoot =            0x00004000;
     // [Null]
     static const uint32_t NullIsEmpty =              0x00008000;
-    static const uint32_t NullIsNull =               0x00010000;
     // [Undefined]
     static const uint32_t UndefinedIsEmpty =         0x00020000;
     static const uint32_t UndefinedIsNull =          0x00040000;
