@@ -3,9 +3,9 @@
  *
  * Indexed Database API
  *
- * Original W3W3C Working Draft 05 January 2010:
+ * Original W3C Editor's Draft 15 April 2010:
  *
- *   http://www.w3.org/TR/2010/WD-IndexedDB-20100105/
+ *   http://dev.w3.org/2006/webapi/WebSimpleDB/
  */
 
 module indexeddb {
@@ -16,7 +16,7 @@ typedef html::Function Function;
 typedef html::Window Window;
 typedef workers::WorkerUtils WorkerUtils;
 
-interface ObjectStore {
+interface IDBObjectStore {
     const unsigned short READ_WRITE = 0;
     const unsigned short READ_ONLY = 1;
     const unsigned short SNAPSHOT_READ = 2;
@@ -27,7 +27,7 @@ interface ObjectStore {
 };
 
 
-interface Index {
+interface IDBIndex {
     readonly attribute DOMString name;
     readonly attribute DOMString storeName;
     readonly attribute DOMString keyPath;
@@ -35,17 +35,17 @@ interface Index {
 };
 
 
-interface Database {
-    readonly attribute DOMString     name;
-    readonly attribute DOMString     description;
-    readonly attribute DOMString     version;
-    readonly attribute DOMStringList objectStores;
-    readonly attribute DOMStringList indexes;
-    readonly attribute Transaction   currentTransaction;
+interface IDBDatabase {
+    readonly attribute DOMString      name;
+    readonly attribute DOMString      description;
+    readonly attribute DOMString      version;
+    readonly attribute DOMStringList  objectStores;
+    readonly attribute DOMStringList  indexes;
+    readonly attribute IDBTransaction currentTransaction;
 };
 
 
-interface KeyRange {
+interface IDBKeyRange {
     const unsigned short SINGLE = 0;
     const unsigned short LEFT_OPEN = 1;
     const unsigned short RIGHT_OPEN = 2;
@@ -54,14 +54,14 @@ interface KeyRange {
     readonly attribute any            left;
     readonly attribute any            right;
     readonly attribute unsigned short flags;
-    KeyRange only (in any value);
-    KeyRange leftBound (in any bound, in optional boolean open);
-    KeyRange rightBound (in any bound, in optional boolean open);
-    KeyRange bound (in any left, in any right, in optional boolean openLeft, in optional boolean openRight);
+    IDBKeyRange only (in any value);
+    IDBKeyRange leftBound (in any bound, in optional boolean open);
+    IDBKeyRange rightBound (in any bound, in optional boolean open);
+    IDBKeyRange bound (in any left, in any right, in optional boolean openLeft, in optional boolean openRight);
 };
 
 
-interface Cursor {
+interface IDBCursor {
     const unsigned short NEXT = 0;
     const unsigned short NEXT_NO_DUPLICATE = 1;
     const unsigned short PREV = 2;
@@ -70,70 +70,70 @@ interface Cursor {
 };
 
 
-interface Transaction {
-    attribute boolean  static;
-    attribute Database db;
+interface IDBTransaction {
+    attribute boolean     static;
+    attribute IDBDatabase db;
 };
 
 
-WorkerUtils implements EnvironmentSync;
+WorkerUtils implements IDBEnvironmentSync;
 
-interface EnvironmentSync {
+interface IDBEnvironmentSync {
     readonly attribute IndexedDatabase indexedDB;
 };
 
 
 interface IndexedDatabase {
-    DatabaseSync open (in DOMString name, in DOMString description, in optional boolean modifyDatabase) raises (DatabaseException);
+    IDBDatabaseSync open (in DOMString name, in DOMString description, in optional boolean modifyDatabase) raises (IDBDatabaseException);
 };
 
 
-interface DatabaseSync : Database {
-    ObjectStoreSync createObjectStore ([TreatNullAs=EmptyString] in DOMString name, in DOMString? keyPath, in optional boolean autoIncrement) raises (DatabaseException);
-    ObjectStoreSync openObjectStore (in DOMString name, in optional unsigned short mode) raises (DatabaseException);
-    IndexSync       createIndex ([TreatNullAs=EmptyString] in DOMString name, [TreatNullAs=EmptyString] in DOMString storeName, in DOMString keyPath, in optional boolean unique) raises (DatabaseException);
-    IndexSync       openIndex (in DOMString name) raises (DatabaseException);
-    void            removeObjectStore (in DOMString storeName) raises (DatabaseException);
-    void            removeIndex (in DOMString indexName) raises (DatabaseException);
-    void            setVersion (in DOMString? version);
-    TransactionSync transaction (in optional DOMStringList storeNames, in optional unsigned long timeout) raises (DatabaseException);
+interface IDBDatabaseSync : IDBDatabase {
+    IDBObjectStoreSync createObjectStore (in DOMString name, in DOMString? keyPath, in optional boolean autoIncrement) raises (IDBDatabaseException);
+    IDBObjectStoreSync openObjectStore (in DOMString name, in optional unsigned short mode) raises (IDBDatabaseException);
+    IDBIndexSync       createIndex (in DOMString name, in DOMString storeName, in DOMString keyPath, in optional boolean unique) raises (IDBDatabaseException);
+    IDBIndexSync       openIndex (in DOMString name) raises (IDBDatabaseException);
+    void               removeObjectStore (in DOMString storeName) raises (IDBDatabaseException);
+    void               removeIndex (in DOMString indexName) raises (IDBDatabaseException);
+    void               setVersion ([TreatNullAs=EmptyString] in DOMString version);
+    IDBTransactionSync transaction (in optional DOMStringList storeNames, in optional unsigned long timeout) raises (IDBDatabaseException);
 };
 
 
-interface ObjectStoreSync : ObjectStore {
-    any        put (in any value, in optional any key, in optional boolean noOverwrite) raises (DatabaseException);
-    void       delete (in any key) raises (DatabaseException);
-    any        get (in any key) raises (DatabaseException);
-    CursorSync openCursor (in optional KeyRange range, in optional unsigned short direction) raises (DatabaseException);
+interface IDBObjectStoreSync : IDBObjectStore {
+    any           put (in any value, in optional any key, in optional boolean noOverwrite) raises (IDBDatabaseException);
+    void          remove (in any key) raises (IDBDatabaseException);
+    any           get (in any key) raises (IDBDatabaseException);
+    IDBCursorSync openCursor (in optional IDBKeyRange range, in optional unsigned short direction) raises (IDBDatabaseException);
 };
 
 
-interface IndexSync {
-    void openObjectCursor (in optional KeyRange range, in optional unsigned short direction) raises (DatabaseException);
-    void openCursor (in optional KeyRange range, in optional unsigned short direction) raises (DatabaseException);
-    any  put (in any value, in optional any key, in optional boolean noOverwrite) raises (DatabaseException);
-    any  getObject (in any key) raises (DatabaseException);
-    any  get (in any key) raises (DatabaseException);
-    void delete (in any key) raises (DatabaseException);
+interface IDBIndexSync {
+    void openObjectCursor (in optional IDBKeyRange range, in optional unsigned short direction) raises (IDBDatabaseException);
+    void openCursor (in optional IDBKeyRange range, in optional unsigned short direction) raises (IDBDatabaseException);
+    any  put (in any value, in optional any key, in optional boolean noOverwrite) raises (IDBDatabaseException);
+    any  getObject (in any key) raises (IDBDatabaseException);
+    any  get (in any key) raises (IDBDatabaseException);
+    void remove (in any key) raises (IDBDatabaseException);
 };
 
 
-interface CursorSync {
+interface IDBCursorSync : IDBCursor {
     readonly attribute any                key;
-             attribute any                value setraises (DatabaseException);
+             attribute any                value setraises (IDBDatabaseException);
     readonly attribute unsigned long long count;
     boolean continue (in optional any key);
-    void delete () raises (DatabaseException);
+    void    remove () raises (IDBDatabaseException);
 };
 
 
-interface TransactionSync : Transaction {
-    void abort () raises (DatabaseException);
-    void commit () raises (DatabaseException);
+interface IDBTransactionSync : IDBTransaction {
+    void abort () raises (IDBDatabaseException);
+    void commit () raises (IDBDatabaseException);
 };
 
 
-exception DatabaseException {
+exception IDBDatabaseException {
     const unsigned short UNKNOWN_ERR = 0;
     const unsigned short NON_TRANSIENT_ERR = 1;
     const unsigned short NOT_FOUND_ERR = 2;
@@ -150,89 +150,88 @@ exception DatabaseException {
 };
 
 
-interface DBRequest {
+interface IDBRequest {
     void abort ();
     const unsigned short INITIAL = 0;
     const unsigned short LOADING = 1;
     const unsigned short DONE = 2;
-    readonly attribute unsigned short readyState;
-    readonly attribute DatabaseError  error;
-    readonly attribute any            result;
-             attribute Function       onsuccess;
-             attribute Function       onerror;
+    readonly attribute unsigned short   readyState;
+    readonly attribute IDBDatabaseError error;
+    readonly attribute any              result;
+             attribute Function         onsuccess;
+             attribute Function         onerror;
 };
 
 
-DBRequest implements EventTarget;
+IDBRequest implements EventTarget;
 
-Window implements Environment;
+Window implements IDBEnvironment;
 
-interface Environment {
+interface IDBEnvironment {
     readonly attribute IndexedDatabaseRequest indexedDB;
 };
 
 
 interface IndexedDatabaseRequest {
-    readonly attribute DBRequest request;
-    void open (in DOMString name, in DOMString description, in optional boolean modifyDatabase) raises (DatabaseException);
+    readonly attribute IDBRequest request;
+    void open (in DOMString name, in DOMString description, in optional boolean modifyDatabase) raises (IDBDatabaseException);
 };
 
 
-interface DatabaseRequest : Database {
-    readonly attribute DBRequest request;
-    void createObjectStore ([TreatNullAs=EmptyString] in DOMString name, in DOMString? keyPath, in optional boolean autoIncrement);
+interface IDBDatabaseRequest : IDBDatabase {
+    readonly attribute IDBRequest request;
+    void createObjectStore (in DOMString name, [TreatNullAs=EmptyString] in DOMString keyPath, in optional boolean autoIncrement);
     void openObjectStore (in DOMString name, in optional unsigned short mode);
-    void createIndex ([TreatNullAs=EmptyString] in DOMString name, [TreatNullAs=EmptyString] in DOMString storeName, in DOMString keyPath, in optional boolean unique);
+    void createIndex (in DOMString name, in DOMString storeName, in DOMString keyPath, in optional boolean unique);
     void openIndex (in DOMString name);
     void removeObjectStore (in DOMString storeName);
     void removeIndex (in DOMString indexName);
-    void setVersion (in DOMString? version);
-    void transaction (in optional DOMStringList storeNames, in optional unsigned long timeout);
+    void setVersion ([TreatNullAs=EmptyString] in DOMString version);
+    void openTransaction (in optional DOMStringList storeNames, in optional unsigned long timeout);
 };
 
 
-interface ObjectStoreRequest : ObjectStore {
-    readonly attribute DBRequest request;
+interface IDBObjectStoreRequest : IDBObjectStore {
+    readonly attribute IDBRequest request;
     void put (in any value, in optional any key, in optional boolean noOverwrite);
-    void delete (in any key);
+    void remove (in any key);
     void get (in any key);
-    void openCursor (in optional KeyRange range, in optional unsigned short direction);
+    void openCursor (in optional IDBKeyRange range, in optional unsigned short direction);
 };
 
 
-interface IndexRequest : Index {
-    readonly attribute DBRequest request;
-    void openObjectCursor (in optional KeyRange range, in optional unsigned short direction);
-    void openCursor (in optional KeyRange range, in optional unsigned short direction);
+interface IDBIndexRequest : IDBIndex {
+    readonly attribute IDBRequest request;
+    void openObjectCursor (in optional IDBKeyRange range, in optional unsigned short direction);
+    void openCursor (in optional IDBKeyRange range, in optional unsigned short direction);
     void put (in any value, in optional any key, in optional boolean noOverwrite);
     void getObject (in any key);
     void get (in any key);
-    void delete (in any key);
+    void remove (in any key);
 };
 
 
-interface CursorRequest : Cursor {
-    readonly attribute DBRequest          request;
+interface IDBCursorRequest : IDBCursor {
+    readonly attribute IDBRequest         request;
     readonly attribute any                key;
     readonly attribute any                value;
     readonly attribute unsigned long long count;
     void update (in any value);
     void continue (in optional any key);
-    void delete ();
+    void remove ();
 };
 
 
-interface TransactionRequest : Transaction {
-    readonly attribute DBRequest request;
+interface IDBTransactionRequest : IDBTransaction {
+    readonly attribute IDBRequest request;
     void abort ();
     void commit ();
 };
 
 
-interface DatabaseError {
+interface IDBDatabaseError {
     attribute unsigned short code;
     attribute DOMString      message;
 };
 
 };
-
