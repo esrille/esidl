@@ -14,8 +14,6 @@ module traversal {
   typedef dom::Document Document;
   typedef dom::DOMException DOMException;
 
-  interface NodeFilter;
-
   // Introduced in DOM Level 2:
   interface NodeIterator {
     readonly attribute Node             root;
