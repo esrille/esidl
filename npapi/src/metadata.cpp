@@ -42,6 +42,7 @@ void initializeMetaData()
     ProxyControl::registerMetaData(Element::getMetaData(), Proxy_Impl<ProxyObject, Element_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(Entity::getMetaData(), Proxy_Impl<ProxyObject, Entity_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(EntityReference::getMetaData(), Proxy_Impl<ProxyObject, EntityReference_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(FormData::getMetaData(), Proxy_Impl<ProxyObject, FormData_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(NamedNodeMap::getMetaData(), Proxy_Impl<ProxyObject, NamedNodeMap_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(NameList::getMetaData(), Proxy_Impl<ProxyObject, NameList_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(Node::getMetaData(), Proxy_Impl<ProxyObject, Node_Bridge<Any, invoke> >::createInstance);

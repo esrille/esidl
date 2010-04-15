@@ -1,16 +1,17 @@
 /*
- * xhr.idl
+ * xhr2.idl
  *
- * XMLHttpRequest Level 2 IDL definitions scraped from the W3C specification, revised for esidl.
+ * XMLHttpRequest Level 2
  *
- * Original W3C Working Draft:
+ * Original W3C Editor's Draft 19 February 2010:
  *
- *   http://www.w3.org/TR/2009/WD-XMLHttpRequest2-20090820/
+ *   http://dev.w3.org/2006/webapi/XMLHttpRequest-2/
  */
 
 module dom {
 
 typedef events::EventTarget EventTarget;
+typedef file::Blob Blob;
 typedef html::Function Function;
 
 typedef sequence<octet> ByteArray;  // TBD at W3C
@@ -23,6 +24,7 @@ interface XMLHttpRequestEventTarget : EventTarget {
            attribute Function onabort;
            attribute Function onerror;
            attribute Function onload;
+           attribute Function ontimeout;
            attribute Function onloadend;
 };
 
@@ -30,7 +32,8 @@ interface XMLHttpRequestUpload : XMLHttpRequestEventTarget {
   // for future use
 };
 
-[Constructor]
+[Constructor,
+ Constructor(boolean anon)]
 interface XMLHttpRequest : XMLHttpRequestEventTarget {
   // event handler attributes
            attribute Function onreadystatechange;
@@ -49,12 +52,14 @@ interface XMLHttpRequest : XMLHttpRequestEventTarget {
   void open(DOMString method, DOMString url, boolean async, DOMString? user);
   void open(DOMString method, DOMString url, boolean async, DOMString? user, DOMString? password);
   void setRequestHeader(DOMString header, DOMString value);
+           attribute unsigned long timeout;
            attribute boolean withCredentials;
   readonly attribute XMLHttpRequestUpload upload;
   void send();
-  void send(ByteArray data);
+  void send(Blob data);
   void send(Document data);
   void send([AllowAny] DOMString? data);
+  void send(FormData data);
   void abort();
 
   // response
@@ -68,5 +73,10 @@ interface XMLHttpRequest : XMLHttpRequestEventTarget {
   readonly attribute Document responseXML;
 };
 
+[Constructor]
+interface FormData {
+  void append(DOMString name, Blob value);
+  void append(DOMString name, DOMString value);
 };
 
+};

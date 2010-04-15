@@ -50,6 +50,9 @@ module dom {
     // Introduced in XHR Level 2:
     const unsigned short ABORT_ERR                   = 20;
 
+    // Introduced in XHR Level 2:
+    const unsigned short TIMEOUT_ERR                 = 23;
+
     unsigned short code;
   };
 

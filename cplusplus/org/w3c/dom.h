@@ -38,6 +38,7 @@
 #include <org/w3c/dom/DOMImplementationSource.h>
 #include <org/w3c/dom/DOMLocator.h>
 #include <org/w3c/dom/DOMStringList.h>
+#include <org/w3c/dom/FormData.h>
 #include <org/w3c/dom/Element.h>
 #include <org/w3c/dom/Entity.h>
 #include <org/w3c/dom/EntityReference.h>
