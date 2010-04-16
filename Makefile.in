@@ -335,6 +335,7 @@ EXTRA_DIST = \
 	dom/dom2traversal.idl \
 	dom/dom2views.idl \
 	dom/dom3core.idl \
+	dom/dom3events.idl \
 	dom/dom3ls.idl \
 	dom/dom3validation.idl \
 	dom/dom3xpath.idl \
