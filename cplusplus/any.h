@@ -281,7 +281,7 @@ public:
         assign(value);
         return *this;
     }
-    
+
     Any& operator=(const Any& value)
     {
         assign(value);
@@ -403,7 +403,7 @@ public:
 
     bool isNull() const
     {
-        return (type & PrimitiveMask) == TypeVoid;
+        return getType() == TypeVoid;
     }
 
     bool isSequence() const
@@ -413,7 +413,7 @@ public:
 
     bool hasValue() const
     {
-        return (type & PrimitiveMask) != TypeVoid;
+        return getType() != TypeVoid;
     }
 
     template <typename T>
@@ -426,10 +426,6 @@ public:
 template <typename T>
 Nullable<T>::Nullable(const Any& any)
 {
-    if (!any.isNullable())
-    {
-        // TODO: Raise an exception
-    }
     hasValue_ = any.hasValue();
     if (hasValue_)
     {

@@ -77,6 +77,10 @@ void SampleInstance::drawCharts(Document* document)
     events::DocumentEvent* documentEvent = interface_cast<events::DocumentEvent*>(document);
     printf("documentEvent = %p\n", documentEvent);
 
+    // Test Nullable
+    Nullable<std::string> documentURI = document->getDocumentURI();
+    printf("documentURI = %s\n", documentURI.hasValue() ? documentURI.value().c_str() : "null");
+
     std::string title = interface_cast<html::HTMLDocument*>(document)->getTitle();
     printf("title = %s\n", title.c_str());
 
