@@ -67,7 +67,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            qualifiedModuleName = currentNode->getQualifiedModuleName();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
             className = getClassName(node);
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
@@ -85,9 +85,9 @@ public:
                  i != mixinList.end();
                  ++i)
             {
-                std::string name = (*i)->getQualifiedName();
+                std::string name = (*i)->getPrefixedName();
                 name = getInterfaceName(name);
-                name = getScopedName(qualifiedModuleName, name);
+                name = getScopedName(prefixedModuleName, name);
                 write(", public %s", name.c_str());
             }
             writeln("{");
@@ -104,9 +104,9 @@ public:
                         i != mixinList.end();
                         ++i)
                     {
-                        std::string name = (*i)->getQualifiedName();
+                        std::string name = (*i)->getPrefixedName();
                         name = getInterfaceName(name);
-                        name = getScopedName(qualifiedModuleName, name);
+                        name = getScopedName(prefixedModuleName, name);
                         writeln("if (void* object = %s::queryInterface(qualifiedName)) {", name.c_str());
                             writeln("return object;");
                         writeln("}");
@@ -160,9 +160,9 @@ public:
             {
                 continue;
             }
-            std::string name = (*i)->getQualifiedName();
+            std::string name = (*i)->getPrefixedName();
             name = getInterfaceName(name);
-            name = getScopedName(qualifiedModuleName, name);
+            name = getScopedName(prefixedModuleName, name);
             ++baseCount;
             write("%s_Bridge<ARGUMENT, invoke, I + %u, ", name.c_str(), interfaceCount);
             interfaceCount += (*i)->getInterfaceCount();

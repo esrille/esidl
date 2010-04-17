@@ -17,6 +17,8 @@
 
 #include "sample.h"
 
+#include <com/getfirebug/Console.h>
+
 using namespace org::w3c::dom;
 
 #include <math.h>
@@ -80,6 +82,12 @@ void SampleInstance::drawCharts(Document* document)
     // Test Nullable
     Nullable<std::string> documentURI = document->getDocumentURI();
     printf("documentURI = %s\n", documentURI.hasValue() ? documentURI.value().c_str() : "null");
+
+    // Test variadic operation
+    com::getfirebug::Console* console = interface_cast<com::getfirebug::Console*>(window->getElement("console"));
+    if (console)
+    {
+    }
 
     std::string title = interface_cast<html::HTMLDocument*>(document)->getTitle();
     printf("title = %s\n", title.c_str());

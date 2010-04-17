@@ -44,7 +44,7 @@ protected:
     int paramCount;  // The number of parameters of the previously evaluated operation
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
 
-    std::string qualifiedModuleName;
+    std::string prefixedModuleName;
 
     int getParamCount() const
     {
@@ -129,7 +129,7 @@ public:
         paramCount(0),
         variadicParam(0)
     {
-        qualifiedModuleName = currentNode->getQualifiedModuleName();
+        prefixedModuleName = currentNode->getPrefixedModuleName();
     }
 
     CPlusPlus(const Formatter* formatter, const char* stringTypeName = "char*", const char* objectTypeName = "object",
@@ -143,7 +143,7 @@ public:
         paramCount(0),
         variadicParam(0)
     {
-        qualifiedModuleName = currentNode->getQualifiedModuleName();
+        prefixedModuleName = currentNode->getPrefixedModuleName();
     }
 
     virtual void at(const Node* node)
@@ -154,9 +154,9 @@ public:
             Node* resolved = resolve(currentNode, name);
             if (resolved)
             {
-                name = resolved->getQualifiedName();
+                name = resolved->getPrefixedName();
                 name = getInterfaceName(name);
-                name = getScopedName(qualifiedModuleName, name);
+                name = getScopedName(prefixedModuleName, name);
             }
             write("%s", name.c_str());
         }
@@ -250,7 +250,7 @@ public:
         Node* spec = node->getSpec();
         Type* type = dynamic_cast<Type*>(spec);
         // Note we don't need separate array types for primitive types in C++.
-        std::string name = getScopedName(qualifiedModuleName, "::dom::ObjectArray");
+        std::string name = getScopedName(prefixedModuleName, "::dom::ObjectArray");
         write("%s<", name.c_str());
         spec->accept(this);
         write(">");

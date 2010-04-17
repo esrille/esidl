@@ -186,30 +186,51 @@ std::string Node::getQualifiedName() const
     std::string qualifiedName;
     for (const Node* node = this; node && node->name != ""; node = node->getParent())
     {
-        if (node->isConstructor())
-        {
-            qualifiedName = "_" + node->name + qualifiedName;
-        }
-        else
-        {
-            qualifiedName = "::" + node->name + qualifiedName;
-        }
+        qualifiedName = (node->isConstructor() ? "_" : "::") + node->name + qualifiedName;
     }
     return qualifiedName;
 }
 
 std::string Node::getQualifiedModuleName() const
 {
-    const Node* node = this;
-    while (node)
+    for (const Node* node = this; node; node = node->getParent())
     {
         if (dynamic_cast<const Module*>(node))
         {
             return node->getQualifiedName();
         }
-        node = node->getParent();
     }
     return "";
+}
+
+std::string Node::getPrefixedName() const
+{
+    if (Node* parent = getParent())
+    {
+        return parent->getPrefixedName() + (isConstructor() ? "_" : "::") + getName();
+    }
+    return getName();
+}
+
+std::string Node::getPrefixedModuleName() const
+{
+    for (const Node* node = this; node; node = node->getParent())
+    {
+        if (dynamic_cast<const Module*>(node))
+        {
+            return node->getPrefixedName();
+        }
+    }
+    return "";
+}
+
+std::string Interface::getPrefixedName() const
+{
+    if (isBaseObject())
+    {
+        return getBaseObjectName();
+    }
+    return Node::getPrefixedName();
 }
 
 bool Module::hasPredeclarations() const

@@ -393,6 +393,9 @@ public:
 
     std::string getQualifiedModuleName() const;
 
+    virtual std::string getPrefixedName() const;
+    std::string getPrefixedModuleName() const;
+
     // If there is an interface definition as well as interface forward declaration,
     // search() must return the interface definition.
     virtual Node* search(const std::string& elem, size_t pos = 0) const;
@@ -917,6 +920,8 @@ public:
             delete extends;
         }
     }
+
+    std::string getPrefixedName() const;
 
     virtual void add(Node* node);
     void processExtendedAttributes();

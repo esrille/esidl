@@ -92,7 +92,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            qualifiedModuleName = currentNode->getQualifiedModuleName();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
             className = node->getName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());

@@ -41,7 +41,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            qualifiedModuleName = currentNode->getQualifiedModuleName();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
@@ -59,7 +59,7 @@ public:
                 unindent();
                 writeln("case %u:", interfaceNumber);
                 indent();
-                writeln("return %s::getMetaData();", getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
+                writeln("return %s::getMetaData();", getScopedName(prefixedModuleName, (*i)->getPrefixedName()).c_str());
             }
             unindent();
             writeln("default:");
@@ -77,7 +77,7 @@ public:
                 unindent();
                 writeln("case %u:", interfaceNumber);
                 indent();
-                writeln("return %s::getSymbolTable();", getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
+                writeln("return %s::getSymbolTable();", getScopedName(prefixedModuleName, (*i)->getPrefixedName()).c_str());
             }
             unindent();
             writeln("default:");
@@ -112,7 +112,7 @@ public:
                 else
                 {
                     writeln("return interface_cast<%s*>(this)->call(methodNumber, argumentCount, arguments);",
-                            getScopedName(qualifiedModuleName, (*i)->getQualifiedName()).c_str());
+                            getScopedName(prefixedModuleName, (*i)->getPrefixedName()).c_str());
                 }
             }
             unindent();

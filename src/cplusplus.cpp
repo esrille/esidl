@@ -164,7 +164,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            qualifiedModuleName = currentNode->getQualifiedModuleName();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
         }
 
         writetab();
@@ -185,7 +185,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            qualifiedModuleName = currentNode->getQualifiedModuleName();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
@@ -329,7 +329,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            qualifiedModuleName = currentNode->getQualifiedModuleName();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
         }
         writetab();
         if (node->isTypedef(node->getParent()))
@@ -467,7 +467,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            qualifiedModuleName = currentNode->getQualifiedModuleName();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
