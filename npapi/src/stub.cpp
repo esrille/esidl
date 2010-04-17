@@ -101,6 +101,7 @@ const Reflect::SymbolData* lookupSymbolTalbe(Object* object, const char* identif
 
 void processResult(NPP npp, const Any& any, NPVariant* variant)
 {
+    // TODO: Additional code if any.isSequence() is true.
     if (any.getType() == Any::TypeString)
     {
         const std::string value = static_cast<const std::string>(any);
