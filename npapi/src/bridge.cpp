@@ -239,7 +239,10 @@ std::string getInterfaceName(NPP npp, NPObject* object)
         if (className.compare(0, 8, "[object ", 8) == 0 && className[className.length() - 1] == ']')
         {
             className = className.substr(8, className.length() - 9);
-            break;
+            if (className != "Object")
+            {
+                break;
+            }
         }
         // This object is likely to have a stringifier. Check the constructor name directly.
         NPVariant constructor;

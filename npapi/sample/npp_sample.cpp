@@ -20,6 +20,7 @@
 #include <any.h>
 #include <reflect.h>
 #include <org/w3c/dom.h>
+#include <com/getfirebug/Console.h>
 
 using namespace org::w3c::dom;
 
@@ -38,6 +39,8 @@ NPError NPP_Initialize()
 
     initializeMetaData();
     initializeHtmlMetaData();
+
+    ProxyControl::registerMetaData(com::getfirebug::Console::getMetaData(), Proxy_Impl<ProxyObject, com::getfirebug::Console_Bridge<Any, invoke> >::createInstance);
 
     return NPERR_NO_ERROR;
 }

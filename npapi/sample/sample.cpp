@@ -50,6 +50,15 @@ void SampleInstance::down(events::Event* evt)
             }
         }
     }
+    // Test variadic operation
+    com::getfirebug::Console* console = interface_cast<com::getfirebug::Console*>(window->getElement("console"));
+    printf("console = %p\n", console);
+    if (console)
+    {
+        Any params[] = { 1, 2, 3 };
+        Sequence<Any> arguments(params, 3);
+        console->log("Hello %d %d %d!\n", arguments);
+    }
 }
 
 void SampleInstance::drawCharts(Document* document)
@@ -82,12 +91,6 @@ void SampleInstance::drawCharts(Document* document)
     // Test Nullable
     Nullable<std::string> documentURI = document->getDocumentURI();
     printf("documentURI = %s\n", documentURI.hasValue() ? documentURI.value().c_str() : "null");
-
-    // Test variadic operation
-    com::getfirebug::Console* console = interface_cast<com::getfirebug::Console*>(window->getElement("console"));
-    if (console)
-    {
-    }
 
     std::string title = interface_cast<html::HTMLDocument*>(document)->getTitle();
     printf("title = %s\n", title.c_str());
