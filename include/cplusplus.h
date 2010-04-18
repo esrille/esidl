@@ -397,6 +397,14 @@ public:
             write("*");
         }
         write(" %s", getEscapedName(node->getName()).c_str());
+
+        // Default argument for the variadic parameter
+        if (node->isVariadic())
+        {
+            write(" = ");
+            spec->accept(this);
+            write("()");
+        }
     }
 
     virtual void at(const Include* node)
