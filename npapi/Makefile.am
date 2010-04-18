@@ -3,7 +3,7 @@ SUBDIRS = . sample
 lib_LIBRARIES = libesnpapi.a
 
 AM_CPPFLAGS = \
-	-fshort-wchar \
+	-fshort-wchar -std=gnu++0x \
 	-I include \
 	-I $(srcdir)/include \
 	-I $(srcdir)/../include \

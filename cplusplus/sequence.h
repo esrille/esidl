@@ -18,6 +18,7 @@
 #define ES_SEQUENCE_INCLUDED
 
 #include <org/w3c/dom/ObjectArray.h>
+#include <initializer_list>
 #include <new>
 
 class Any;
@@ -189,6 +190,18 @@ public:
         rep = new Rep(array);
     }
 
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
+    Sequence(std::initializer_list<T> list)
+    {
+        rep = new Rep(list.size());
+        unsigned int index = 0;
+        for (const T* p = list.begin(); p != list.end(); ++p, ++index)
+        {
+            rep->setElement(index, *p);
+        }
+    }
+#endif
+
     // Copy-constructor
     Sequence(const Sequence& value)
     {
@@ -263,7 +276,7 @@ public:
     {
         return rep;
     }
-#endif    
+#endif
 
     Sequence(const Any& any);
 };

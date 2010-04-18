@@ -1,5 +1,5 @@
 AM_CPPFLAGS = \
-	-fshort-wchar \
+	-fshort-wchar -std=gnu++0x \
 	-I $(srcdir) \
 	-I ../include \
 	-I ../include/w3c \

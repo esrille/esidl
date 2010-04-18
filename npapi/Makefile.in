@@ -276,9 +276,10 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = . sample
 lib_LIBRARIES = libesnpapi.a
-AM_CPPFLAGS = -fshort-wchar -I include -I $(srcdir)/include -I \
-	$(srcdir)/../include -I ../cplusplus -I $(srcdir)/../cplusplus \
-	-DXP_UNIX -fno-implicit-inline-templates -fno-default-inline \
+AM_CPPFLAGS = -fshort-wchar -std=gnu++0x -I include -I \
+	$(srcdir)/include -I $(srcdir)/../include -I ../cplusplus -I \
+	$(srcdir)/../cplusplus -DXP_UNIX \
+	-fno-implicit-inline-templates -fno-default-inline \
 	$(am__append_1)
 libesnpapi_a_SOURCES = \
 	include/esnpapi.h \

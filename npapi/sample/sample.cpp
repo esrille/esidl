@@ -55,9 +55,13 @@ void SampleInstance::down(events::Event* evt)
     printf("console = %p\n", console);
     if (console)
     {
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
+        console->log("Hello %d %d %d!\n", Sequence<Any>({ 1, 2, 3 }));
+#else
         Any params[] = { 1, 2, 3 };
         Sequence<Any> arguments(params, 3);
         console->log("Hello %d %d %d!\n", arguments);
+#endif
     }
 }
 

@@ -306,7 +306,7 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -fshort-wchar -I $(srcdir) -I ../include -I \
+AM_CPPFLAGS = -fshort-wchar -std=gnu++0x -I $(srcdir) -I ../include -I \
 	../include/w3c -I $(srcdir)/../include -I \
 	$(srcdir)/../../include -I ../../cplusplus -I \
 	$(srcdir)/../../cplusplus -DXP_UNIX \
