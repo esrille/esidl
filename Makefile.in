@@ -327,6 +327,7 @@ EXTRA_DIST = \
 	dom/2dcontext.idl \
 	dom/arrays.idl \
 	dom/console.idl \
+	dom/cssom.idl \
 	dom/cssomview.idl \
 	dom/dom2css.idl \
 	dom/dom2events.idl \
