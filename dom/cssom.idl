@@ -1,12 +1,22 @@
 /*
  * cssom.idl
  *
- * CSSOM
+ * CSSOM, revised for esidl.
  *
  * Original W3C Editor's Draft 31 March 2010:
  *
  *   http://dev.w3.org/csswg/cssom/
  */
+
+module stylesheets {
+
+typedef dom::Node Node;
+typedef dom::Document Document;
+typedef dom::Element Element;
+typedef dom::ProcessingInstruction ProcessingInstruction;
+typedef dom::DOMException DOMException;
+typedef html::Window Window;
+typedef html::DOMStringList DOMStringList;
 
 interface MediaList {
   stringifier attribute DOMString mediaText;
@@ -26,6 +36,14 @@ interface StyleSheet {
            attribute boolean disabled;
 };
 
+typedef sequence<StyleSheet> StyleSheetList;
+
+};
+
+module css {
+
+typedef stylesheets::StyleSheet StyleSheet;
+
 interface CSSStyleSheet : StyleSheet {
   readonly attribute CSSRule ownerRule;
   readonly attribute CSSRuleList cssRules;
@@ -33,7 +51,11 @@ interface CSSStyleSheet : StyleSheet {
   void deleteRule(unsigned long index);
 };
 
-typedef sequence<StyleSheet> StyleSheetList;
+};
+
+module dom {
+
+typedef stylesheets::StyleSheetList StyleSheetList;
 
 [Supplemental] interface Document {
   readonly attribute StyleSheetList styleSheets;
@@ -44,11 +66,21 @@ typedef sequence<StyleSheet> StyleSheetList;
   void enableStyleSheetsForSet(DOMString? name);
 };
 
+};
+
+module stylesheets {
+
 [NoInterfaceObject] interface LinkStyle {
   readonly attribute StyleSheet sheet;
 };
 
 ProcessingInstruction implements LinkStyle;
+
+};
+
+module css {
+
+typedef stylesheets::MediaList MediaList;
 
 typedef sequence<CSSRule> CSSRuleList;
 
@@ -284,8 +316,13 @@ interface CSSURLComponentValue : CSSComponentValue {
   readonly attribute CSSStyleDeclaration style;
 };
 
+};
+
+module html {
+
 [Supplemental] interface Window {
   CSSStyleDeclaration getComputedStyle(Element elt);
   CSSStyleDeclaration getComputedStyle(Element elt, DOMString pseudoElt);
 };
 
+};
