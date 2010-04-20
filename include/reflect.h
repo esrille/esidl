@@ -358,6 +358,31 @@ public:
         }
 
         /**
+         * Checks if this type is a nullable type.
+         */
+        bool isNullable() const
+        {
+            switch (getType())
+            {
+            case kBoolean:
+            case kByte:
+            case kOctet:
+            case kShort:
+            case kUnsignedShort:
+            case kLong:
+            case kUnsignedLong:
+            case kLongLong:
+            case kUnsignedLongLong:
+            case kFloat:
+            case kDouble:
+            case kString:
+                return info[1] == kNullable;
+            default:
+                return false;
+            }
+        }
+
+        /**
          * Gets the size of this type.
          */
         int getSize() const

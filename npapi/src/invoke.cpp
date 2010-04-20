@@ -150,50 +150,97 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
             {
                 param.next();
             }
-            // TODO: Check Nullable, too.
-            switch (param.getType().getType())
+            Reflect::Type type = param.getType();
+            if (type.isNullable())
             {
-            case Reflect::kBoolean:
-                expandSequence(proxy->getNPP(), Sequence<bool>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kOctet:
-                expandSequence(proxy->getNPP(), Sequence<uint8_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kShort:
-                expandSequence(proxy->getNPP(), Sequence<int16_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kUnsignedShort:
-                expandSequence(proxy->getNPP(), Sequence<uint16_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kLong:
-                expandSequence(proxy->getNPP(), Sequence<int32_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kUnsignedLong:
-                expandSequence(proxy->getNPP(), Sequence<uint32_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kLongLong:
-                expandSequence(proxy->getNPP(), Sequence<int64_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kUnsignedLongLong:
-                expandSequence(proxy->getNPP(), Sequence<uint64_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kFloat:
-                expandSequence(proxy->getNPP(), Sequence<float>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kDouble:
-                expandSequence(proxy->getNPP(), Sequence<double>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kString:
-                expandSequence(proxy->getNPP(), Sequence<std::string>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            case Reflect::kAny:
-                expandSequence(proxy->getNPP(), Sequence<Any>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
-            // TODO: kSequence???
-            case Reflect::kObject:
-            default:
-                expandSequence(proxy->getNPP(), Sequence<Object*>(arguments[argumentCount]), &variantArray[argumentCount]);
-                break;
+                switch (type.getType())
+                {
+                case Reflect::kBoolean:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<bool> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kByte:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<int8_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kOctet:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<uint8_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kShort:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<int16_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kUnsignedShort:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<uint16_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kLong:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<int32_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kUnsignedLong:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<uint32_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kLongLong:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<int64_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kUnsignedLongLong:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<uint64_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kFloat:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<float> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kDouble:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<double> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kString:
+                    expandSequence(proxy->getNPP(), Sequence<Nullable<std::string> >(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                }
+            }
+            else {
+                switch (type.getType())
+                {
+                case Reflect::kBoolean:
+                    expandSequence(proxy->getNPP(), Sequence<bool>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kByte:
+                    expandSequence(proxy->getNPP(), Sequence<int8_t>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kOctet:
+                    expandSequence(proxy->getNPP(), Sequence<uint8_t>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kShort:
+                    expandSequence(proxy->getNPP(), Sequence<int16_t>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kUnsignedShort:
+                    expandSequence(proxy->getNPP(), Sequence<uint16_t>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kLong:
+                    expandSequence(proxy->getNPP(), Sequence<int32_t>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kUnsignedLong:
+                    expandSequence(proxy->getNPP(), Sequence<uint32_t>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kLongLong:
+                    expandSequence(proxy->getNPP(), Sequence<int64_t>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kUnsignedLongLong:
+                    expandSequence(proxy->getNPP(), Sequence<uint64_t>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kFloat:
+                    expandSequence(proxy->getNPP(), Sequence<float>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kDouble:
+                    expandSequence(proxy->getNPP(), Sequence<double>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kString:
+                    expandSequence(proxy->getNPP(), Sequence<std::string>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                case Reflect::kAny:
+                    expandSequence(proxy->getNPP(), Sequence<Any>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                // TODO: kSequence???
+                case Reflect::kObject:
+                default:
+                    expandSequence(proxy->getNPP(), Sequence<Object*>(arguments[argumentCount]), &variantArray[argumentCount]);
+                    break;
+                }
             }
         }
 
