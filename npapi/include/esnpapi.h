@@ -205,6 +205,7 @@ public:
 std::string getInterfaceName(NPP npp, NPObject* object);
 
 void convertToVariant(NPP npp, bool value, NPVariant* variant);
+void convertToVariant(NPP npp, int8_t value, NPVariant* variant);
 void convertToVariant(NPP npp, uint8_t value, NPVariant* variant);
 void convertToVariant(NPP npp, int16_t value, NPVariant* variant);
 void convertToVariant(NPP npp, uint16_t value, NPVariant* variant);
@@ -220,6 +221,7 @@ void convertToVariant(NPP npp, Object* value, NPVariant* variant);
 void convertToVariant(NPP npp, const Any& any, NPVariant* variant);
 
 bool convertToBool(const NPVariant* variant);
+int8_t convertToByte(const NPVariant* variant);
 uint8_t convertToOctet(const NPVariant* variant);
 int16_t convertToShort(const NPVariant* variant);
 uint16_t convertToUnsignedShort(const NPVariant* variant);

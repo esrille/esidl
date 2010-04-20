@@ -276,6 +276,11 @@ bool convertToBool(const NPVariant* variant)
     return toBoolean(variant);
 }
 
+int8_t convertToByte(const NPVariant* variant)
+{
+    return static_cast<int8_t>(toInteger(variant));
+}
+
 uint8_t convertToOctet(const NPVariant* variant)
 {
     return static_cast<uint8_t>(toInteger(variant));
@@ -409,6 +414,9 @@ Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
     case Any::TypeBool:
         return convertToBool(variant);
         break;
+    case Any::TypeByte:
+        return convertToByte(variant);
+        break;
     case Any::TypeOctet:
         return convertToOctet(variant);
         break;
@@ -461,6 +469,11 @@ Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
 void convertToVariant(NPP npp, bool value, NPVariant* variant)
 {
     BOOLEAN_TO_NPVARIANT(value, *variant);
+}
+
+void convertToVariant(NPP npp, int8_t value, NPVariant* variant)
+{
+    INT32_TO_NPVARIANT(value, *variant);
 }
 
 void convertToVariant(NPP npp, uint8_t value, NPVariant* variant)
@@ -547,6 +560,9 @@ void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
         break;
     case Any::TypeBool:
         convertToVariant(npp, static_cast<bool>(any), variant);
+        break;
+    case Any::TypeByte:
+        convertToVariant(npp, static_cast<int8_t>(any), variant);
         break;
     case Any::TypeOctet:
         convertToVariant(npp, static_cast<uint8_t>(any), variant);
