@@ -398,14 +398,139 @@ Any convertToAny(NPP npp, const NPVariant* variant)
     }
 }
 
+namespace
+{
+
+template <typename T>
+Any convertToSequence(NPP npp, const NPVariant* variant)
+{
+    unsigned length = 0;
+    NPVariant result;
+    INT32_TO_NPVARIANT(0, result);
+    if (NPVARIANT_IS_OBJECT(*variant) &&
+        NPN_GetProperty(npp, NPVARIANT_TO_OBJECT(*variant), NPN_GetStringIdentifier("length"), &result))
+    {
+        if (NPVARIANT_IS_INT32(result)) {
+            length = NPVARIANT_TO_INT32(result);
+        }
+        NPN_ReleaseVariantValue(&result);
+    }
+    Sequence<T> sequence(length);
+    for (unsigned i = 0; i < length; ++i)
+    {
+        NPVariant element;
+        VOID_TO_NPVARIANT(element);
+        NPIdentifier id = NPN_GetIntIdentifier(i);
+        if (NPN_GetProperty(npp, NPVARIANT_TO_OBJECT(*variant), id, &element))
+        {
+            Any value = convertToAny(npp, &element);  // TODO: Should use direct converToXXX()
+            sequence.setElement(i, static_cast<T>(value));
+        }
+    }
+    return sequence;
+}
+
+}
+
 Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
 {
     if (type.isSequence())
     {
-        // TODO: Implement me!
-        return Any();
+        Reflect::Sequence sequence(type);
+        Reflect::Type elementType(sequence.getType());
+        if (elementType.isNullable())
+        {
+            switch (type.getType())
+            {
+            case Reflect::kBoolean:
+                return convertToSequence<Nullable<bool> >(npp, variant);
+                break;
+            case Reflect::kByte:
+                return convertToSequence<Nullable<int8_t> >(npp, variant);
+                break;
+            case Reflect::kOctet:
+                return convertToSequence<Nullable<uint8_t> >(npp, variant);
+                break;
+            case Reflect::kShort:
+                return convertToSequence<Nullable<int16_t> >(npp, variant);
+                break;
+            case Reflect::kUnsignedShort:
+                return convertToSequence<Nullable<uint16_t> >(npp, variant);
+                break;
+            case Reflect::kLong:
+                return convertToSequence<Nullable<int32_t> >(npp, variant);
+                break;
+            case Reflect::kUnsignedLong:
+                return convertToSequence<Nullable<uint32_t> >(npp, variant);
+                break;
+            case Reflect::kLongLong:
+                return convertToSequence<Nullable<int64_t> >(npp, variant);
+                break;
+            case Reflect::kUnsignedLongLong:
+                return convertToSequence<Nullable<uint64_t> >(npp, variant);
+                break;
+            case Reflect::kFloat:
+                return convertToSequence<Nullable<float> >(npp, variant);
+                break;
+            case Reflect::kDouble:
+                return convertToSequence<Nullable<double> >(npp, variant);
+                break;
+            case Reflect::kString:
+                return convertToSequence<Nullable<std::string> >(npp, variant);
+                break;
+            }
+        }
+        else {
+            switch (type.getType())
+            {
+            case Reflect::kBoolean:
+                return convertToSequence<bool>(npp, variant);
+                break;
+            case Reflect::kByte:
+                return convertToSequence<int8_t>(npp, variant);
+                break;
+            case Reflect::kOctet:
+                return convertToSequence<uint8_t>(npp, variant);
+                break;
+            case Reflect::kShort:
+                return convertToSequence<int16_t>(npp, variant);
+                break;
+            case Reflect::kUnsignedShort:
+                return convertToSequence<uint16_t>(npp, variant);
+                break;
+            case Reflect::kLong:
+                return convertToSequence<int32_t>(npp, variant);
+                break;
+            case Reflect::kUnsignedLong:
+                return convertToSequence<uint32_t>(npp, variant);
+                break;
+            case Reflect::kLongLong:
+                return convertToSequence<int64_t>(npp, variant);
+                break;
+            case Reflect::kUnsignedLongLong:
+                return convertToSequence<uint64_t>(npp, variant);
+                break;
+            case Reflect::kFloat:
+                return convertToSequence<float>(npp, variant);
+                break;
+            case Reflect::kDouble:
+                return convertToSequence<double>(npp, variant);
+                break;
+            case Reflect::kString:
+                return convertToSequence<std::string>(npp, variant);
+                break;
+            case Reflect::kAny:
+                return convertToSequence<Any>(npp, variant);
+                break;
+            // TODO: kSequence???
+            case Reflect::kObject:
+            default:
+                return convertToSequence<Object*>(npp, variant);
+                break;
+            }
+        }
     }
-    
+
     switch (type.getType())
     {
     case Any::TypeVoid:

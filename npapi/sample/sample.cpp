@@ -104,10 +104,10 @@ void SampleInstance::drawCharts(Document* document)
         stylesheets::StyleSheet* styleSheet = styleSheets[i];
         if (styleSheet)
         {
-            printf("    %s\n", styleSheet->getHref());
+            printf("    %s\n", styleSheet->getHref().c_str());
         }
     }
-    
+
     std::string title = interface_cast<html::HTMLDocument*>(document)->getTitle();
     printf("title = %s\n", title.c_str());
 
