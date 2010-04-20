@@ -52,6 +52,7 @@ EXTRA_DIST = \
 	eraser.png pen.png tools.png \
 	sample.html \
 	sample.nacl.html \
+	red.css green.css blue.css \
 	xhr.html \
 	xhr.nacl.html \
 	xhr.txt

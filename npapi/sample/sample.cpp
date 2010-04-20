@@ -96,6 +96,18 @@ void SampleInstance::drawCharts(Document* document)
     Nullable<std::string> documentURI = document->getDocumentURI();
     printf("documentURI = %s\n", documentURI.hasValue() ? documentURI.value().c_str() : "null");
 
+    // Test getting an sequence object
+    stylesheets::StyleSheetList styleSheets = document->getStyleSheets();
+    printf("styleSheets.length = %u\n", styleSheets.getLength());
+    for (unsigned i = 0; i < styleSheets.getLength(); ++i)
+    {
+        stylesheets::StyleSheet* styleSheet = styleSheets[i];
+        if (styleSheet)
+        {
+            printf("    %s\n", styleSheet->getHref());
+        }
+    }
+    
     std::string title = interface_cast<html::HTMLDocument*>(document)->getTitle();
     printf("title = %s\n", title.c_str());
 

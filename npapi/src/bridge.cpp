@@ -395,6 +395,12 @@ Any convertToAny(NPP npp, const NPVariant* variant)
 
 Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
 {
+    if (type.isSequence())
+    {
+        // TODO: Implement me!
+        return Any();
+    }
+    
     switch (type.getType())
     {
     case Any::TypeVoid:

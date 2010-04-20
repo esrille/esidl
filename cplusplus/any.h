@@ -436,13 +436,14 @@ Nullable<T>::Nullable(const Any& any)
 template <typename T>
 Sequence<T>::Sequence(const Any& any)
 {
-    if (!any.isSequence())
+    if (any.isSequence())
     {
-        // TODO: Raise an exception
+        const Sequence<T>* value = any.getSequence<T>();
+        ++value->rep->count;
+        rep = value->rep;
+        return;
     }
-    const Sequence<T>* value = any.getSequence<T>();
-    ++value->rep->count;
-    rep = value->rep;
+    rep = new Rep();  // create an empty sequence
 }
 
 #endif // ESNPAPI_ANY_H_INCLUDED
