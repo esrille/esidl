@@ -12,16 +12,18 @@
 
 function down(e)
 {
+    var rect = e.target.getBoundingClientRect();
     var context = e.target.getContext("2d");
     context.beginPath();
-    context.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+    context.moveTo(e.clientX - rect.left, e.clientY - rect.top);
     e.target.addEventListener('mousemove', move, true);
 }
 
 function move(e)
 {
+    var rect = e.target.getBoundingClientRect();
     var context = e.target.getContext("2d");
-    context.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+    context.lineTo(e.clientX - rect.left, e.clientY - rect.top);
     context.stroke();
 }
 
@@ -34,7 +36,8 @@ function up(e)
 
 function select(e)
 {
-    var y = e.clientY - e.target.offsetTop;
+    var rect = e.target.getBoundingClientRect();
+    var y = e.clientY - rect.top;
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
     if (y < 24)
