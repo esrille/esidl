@@ -100,31 +100,23 @@ double toNumber(const NPVariant* variant)
 {
     switch (variant->type)
     {
-        case NPVariantType_Void:
+    case NPVariantType_Void:
         return NAN;
-    break;
-        case NPVariantType_Null:
+    case NPVariantType_Null:
         return 0.0;
-    break;
-        case NPVariantType_Bool:
+    case NPVariantType_Bool:
         return NPVARIANT_TO_BOOLEAN(*variant) ? 1.0 : 0.0;
-    break;
-        case NPVariantType_Int32:
+    case NPVariantType_Int32:
         return NPVARIANT_TO_INT32(*variant);
-    break;
-        case NPVariantType_Double:
+    case NPVariantType_Double:
         return NPVARIANT_TO_DOUBLE(*variant);
-        break;
     case NPVariantType_String:
         return toNumber(NPVARIANT_TO_STRING(*variant).utf8characters,
                         NPVARIANT_TO_STRING(*variant).utf8length);
-        break;
     case NPVariantType_Object:
         return NAN; // TODO: Try valueOf, toString, etc.
-        break;
     default:
         return NAN;
-        break;
     }
 }
 
@@ -323,7 +315,7 @@ float convertToFloat(const NPVariant* variant)
 
 double convertToDouble(const NPVariant* variant)
 {
-    return static_cast<double>(toNumber(variant));
+    return toNumber(variant);
 }
 
 std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribute)
@@ -533,46 +525,43 @@ Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
 
     switch (type.getType())
     {
-    case Any::TypeVoid:
-        return Any();
-        break;
-    case Any::TypeBool:
+    case Reflect::kBoolean:
         return convertToBool(variant);
         break;
-    case Any::TypeByte:
+    case Reflect::kByte:
         return convertToByte(variant);
         break;
-    case Any::TypeOctet:
+    case Reflect::kOctet:
         return convertToOctet(variant);
         break;
-    case Any::TypeShort:
+    case Reflect::kShort:
         return convertToShort(variant);
         break;
-    case Any::TypeUnsignedShort:
+    case Reflect::kUnsignedShort:
         return convertToUnsignedShort(variant);
         break;
-    case Any::TypeLong:
+    case Reflect::kLong:
         return convertToLong(variant);
         break;
-    case Any::TypeUnsignedLong:
+    case Reflect::kUnsignedLong:
         return convertToUnsignedLong(variant);
         break;
-    case Any::TypeLongLong:
+    case Reflect::kLongLong:
         return convertToLongLong(variant);
         break;
-    case Any::TypeUnsignedLongLong:
+    case Reflect::kUnsignedLongLong:
         return convertToUnsignedLongLong(variant);
         break;
-    case Any::TypeFloat:
+    case Reflect::kFloat:
         return convertToFloat(variant);
         break;
-    case Any::TypeDouble:
+    case Reflect::kDouble:
         return convertToDouble(variant);
         break;
-    case Any::TypeString:
+    case Reflect::kString:
         return convertToString(npp, variant);
         break;
-    case Any::TypeObject:
+    case Reflect::kObject:
     {
         Object* object = convertToObject(npp, variant);
         if (!object)
