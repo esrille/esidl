@@ -96,7 +96,7 @@ void TestInstance::drawCharts(Document* document)
     Nullable<std::string> documentURI = document->getDocumentURI();
     printf("documentURI = %s\n", documentURI.hasValue() ? documentURI.value().c_str() : "null");
 
-    // Test getting an sequence object
+    // Test getting a sequence object
     stylesheets::StyleSheetList styleSheets = document->getStyleSheets();
     printf("styleSheets.length = %u\n", styleSheets.getLength());
     for (unsigned i = 0; i < styleSheets.getLength(); ++i)
@@ -105,6 +105,22 @@ void TestInstance::drawCharts(Document* document)
         if (styleSheet)
         {
             printf("    %s\n", styleSheet->getHref().c_str());
+        }
+    }
+
+    // Test passing a sequence object
+    webgl::WebGLByteArray_Constructor* byteArrayConstructor = interface_cast<webgl::WebGLByteArray_Constructor*>(window->getElement("WebGLByteArray"));
+    printf("WebGLByteArray_Constructor = %p\n", byteArrayConstructor);
+    if (byteArrayConstructor)
+    {
+        webgl::WebGLByteArray* byteArray = byteArrayConstructor->createInstance(Sequence<webgl::GLbyte>({ 1, 2, 3 }));
+        printf("byteArray = %p\n", byteArray);
+        if (byteArray)
+        {
+            for (unsigned i = 0; i < 3; ++i)
+            {
+                printf("    %d\n", byteArray->get(i));
+            }
         }
     }
 

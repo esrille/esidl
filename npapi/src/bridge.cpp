@@ -675,6 +675,7 @@ void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
     if (any.isSequence())
     {
         // TODO: Implement me!
+        NULL_TO_NPVARIANT(*variant);
         return;
     }
 

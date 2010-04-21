@@ -39,7 +39,8 @@ NPError NPP_Initialize()
 
     initializeMetaData();
     initializeHtmlMetaData();
-
+    initializeWebGLMetaData();
+    
     ProxyControl::registerMetaData(com::getfirebug::Console::getMetaData(), Proxy_Impl<ProxyObject, com::getfirebug::Console_Bridge<Any, invoke> >::createInstance);
 
     return NPERR_NO_ERROR;
