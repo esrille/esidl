@@ -188,9 +188,10 @@ class Any : private AnyBase
     template <typename T>
     Any& assign(const Sequence<T>& sequence)
     {
+        T value;
+        assign(value);  // Set type for T
         new (sequenceValue) Sequence<T>(sequence);
-        // TODO: set type for T
-        type = FlagSequence;
+        type |= FlagSequence;
         return *this;
     }
 

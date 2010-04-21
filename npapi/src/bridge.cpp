@@ -670,11 +670,108 @@ void convertToVariant(NPP npp, Object* value, NPVariant* variant)
     NULL_TO_NPVARIANT(*variant);
 }
 
+namespace
+{
+
+NPObject* createArray(NPP npp)
+{
+    NPObject* array = 0;
+    NPObject* window;
+    NPN_GetValue(npp, NPNVWindowNPObject, &window);
+    NPString script =
+    {
+        "new Array();",
+        12
+    };
+    NPVariant result;
+    if (NPN_Evaluate(npp, window, &script, &result))
+    {
+        if (NPVARIANT_IS_OBJECT(result))
+        {
+            array = NPVARIANT_TO_OBJECT(result);
+        }
+        else
+        {
+            NPN_ReleaseVariantValue(&result);
+        }
+    }
+    NPN_ReleaseObject(window);
+    return array;
+}
+
+template <typename T>
+void copySequence(NPP npp, NPObject* array, const Sequence<T> sequence)
+{
+    for (unsigned i = 0; i < sequence.getLength(); ++i)
+    {
+        NPIdentifier id = NPN_GetIntIdentifier(i);
+        NPVariant element;
+        convertToVariant(npp, sequence[i], &element);
+        NPN_SetProperty(npp, array, id, &element);
+    }
+}
+
+}
+
 void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
 {
     if (any.isSequence())
     {
-        // TODO: Implement me!
+        NPObject* array = createArray(npp);
+        if (array)
+        {
+            // TODO: Check nullable; Any needs to be fixed, too.
+            if (any.isAny())
+            {
+                copySequence(npp, array, Sequence<Any>(any));
+            }
+            else switch (any.getType())
+            {
+            case Any::TypeBool:
+                copySequence(npp, array, Sequence<bool>(any));
+                break;
+            case Any::TypeByte:
+                copySequence(npp, array, Sequence<int8_t>(any));
+                break;
+            case Any::TypeOctet:
+                copySequence(npp, array, Sequence<uint8_t>(any));
+                break;
+            case Any::TypeShort:
+                copySequence(npp, array, Sequence<int16_t>(any));
+                break;
+            case Any::TypeUnsignedShort:
+                copySequence(npp, array, Sequence<uint16_t>(any));
+                break;
+            case Any::TypeLong:
+                copySequence(npp, array, Sequence<int32_t>(any));
+                break;
+            case Any::TypeUnsignedLong:
+                copySequence(npp, array, Sequence<uint32_t>(any));
+                break;
+            case Any::TypeLongLong:
+                copySequence(npp, array, Sequence<int64_t>(any));
+                break;
+            case Any::TypeUnsignedLongLong:
+                copySequence(npp, array, Sequence<uint64_t>(any));
+                break;
+            case Any::TypeFloat:
+                copySequence(npp, array, Sequence<float>(any));
+                break;
+            case Any::TypeDouble:
+                copySequence(npp, array, Sequence<double>(any));
+                break;
+            case Any::TypeString:
+                copySequence(npp, array, Sequence<std::string>(any));
+                break;
+            // TODO: Any::Sequence?
+            case Any::TypeObject:
+            default:
+                copySequence(npp, array, Sequence<Object*>(any));
+                break;
+            }
+            OBJECT_TO_NPVARIANT(array, *variant);
+            return;
+        }
         NULL_TO_NPVARIANT(*variant);
         return;
     }

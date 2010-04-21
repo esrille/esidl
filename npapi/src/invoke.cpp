@@ -50,7 +50,7 @@ Any processResult(NPP npp, NPVariant* variant, const Reflect::Type type)
     Any result = convertToAny(npp, variant, type);
     if (NPVARIANT_IS_OBJECT(*variant))
     {
-        if (!result.isObject())
+        if (result.isSequence() || !result.isObject())
         {
             NPN_ReleaseObject(NPVARIANT_TO_OBJECT(*variant));
         }
