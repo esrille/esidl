@@ -160,16 +160,21 @@ void PaintInstance::select(events::Event* evt) {
   if (!document) {
     return;
   }
+  html::HTMLElement* tools = 
+    interface_cast<html::HTMLElement*>(mouse->getTarget());
+  if (!tools) {
+    return;
+  }
+  ClientRect* rect = tools->getBoundingClientRect();
+  if (!rect) {
+    return;
+  }
+  float y = mouse->getClientY() - rect->getTop();
   html::HTMLCanvasElement* canvas = interface_cast<html::HTMLCanvasElement*>(
     document->getElementById("canvas"));
   if (!canvas) {
     return;
   }
-  ClientRect* rect = canvas->getBoundingClientRect();
-  if (!rect) {
-    return;
-  }
-  float y = mouse->getClientY() - rect->getTop();
   html::CanvasRenderingContext2D* context = 
     interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
   if (context) {
