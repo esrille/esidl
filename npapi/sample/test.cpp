@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "sample.h"
+#include "test.h"
 
 #include <com/getfirebug/Console.h>
 
@@ -24,7 +24,7 @@ using namespace org::w3c::dom;
 #include <math.h>
 #include <new>
 
-void SampleInstance::down(events::Event* evt)
+void TestInstance::down(events::Event* evt)
 {
     events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
     printf("down %p\n", mouse);
@@ -65,7 +65,7 @@ void SampleInstance::down(events::Event* evt)
     }
 }
 
-void SampleInstance::drawCharts(Document* document)
+void TestInstance::drawCharts(Document* document)
 {
     // Test [Constructor]
     XMLHttpRequest_Constructor* xmlHttpRequest = interface_cast<XMLHttpRequest_Constructor*>(window->getElement("XMLHttpRequest"));
@@ -233,9 +233,9 @@ void SampleInstance::drawCharts(Document* document)
     }
 }
 
-void SampleInstance::initialize()
+void TestInstance::initialize()
 {
-    downHandler = new (std::nothrow) EventHandler(this, &SampleInstance::down);
+    downHandler = new (std::nothrow) EventHandler(this, &TestInstance::down);
 
     document = window->getDocument();
     if (document)
@@ -245,7 +245,7 @@ void SampleInstance::initialize()
     }
 }
 
-SampleInstance::~SampleInstance()
+TestInstance::~TestInstance()
 {
     if (downHandler)
     {

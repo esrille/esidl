@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "sample.h"
+#include "test.h"
 #include "proxyImpl.h"
 
 #include <any.h>
@@ -29,7 +29,7 @@ using namespace org::w3c::dom;
 char* NPP_GetMIMEDescription()
 {
     printf("%s\n", __func__);
-    return const_cast<char*>("application/es-npapi-sample:none:ES NPAPI sample plugin");
+    return const_cast<char*>("application/es-npapi-test:none:ES NPAPI test plugin");
 }
 
 // Invoked from NP_Initialize()
@@ -63,7 +63,7 @@ NPError NPP_New(NPMIMEType pluginType, NPP npp, uint16_t mode,
 
     NPObject* window;
     NPN_GetValue(npp, NPNVWindowNPObject, &window);
-    SampleInstance* instance = new (std::nothrow) SampleInstance(npp, window);
+    TestInstance* instance = new (std::nothrow) TestInstance(npp, window);
     npp->pdata = instance;
     if (!instance)
     {
@@ -84,7 +84,7 @@ NPError NPP_Destroy(NPP npp, NPSavedData** save)
     {
         return NPERR_INVALID_INSTANCE_ERROR;
     }
-    PluginInstance* instance = static_cast<SampleInstance*>(npp->pdata);
+    PluginInstance* instance = static_cast<TestInstance*>(npp->pdata);
     if (instance)
     {
         delete instance;
@@ -118,7 +118,7 @@ NPObject* NPP_GetScriptableInstance(NPP npp)
     {
         return 0;
     }
-    PluginInstance* instance = static_cast<SampleInstance*>(npp->pdata);
+    PluginInstance* instance = static_cast<TestInstance*>(npp->pdata);
     if (instance)
     {
         return instance->getScriptableInstance();

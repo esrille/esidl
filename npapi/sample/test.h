@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef SAMPLE_H_INCLUDED
-#define SAMPLE_H_INCLUDED
+#ifndef TEST_H_INCLUDED
+#define TEST_H_INCLUDED
 
 #include <esnpapi.h>
 
@@ -23,7 +23,7 @@
 
 class EventHandler;
 
-class SampleInstance: public PluginInstance
+class TestInstance: public PluginInstance
 {
     EventHandler* downHandler;
     org::w3c::dom::Document* document;
@@ -32,25 +32,25 @@ class SampleInstance: public PluginInstance
     void drawCharts(org::w3c::dom::Document* document);
 
 public:
-    SampleInstance(NPP npp, NPObject* window) :
+    TestInstance(NPP npp, NPObject* window) :
         PluginInstance(npp, window),
         downHandler(0),
         document(0)
     {
         initialize();
     }
-    ~SampleInstance();
+    ~TestInstance();
 
     void down(org::w3c::dom::events::Event* evt);
 };
 
 class EventHandler : public org::w3c::dom::events::EventListener
 {
-    SampleInstance* instance;
-    void (SampleInstance::*handler)(org::w3c::dom::events::Event* evt);
+    TestInstance* instance;
+    void (TestInstance::*handler)(org::w3c::dom::events::Event* evt);
 
 public:
-    EventHandler(SampleInstance* instance, void (SampleInstance::*handler)(org::w3c::dom::events::Event* evt)) :
+    EventHandler(TestInstance* instance, void (TestInstance::*handler)(org::w3c::dom::events::Event* evt)) :
         instance(instance),
         handler(handler)
     {
@@ -70,4 +70,4 @@ public:
 };
 
 
-#endif // SAMPLE_H_INCLUDED
+#endif // TEST_H_INCLUDED
