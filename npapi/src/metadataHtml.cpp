@@ -76,8 +76,12 @@ void initializeHtmlMetaData()
     //
     // Workaround for WebKit
     //
+    ProxyControl::registerMetaData(html::ApplicationCache::getMetaData(), Proxy_Impl<ProxyObject, html::ApplicationCache_Bridge<Any, invoke> >::createInstance,
+                                   "DOMApplicationCache");
     ProxyControl::registerMetaData(html::BarProp::getMetaData(), Proxy_Impl<ProxyObject, html::BarProp_Bridge<Any, invoke> >::createInstance,
                                    "BarInfo");
+    ProxyControl::registerMetaData(html::Selection::getMetaData(), Proxy_Impl<ProxyObject, html::Selection_Bridge<Any, invoke> >::createInstance,
+                                   "DOMSelection");
     ProxyControl::registerMetaData(html::Window::getMetaData(), Proxy_Impl<ProxyObject, html::Window_Bridge<Any, invoke> >::createInstance,
                                    "DOMWindow");
 }

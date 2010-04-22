@@ -140,8 +140,12 @@ void initializeMetaData()
     ProxyControl::registerMetaData(websocket::WebSocket_Constructor::getMetaData(), Proxy_Impl<ProxyObject, websocket::WebSocket_Constructor_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(XMLHttpRequest_Constructor::getMetaData(), Proxy_Impl<ProxyObject, XMLHttpRequest_Constructor_Bridge<Any, invoke> >::createInstance);
 
-    // WebKit extends ProgressEvent for XMLHttpRequestProgressEvent
+    //
+    // Workaround for WebKit
+    //
+    ProxyControl::registerMetaData(FormData::getMetaData(), Proxy_Impl<ProxyObject, FormData_Bridge<Any, invoke> >::createInstance,
+                                   "DOMFormData");
     ProxyControl::registerMetaData(events::ProgressEvent::getMetaData(), Proxy_Impl<ProxyObject, events::ProgressEvent_Bridge<Any, invoke> >::createInstance,
-                     "XMLHttpRequestProgressEvent");
+                                   "XMLHttpRequestProgressEvent");
 
 }
