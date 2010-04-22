@@ -70,12 +70,14 @@ void initializeHtmlMetaData()
 
     // In HTML5, HTMLDocument is a mixin of Document, but historically it was a separate interface extended from Document.
     // Existing browsers uses HTMLDocument as a class name, and we need to register 'HTMLDocument' as a valid interface name for Document.
-    ProxyControl::registerMetaData(Document::getMetaData(),
-                     Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance,
-                     "HTMLDocument");
+    ProxyControl::registerMetaData(Document::getMetaData(),Proxy_Impl<ProxyObject, Document_Bridge<Any, invoke> >::createInstance,
+                                   "HTMLDocument");
 
-    // WebKit uses "DOMWindow" instead of "Window"
-    ProxyControl::registerMetaData(html::Window::getMetaData(),
-                     Proxy_Impl<ProxyObject, html::Window_Bridge<Any, invoke> >::createInstance,
-                     "DOMWindow");
+    //
+    // Workaround for WebKit
+    //
+    ProxyControl::registerMetaData(html::BarProp::getMetaData(), Proxy_Impl<ProxyObject, html::BarProp_Bridge<Any, invoke> >::createInstance,
+                                   "BarInfo");
+    ProxyControl::registerMetaData(html::Window::getMetaData(), Proxy_Impl<ProxyObject, html::Window_Bridge<Any, invoke> >::createInstance,
+                                   "DOMWindow");
 }

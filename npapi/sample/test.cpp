@@ -124,6 +124,14 @@ void TestInstance::drawCharts(Document* document)
         }
     }
 
+    // Test BarProp
+    html::BarProp* prop = interface_cast<html::BarProp*>(window->getElement("statusbar"));
+    printf("prop = %p\n", prop);
+    if (prop)
+    {
+        printf("statusbar.visible = %d\n", prop->getVisible());
+    }
+
     std::string title = interface_cast<html::HTMLDocument*>(document)->getTitle();
     printf("title = %s\n", title.c_str());
 
