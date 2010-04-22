@@ -96,7 +96,7 @@ void PaintInstance::down(events::Event* evt) {
     context->moveTo(x, y);
   }
   events::EventTarget* eventTarget =
-  interface_cast<events::EventTarget*>(canvas);
+    interface_cast<events::EventTarget*>(canvas);
   if (eventTarget) {
     eventTarget->addEventListener("mousemove", moveHandler, true);
   }
@@ -160,7 +160,7 @@ void PaintInstance::select(events::Event* evt) {
   if (!document) {
     return;
   }
-  html::HTMLElement* tools = 
+  html::HTMLElement* tools =
     interface_cast<html::HTMLElement*>(mouse->getTarget());
   if (!tools) {
     return;
@@ -175,7 +175,7 @@ void PaintInstance::select(events::Event* evt) {
   if (!canvas) {
     return;
   }
-  html::CanvasRenderingContext2D* context = 
+  html::CanvasRenderingContext2D* context =
     interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
   if (context) {
     if (y < 24) {
