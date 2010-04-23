@@ -84,6 +84,7 @@ int main(int argc, char* argv[])
     argCpp[optCpp++] = "cpp";
     argCpp[optCpp++] = "-C";  // Use -C for cpp by default.
 
+    bool version = false;
     bool skeleton = false;
     bool generic = false;
     bool isystem = false;
@@ -179,8 +180,20 @@ int main(int argc, char* argv[])
                 ++i;
                 stringTypeName = argv[i];
             }
+            else if (strcmp(argv[i], "--version") == 0)
+            {
+                version = true;
+                break;
+            }
         }
     }
+
+    if (version)
+    {
+        printf("%s (r%s)\n", argv[0], SVN_REVISION);
+        return 0;
+    }
+
     argCpp[optCpp] = 0;
 
     // Set up the global module

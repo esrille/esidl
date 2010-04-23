@@ -17,10 +17,6 @@
 #ifndef ORG_W3C_DOM_INCLUDED
 #define ORG_W3C_DOM_INCLUDED
 
-// Undefined Automake's predefined names
-#undef PACKAGE
-#undef VERSION
-
 #include <org/w3c/dom/Attr.h>
 #include <org/w3c/dom/CaretPosition.h>
 #include <org/w3c/dom/CDATASection.h>
