@@ -183,8 +183,6 @@ bool StubObject::hasMethod(NPIdentifier name)
         return false;
     }
 
-    printf("%s(%s)\n", __func__, identifier);
-
     bool found = false;
     unsigned interfaceNumber = 0;
     unsigned symbolNumber = 0;
@@ -203,6 +201,14 @@ bool StubObject::hasMethod(NPIdentifier name)
             break;
         }
     }
+    if (!found)
+    {
+        if (!std::strcmp(identifier, "toString"))
+        {
+            found = true;
+        }
+    }
+    printf("%s(%s) : %d\n", __func__, identifier, found);
     NPN_MemFree(identifier);
     return found;
 }
@@ -250,6 +256,30 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
             found = true;
             leave();
             break;
+        }
+    }
+    if (!found)
+    {
+        if (!std::strcmp(identifier, "toString"))
+        {
+            const char* metaData = object->getMetaData(0);
+            unsigned length;
+            const char* qualifiedName = Reflect::skipDigits(metaData + 1, &length);
+            std::string name(qualifiedName, length);
+            size_t pos = name.rfind(':');
+            name = name.substr(pos + 1);
+            if (12 < name.length() && !name.compare(name.length() - 12, 12, "_Constructor"))
+            {
+                name = name.substr(0, name.length() - 12);
+                name = "function " + name + "() { [native code] }";
+            }
+            else
+            {
+                name = "[object " + name + "]";
+            }
+            Any value(name);
+            processResult(npp, value, result);
+            found = true;
         }
     }
     NPN_MemFree(identifier);
