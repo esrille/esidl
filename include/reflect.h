@@ -103,6 +103,7 @@ public:
     static const char kAny = 'A';
     static const char kObject = 'O';
     static const char kSequence = 'Q';
+    static const char kDate = 'T';
     // Misc.
     static const char kInterface = 'I';
     static const char kExtends = 'X';
@@ -154,6 +155,7 @@ public:
         case kFloat:
         case kDouble:
         case kString:
+        case kDate:
         case kAny:
         case kObject:
         case kNullable:
@@ -204,6 +206,7 @@ public:
         case kVoid:
         case kAny:
         case kPointer:
+        case kDate:
             return ++info;
         case kBoolean:
         case kByte:

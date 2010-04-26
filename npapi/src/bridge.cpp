@@ -561,6 +561,24 @@ Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
     case Reflect::kString:
         return convertToString(npp, variant);
         break;
+    case Reflect::kDate:
+        if (!NPVARIANT_IS_OBJECT(*variant))
+        {
+            return convertToUnsignedLongLong(variant);
+        }
+        else
+        {
+            // DOM3 Core compliant browser (e.g., Chrome) returns a Date object for DOMTimeStamp
+            NPVariant value;
+            if (NPN_Invoke(npp, NPVARIANT_TO_OBJECT(*variant), NPN_GetStringIdentifier("valueOf"), 0, 0, &value))
+            {
+                Any any = convertToUnsignedLongLong(&value);
+                NPN_ReleaseVariantValue(&value);
+                return any;
+            }
+            return Any();
+        }
+        break;
     case Reflect::kObject:
     {
         Object* object = convertToObject(npp, variant);

@@ -149,6 +149,10 @@ double              {
                         stepLocation();
                         return DOUBLE;
                     }
+Date                {
+                        stepLocation();
+                        return DATE;
+                    }
 DOMString           {
                         stepLocation();
                         return STRING;

@@ -78,6 +78,7 @@ int yylex();
 %token CALLER
 %token CONST
 %token CREATOR
+%token DATE
 %token DELETER
 %token DOUBLE
 %token EOL
@@ -164,6 +165,7 @@ int yylex();
 %type <node>        BooleanType
 %type <node>        OctetType
 %type <node>        AnyType
+%type <node>        DateType
 %type <node>        SequenceType
 %type <node>        StringType
 %type <node>        ReturnType
@@ -912,6 +914,18 @@ Type :
                 $$ = $1;
             }
         }
+    | DateType OptionalBracketsList
+        {
+            if ($2)
+            {
+                static_cast<ArrayType*>($2)->setSpec($1);
+                $$ = $2;
+            }
+            else
+            {
+                $$ = $1;
+            }
+        }
     ;
 
 NullableType :
@@ -951,10 +965,12 @@ FloatType :
     FLOAT
         {
             $$ = new Type("float");
+            $$->setLocation(&@1);
         }
     | DOUBLE
         {
             $$ = new Type("double");
+            $$->setLocation(&@1);
         }
     ;
 
@@ -964,6 +980,7 @@ UnsignedIntegerType :
         {
             $2->getName() = "unsigned " + $2->getName();
             $$ = $2;
+            $$->setLocation(&@1, &@2);
         }
     ;
 
@@ -971,14 +988,17 @@ IntegerType :
     BYTE
         {
             $$ = new Type("byte");
+            $$->setLocation(&@1);
         }
     | SHORT
         {
             $$ = new Type("short");
+            $$->setLocation(&@1);
         }
     | LONG OptionalLong
         {
             $$ = new Type($2 ? "long long" : "long");
+            $$->setLocation(&@1);
         }
     ;
 
@@ -997,6 +1017,7 @@ BooleanType :
     BOOLEAN
         {
             $$ = new Type("boolean");
+            $$->setLocation(&@1);
         }
     ;
 
@@ -1004,6 +1025,7 @@ OctetType :
     OCTET
         {
             $$ = new Type("octet");
+            $$->setLocation(&@1);
         }
     ;
 
@@ -1011,6 +1033,15 @@ AnyType :
     ANY
         {
             $$ = new Type("any");
+            $$->setLocation(&@1);
+        }
+    ;
+
+DateType :
+    DATE
+        {
+            $$ = new Type("Date");
+            $$->setLocation(&@1);
         }
     ;
 
@@ -1019,11 +1050,13 @@ SequenceType :
         {
             $$ = new SequenceType($3, $5);
             $$->setParent(getCurrent());
+            $$->setLocation(&@1, &@6);
         }
     | SEQUENCE '<' Type '>'
         {
             $$ = new SequenceType($3);
             $$->setParent(getCurrent());
+            $$->setLocation(&@1, &@4);
         }
     ;
 
@@ -1031,6 +1064,7 @@ StringType :
     STRING
         {
             $$ = new Type("string");
+            $$->setLocation(&@1);
         }
     ;
 
@@ -1050,6 +1084,7 @@ ReturnType :
     | VOID
         {
             $$ = new Type("void");
+            $$->setLocation(&@1);
         }
     ;
 

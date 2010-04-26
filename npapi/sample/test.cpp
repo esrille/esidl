@@ -30,12 +30,13 @@ void TestInstance::down(events::Event* evt)
     printf("down %p\n", mouse);
     if (mouse)
     {
-        printf("(%d, %d), (%d, %d), (%d, %d), (%d, %d), (%d, %d)\n",
+        printf("(%d, %d), (%d, %d), (%d, %d), (%d, %d), (%d, %d) @ %llu\n",
                mouse->getScreenX(), mouse->getScreenY(),
                mouse->getClientX(), mouse->getClientY(),
                mouse->getPageX(), mouse->getPageY(),
                mouse->getX(), mouse->getY(),
-               mouse->getOffsetX(), mouse->getOffsetY());
+               mouse->getOffsetX(), mouse->getOffsetY(),
+               mouse->getTimeStamp());
 
         html::HTMLCanvasElement* canvas = interface_cast<html::HTMLCanvasElement*>(mouse->getTarget());
         if (canvas)

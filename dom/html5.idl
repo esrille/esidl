@@ -10,8 +10,6 @@
 
 module html {
 
-typedef long long Date;   // TBD at W3C. This is Date object in JavaScript. 
-
 typedef css::CSSStyleDeclaration CSSStyleDeclaration;
 typedef dom::Document Document;
 typedef dom::DOMImplementation DOMImplementation;

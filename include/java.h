@@ -193,6 +193,12 @@ public:
         {
             write("Object");
         }
+        else if (node->getName() == "Date")
+        {
+            // cf. http://www.w3.org/TR/DOM-Level-3-Core/core.html#Core-DOMTimeStamp
+            //     http://lists.w3.org/Archives/Public/public-webapps/2009JanMar/0458.html
+            write("long");
+        }
         else
         {
             write("%s", node->getName().c_str());

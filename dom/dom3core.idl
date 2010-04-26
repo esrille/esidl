@@ -10,7 +10,7 @@
 
 module dom {
 
-  typedef   unsigned long long DOMTimeStamp;
+  typedef   Date DOMTimeStamp;
 
   typedef   any DOMUserData;
 

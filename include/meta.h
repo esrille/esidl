@@ -216,6 +216,10 @@ public:
         {
             output << Reflect::kString;
         }
+        else if (node->getName() == "Date")
+        {
+            output << Reflect::kDate;
+        }
         else
         {
             node->report("Unsupported type name: %s.", node->getName().c_str());
