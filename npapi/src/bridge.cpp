@@ -58,38 +58,90 @@ bool toBoolean(const NPVariant* variant)
     }
 }
 
-// TODO: Check length strictly.
-double toNumber(const char* string, size_t length)
+char* skipSpace(const char* str)
 {
-    const char* ptr = string;
-    double number;
-    while (*ptr && isspace(*ptr))  // TODO: Check UTF8 space
+    static const char* rgsp[] =
     {
-        ++ptr;
+        // NBSP
+        "\xc2\xa0",
+        // LS
+        "\xe2\x80\xa8",
+        // PS
+        "\xe2\x80\xa9",
+        // USP
+        "\xe1\x9a\x80",
+        "\xe1\xa0\x8e",
+        "\xe2\x80\x80",
+        "\xe2\x80\x81",
+        "\xe2\x80\x82",
+        "\xe2\x80\x83",
+        "\xe2\x80\x84",
+        "\xe2\x80\x85",
+        "\xe2\x80\x86",
+        "\xe2\x80\x87",
+        "\xe2\x80\x88",
+        "\xe2\x80\x89",
+        "\xe2\x80\x8a",
+        "\xe2\x80\xaf",
+        "\xe2\x81\x9f",
+        "\xe3\x80\x80",
+        // BOM
+        "\xef\xbb\xbf"
+    };
+
+    while (char c = *str)
+    {
+        if (strchr(" \t\v\f\n\r", c))
+        {
+            ++str;
+            continue;
+        }
+        int i;
+        for (i = 0; i < sizeof(rgsp) / sizeof(rgsp[0]); ++i)
+        {
+            const char* sp = rgsp[i];
+            size_t len = strlen(sp);
+            if (strncmp(str, sp, len) == 0)
+            {
+                str += len;
+                break;
+            }
+        }
+        if (sizeof(rgsp) / sizeof(rgsp[0]) <= i)
+        {
+            break;
+        }
+    }
+    return const_cast<char*>(str);
+}
+
+double toNumber(const std::string value)
+{
+    const char* ptr = value.c_str();
+    ptr = skipSpace(ptr);
+    const char* uptr = ptr;
+    bool negative = (*ptr == '-');
+    if (negative || *ptr == '+')
+    {
+        ++uptr;
     }
     char* end;
-    if (strncasecmp(ptr, "0x", 2) == 0)
+    double number;
+    if (strncmp(uptr, "Infinity", 8) == 0)
     {
-        ptr += 2;
-        number = strtoll(ptr, &end, 16);
+        end = const_cast<char*>(uptr) + 8;
+        number = negative ? -INFINITY : INFINITY;
     }
-    else if (strncmp(ptr, "Infinity", 8) == 0)
-    {
-        end = const_cast<char*>(ptr) + 8;
-        number = INFINITY;
-    } else
+    else
     {
         number = strtod(ptr, &end);
+        if (end == ptr)
+        {
+            return NAN;
+        }
     }
-    if (end == ptr)
-    {
-        return NAN;
-    }
-    while (*end && isspace(*end))  // TODO: Check UTF8 space
-    {
-        ++end;
-    }
-    if (*end != 0 || string + length < end)
+    end = skipSpace(end);
+    if (*end != 0)
     {
         return NAN;
     }
@@ -111,8 +163,8 @@ double toNumber(const NPVariant* variant)
     case NPVariantType_Double:
         return NPVARIANT_TO_DOUBLE(*variant);
     case NPVariantType_String:
-        return toNumber(NPVARIANT_TO_STRING(*variant).utf8characters,
-                        NPVARIANT_TO_STRING(*variant).utf8length);
+        return toNumber(std::string(NPVARIANT_TO_STRING(*variant).utf8characters,
+                                    NPVARIANT_TO_STRING(*variant).utf8length));
     case NPVariantType_Object:
         return NAN; // TODO: Try valueOf, toString, etc.
     default:
