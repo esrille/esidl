@@ -348,7 +348,8 @@ bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
         metaData += data->offset;
         if (*metaData == Reflect::kConstant)
         {
-            // TODO: eval the constant value
+            Reflect::Constant constant(metaData);
+            convertToVariant(npp, constant.getValue(), result);
             found = true;
             break;
         }
