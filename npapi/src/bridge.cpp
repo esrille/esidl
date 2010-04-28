@@ -148,7 +148,7 @@ double toNumber(const std::string value)
     return number;
 };
 
-double toNumber(const NPVariant* variant)
+double toNumber(NPP npp, const NPVariant* variant)
 {
     switch (variant->type)
     {
@@ -166,15 +166,24 @@ double toNumber(const NPVariant* variant)
         return toNumber(std::string(NPVARIANT_TO_STRING(*variant).utf8characters,
                                     NPVARIANT_TO_STRING(*variant).utf8length));
     case NPVariantType_Object:
-        return NAN; // TODO: Try valueOf, toString, etc.
+        {
+            NPVariant value;
+            if (NPN_Invoke(npp, NPVARIANT_TO_OBJECT(*variant), NPN_GetStringIdentifier("valueOf"), 0, 0, &value))
+            {
+                double number = toNumber(npp, &value);
+                NPN_ReleaseVariantValue(&value);
+                return number;
+            }
+        }
+        return NAN;
     default:
         return NAN;
     }
 }
 
-long long toInteger(const NPVariant* variant)
+long long toInteger(NPP npp, const NPVariant* variant)
 {
-    double value = toNumber(variant);
+    double value = toNumber(npp, variant);
     if (isnan(value) || value == 0.0 || isinf(value))
     {
         return 0;
@@ -315,59 +324,59 @@ std::string getInterfaceName(NPP npp, NPObject* object)
     return className;
 }
 
-bool convertToBool(const NPVariant* variant)
+bool convertToBool(NPP npp, const NPVariant* variant)
 {
     return toBoolean(variant);
 }
 
-int8_t convertToByte(const NPVariant* variant)
+int8_t convertToByte(NPP npp, const NPVariant* variant)
 {
-    return static_cast<int8_t>(toInteger(variant));
+    return static_cast<int8_t>(toInteger(npp, variant));
 }
 
-uint8_t convertToOctet(const NPVariant* variant)
+uint8_t convertToOctet(NPP npp, const NPVariant* variant)
 {
-    return static_cast<uint8_t>(toInteger(variant));
+    return static_cast<uint8_t>(toInteger(npp, variant));
 }
 
-int16_t convertToShort(const NPVariant* variant)
+int16_t convertToShort(NPP npp, const NPVariant* variant)
 {
-    return static_cast<int16_t>(toInteger(variant));
+    return static_cast<int16_t>(toInteger(npp, variant));
 }
 
-uint16_t convertToUnsignedShort(const NPVariant* variant)
+uint16_t convertToUnsignedShort(NPP npp, const NPVariant* variant)
 {
-    return static_cast<uint16_t>(toInteger(variant));
+    return static_cast<uint16_t>(toInteger(npp, variant));
 }
 
-int32_t convertToLong(const NPVariant* variant)
+int32_t convertToLong(NPP npp, const NPVariant* variant)
 {
-    return static_cast<int32_t>(toInteger(variant));
+    return static_cast<int32_t>(toInteger(npp, variant));
 }
 
-uint32_t convertToUnsignedLong(const NPVariant* variant)
+uint32_t convertToUnsignedLong(NPP npp, const NPVariant* variant)
 {
-    return static_cast<uint32_t>(toInteger(variant));
+    return static_cast<uint32_t>(toInteger(npp, variant));
 }
 
-int64_t convertToLongLong(const NPVariant* variant)
+int64_t convertToLongLong(NPP npp, const NPVariant* variant)
 {
-    return static_cast<int64_t>(toInteger(variant));
+    return static_cast<int64_t>(toInteger(npp, variant));
 }
 
-uint64_t convertToUnsignedLongLong(const NPVariant* variant)
+uint64_t convertToUnsignedLongLong(NPP npp, const NPVariant* variant)
 {
-    return static_cast<uint64_t>(toInteger(variant));
+    return static_cast<uint64_t>(toInteger(npp, variant));
 }
 
-float convertToFloat(const NPVariant* variant)
+float convertToFloat(NPP npp, const NPVariant* variant)
 {
-    return static_cast<float>(toNumber(variant));
+    return static_cast<float>(toNumber(npp, variant));
 }
 
-double convertToDouble(const NPVariant* variant)
+double convertToDouble(NPP npp, const NPVariant* variant)
 {
-    return toNumber(variant);
+    return toNumber(npp, variant);
 }
 
 std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribute)
@@ -412,13 +421,13 @@ Any convertToAny(NPP npp, const NPVariant* variant)
         return Any();
         break;
     case NPVariantType_Bool:
-        return convertToBool(variant);
+        return convertToBool(npp, variant);
         break;
     case NPVariantType_Int32:
-        return convertToLong(variant);
+        return convertToLong(npp, variant);
         break;
     case NPVariantType_Double:
-        return convertToDouble(variant);
+        return convertToDouble(npp, variant);
         break;
     case NPVariantType_String:
         return convertToString(npp, variant);
@@ -578,58 +587,44 @@ Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
     switch (type.getType())
     {
     case Reflect::kBoolean:
-        return convertToBool(variant);
+        return convertToBool(npp, variant);
         break;
     case Reflect::kByte:
-        return convertToByte(variant);
+        return convertToByte(npp, variant);
         break;
     case Reflect::kOctet:
-        return convertToOctet(variant);
+        return convertToOctet(npp, variant);
         break;
     case Reflect::kShort:
-        return convertToShort(variant);
+        return convertToShort(npp, variant);
         break;
     case Reflect::kUnsignedShort:
-        return convertToUnsignedShort(variant);
+        return convertToUnsignedShort(npp, variant);
         break;
     case Reflect::kLong:
-        return convertToLong(variant);
+        return convertToLong(npp,variant);
         break;
     case Reflect::kUnsignedLong:
-        return convertToUnsignedLong(variant);
+        return convertToUnsignedLong(npp, variant);
         break;
     case Reflect::kLongLong:
-        return convertToLongLong(variant);
+        return convertToLongLong(npp, variant);
         break;
     case Reflect::kUnsignedLongLong:
-        return convertToUnsignedLongLong(variant);
+        return convertToUnsignedLongLong(npp, variant);
         break;
     case Reflect::kFloat:
-        return convertToFloat(variant);
+        return convertToFloat(npp, variant);
         break;
     case Reflect::kDouble:
-        return convertToDouble(variant);
+        return convertToDouble(npp, variant);
         break;
     case Reflect::kString:
         return convertToString(npp, variant);
         break;
     case Reflect::kDate:
-        if (!NPVARIANT_IS_OBJECT(*variant))
-        {
-            return convertToUnsignedLongLong(variant);
-        }
-        else
-        {
-            // DOM3 Core compliant browser (e.g., Chrome) returns a Date object for DOMTimeStamp
-            NPVariant value;
-            if (NPN_Invoke(npp, NPVARIANT_TO_OBJECT(*variant), NPN_GetStringIdentifier("valueOf"), 0, 0, &value))
-            {
-                Any any = convertToUnsignedLongLong(&value);
-                NPN_ReleaseVariantValue(&value);
-                return any;
-            }
-            return Any();
-        }
+        // Note DOM3 Core compliant browser (e.g., Chrome) returns a Date object for DOMTimeStamp
+        return convertToUnsignedLongLong(npp, variant);
         break;
     case Reflect::kObject:
     {
