@@ -17,7 +17,6 @@
 #ifndef ES_SEQUENCE_INCLUDED
 #define ES_SEQUENCE_INCLUDED
 
-#include <org/w3c/dom/ObjectArray.h>
 #include <initializer_list>
 #include <new>
 
@@ -28,7 +27,7 @@ class Any;
 template <typename T>
 class Sequence
 {
-    class Rep // : public org::w3c::dom::ObjectArray<T>
+    class Rep
     {
         friend class Sequence;
         // reference count
@@ -36,12 +35,9 @@ class Sequence
         // stub
         unsigned int length;
         T* sequence;
-        // proxy
-        org::w3c::dom::ObjectArray<T>* array;
 
         void init(unsigned int size)
         {
-            array = 0;
             length = size;
             sequence = (0 < length) ? new T[length] : 0;
             count = 1;
@@ -80,15 +76,9 @@ class Sequence
             }
         }
 
-        Rep(unsigned int size)
+        explicit Rep(unsigned int size)
         {
             init(size);
-        }
-
-        Rep(org::w3c::dom::ObjectArray<T>* array)
-        {
-            init(0);
-            this->array = array;
         }
 
         ~Rep()
@@ -97,44 +87,25 @@ class Sequence
             {
                 delete[] sequence;
             }
-            delete array;
         }
 
-        virtual T getElement(unsigned int index)
+        virtual T& getElement(unsigned int index)
         {
-            if (array)
-            {
-                return array->getElement(index);
-            }
             return sequence[index];
         }
 
         virtual void setElement(unsigned int index, const T value)
         {
-            if (array)
-            {
-                array->setElement(index, value);
-                return;
-            }
             sequence[index] = value;
         }
 
         virtual unsigned int getLength()
         {
-            if (array)
-            {
-                return array->getLength();
-            }
             return length;
         }
 
         virtual void setLength(unsigned int length)
         {
-            if (array)
-            {
-                array->setLength(length);
-                return;
-            }
             // TODO: Raise an exception
         }
     };
@@ -142,28 +113,6 @@ class Sequence
     Rep* rep;
 
 public:
-    class Ref
-    {
-        friend class Sequence;
-        Sequence& sequence;
-        unsigned int index;
-
-        Ref(Sequence& sequence, unsigned int index) :
-            sequence(sequence),
-            index(index)
-        {
-        }
-    public:
-        operator T()
-        {
-            return sequence.getElement(index);
-        }
-        void operator=(T value)
-        {
-            sequence.setElement(index, value);
-        }
-    };
-
     Sequence()
     {
         rep = new Rep();
@@ -180,14 +129,9 @@ public:
         rep = new Rep(array, size);
     }
 
-    Sequence(unsigned int size)
+    explicit Sequence(unsigned int size)
     {
         rep = new Rep(size);
-    }
-
-    Sequence(org::w3c::dom::ObjectArray<T>* array)
-    {
-        rep = new Rep(array);
     }
 
 #ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -228,7 +172,12 @@ public:
         return *this;
     }
 
-    T getElement(unsigned int index)
+    T getElement(unsigned int index) const
+    {
+        return rep->getElement(index);
+    }
+
+    T& getElement(unsigned int index)
     {
         return rep->getElement(index);
     }
@@ -243,9 +192,9 @@ public:
         return rep->getElement(index);
     }
 
-    Ref operator[](int index)
+    T& operator[](int index)
     {
-        return Ref(*this, index);
+        return rep->getElement(index);
     }
 
     T at(unsigned int index) const
@@ -257,26 +206,19 @@ public:
         return rep->getElement(index);
     }
 
-    Ref at(unsigned int index)
+    T& at(unsigned int index)
     {
         if (getLength() <= index)
         {
             // TODO: raise an exception;
         }
-        return Ref(*this, index);
+        return rep->getElement(index);
     }
 
     unsigned int getLength() const
     {
         return rep->getLength();
     }
-
-#if 0
-    operator org::w3c::dom::ObjectArray<T>*()
-    {
-        return rep;
-    }
-#endif
 
     Sequence(const Any& any);
 };
