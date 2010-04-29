@@ -51,7 +51,7 @@ class Window;
 class ProxyObject
 {
     friend class ProxyControl;
-    
+
     NPObject*    object;
     NPP          npp;
     unsigned int count;
@@ -204,21 +204,19 @@ public:
 
 std::string getInterfaceName(NPP npp, NPObject* object);
 
-void convertToVariant(NPP npp, bool value, NPVariant* variant);
-void convertToVariant(NPP npp, int8_t value, NPVariant* variant);
-void convertToVariant(NPP npp, uint8_t value, NPVariant* variant);
-void convertToVariant(NPP npp, int16_t value, NPVariant* variant);
-void convertToVariant(NPP npp, uint16_t value, NPVariant* variant);
-void convertToVariant(NPP npp, int32_t value, NPVariant* variant);
-void convertToVariant(NPP npp, uint32_t value, NPVariant* variant);
-void convertToVariant(NPP npp, int value, NPVariant* variant);
-void convertToVariant(NPP npp, unsigned int value, NPVariant* variant);
-void convertToVariant(NPP npp, int64_t value, NPVariant* variant);
-void convertToVariant(NPP npp, uint64_t value, NPVariant* variant);
-void convertToVariant(NPP npp, double value, NPVariant* variant);
-void convertToVariant(NPP npp, const std::string& value, NPVariant* variant);
-void convertToVariant(NPP npp, Object* value, NPVariant* variant);
-void convertToVariant(NPP npp, const Any& any, NPVariant* variant);
+void convertToVariant(NPP npp, bool value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, int8_t value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, uint8_t value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, int16_t value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, uint16_t value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, int32_t value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, uint32_t value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, int64_t value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, uint64_t value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, double value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, const std::string& value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, Object* value, NPVariant* variant, bool result);
+void convertToVariant(NPP npp, const Any& any, NPVariant* variant, bool result);
 
 bool convertToBool(NPP npp, const NPVariant* variant);
 int8_t convertToByte(NPP npp, const NPVariant* variant);

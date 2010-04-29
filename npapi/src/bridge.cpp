@@ -645,62 +645,79 @@ Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
     }
 }
 
-void convertToVariant(NPP npp, bool value, NPVariant* variant)
+void convertToVariant(NPP npp, bool value, NPVariant* variant, bool result)
 {
     BOOLEAN_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, int8_t value, NPVariant* variant)
+void convertToVariant(NPP npp, int8_t value, NPVariant* variant, bool result)
 {
     INT32_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, uint8_t value, NPVariant* variant)
+void convertToVariant(NPP npp, uint8_t value, NPVariant* variant, bool result)
 {
     INT32_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, int16_t value, NPVariant* variant)
+void convertToVariant(NPP npp, int16_t value, NPVariant* variant, bool result)
 {
     INT32_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, uint16_t value, NPVariant* variant)
+void convertToVariant(NPP npp, uint16_t value, NPVariant* variant, bool result)
 {
     INT32_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, int32_t value, NPVariant* variant)
+void convertToVariant(NPP npp, int32_t value, NPVariant* variant, bool result)
 {
     INT32_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, uint32_t value, NPVariant* variant)
+void convertToVariant(NPP npp, uint32_t value, NPVariant* variant, bool result)
 {
     INT32_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, int64_t value, NPVariant* variant)
+void convertToVariant(NPP npp, int64_t value, NPVariant* variant, bool result)
 {
     DOUBLE_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, uint64_t value, NPVariant* variant)
+void convertToVariant(NPP npp, uint64_t value, NPVariant* variant, bool result)
 {
     DOUBLE_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, double value, NPVariant* variant)
+void convertToVariant(NPP npp, double value, NPVariant* variant, bool result)
 {
     DOUBLE_TO_NPVARIANT(value, *variant);
 }
 
-void convertToVariant(NPP npp, const std::string& value, NPVariant* variant)
+void convertToVariant(NPP npp, const std::string& value, NPVariant* variant, bool result)
 {
-    STRINGN_TO_NPVARIANT(value.c_str(), value.length(), *variant);
+    if (value.length() == 0)
+    {
+        STRINGN_TO_NPVARIANT(0, 0, *variant);
+        return;
+    }
+    if (!result)
+    {
+        STRINGN_TO_NPVARIANT(value.c_str(), value.length(), *variant);
+        return;
+    }
+    void* buffer = NPN_MemAlloc(value.length());
+    if (!buffer)
+    {
+        STRINGN_TO_NPVARIANT(0, 0, *variant);
+        return;
+    }
+    memmove(buffer, value.c_str(), value.length());
+    STRINGN_TO_NPVARIANT(static_cast<NPUTF8*>(buffer), value.length(), *variant);
 }
 
-void convertToVariant(NPP npp, Object* value, NPVariant* variant)
+void convertToVariant(NPP npp, Object* value, NPVariant* variant, bool result)
 {
     assert(value);
     if (ProxyObject* proxy = interface_cast<ProxyObject*>(value))
@@ -754,20 +771,20 @@ NPObject* createArray(NPP npp)
 }
 
 template <typename T>
-void copySequence(NPP npp, NPObject* array, const Sequence<T> sequence)
+void copySequence(NPP npp, NPObject* array, const Sequence<T> sequence, bool result)
 {
     for (unsigned i = 0; i < sequence.getLength(); ++i)
     {
         NPIdentifier id = NPN_GetIntIdentifier(i);
         NPVariant element;
-        convertToVariant(npp, sequence[i], &element);
+        convertToVariant(npp, sequence[i], &element, result);
         NPN_SetProperty(npp, array, id, &element);
     }
 }
 
 }
 
-void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
+void convertToVariant(NPP npp, const Any& any, NPVariant* variant, bool result)
 {
     if (any.isSequence())
     {
@@ -777,50 +794,50 @@ void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
             // TODO: Check nullable; Any needs to be fixed, too.
             if (any.isAny())
             {
-                copySequence(npp, array, Sequence<Any>(any));
+                copySequence(npp, array, Sequence<Any>(any), result);
             }
             else switch (any.getType())
             {
             case Any::TypeBool:
-                copySequence(npp, array, Sequence<bool>(any));
+                copySequence(npp, array, Sequence<bool>(any), result);
                 break;
             case Any::TypeByte:
-                copySequence(npp, array, Sequence<int8_t>(any));
+                copySequence(npp, array, Sequence<int8_t>(any), result);
                 break;
             case Any::TypeOctet:
-                copySequence(npp, array, Sequence<uint8_t>(any));
+                copySequence(npp, array, Sequence<uint8_t>(any), result);
                 break;
             case Any::TypeShort:
-                copySequence(npp, array, Sequence<int16_t>(any));
+                copySequence(npp, array, Sequence<int16_t>(any), result);
                 break;
             case Any::TypeUnsignedShort:
-                copySequence(npp, array, Sequence<uint16_t>(any));
+                copySequence(npp, array, Sequence<uint16_t>(any), result);
                 break;
             case Any::TypeLong:
-                copySequence(npp, array, Sequence<int32_t>(any));
+                copySequence(npp, array, Sequence<int32_t>(any), result);
                 break;
             case Any::TypeUnsignedLong:
-                copySequence(npp, array, Sequence<uint32_t>(any));
+                copySequence(npp, array, Sequence<uint32_t>(any), result);
                 break;
             case Any::TypeLongLong:
-                copySequence(npp, array, Sequence<int64_t>(any));
+                copySequence(npp, array, Sequence<int64_t>(any), result);
                 break;
             case Any::TypeUnsignedLongLong:
-                copySequence(npp, array, Sequence<uint64_t>(any));
+                copySequence(npp, array, Sequence<uint64_t>(any), result);
                 break;
             case Any::TypeFloat:
-                copySequence(npp, array, Sequence<float>(any));
+                copySequence(npp, array, Sequence<float>(any), result);
                 break;
             case Any::TypeDouble:
-                copySequence(npp, array, Sequence<double>(any));
+                copySequence(npp, array, Sequence<double>(any), result);
                 break;
             case Any::TypeString:
-                copySequence(npp, array, Sequence<std::string>(any));
+                copySequence(npp, array, Sequence<std::string>(any), result);
                 break;
             // TODO: Any::Sequence?
             case Any::TypeObject:
             default:
-                copySequence(npp, array, Sequence<Object*>(any));
+                copySequence(npp, array, Sequence<Object*>(any), result);
                 break;
             }
             OBJECT_TO_NPVARIANT(array, *variant);
@@ -836,43 +853,43 @@ void convertToVariant(NPP npp, const Any& any, NPVariant* variant)
         NULL_TO_NPVARIANT(*variant);
         break;
     case Any::TypeBool:
-        convertToVariant(npp, static_cast<bool>(any), variant);
+        convertToVariant(npp, static_cast<bool>(any), variant, result);
         break;
     case Any::TypeByte:
-        convertToVariant(npp, static_cast<int8_t>(any), variant);
+        convertToVariant(npp, static_cast<int8_t>(any), variant, result);
         break;
     case Any::TypeOctet:
-        convertToVariant(npp, static_cast<uint8_t>(any), variant);
+        convertToVariant(npp, static_cast<uint8_t>(any), variant, result);
         break;
     case Any::TypeShort:
-        convertToVariant(npp, static_cast<int16_t>(any), variant);
+        convertToVariant(npp, static_cast<int16_t>(any), variant, result);
         break;
     case Any::TypeUnsignedShort:
-        convertToVariant(npp, static_cast<uint16_t>(any), variant);
+        convertToVariant(npp, static_cast<uint16_t>(any), variant, result);
         break;
     case Any::TypeLong:
-        convertToVariant(npp, static_cast<int32_t>(any), variant);
+        convertToVariant(npp, static_cast<int32_t>(any), variant, result);
         break;
     case Any::TypeUnsignedLong:
-        convertToVariant(npp, static_cast<uint32_t>(any), variant);
+        convertToVariant(npp, static_cast<uint32_t>(any), variant, result);
         break;
     case Any::TypeLongLong:
-        convertToVariant(npp, static_cast<int64_t>(any), variant);
+        convertToVariant(npp, static_cast<int64_t>(any), variant, result);
         break;
     case Any::TypeUnsignedLongLong:
-        convertToVariant(npp, static_cast<uint64_t>(any), variant);
+        convertToVariant(npp, static_cast<uint64_t>(any), variant, result);
         break;
     case Any::TypeFloat:
-        convertToVariant(npp, static_cast<float>(any), variant);
+        convertToVariant(npp, static_cast<float>(any), variant, result);
         break;
     case Any::TypeDouble:
-        convertToVariant(npp, static_cast<double>(any), variant);
+        convertToVariant(npp, static_cast<double>(any), variant, result);
         break;
     case Any::TypeString:
-        convertToVariant(npp, static_cast<const std::string>(any), variant);
+        convertToVariant(npp, static_cast<const std::string>(any), variant, result);
         break;
     case Any::TypeObject:
-        convertToVariant(npp, static_cast<Object*>(any), variant);
+        convertToVariant(npp, static_cast<Object*>(any), variant, result);
         break;
     default:
         VOID_TO_NPVARIANT(*variant);

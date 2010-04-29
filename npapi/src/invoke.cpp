@@ -41,7 +41,7 @@ void expandSequence(NPP npp, const Sequence<T> sequence, NPVariant* variantArray
 {
     for (unsigned i = 0; i < sequence.getLength(); ++i)
     {
-        convertToVariant(npp, sequence[i], variantArray + i);
+        convertToVariant(npp, sequence[i], variantArray + i, false);
     }
 }
 
@@ -103,7 +103,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
     {
         id = NPN_GetStringIdentifier(method.getName().c_str());
         NPVariant value;
-        convertToVariant(proxy->getNPP(), arguments[argumentCount - 1], &value);
+        convertToVariant(proxy->getNPP(), arguments[argumentCount - 1], &value, false);
         NPN_SetProperty(proxy->getNPP(), proxy->getNPObject(), id, &value);
     }
     else if (method.isSpecialGetter())
@@ -118,7 +118,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
     {
         id = getSpecialIdentifier(arguments[argumentCount - 2]);
         NPVariant value;
-        convertToVariant(proxy->getNPP(), arguments[argumentCount - 1], &value);
+        convertToVariant(proxy->getNPP(), arguments[argumentCount - 1], &value, false);
         NPN_SetProperty(proxy->getNPP(), proxy->getNPObject(), id, &value);
     }
     else if (method.isSpecialDeleter())
@@ -140,7 +140,7 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
         NPVariant variantArray[variantCount];
         for (int i = 0; i < argumentCount; ++i)
         {
-            convertToVariant(proxy->getNPP(), arguments[i], &variantArray[i]);
+            convertToVariant(proxy->getNPP(), arguments[i], &variantArray[i], false);
         }
 
         if (0 < variadicCount)

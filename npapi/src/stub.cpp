@@ -101,26 +101,7 @@ const Reflect::SymbolData* lookupSymbolTalbe(Object* object, const char* identif
 
 void processResult(NPP npp, const Any& any, NPVariant* variant)
 {
-    // TODO: Additional code if any.isSequence() is true.
-    if (any.getType() == Any::TypeString)
-    {
-        const std::string value = static_cast<const std::string>(any);
-        if (value.length() == 0)
-        {
-            STRINGN_TO_NPVARIANT(0, 0, *variant);
-            return;
-        }
-        void* buffer = NPN_MemAlloc(value.length());
-        if (!buffer)
-        {
-            STRINGN_TO_NPVARIANT(0, 0, *variant);
-            return;
-        }
-        memmove(buffer, value.c_str(), value.length());
-        STRINGN_TO_NPVARIANT(static_cast<NPUTF8*>(buffer), value.length(), *variant);
-        return;
-    }
-    convertToVariant(npp, any, variant);
+    convertToVariant(npp, any, variant, true);
 }
 
 }   // namespace
@@ -349,7 +330,7 @@ bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
         if (*metaData == Reflect::kConstant)
         {
             Reflect::Constant constant(metaData);
-            convertToVariant(npp, constant.getValue(), result);
+            convertToVariant(npp, constant.getValue(), result, true);
             found = true;
             break;
         }
