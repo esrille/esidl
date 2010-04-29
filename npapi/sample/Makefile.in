@@ -16,6 +16,7 @@
 @SET_MAKE@
 
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -76,7 +77,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libnpesmd5sum_la_LIBADD =
 am__libnpesmd5sum_la_SOURCES_DIST = np_entry.cpp npp_gate.cpp \
-	npn_gate.cpp npp_md5sum.cpp md5sum.cc md5sum.h
+	npn_gate.cpp npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
 @NACL_FALSE@am__objects_1 = npn_gate.lo
 am__objects_2 = np_entry.lo npp_gate.lo $(am__objects_1)
 @NACL_FALSE@am_libnpesmd5sum_la_OBJECTS = $(am__objects_2) \
@@ -106,7 +107,7 @@ libnpesxhr_la_OBJECTS = $(am_libnpesxhr_la_OBJECTS)
 @NACL_FALSE@am_libnpesxhr_la_rpath = -rpath $(libdir)
 PROGRAMS = $(bin_PROGRAMS)
 am__npesmd5sum_SOURCES_DIST = np_entry.cpp npp_gate.cpp npn_gate.cpp \
-	npp_md5sum.cpp md5sum.cc md5sum.h
+	npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
 @NACL_FALSE@am__objects_3 = npesmd5sum-npn_gate.$(OBJEXT)
 am__objects_4 = npesmd5sum-np_entry.$(OBJEXT) \
 	npesmd5sum-npp_gate.$(OBJEXT) $(am__objects_3)
@@ -175,6 +176,7 @@ DIST_SOURCES = $(am__libnpesmd5sum_la_SOURCES_DIST) \
 	$(am__libnpesxhr_la_SOURCES_DIST) \
 	$(am__npesmd5sum_SOURCES_DIST) $(am__npespaint_SOURCES_DIST) \
 	$(am__npestest_SOURCES_DIST) $(am__npesxhr_SOURCES_DIST)
+HEADERS = $(nodist_noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -305,6 +307,10 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+@NACL_FALSE@esidl = ../../esidl
+@NACL_TRUE@esidl = esidl
+SUFFIXES = .idl
+nodist_noinst_HEADERS = com/rsa/MD5.h
 AM_CPPFLAGS = -fshort-wchar -std=gnu++0x -I $(srcdir) -I ../include -I \
 	../include/w3c -I $(srcdir)/../include -I \
 	$(srcdir)/../../include -I ../../cplusplus -I \
@@ -322,14 +328,15 @@ cpp_source_files = np_entry.cpp npp_gate.cpp $(am__append_2)
 @NACL_FALSE@libnpestest_la_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h
 @NACL_FALSE@libnpespaint_la_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 @NACL_FALSE@libnpesxhr_la_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
-@NACL_FALSE@libnpesmd5sum_la_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h
+@NACL_FALSE@libnpesmd5sum_la_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
 @NACL_TRUE@npestest_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h
 @NACL_TRUE@npespaint_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 @NACL_TRUE@npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
-@NACL_TRUE@npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h
+@NACL_TRUE@npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
 EXTRA_DIST = \
 	md5sum.html \
 	md5sum.nacl.html \
+	md5.idl \
 	paint.html \
 	paint.nacl.html \
 	eraser.png pen.png tools.png \
@@ -343,7 +350,7 @@ EXTRA_DIST = \
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cc .cpp .lo .o .obj
+.SUFFIXES: .idl .cc .cpp .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -917,9 +924,12 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
+	$(MAKE) $(AM_MAKEFLAGS) \
+	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
+	  dist-hook
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(PROGRAMS)
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(HEADERS)
 install-binPROGRAMS: install-libLTLIBRARIES
 
 installdirs:
@@ -954,7 +964,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
-	clean-libtool mostlyclean-am
+	clean-libtool clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -1025,8 +1035,8 @@ uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic clean-libLTLIBRARIES clean-libtool ctags \
-	distclean distclean-compile distclean-generic \
+	clean-generic clean-libLTLIBRARIES clean-libtool clean-local \
+	ctags dist-hook distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-binPROGRAMS \
 	install-data install-data-am install-dvi install-dvi-am \
@@ -1039,6 +1049,17 @@ uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
 	uninstall-am uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 
+
+vpath %.idl = $(srcdir)
+
+com/rsa/MD5.h : md5.idl
+	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
+
+clean-local:
+	-rm -rf com
+
+dist-hook:
+	-rm -f $(distdir)/com
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

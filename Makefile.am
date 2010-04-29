@@ -93,7 +93,6 @@ EXTRA_DIST = \
 	dom/html5.idl \
 	dom/idl_scraper.pl \
 	dom/indexeddb.idl \
-	dom/md5.idl \
 	dom/microdata.idl \
 	dom/NOTICE \
 	dom/postmsg.idl \

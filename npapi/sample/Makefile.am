@@ -1,3 +1,18 @@
+if NACL
+esidl=esidl
+else
+esidl=../../esidl
+endif
+
+SUFFIXES = .idl
+
+vpath %.idl = $(srcdir)
+
+nodist_noinst_HEADERS = com/rsa/MD5.h
+
+com/rsa/MD5.h : md5.idl
+	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
+
 AM_CPPFLAGS = \
 	-fshort-wchar -std=gnu++0x \
 	-I $(srcdir) \
@@ -36,17 +51,18 @@ if !NACL
 libnpestest_la_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h
 libnpespaint_la_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 libnpesxhr_la_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
-libnpesmd5sum_la_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h
+libnpesmd5sum_la_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
 else
 npestest_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h
 npespaint_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
-npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h
+npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
 endif
 
 EXTRA_DIST = \
 	md5sum.html \
 	md5sum.nacl.html \
+	md5.idl \
 	paint.html \
 	paint.nacl.html \
 	eraser.png pen.png tools.png \
@@ -57,3 +73,8 @@ EXTRA_DIST = \
 	xhr.nacl.html \
 	xhr.txt
 
+clean-local:
+	-rm -rf com
+
+dist-hook:
+	-rm -f $(distdir)/com
