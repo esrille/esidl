@@ -455,7 +455,7 @@ namespace
 {
 
 template <typename T>
-Any convertToSequence(NPP npp, const NPVariant* variant)
+Any convertToSequence(NPP npp, const NPVariant* variant, const Reflect::Type type)
 {
     unsigned length = 0;
     NPVariant result;
@@ -476,7 +476,7 @@ Any convertToSequence(NPP npp, const NPVariant* variant)
         NPIdentifier id = NPN_GetIntIdentifier(i);
         if (NPN_GetProperty(npp, NPVARIANT_TO_OBJECT(*variant), id, &element))
         {
-            Any value = convertToAny(npp, &element);  // TODO: Should use direct converToXXX()
+            Any value = convertToAny(npp, &element, type);
             sequence.setElement(i, static_cast<T>(value));
         }
     }
@@ -496,40 +496,40 @@ Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
             switch (type.getType())
             {
             case Reflect::kBoolean:
-                return convertToSequence<Nullable<bool> >(npp, variant);
+                return convertToSequence<Nullable<bool> >(npp, variant, elementType);
                 break;
             case Reflect::kByte:
-                return convertToSequence<Nullable<int8_t> >(npp, variant);
+                return convertToSequence<Nullable<int8_t> >(npp, variant, elementType);
                 break;
             case Reflect::kOctet:
-                return convertToSequence<Nullable<uint8_t> >(npp, variant);
+                return convertToSequence<Nullable<uint8_t> >(npp, variant, elementType);
                 break;
             case Reflect::kShort:
-                return convertToSequence<Nullable<int16_t> >(npp, variant);
+                return convertToSequence<Nullable<int16_t> >(npp, variant, elementType);
                 break;
             case Reflect::kUnsignedShort:
-                return convertToSequence<Nullable<uint16_t> >(npp, variant);
+                return convertToSequence<Nullable<uint16_t> >(npp, variant, elementType);
                 break;
             case Reflect::kLong:
-                return convertToSequence<Nullable<int32_t> >(npp, variant);
+                return convertToSequence<Nullable<int32_t> >(npp, variant, elementType);
                 break;
             case Reflect::kUnsignedLong:
-                return convertToSequence<Nullable<uint32_t> >(npp, variant);
+                return convertToSequence<Nullable<uint32_t> >(npp, variant, elementType);
                 break;
             case Reflect::kLongLong:
-                return convertToSequence<Nullable<int64_t> >(npp, variant);
+                return convertToSequence<Nullable<int64_t> >(npp, variant, elementType);
                 break;
             case Reflect::kUnsignedLongLong:
-                return convertToSequence<Nullable<uint64_t> >(npp, variant);
+                return convertToSequence<Nullable<uint64_t> >(npp, variant, elementType);
                 break;
             case Reflect::kFloat:
-                return convertToSequence<Nullable<float> >(npp, variant);
+                return convertToSequence<Nullable<float> >(npp, variant, elementType);
                 break;
             case Reflect::kDouble:
-                return convertToSequence<Nullable<double> >(npp, variant);
+                return convertToSequence<Nullable<double> >(npp, variant, elementType);
                 break;
             case Reflect::kString:
-                return convertToSequence<Nullable<std::string> >(npp, variant);
+                return convertToSequence<Nullable<std::string> >(npp, variant, elementType);
                 break;
             }
         }
@@ -537,51 +537,56 @@ Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type)
             switch (type.getType())
             {
             case Reflect::kBoolean:
-                return convertToSequence<bool>(npp, variant);
+                return convertToSequence<bool>(npp, variant, elementType);
                 break;
             case Reflect::kByte:
-                return convertToSequence<int8_t>(npp, variant);
+                return convertToSequence<int8_t>(npp, variant, elementType);
                 break;
             case Reflect::kOctet:
-                return convertToSequence<uint8_t>(npp, variant);
+                return convertToSequence<uint8_t>(npp, variant, elementType);
                 break;
             case Reflect::kShort:
-                return convertToSequence<int16_t>(npp, variant);
+                return convertToSequence<int16_t>(npp, variant, elementType);
                 break;
             case Reflect::kUnsignedShort:
-                return convertToSequence<uint16_t>(npp, variant);
+                return convertToSequence<uint16_t>(npp, variant, elementType);
                 break;
             case Reflect::kLong:
-                return convertToSequence<int32_t>(npp, variant);
+                return convertToSequence<int32_t>(npp, variant, elementType);
                 break;
             case Reflect::kUnsignedLong:
-                return convertToSequence<uint32_t>(npp, variant);
+                return convertToSequence<uint32_t>(npp, variant, elementType);
                 break;
             case Reflect::kLongLong:
-                return convertToSequence<int64_t>(npp, variant);
+                return convertToSequence<int64_t>(npp, variant, elementType);
                 break;
             case Reflect::kUnsignedLongLong:
-                return convertToSequence<uint64_t>(npp, variant);
+                return convertToSequence<uint64_t>(npp, variant, elementType);
                 break;
             case Reflect::kFloat:
-                return convertToSequence<float>(npp, variant);
+                return convertToSequence<float>(npp, variant, elementType);
                 break;
             case Reflect::kDouble:
-                return convertToSequence<double>(npp, variant);
+                return convertToSequence<double>(npp, variant, elementType);
                 break;
             case Reflect::kString:
-                return convertToSequence<std::string>(npp, variant);
+                return convertToSequence<std::string>(npp, variant, elementType);
                 break;
             case Reflect::kAny:
-                return convertToSequence<Any>(npp, variant);
+                return convertToSequence<Any>(npp, variant, elementType);
                 break;
             // TODO: kSequence???
             case Reflect::kObject:
             default:
-                return convertToSequence<Object*>(npp, variant);
+                return convertToSequence<Object*>(npp, variant, elementType);
                 break;
             }
         }
+    }
+
+    if (type.isNullable() && NPVARIANT_IS_NULL(*variant))
+    {
+        return Any();
     }
 
     switch (type.getType())
