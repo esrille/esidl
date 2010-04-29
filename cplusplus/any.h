@@ -195,6 +195,22 @@ class Any : private AnyBase
         return *this;
     }
 
+    template <typename T>
+    Any& assign(const Nullable<T> nullable)
+    {
+        if (!nullable.hasValue())
+        {
+            longLongValue = 0;
+            type = TypeVoid;
+        }
+        else
+        {
+            assign(nullable.value());
+        }
+        type |= FlagNullable;
+        return *this;
+    }
+
     Any& assign(const char* value)
     {
         new (stringValue) std::string(value);
@@ -242,21 +258,6 @@ public:
     Any(T value)
     {
         assign(value);
-    }
-
-    template <typename T>
-    Any(const Nullable<T> nullable)
-    {
-        if (!nullable.hasValue())
-        {
-            longLongValue = 0;
-            type = TypeVoid;
-        }
-        else
-        {
-            assign(nullable.value());
-        }
-        type |= FlagNullable;
     }
 
     // Copy constructor
