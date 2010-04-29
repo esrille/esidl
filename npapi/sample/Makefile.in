@@ -93,7 +93,7 @@ libnpespaint_la_OBJECTS = $(am_libnpespaint_la_OBJECTS)
 @NACL_FALSE@am_libnpespaint_la_rpath = -rpath $(libdir)
 libnpestest_la_LIBADD =
 am__libnpestest_la_SOURCES_DIST = np_entry.cpp npp_gate.cpp \
-	npn_gate.cpp npp_test.cpp test.cpp test.h
+	npn_gate.cpp npp_test.cpp test.cpp test.h org/w3c/dom/Test.h
 @NACL_FALSE@am_libnpestest_la_OBJECTS = $(am__objects_2) npp_test.lo \
 @NACL_FALSE@	test.lo
 libnpestest_la_OBJECTS = $(am_libnpestest_la_OBJECTS)
@@ -127,7 +127,7 @@ am__objects_6 = npespaint-np_entry.$(OBJEXT) \
 npespaint_OBJECTS = $(am_npespaint_OBJECTS)
 npespaint_LDADD = $(LDADD)
 am__npestest_SOURCES_DIST = np_entry.cpp npp_gate.cpp npn_gate.cpp \
-	npp_test.cpp test.cpp test.h
+	npp_test.cpp test.cpp test.h org/w3c/dom/Test.h
 @NACL_FALSE@am__objects_7 = npestest-npn_gate.$(OBJEXT)
 am__objects_8 = npestest-np_entry.$(OBJEXT) \
 	npestest-npp_gate.$(OBJEXT) $(am__objects_7)
@@ -310,7 +310,7 @@ top_srcdir = @top_srcdir@
 @NACL_FALSE@esidl = ../../esidl
 @NACL_TRUE@esidl = esidl
 SUFFIXES = .idl
-nodist_noinst_HEADERS = com/rsa/MD5.h
+nodist_noinst_HEADERS = com/rsa/MD5.h org/w3c/dom/Test.h
 AM_CPPFLAGS = -fshort-wchar -std=gnu++0x -I $(srcdir) -I ../include -I \
 	../include/w3c -I $(srcdir)/../include -I \
 	$(srcdir)/../../include -I ../../cplusplus -I \
@@ -325,11 +325,11 @@ AM_CPPFLAGS = -fshort-wchar -std=gnu++0x -I $(srcdir) -I ../include -I \
 @NACL_TRUE@npesxhr_CPPFLAGS = $(AM_CPPFLAGS)
 @NACL_TRUE@npesmd5sum_CPPFLAGS = $(AM_CPPFLAGS)
 cpp_source_files = np_entry.cpp npp_gate.cpp $(am__append_2)
-@NACL_FALSE@libnpestest_la_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h
+@NACL_FALSE@libnpestest_la_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h org/w3c/dom/Test.h
 @NACL_FALSE@libnpespaint_la_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 @NACL_FALSE@libnpesxhr_la_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 @NACL_FALSE@libnpesmd5sum_la_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
-@NACL_TRUE@npestest_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h
+@NACL_TRUE@npestest_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h org/w3c/dom/Test.h
 @NACL_TRUE@npespaint_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 @NACL_TRUE@npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 @NACL_TRUE@npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
@@ -342,6 +342,7 @@ EXTRA_DIST = \
 	eraser.png pen.png tools.png \
 	test.html \
 	test.nacl.html \
+	test.idl \
 	red.css green.css blue.css \
 	xhr.html \
 	xhr.nacl.html \
@@ -1055,11 +1056,14 @@ vpath %.idl = $(srcdir)
 com/rsa/MD5.h : md5.idl
 	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
 
+org/w3c/dom/Test.h : test.idl
+	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
+
 clean-local:
-	-rm -rf com
+	-rm -rf com org
 
 dist-hook:
-	-rm -f $(distdir)/com
+	-rm -rf $(distdir)/com $(distdir)/org
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

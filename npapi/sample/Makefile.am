@@ -8,9 +8,12 @@ SUFFIXES = .idl
 
 vpath %.idl = $(srcdir)
 
-nodist_noinst_HEADERS = com/rsa/MD5.h
+nodist_noinst_HEADERS = com/rsa/MD5.h org/w3c/dom/Test.h
 
 com/rsa/MD5.h : md5.idl
+	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
+
+org/w3c/dom/Test.h : test.idl
 	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
 
 AM_CPPFLAGS = \
@@ -48,12 +51,12 @@ cpp_source_files += \
 endif
 
 if !NACL
-libnpestest_la_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h
+libnpestest_la_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h org/w3c/dom/Test.h
 libnpespaint_la_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 libnpesxhr_la_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 libnpesmd5sum_la_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
 else
-npestest_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h
+npestest_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h org/w3c/dom/Test.h
 npespaint_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
 npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
@@ -68,13 +71,15 @@ EXTRA_DIST = \
 	eraser.png pen.png tools.png \
 	test.html \
 	test.nacl.html \
+	test.idl \
 	red.css green.css blue.css \
 	xhr.html \
 	xhr.nacl.html \
 	xhr.txt
 
 clean-local:
-	-rm -rf com
+	-rm -rf com org
 
 dist-hook:
-	-rm -f $(distdir)/com
+	-rm -rf $(distdir)/com $(distdir)/org
+

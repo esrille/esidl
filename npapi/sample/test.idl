@@ -1,0 +1,9 @@
+/*
+ * test.idl
+ */
+
+[Constructor]
+interface Test {
+    byte testByte(byte value);
+};
+

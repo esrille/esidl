@@ -162,7 +162,7 @@ void TestInstance::drawCharts(Document* document)
     }
 
     context->setFillStyle("white");
-    context->fillRect(0, 0, 1024, 768);
+    context->fillRect(0, 0, 640, 480);
 
     // Bar graph
     float top = 50.0f;
@@ -262,6 +262,12 @@ void TestInstance::initialize()
 {
     downHandler = new (std::nothrow) EventHandler(this, &TestInstance::down);
 
+    testClass = new (std::nothrow) TestClass(this);
+    if (testClass)
+    {
+        window->setElement("Test", testClass);
+    }
+
     document = window->getDocument();
     if (document)
     {
@@ -275,5 +281,9 @@ TestInstance::~TestInstance()
     if (downHandler)
     {
         downHandler->release();
+    }
+    if (testClass)
+    {
+        testClass->release();
     }
 }

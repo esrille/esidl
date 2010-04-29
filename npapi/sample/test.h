@@ -20,13 +20,16 @@
 #include <esnpapi.h>
 
 #include <org/w3c/dom.h>
+#include <org/w3c/dom/Test.h>
 
 class EventHandler;
+class TestClass;
 
 class TestInstance: public PluginInstance
 {
     EventHandler* downHandler;
     org::w3c::dom::Document* document;
+    TestClass* testClass;
 
     void initialize();
     void drawCharts(org::w3c::dom::Document* document);
@@ -69,5 +72,48 @@ public:
     };
 };
 
+class TestObject : public org::w3c::dom::Test
+{
+    TestInstance* instance;
+public:
+    explicit TestObject(TestInstance* instance)
+        : instance(instance)
+    {
+    }
+    virtual signed char testByte(signed char value)
+    {
+        return value;
+    }
+    unsigned int retain()
+    {
+        return instance->retain(this);
+    };
+    unsigned int release()
+    {
+        return instance->release(this);
+    };
+};
+
+class TestClass : public org::w3c::dom::Test_Constructor
+{
+    TestInstance* instance;
+public:
+    explicit TestClass(TestInstance* instance)
+        : instance(instance)
+    {
+    }
+    virtual org::w3c::dom::Test* createInstance()
+    {
+        return new (std::nothrow) TestObject(instance);
+    }
+    unsigned int retain()
+    {
+        return instance->retain(this);
+    };
+    unsigned int release()
+    {
+        return instance->release(this);
+    };
+};
 
 #endif // TEST_H_INCLUDED

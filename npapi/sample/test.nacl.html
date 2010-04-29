@@ -4,13 +4,27 @@
 <link rel="stylesheet" type="text/css" href="red.css">
 <link rel="stylesheet" type="text/css" href="green.css">
 <link rel="stylesheet" type="text/css" href="blue.css">
+<script type="text/javascript">
+function testByte()
+{
+    var test = new Test();
+    alert(test.testByte(127));
+}
+
+function init()
+{
+    document.form.byte.addEventListener('click', testByte, true);
+}
+</script>
 </head>
-<body>
-<canvas id="canvas" width="1024" height="768"></canvas>
+<body onload="init()">
+<canvas id="canvas" width="640" height="480"></canvas>
 <p class=red>red</p>
 <p class=green>green</p>
 <p class=blue>blue</p>
+<form name="form">
+<button type="button" name="byte">testByte(127)</button>
+</form>
 <embed type="application/x-nacl-srpc" width="0" height="0" src="npestest.nexe"></embed>
 </body>
 </html>
-
