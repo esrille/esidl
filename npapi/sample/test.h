@@ -22,6 +22,8 @@
 #include <org/w3c/dom.h>
 #include <org/w3c/dom/Test.h>
 
+#include <string>
+
 class EventHandler;
 class TestClass;
 
@@ -83,6 +85,15 @@ public:
     virtual signed char testByte(signed char value)
     {
         return value;
+    }
+    virtual unsigned int testVariadic(Sequence<std::string> args)
+    {
+        printf("arg.length = %u\n", args.getLength());
+        for (unsigned int i = 0; i < args.getLength(); ++i)
+        {
+            printf("  %u: %s\n", i, args[i].c_str());
+        }
+        return args.getLength();
     }
     unsigned int retain()
     {

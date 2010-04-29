@@ -11,9 +11,16 @@ function testByte()
     alert(test.testByte(127));
 }
 
+function testVariadic()
+{
+    var test = new Test();
+    alert(test.testVariadic("a", "b", "c"));
+}
+
 function init()
 {
     document.form.byte.addEventListener('click', testByte, true);
+    document.form.variadic.addEventListener('click', testVariadic, true);
 }
 </script>
 </head>
@@ -25,7 +32,8 @@ function init()
 <p class=blue>blue</p>
 <form name="form">
 <button type="button" name="byte">testByte(127)</button>
+<button type="button" name="variadic">testVariadic("a", "b", "c")</button>
 </form>
-<embed type="application/es-npapi-test" width="0" height="0"></embed>
+<embed type="application/es-npapi-test" width="0" height="0" />
 </body>
 </html>

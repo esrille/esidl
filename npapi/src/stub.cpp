@@ -99,6 +99,18 @@ const Reflect::SymbolData* lookupSymbolTalbe(Object* object, const char* identif
     return 0;
 }
 
+template <typename T>
+Any convertToSequence(NPP npp, const NPVariant* args, unsigned count, const Reflect::Type type)
+{
+    Sequence<T> sequence(count);
+    for (unsigned i = 0; i < count; ++i)
+    {
+        Any value = convertToAny(npp, args++, type);
+        sequence.setElement(i, static_cast<T>(value));
+    }
+    return sequence;
+}
+
 void processResult(NPP npp, const Any& any, NPVariant* variant)
 {
     convertToVariant(npp, any, variant, true);
@@ -194,6 +206,137 @@ bool StubObject::hasMethod(NPIdentifier name)
     return found;
 }
 
+bool StubObject::call(unsigned interfaceNumber, const Reflect::SymbolData* data, const char* metaData,
+                      const NPVariant* args, uint32_t arg_count, NPVariant* result)
+{
+    Reflect::Method method(metaData);
+    unsigned argumentCount = method.getParameterCount();
+    if (argumentCount != arg_count && (!method.isVariadic() || arg_count + 1 < argumentCount))
+    {
+        return false;
+    }
+
+    enter();
+    Any arguments[argumentCount];
+    if (method.isVariadic())
+    {
+        --argumentCount;
+    }
+    Reflect::Parameter parameter = method.listParameter();
+    for (unsigned i = 0; i < argumentCount; ++i)
+    {
+        parameter.next();
+        arguments[i] = convertToAny(npp, &args[i], parameter.getType());
+    }
+    if (method.isVariadic())
+    {
+        Reflect::Parameter param = method.listParameter();
+        for (int i = 0; i < method.getParameterCount(); ++i)
+        {
+            param.next();
+        }
+        arg_count -= argumentCount;
+        Reflect::Type type = param.getType();
+        if (type.isNullable())
+        {
+            switch (type.getType())
+            {
+            case Reflect::kBoolean:
+                arguments[argumentCount] = convertToSequence<Nullable<bool> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kByte:
+                arguments[argumentCount] = convertToSequence<Nullable<int8_t> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kOctet:
+                arguments[argumentCount] = convertToSequence<Nullable<uint8_t> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kShort:
+                arguments[argumentCount] = convertToSequence<Nullable<int16_t> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kUnsignedShort:
+                arguments[argumentCount] = convertToSequence<Nullable<uint16_t> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kLong:
+                arguments[argumentCount] = convertToSequence<Nullable<int32_t> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kUnsignedLong:
+                arguments[argumentCount] = convertToSequence<Nullable<uint32_t> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kLongLong:
+                arguments[argumentCount] = convertToSequence<Nullable<int64_t> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kUnsignedLongLong:
+                arguments[argumentCount] = convertToSequence<Nullable<uint64_t> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kFloat:
+                arguments[argumentCount] = convertToSequence<Nullable<float> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kDouble:
+                arguments[argumentCount] = convertToSequence<Nullable<double> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kString:
+                arguments[argumentCount] = convertToSequence<Nullable<std::string> >(npp, &args[argumentCount], arg_count, type);
+                break;
+            }
+        }
+        else
+        {
+            switch (type.getType())
+            {
+            case Reflect::kBoolean:
+                arguments[argumentCount] = convertToSequence<bool>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kByte:
+                arguments[argumentCount] = convertToSequence<int8_t>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kOctet:
+                arguments[argumentCount] = convertToSequence<uint8_t>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kShort:
+                arguments[argumentCount] = convertToSequence<int16_t>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kUnsignedShort:
+                arguments[argumentCount] = convertToSequence<uint16_t>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kLong:
+                arguments[argumentCount] = convertToSequence<int32_t>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kUnsignedLong:
+                arguments[argumentCount] = convertToSequence<uint32_t>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kLongLong:
+                arguments[argumentCount] = convertToSequence<int64_t>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kUnsignedLongLong:
+                arguments[argumentCount] = convertToSequence<uint64_t>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kFloat:
+                arguments[argumentCount] = convertToSequence<float>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kDouble:
+                arguments[argumentCount] = convertToSequence<double>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kString:
+                arguments[argumentCount] = convertToSequence<std::string>(npp, &args[argumentCount], arg_count, type);
+                break;
+            case Reflect::kAny:
+                arguments[argumentCount] = convertToSequence<Any>(npp, &args[argumentCount], arg_count, type);
+                break;
+            // TODO: kSequence???
+            case Reflect::kObject:
+            default:
+                arguments[argumentCount] = convertToSequence<Object*>(npp, &args[argumentCount], arg_count, type);
+                break;
+            }
+        }
+        ++argumentCount;
+    }
+    Any value = object->call(interfaceNumber, data->number, argumentCount, arguments);
+    processResult(npp, value, result);
+    leave();
+    return true;
+}
+
 bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result)
 {
     NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
@@ -215,27 +358,9 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
         }
         const char* metaData = object->getMetaData(interfaceNumber);
         metaData += data->offset;
-        if (*metaData == Reflect::kOperation)
+        if (*metaData == Reflect::kOperation &&
+            (found = call(interfaceNumber, data, metaData, args, arg_count, result)))
         {
-            Reflect::Method method(metaData);
-            unsigned argumentCount = method.getParameterCount();
-            // TODO: Support variadic operation
-            if (argumentCount != arg_count)
-            {
-                continue;
-            }
-            enter();
-            Reflect::Parameter parameter = method.listParameter();
-            Any arguments[argumentCount];
-            for (unsigned i = 0; i < argumentCount; ++i)
-            {
-                parameter.next();
-                arguments[i] = convertToAny(npp, &args[i], parameter.getType());
-            }
-            Any value = object->call(interfaceNumber, data->number, argumentCount, arguments);
-            processResult(npp, value, result);
-            found = true;
-            leave();
             break;
         }
     }
@@ -413,27 +538,9 @@ bool StubObject::construct(const NPVariant* args, uint32_t arg_count, NPVariant*
         }
         const char* metaData = object->getMetaData(interfaceNumber);
         metaData += data->offset;
-        if (*metaData == Reflect::kConstructor)
+        if (*metaData == Reflect::kConstructor &&
+            (found = call(interfaceNumber, data, metaData, args, arg_count, result)))
         {
-            Reflect::Method method(metaData);
-            unsigned argumentCount = method.getParameterCount();
-            // TODO: Support variadic operation
-            if (argumentCount != arg_count)
-            {
-                continue;
-            }
-            enter();
-            Reflect::Parameter parameter = method.listParameter();
-            Any arguments[argumentCount];
-            for (unsigned i = 0; i < argumentCount; ++i)
-            {
-                parameter.next();
-                arguments[i] = convertToAny(npp, &args[i], parameter.getType());
-            }
-            Any value = object->call(interfaceNumber, data->number, argumentCount, arguments);
-            processResult(npp, value, result);
-            found = true;
-            leave();
             break;
         }
     }

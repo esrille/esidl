@@ -118,6 +118,9 @@ class StubObject : public NPObject
     NPP npp;
     Object* object;
 
+    bool call(unsigned interfaceNumber, const Reflect::SymbolData* data, const char* metaData,
+              const NPVariant* args, uint32_t arg_count, NPVariant* result);
+
 public:
     StubObject(NPP npp) :
         npp(npp),

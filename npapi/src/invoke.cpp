@@ -193,7 +193,8 @@ Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
                     break;
                 }
             }
-            else {
+            else
+            {
                 switch (type.getType())
                 {
                 case Reflect::kBoolean:
