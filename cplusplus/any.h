@@ -53,14 +53,31 @@ struct AnyBase
 // The any type for Web IDL
 class Any : private AnyBase
 {
+    void release()
+    {
+        if (isSequence())
+        {
+            const Sequence<int>* p = reinterpret_cast<const Sequence<int>*>(&sequenceValue);  // TODO: not type safe
+            p->~Sequence<int>();
+        }
+        else if (isString())
+        {
+            using std::string;
+
+            const string* p = reinterpret_cast<const string*>(stringValue);
+            p->~string();
+        }
+        type = 0;
+    }
+
     Any& assign(const Any& value)
     {
-        type = value.type;
-        if (type & FlagSequence)
+        type = value.type ;
+        if (isSequence())
         {
-            new (sequenceValue) Sequence<std::string>(reinterpret_cast<const Sequence<std::string>*>(value.sequenceValue));
+            new (sequenceValue) Sequence<std::string>(*reinterpret_cast<const Sequence<std::string>*>(value.sequenceValue));
         }
-        else if ((type & PrimitiveMask) == TypeString)
+        else if (isString())
         {
             new (stringValue) std::string(*reinterpret_cast<const std::string*>(value.stringValue));
         }
@@ -268,18 +285,13 @@ public:
 
     ~Any()
     {
-        if (getType() == TypeString)
-        {
-            using std::string;
-
-            const string* p = reinterpret_cast<const string*>(stringValue);
-            p->~string();
-        }
+        release();
     }
 
     template <typename T>
     Any& operator=(T value)
     {
+        release();
         assign(value);
         return *this;
     }
