@@ -310,7 +310,8 @@ top_srcdir = @top_srcdir@
 @NACL_FALSE@esidl = ../../esidl
 @NACL_TRUE@esidl = esidl
 SUFFIXES = .idl
-nodist_noinst_HEADERS = com/rsa/MD5.h org/w3c/dom/Test.h
+BUILT_SOURCES = com/rsa/MD5.h org/w3c/dom/Test.h
+nodist_noinst_HEADERS = $(BUILT_SOURCES)
 AM_CPPFLAGS = -fshort-wchar -std=gnu++0x -I $(srcdir) -I ../include -I \
 	../include/w3c -I $(srcdir)/../include -I \
 	$(srcdir)/../../include -I ../../cplusplus -I \
@@ -348,7 +349,8 @@ EXTRA_DIST = \
 	xhr.nacl.html \
 	xhr.txt
 
-all: all-am
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .idl .cc .cpp .lo .o .obj
@@ -929,7 +931,8 @@ distdir: $(DISTFILES)
 	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
 	  dist-hook
 check-am: all-am
-check: check-am
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(HEADERS)
 install-binPROGRAMS: install-libLTLIBRARIES
 
@@ -937,7 +940,8 @@ installdirs:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -962,6 +966,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
@@ -1033,7 +1038,7 @@ ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 
-.MAKE: install-am install-strip
+.MAKE: all check install install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
 	clean-generic clean-libLTLIBRARIES clean-libtool clean-local \

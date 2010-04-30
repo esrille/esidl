@@ -8,7 +8,9 @@ SUFFIXES = .idl
 
 vpath %.idl = $(srcdir)
 
-nodist_noinst_HEADERS = com/rsa/MD5.h org/w3c/dom/Test.h
+BUILT_SOURCES = com/rsa/MD5.h org/w3c/dom/Test.h
+
+nodist_noinst_HEADERS = $(BUILT_SOURCES)
 
 com/rsa/MD5.h : md5.idl
 	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
