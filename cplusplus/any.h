@@ -67,7 +67,6 @@ class Any : private AnyBase
             const string* p = reinterpret_cast<const string*>(stringValue);
             p->~string();
         }
-        type = 0;
     }
 
     Any& assign(const Any& value)
@@ -206,9 +205,17 @@ class Any : private AnyBase
     Any& assign(const Sequence<T>& sequence)
     {
         T value;
-        assign(value);  // Set type for T
+        assign(value);  // Just for setting type for T
+        release();
         new (sequenceValue) Sequence<T>(sequence);
         type |= FlagSequence;
+        return *this;
+    }
+
+    Any& assign(const Sequence<Any>& sequence)
+    {
+        new (sequenceValue) Sequence<Any>(sequence);
+        type = FlagSequence | FlagAny;
         return *this;
     }
 

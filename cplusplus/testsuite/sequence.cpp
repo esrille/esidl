@@ -58,5 +58,12 @@ int main()
     array[0] = s;
     Sequence<string> z = array[0];
     cout << z.getLength() << (string) z[0] << (string) z[1] << (string) z[2] << endl;
-    
+
+    Sequence<Any> sa;
+    Any asa = sa;
+    cout << asa.isSequence() << ' ' << asa.isNullable() << ' ' << asa.isAny() << endl;  // 1 0 1
+
+    Sequence<Nullable<int> > sn;
+    Any asn = sn;
+    cout << asn.isSequence() << ' ' << asn.isNullable() << ' ' << asn.isAny() << endl;  // 1 1 0
 }

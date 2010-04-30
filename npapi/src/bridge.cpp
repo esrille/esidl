@@ -796,54 +796,98 @@ void convertToVariant(NPP npp, const Any& any, NPVariant* variant, bool result)
         NPObject* array = createArray(npp);
         if (array)
         {
-            // TODO: Check nullable; Any needs to be fixed, too.
             if (any.isAny())
             {
                 copySequence(npp, array, Sequence<Any>(any), result);
             }
-            else switch (any.getType())
+            else if (any.isNullable())
             {
-            case Any::TypeBool:
-                copySequence(npp, array, Sequence<bool>(any), result);
-                break;
-            case Any::TypeByte:
-                copySequence(npp, array, Sequence<int8_t>(any), result);
-                break;
-            case Any::TypeOctet:
-                copySequence(npp, array, Sequence<uint8_t>(any), result);
-                break;
-            case Any::TypeShort:
-                copySequence(npp, array, Sequence<int16_t>(any), result);
-                break;
-            case Any::TypeUnsignedShort:
-                copySequence(npp, array, Sequence<uint16_t>(any), result);
-                break;
-            case Any::TypeLong:
-                copySequence(npp, array, Sequence<int32_t>(any), result);
-                break;
-            case Any::TypeUnsignedLong:
-                copySequence(npp, array, Sequence<uint32_t>(any), result);
-                break;
-            case Any::TypeLongLong:
-                copySequence(npp, array, Sequence<int64_t>(any), result);
-                break;
-            case Any::TypeUnsignedLongLong:
-                copySequence(npp, array, Sequence<uint64_t>(any), result);
-                break;
-            case Any::TypeFloat:
-                copySequence(npp, array, Sequence<float>(any), result);
-                break;
-            case Any::TypeDouble:
-                copySequence(npp, array, Sequence<double>(any), result);
-                break;
-            case Any::TypeString:
-                copySequence(npp, array, Sequence<std::string>(any), result);
-                break;
-            // TODO: Any::Sequence?
-            case Any::TypeObject:
-            default:
-                copySequence(npp, array, Sequence<Object*>(any), result);
-                break;
+                switch (any.getType())
+                {
+                case Any::TypeBool:
+                    copySequence(npp, array, Sequence<Nullable<bool> >(any), result);
+                    break;
+                case Any::TypeByte:
+                    copySequence(npp, array, Sequence<Nullable<int8_t> >(any), result);
+                    break;
+                case Any::TypeOctet:
+                    copySequence(npp, array, Sequence<Nullable<uint8_t> >(any), result);
+                    break;
+                case Any::TypeShort:
+                    copySequence(npp, array, Sequence<Nullable<int16_t> >(any), result);
+                    break;
+                case Any::TypeUnsignedShort:
+                    copySequence(npp, array, Sequence<Nullable<uint16_t> >(any), result);
+                    break;
+                case Any::TypeLong:
+                    copySequence(npp, array, Sequence<Nullable<int32_t> >(any), result);
+                    break;
+                case Any::TypeUnsignedLong:
+                    copySequence(npp, array, Sequence<Nullable<uint32_t> >(any), result);
+                    break;
+                case Any::TypeLongLong:
+                    copySequence(npp, array, Sequence<Nullable<int64_t> >(any), result);
+                    break;
+                case Any::TypeUnsignedLongLong:
+                    copySequence(npp, array, Sequence<Nullable<uint64_t> >(any), result);
+                    break;
+                case Any::TypeFloat:
+                    copySequence(npp, array, Sequence<Nullable<float> >(any), result);
+                    break;
+                case Any::TypeDouble:
+                    copySequence(npp, array, Sequence<Nullable<double> >(any), result);
+                    break;
+                case Any::TypeString:
+                    copySequence(npp, array, Sequence<Nullable<std::string> >(any), result);
+                    break;
+                }
+            }
+            else
+            {
+                switch (any.getType())
+                {
+                case Any::TypeBool:
+                    copySequence(npp, array, Sequence<bool>(any), result);
+                    break;
+                case Any::TypeByte:
+                    copySequence(npp, array, Sequence<int8_t>(any), result);
+                    break;
+                case Any::TypeOctet:
+                    copySequence(npp, array, Sequence<uint8_t>(any), result);
+                    break;
+                case Any::TypeShort:
+                    copySequence(npp, array, Sequence<int16_t>(any), result);
+                    break;
+                case Any::TypeUnsignedShort:
+                    copySequence(npp, array, Sequence<uint16_t>(any), result);
+                    break;
+                case Any::TypeLong:
+                    copySequence(npp, array, Sequence<int32_t>(any), result);
+                    break;
+                case Any::TypeUnsignedLong:
+                    copySequence(npp, array, Sequence<uint32_t>(any), result);
+                    break;
+                case Any::TypeLongLong:
+                    copySequence(npp, array, Sequence<int64_t>(any), result);
+                    break;
+                case Any::TypeUnsignedLongLong:
+                    copySequence(npp, array, Sequence<uint64_t>(any), result);
+                    break;
+                case Any::TypeFloat:
+                    copySequence(npp, array, Sequence<float>(any), result);
+                    break;
+                case Any::TypeDouble:
+                    copySequence(npp, array, Sequence<double>(any), result);
+                    break;
+                case Any::TypeString:
+                    copySequence(npp, array, Sequence<std::string>(any), result);
+                    break;
+                // TODO: Any::Sequence?
+                case Any::TypeObject:
+                default:
+                    copySequence(npp, array, Sequence<Object*>(any), result);
+                    break;
+                }
             }
             OBJECT_TO_NPVARIANT(array, *variant);
             return;
