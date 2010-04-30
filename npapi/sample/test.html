@@ -5,6 +5,12 @@
 <link rel="stylesheet" type="text/css" href="green.css">
 <link rel="stylesheet" type="text/css" href="blue.css">
 <script type="text/javascript">
+function testToString()
+{
+    var test = new Test();
+    alert(test.toString());
+}
+
 function testByte()
 {
     var test = new Test();
@@ -19,6 +25,7 @@ function testVariadic()
 
 function init()
 {
+    document.form.toString.addEventListener('click', testToString, true);
     document.form.byte.addEventListener('click', testByte, true);
     document.form.variadic.addEventListener('click', testVariadic, true);
 }
@@ -31,6 +38,7 @@ function init()
 <p class=green>green</p>
 <p class=blue>blue</p>
 <form name="form">
+<button type="button" name="toString">toString</button>
 <button type="button" name="byte">testByte(127)</button>
 <button type="button" name="variadic">testVariadic("a", "b", "c")</button>
 </form>

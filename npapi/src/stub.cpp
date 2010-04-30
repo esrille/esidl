@@ -378,8 +378,7 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
             {
                 name = "[object " + name + "]";
             }
-            Any value(name);
-            convertToVariant(npp, value, result, true);
+            convertToVariant(npp, name, result, true);
             found = true;
         }
     }
