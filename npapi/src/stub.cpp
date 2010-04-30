@@ -111,11 +111,6 @@ Any convertToSequence(NPP npp, const NPVariant* args, unsigned count, const Refl
     return sequence;
 }
 
-void processResult(NPP npp, const Any& any, NPVariant* variant)
-{
-    convertToVariant(npp, any, variant, true);
-}
-
 }   // namespace
 
 long StubObject::enter()
@@ -332,7 +327,7 @@ bool StubObject::call(unsigned interfaceNumber, const Reflect::SymbolData* data,
         ++argumentCount;
     }
     Any value = object->call(interfaceNumber, data->number, argumentCount, arguments);
-    processResult(npp, value, result);
+    convertToVariant(npp, value, result, true);
     leave();
     return true;
 }
@@ -384,7 +379,7 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
                 name = "[object " + name + "]";
             }
             Any value(name);
-            processResult(npp, value, result);
+            convertToVariant(npp, value, result, true);
             found = true;
         }
     }
@@ -463,7 +458,7 @@ bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
         {
             enter();
             Any property = object->call(interfaceNumber, data->number, 0, 0);
-            processResult(npp, property, result);
+            convertToVariant(npp, property, result, true);
             found = true;
             leave();
             break;
