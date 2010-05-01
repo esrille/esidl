@@ -50,7 +50,7 @@ $(w3c_generated_files) : $(w3c_idl_files)
 	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
 
 clean-local:
-	rm -rf org *.h
+	rm -rf org com *.h
 
 EXTRA_DIST = \
 	any.h \

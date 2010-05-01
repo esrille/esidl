@@ -466,7 +466,7 @@ $(w3c_generated_files) : $(w3c_idl_files)
 	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
 
 clean-local:
-	rm -rf org *.h
+	rm -rf org com *.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
