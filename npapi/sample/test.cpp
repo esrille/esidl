@@ -268,6 +268,13 @@ void TestInstance::initialize()
         window->setElement("Test", testClass);
     }
 
+    html::Function* function = interface_cast<html::Function*>(window->getElement("testFunction"));
+    printf("function = %p\n", function);
+    if (function)
+    {
+        function->call(Sequence<Any>({ window, "hello, ", "world." }));
+    }
+
     document = window->getDocument();
     if (document)
     {

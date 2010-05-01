@@ -75,6 +75,12 @@ Object* ProxyControl::createProxy(NPObject* object, const Reflect::Type type)
         }
         if (!type.isObject() || usedHint)
         {
+            if (12 < className.length() && !className.compare(className.length() - 12, 12, "_Constructor"))
+            {
+                className = "Function";
+                usedHint = true;
+                continue;
+            }
             break;
         }
         className = type.getQualifiedName();
@@ -139,7 +145,7 @@ void ProxyControl::untrack(ProxyObject* proxy)
         break;
     }
 }
-    
+
 void ProxyControl::registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias)
 {
     Reflect::Interface interface(meta);
