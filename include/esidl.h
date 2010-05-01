@@ -95,6 +95,7 @@ protected:
     static int          level;          // current include level
     static const char*  baseObjectName; // default base object name
     static const char*  namespaceName;  // flat namespace name if non zero
+    static const char*  defaultPrefix;  // ::org::w3c::dom
 
 public:
     // Attribute bits
@@ -614,6 +615,16 @@ public:
     {
         return namespaceName ;
     }
+
+    static void setDefaultPrefix(const char* name)
+    {
+        defaultPrefix = name;
+    }
+
+    static const char* getDefaultPrefix()
+    {
+        return defaultPrefix;
+    }
 };
 
 class Include : public Node
@@ -805,13 +816,17 @@ public:
         }
         if (getQualifiedName() == "::dom")
         {
-            return "::org::w3c::dom";
+            return defaultPrefix;
         }
         if (Module* parent = dynamic_cast<Module*>(getParent()))
         {
             return parent->getPrefixedName() + body;
         }
-        return "::org::w3c::dom" + body;
+        if (!strcmp(defaultPrefix, "::"))
+        {
+            return body;
+        }
+        return defaultPrefix + body;
     }
 
     virtual Module* isModule(const Node* scope)

@@ -54,6 +54,7 @@ namespace
 int Node::level = 1;
 const char* Node::baseObjectName = "::object";
 const char* Node::namespaceName;
+const char* Node::defaultPrefix = "::org::w3c::dom";
 
 Node* getSpecification()
 {

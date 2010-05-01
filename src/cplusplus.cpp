@@ -29,27 +29,33 @@
 namespace
 {
 
-std::string createFileName(const std::string package, const Node* node)
+std::string createFileName(const std::string prefixedName, const std::string objectTypeName, const char* ext = ".h")
 {
-    std::string filename = package;
-
+    std::string filename = prefixedName;
+    if (filename == Node::getBaseObjectName())
+    {
+        filename.replace(2, filename.length(), objectTypeName);
+    }
     size_t pos = 0;
     for (;;)
     {
-        pos = filename.find('.', pos);
+        pos = filename.find("::", pos);
         if (pos == std::string::npos)
         {
             break;
         }
-        filename[pos] = '/';
+        filename.replace(pos, 2, "/");
     }
-    filename += "/" + CPlusPlus::getClassName(node) + ".h";
-    return filename;
+    if (filename[0] == '/')
+    {
+        filename = filename.substr(1);
+    }
+    return filename + ext;
 }
 
-FILE* createFile(const std::string package, const Node* node)
+FILE* createFile(const std::string prefixedName, const std::string objectTypeName, const char* ext = ".h")
 {
-    std::string filename = createFileName(package, node);
+    std::string filename = createFileName(prefixedName, objectTypeName, ext);
     std::string dir;
     std::string path(filename);
     for (;;)
@@ -64,8 +70,7 @@ FILE* createFile(const std::string package, const Node* node)
         mkdir(dir.c_str(), 0777);
         dir += '/';
     }
-
-    printf("# %s in %s\n", node->getName().c_str(), filename.c_str());
+    printf("# %s\n", filename.c_str());
     return fopen(filename.c_str(), "w");
 }
 
@@ -591,7 +596,7 @@ public:
              i != includeSet.end();
              ++i)
         {
-            std::string name = createFileName(getPackageName(static_cast<Module*>((*i)->getParent())->getPrefixedName()), *i);
+            std::string name = createFileName((*i)->getPrefixedName(), objectTypeName);
             writeln("#include <%s>", name.c_str());
         }
         write("\n");
@@ -610,10 +615,12 @@ public:
 
     size_t enter(std::string name)
     {
+        name = name.substr(2);
+
         std::vector<std::string> prevName = packageName;
         packageName.clear();
 
-        size_t pos = name.rfind('.');
+        size_t pos = name.rfind("::");
         if (pos == std::string::npos)
         {
             pos = 0;
@@ -622,12 +629,12 @@ public:
         {
             size_t start = 0;
             size_t dot;
-            while ((dot = name.find('.', start)) != std::string::npos)
+            while ((dot = name.find("::", start)) != std::string::npos)
             {
                 packageName.push_back(name.substr(start, dot - start));
-                start = dot + 1;
+                start = dot + 2;
             }
-            ++pos;
+            pos += 2;
         }
 
         int i;
@@ -645,7 +652,7 @@ public:
             writeln("namespace %s {", CPlusPlus::getEscapedName(packageName[j]).c_str());
         }
 
-        return pos;
+        return pos + 2;
     }
 
     void closeAll()
@@ -662,7 +669,6 @@ public:
 // Print the required class forward declarations and typedef statments.
 class CPlusPlusImport : public Visitor, public Formatter
 {
-    std::string package;
     const Node* currentNode;
     bool printed;
     std::set<std::string> importSet;
@@ -673,11 +679,8 @@ class CPlusPlusImport : public Visitor, public Formatter
     CPlusPlusNameSpace* ns;
 
 public:
-    CPlusPlusImport(std::string package,
-                    FILE* file, const char* indent,
-                    CPlusPlusNameSpace* ns) :
+    CPlusPlusImport(FILE* file, const char* indent, CPlusPlusNameSpace* ns) :
         Formatter(file, indent),
-        package(package),
         currentNode(0),
         importObjectArray(false),
         ns(ns)
@@ -708,7 +711,7 @@ public:
         {
             if (Module* module = dynamic_cast<Module*>(resolved->getParent()))
             {
-                importSet.insert(CPlusPlus::getPackageName(module->getPrefixedName()) + "." + resolved->getName());
+                importSet.insert(module->getPrefixedName() + "::" + resolved->getName());
             }
         }
         currentNode = saved;
@@ -821,10 +824,9 @@ public:
              i != typedefList.end();
              ++i)
         {
-            if (Module* module = dynamic_cast<Module*>((*i)->getParent()))
+            if (dynamic_cast<Module*>((*i)->getParent()))
             {
-                std::string name = CPlusPlus::getPackageName(module->getPrefixedName()) + "." + (*i)->getName();
-                size_t pos = ns->enter(name);
+                size_t pos = ns->enter((*i)->getPrefixedName());
                 CPlusPlusInterface cplusplusInterface(this);
                 cplusplusInterface.at(*i);
                 newline = true;
@@ -841,11 +843,11 @@ public:
 class CPlusPlusVisitor : public Visitor
 {
     const char* indent;
-
-    std::string prefixedName;
+    std::string objectTypeName;
 
 public:
-    CPlusPlusVisitor(const char* indent = "es") :
+    CPlusPlusVisitor(const char* objectTypeName = "Object", const char* indent = "es") :
+        objectTypeName(objectTypeName),
         indent(indent)
     {
     }
@@ -859,14 +861,6 @@ public:
         visitChildren(node);
     }
 
-    virtual void at(const Module* node)
-    {
-        std::string enclosed = prefixedName;
-        prefixedName = node->getPrefixedName();
-        at(static_cast<const Node*>(node));
-        prefixedName = enclosed;
-    }
-
     virtual void at(const ExceptDcl* node)
     {
         if (1 < node->getRank() || node->isLeaf())
@@ -874,7 +868,8 @@ public:
             return;
         }
 
-        FILE* file = createFile(CPlusPlus::getPackageName(prefixedName), node);
+        std::string prefixedName = node->getPrefixedName();
+        FILE* file = createFile(prefixedName, objectTypeName);
         if (!file)
         {
             return;
@@ -883,17 +878,13 @@ public:
         // preamble
         fprintf(file, "// Generated by esaidl (r%s).\n\n", SVN_REVISION);
 
-        Module* module = dynamic_cast<Module*>(node->getParent());
-        assert(module);
-        std::string name = CPlusPlus::getPackageName(module->getPrefixedName()) + "." + node->getName();
-
-        std::string included = CPlusPlus::getIncludedName(name, indent);
+        std::string included = CPlusPlus::getIncludedName(createFileName(prefixedName, objectTypeName), indent);
         fprintf(file, "#ifndef %s\n", included.c_str());
         fprintf(file, "#define %s\n\n", included.c_str());
 
         // body
         CPlusPlusNameSpace ns(file, indent);
-        ns.enter(name);
+        ns.enter(prefixedName);
 
         CPlusPlusInterface cplusplusInterface(file, indent);
         cplusplusInterface.at(node);
@@ -913,7 +904,8 @@ public:
             return;
         }
 
-        FILE* file = createFile(CPlusPlus::getPackageName(prefixedName), node);
+        std::string prefixedName = node->getPrefixedName();
+        FILE* file = createFile(prefixedName, objectTypeName);
         if (!file)
         {
             return;
@@ -921,14 +913,13 @@ public:
 
         // preamble
         fprintf(file, "// Generated by esidl (r%s).\n\n", SVN_REVISION);
-        std::string name = CPlusPlus::getPackageName(prefixedName) + "." + CPlusPlus::getClassName(node);
-        std::string included = CPlusPlus::getIncludedName(name, indent);
+        std::string included = CPlusPlus::getIncludedName(createFileName(prefixedName, objectTypeName), indent);
         fprintf(file, "#ifndef %s\n", included.c_str());
         fprintf(file, "#define %s\n\n", included.c_str());
 
         if (Interface* constructor = node->getConstructor())
         {
-            fprintf(file, "#include <%s>\n", createFileName(CPlusPlus::getPackageName(prefixedName), constructor).c_str());
+            fprintf(file, "#include <%s>\n", createFileName(constructor->getPrefixedName(), objectTypeName).c_str());
         }
 
         // body
@@ -940,11 +931,11 @@ public:
 
         CPlusPlusNameSpace ns(file, indent);
 
-        CPlusPlusImport import(CPlusPlus::getPackageName(prefixedName), file, indent, &ns);
+        CPlusPlusImport import(file, indent, &ns);
         import.at(node);
         import.print();
 
-        ns.enter(name);
+        ns.enter(prefixedName);
 
         CPlusPlusInterface cplusplusInterface(file, indent);
         cplusplusInterface.at(node);
@@ -972,7 +963,7 @@ public:
 int printCPlusPlus(const char* stringTypeName, const char* objectTypeName,
                    bool useExceptions, bool useVirtualBase, const char* indent)
 {
-    CPlusPlusVisitor visitor(indent);
+    CPlusPlusVisitor visitor(objectTypeName, indent);
     getSpecification()->accept(&visitor);
     return 0;
 }

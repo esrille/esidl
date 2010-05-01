@@ -465,28 +465,13 @@ public:
         return included;
     }
 
-    static std::string getPackageName(std::string prefixedName)
+    std::string getClassName(const Node* node)
     {
-        size_t pos = 0;
-        for (;;)
+        if (node->isBaseObject())
         {
-            pos = prefixedName.find("::", pos);
-            if (pos == std::string::npos)
-            {
-                break;
-            }
-            prefixedName.replace(pos, 2, ".");
+            return objectTypeName;
         }
-        if (prefixedName[0] == '.')
-        {
-            prefixedName = prefixedName.substr(1);
-        }
-        return prefixedName;
-    }
-
-    static std::string getClassName(const Node* node)
-    {
-        std::string className =node->getName();
+        std::string className = node->getName();
 #ifdef USE_CONSTRUCTOR
         if (node->getAttr() & Node::Constructor)
         {

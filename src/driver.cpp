@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
     bool java = false;
     bool cplusplus = false;
     const char* stringTypeName = "char*";   // C++ string type name to be used
-    const char* objectTypeName = "object";  // C++ object type name to be used
+    const char* objectTypeName = "Object";  // C++ object type name to be used
     const char* indent = "es";
 
     for (int i = 1; i < argc; ++i)
@@ -167,6 +167,11 @@ int main(int argc, char* argv[])
                 ++i;
                 objectTypeName = argv[i];
             }
+            else if (strcmp(argv[i], "-prefix") == 0)
+            {
+                ++i;
+                Node::setDefaultPrefix(argv[i]);
+            }
             else if (strcmp(argv[i], "-template") == 0)
             {
                 generic = true;
@@ -239,6 +244,7 @@ int main(int argc, char* argv[])
                         strcmp(argv[i], "-isystem") == 0 ||
                         strcmp(argv[i], "-namespace") == 0 ||
                         strcmp(argv[i], "-object") == 0 ||
+                        strcmp(argv[i], "-prefix") == 0 ||
                         strcmp(argv[i], "-string") == 0)
                     {
                         ++i;
@@ -344,6 +350,7 @@ int main(int argc, char* argv[])
                     strcmp(argv[i], "-isystem") == 0 ||
                     strcmp(argv[i], "-namespace") == 0 ||
                     strcmp(argv[i], "-object") == 0 ||
+                    strcmp(argv[i], "-prefix") == 0 ||
                     strcmp(argv[i], "-string") == 0)
                 {
                     ++i;
