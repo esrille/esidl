@@ -31,9 +31,9 @@ function testVariadic()
 function testObject()
 {
     var obj = new Object();
-    alert(obj.toString());
     var test = new Test();
-    alert(test.testObject(obj) === obj);
+    var obj2 = test.testObject(obj);
+    alert(obj2 === obj);  // should be true
 }
 
 function init()
