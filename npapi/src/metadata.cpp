@@ -23,6 +23,8 @@ using namespace org::w3c::dom;
 
 void initializeMetaData()
 {
+    ProxyControl::registerMetaData(Object::getMetaData(), Proxy_Impl<ProxyObject, Object_Bridge<Any, invoke> >::createInstance);
+
     ProxyControl::registerMetaData(Attr::getMetaData(), Proxy_Impl<ProxyObject, Attr_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(CaretPosition::getMetaData(), Proxy_Impl<ProxyObject, CaretPosition_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(CDATASection::getMetaData(), Proxy_Impl<ProxyObject, CDATASection_Bridge<Any, invoke> >::createInstance);

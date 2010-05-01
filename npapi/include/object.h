@@ -19,18 +19,18 @@
 #define ESNPAPI_OBJECT_H_INCLUDED
 
 #include <reflect.h>
-
-class Any;
+#include <any.h>
 
 class Object
 {
 public:
-    static const char* const getQualifiedName()
-    {
-        return "::Object";
-    }
     virtual ~Object()
     {
+    }
+    static const char* const getQualifiedName()
+    {
+        static const char* qualifiedName = "::Object";
+        return qualifiedName;
     }
     virtual void* queryInterface(const char* qualifiedName)
     {
@@ -40,11 +40,54 @@ public:
         }
         return 0;
     }
+    static const char* const getMetaData()
+    {
+        static const char* metaData =
+            /* 0 */ "I8::Object";
+        return metaData;
+    }
+    static const Reflect::SymbolData* const getSymbolTable()
+    {
+        static const Reflect::SymbolData symbolTable[] =
+        {
+            { 0, 0 },
+        };
+        return symbolTable;
+    }
+
+    virtual const char* getMetaData(unsigned interfaceNumber) const
+    {
+        switch (interfaceNumber)
+        {
+        case 0:
+            return Object::getMetaData();
+        default:
+            return 0;
+        }
+    }
+    virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const
+    {
+        switch (interfaceNumber)
+        {
+        case 0:
+            return Object::getSymbolTable();
+        default:
+            return 0;
+        }
+    }
+    virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments)
+    {
+        return Any();
+    }
+
     virtual unsigned int retain() = 0;
     virtual unsigned int release() = 0;
-    virtual const char* getMetaData(unsigned interfaceNumber) const = 0;
-    virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const = 0;
-    virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) = 0;
+};
+
+template<class ARGUMENT, Any (*invoke)(Object*, unsigned, unsigned, const char*, unsigned, unsigned, ARGUMENT*), unsigned I = 0, class B = Object>
+class Object_Bridge : public B
+{
+public:
 };
 
 template <typename X>

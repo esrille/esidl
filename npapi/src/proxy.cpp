@@ -53,12 +53,6 @@ Object* ProxyControl::createProxy(NPObject* object, const Reflect::Type type)
     }
 
     std::string className = getInterfaceName(npp, object);
-    if (className == "Object")
-    {
-        // TODO: We should define 'Object' interface
-        return 0;
-    }
-
     bool usedHint = false;
     for (;;)
     {
@@ -73,14 +67,14 @@ Object* ProxyControl::createProxy(NPObject* object, const Reflect::Type type)
                 return object;
             }
         }
+        if (12 < className.length() && !className.compare(className.length() - 12, 12, "_Constructor"))
+        {
+            className = "Function";
+            usedHint = true;
+            continue;
+        }
         if (!type.isObject() || usedHint)
         {
-            if (12 < className.length() && !className.compare(className.length() - 12, 12, "_Constructor"))
-            {
-                className = "Function";
-                usedHint = true;
-                continue;
-            }
             break;
         }
         className = type.getQualifiedName();

@@ -294,10 +294,7 @@ std::string getInterfaceName(NPP npp, NPObject* object)
         if (className.compare(0, 8, "[object ", 8) == 0 && className[className.length() - 1] == ']')
         {
             className = className.substr(8, className.length() - 9);
-            if (className != "Object")
-            {
-                break;
-            }
+            break;
         }
         // This object is likely to have a stringifier. Check the constructor name directly.
         NPVariant constructor;
@@ -724,9 +721,17 @@ void convertToVariant(NPP npp, const std::string& value, NPVariant* variant, boo
 
 void convertToVariant(NPP npp, Object* value, NPVariant* variant, bool result)
 {
-    assert(value);
+    if (!value)
+    {
+        NULL_TO_NPVARIANT(*variant);
+        return;
+    }
     if (ProxyObject* proxy = interface_cast<ProxyObject*>(value))
     {
+        if (result)
+        {
+            NPN_RetainObject(proxy->getNPObject());
+        }
         OBJECT_TO_NPVARIANT(proxy->getNPObject(), *variant);
         return;
     }
@@ -738,6 +743,10 @@ void convertToVariant(NPP npp, Object* value, NPVariant* variant, bool result)
             NPObject* object = stubControl->createStub(value);
             if (object)
             {
+                if (result)
+                {
+                    NPN_RetainObject(object);
+                }
                 OBJECT_TO_NPVARIANT(object, *variant);
                 return;
             }

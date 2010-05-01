@@ -95,6 +95,11 @@ public:
         }
         return args.getLength();
     }
+    virtual Object* testObject(Object* value)
+    {
+        printf("testObject: %p\n", value);
+        return value;
+    }
     unsigned int retain()
     {
         return instance->retain(this);
