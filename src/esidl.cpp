@@ -345,6 +345,14 @@ void OpDcl::adjustMethodCount()
     Interface* interface = dynamic_cast<Interface*>(getParent());
     assert(interface);
     interface->addMethodCount(methodCount - 1);
+
+    if (hasCovariantReturnType())
+    {
+        Node* base = resolveInBase(interface, getName());
+        assert(base);
+        base->setAttr(base->getAttr() | OpDcl::HasCovariant);
+        interface->setAttr(interface->getAttr() | OpDcl::HasCovariant);
+    }
 }
 
 Node* OpDcl::getSpec() const

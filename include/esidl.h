@@ -148,6 +148,7 @@ public:
     static const uint32_t ReplaceableNamedProperties=0x10000000;  // TODO: Update metat
 
     // misc. bits
+    static const uint32_t HasCovariant =             0x00010000;
     static const uint32_t HasIndexedProperties =     0x20000000;
     static const uint32_t HasNamedProperties =       0x40000000;
     static const uint32_t UnnamedProperty =          0x80000000;  // This should be banned.
@@ -1630,6 +1631,27 @@ public:
     {
         assert(0 <= i && i < methodCount);
         return (methodCount == 1) ? paramCount : paramCounts[i];
+    }
+
+    Node* hasCovariantReturnType() const
+    {
+        Interface* interface = static_cast<Interface*>(getParent());
+        assert(interface);
+        if (!resolveInBase(interface, getName()))
+        {
+            return 0;
+        }
+        // This node possibly overrides a base class operation.
+        if (ScopedName* name = dynamic_cast<ScopedName*>(getSpec()))
+        {
+            Node* spec = name->search(interface);
+            check(spec, "could not resolved %s.", name->getName().c_str());
+            if (dynamic_cast<Interface*>(spec) && !spec->isBaseObject())
+            {
+                return spec;
+            }
+        }
+        return 0;
     }
 
     virtual Node* getSpec() const;

@@ -23,6 +23,81 @@
 #include <vector>
 #include "cplusplus.h"
 
+class CPlusPlusParam : public Visitor, public Formatter
+{
+    const Node* currentNode;
+
+public:
+    CPlusPlusParam(const Formatter* formatter, const Node* currentNode) :
+        Formatter(formatter),
+        currentNode(currentNode)
+    {
+    }
+
+    virtual void at(const ScopedName* node)
+    {
+        Node* resolved = node->search(currentNode);
+        node->check(resolved, "%s could not resolved.", node->getName().c_str());
+        const Node* saved = currentNode;
+        if (resolved->getParent())
+        {
+            currentNode = resolved->getParent();
+        }
+        if (!dynamic_cast<Interface*>(resolved) && !dynamic_cast<ExceptDcl*>(resolved))
+        {
+            resolved->accept(this);
+        }
+        else
+        {
+            write("0");
+        }
+        currentNode = saved;
+    }
+
+    virtual void at(const Member* node)
+    {
+        if (node->isTypedef(node->getParent()))
+        {
+            node->getSpec()->accept(this);
+        }
+    }
+
+    virtual void at(const Type* node)
+    {
+        if (node->getName() == "boolean")
+        {
+            write("false");
+        }
+        else if (node->getName() == "string")
+        {
+            write("\"\"");
+        }
+        else
+        {
+            write("0");
+        }
+    }
+
+    virtual void at(const SequenceType* node)
+    {
+        write("{}");
+    }
+
+    virtual void at(const ArrayType* node)
+    {
+        write("0");
+    }
+
+    virtual void at(const ParamDcl* node)
+    {
+        if (!node->isVariadic())
+        {
+            Node* spec = node->getSpec();
+            spec->accept(this);
+        }
+    }
+};
+
 class CPlusPlusTemplate : public CPlusPlus
 {
     unsigned methodNumber;
@@ -254,20 +329,35 @@ public:
         ++methodNumber;
     }
 
-    virtual void at(const OpDcl* node)
+    void writeDecltype(const OpDcl* node)
     {
-        writetab();
-        CPlusPlus::at(node);
-        writeln("{");
+        write("decltype((reinterpret_cast<B*>(0))->");
+        write("%s(", getEscapedName(node->getName()).c_str());
+        NodeList::iterator it = node->begin();
+        for (int i = 0; i < getParamCount(); ++i, ++it)
+        {
+            ParamDcl* param = static_cast<ParamDcl*>(*it);
+            if (i != 0)
+            {
+                write(", ");
+            }
+            flush();
+            CPlusPlusParam defaultValue(this, dynamic_cast<Interface*>(node->getParent()));
+            param->accept(&defaultValue);
+            defaultValue.flush();
+        }
+        write("))");
+    }
 
+    void atOpDclBody(const OpDcl* node)
+    {
+        writeln("{");
             // Invoke
             writeInvoke(node, node->getSpec());
             write("%s::%s<ARGUMENT, invoke>(this, I, %u",
-                  className.c_str(),
-                  getEscapedName(node->getName()).c_str(),
-                  methodNumber);
-            ++methodNumber;
-
+                    className.c_str(),
+                    getEscapedName(node->getName()).c_str(),
+                    methodNumber);
             if (0 < getParamCount())
             {
                 NodeList::iterator it = node->begin();
@@ -278,8 +368,98 @@ public:
                 }
             }
             write(");\n");
-
         writeln("}");
+    }
+
+    virtual void at(const OpDcl* node)
+    {
+        if (node->getAttr() & OpDcl::HasCovariant)
+        {
+            writeln("// %s() can be overridden", node->getName().c_str());
+            writetab();
+            write("virtual ");
+            writeDecltype(node);
+            write(" %s(", getEscapedName(node->getName()).c_str());
+            writeParameters(node);
+            write(")");
+            if (useExceptions && node->getRaises())
+            {
+                write(" throw(");
+                printChildren(node->getRaises(), ", ");
+                write(")");
+            }
+            writeln("{");
+            {
+                writetab();
+                write("return %s(", getEscapedName(node->getName()).c_str());
+                NodeList::iterator it = node->begin();
+                for (int i = 0; i < getParamCount(); ++i, ++it)
+                {
+                    ParamDcl* param = static_cast<ParamDcl*>(*it);
+                    write("%s, ", getEscapedName(param->getName()).c_str());
+                }
+                write("std::is_same<");
+                writeDecltype(node);
+                write(", ");
+                Node* spec = node->getSpec();
+                spec->accept(this);
+                write("*>());\n");
+            }
+            writeln("}");
+
+            // true_type
+            writetab();
+            writeDecltype(node);
+            write(" %s(", getEscapedName(node->getName()).c_str());
+            {
+                NodeList::iterator it = node->begin();
+                for (int i = 0; i < getParamCount(); ++i, ++it)
+                {
+                    ParamDcl* param = static_cast<ParamDcl*>(*it);
+                    param->accept(this);
+                    write(", ");
+                }
+            }
+            write("std::true_type)");
+            if (useExceptions && node->getRaises())
+            {
+                write(" throw(");
+                printChildren(node->getRaises(), ", ");
+                write(")");
+            }
+            atOpDclBody(node);
+
+            // false_type
+            writetab();
+            writeDecltype(node);
+            write(" %s(", getEscapedName(node->getName()).c_str());
+            {
+                NodeList::iterator it = node->begin();
+                for (int i = 0; i < getParamCount(); ++i, ++it)
+                {
+                    ParamDcl* param = static_cast<ParamDcl*>(*it);
+                    param->accept(this);
+                    write(", ");
+                }
+            }
+            write("std::false_type)");
+            if (useExceptions && node->getRaises())
+            {
+                write(" throw(");
+                printChildren(node->getRaises(), ", ");
+                write(")");
+            }
+            writeln("{");
+                writeln("return 0;");
+            writeln("}");
+        }
+        else
+        {
+            writetab();
+            CPlusPlus::at(node);
+            atOpDclBody(node);
+        }
+        ++methodNumber;
         offset += node->getMetaOp(optionalStage).length();
     }
 };

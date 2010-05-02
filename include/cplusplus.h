@@ -189,7 +189,7 @@ public:
     {
         if (node->getAttr() & Node::Nullable)
         {
-            write ("Nullable<");
+            write("Nullable<");
         }
         if (node->getName() == "boolean")
         {
@@ -233,7 +233,7 @@ public:
         }
         if (node->getAttr() & Node::Nullable)
         {
-            write (">");
+            write(">");
         }
     }
 
@@ -246,7 +246,7 @@ public:
         {
             write("*");
         }
-        write (">");
+        write(">");
     }
 
     virtual void at(const ArrayType* node)

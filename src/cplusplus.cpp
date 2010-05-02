@@ -562,24 +562,14 @@ public:
 
     virtual void at(const OpDcl* node)
     {
-        Interface* interface = static_cast<Interface*>(node->getParent());
-        assert(interface);
-        if (resolveInBase(interface, node->getName()))
+        if (Node* spec = node->hasCovariantReturnType())
         {
-            // This node possibly overrides a base class operation.
-            // It might need to have the interface definition of the return type.
+            // Include the interface definition of the return type
+            // to represent it is derived from the return type of
+            // the operation in an ancestor.
             // cf. namedItem() in HTMLPropertiesCollection
-            if (ScopedName* name = dynamic_cast<ScopedName*>(node->getSpec()))
-            {
-                Node* spec = name->search(currentNode);
-                node->check(spec, "could not resolved %s.", name->getName().c_str());
-                if (dynamic_cast<Interface*>(spec) && !spec->isBaseObject())
-                {
-                    includeSet.insert(spec);
-                }
-            }
+            includeSet.insert(spec);
         }
-
         if (useExceptions && node->getRaises())
         {
             visitChildren(node->getRaises());
@@ -917,6 +907,10 @@ public:
         fprintf(file, "#ifndef %s\n", included.c_str());
         fprintf(file, "#define %s\n\n", included.c_str());
 
+        if (node->getAttr() | OpDcl::HasCovariant)
+        {
+            fprintf(file, "#include <type_traits>\n");
+        }
         if (Interface* constructor = node->getConstructor())
         {
             fprintf(file, "#include <%s>\n", createFileName(constructor->getPrefixedName(), objectTypeName).c_str());

@@ -79,7 +79,7 @@ public:
         write("class %s_Proxy : ", node->getName().c_str());
         if (Node* extends = node->getExtends())
         {
-            write ("public ");
+            write("public ");
             int n = 0;
             for (NodeList::reverse_iterator i = extends->rbegin(); i != extends->rend(); ++i)
             {
