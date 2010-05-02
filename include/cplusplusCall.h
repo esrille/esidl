@@ -59,7 +59,7 @@ public:
                 unindent();
                 writeln("case %u:", interfaceNumber);
                 indent();
-                writeln("return %s::getMetaData();", getScopedName(prefixedModuleName, (*i)->getPrefixedName()).c_str());
+                writeln("return %s::getMetaData();", getScopedName(prefixedModuleName, getInterfaceName((*i)->getPrefixedName())).c_str());
             }
             unindent();
             writeln("default:");
@@ -77,7 +77,7 @@ public:
                 unindent();
                 writeln("case %u:", interfaceNumber);
                 indent();
-                writeln("return %s::getSymbolTable();", getScopedName(prefixedModuleName, (*i)->getPrefixedName()).c_str());
+                writeln("return %s::getSymbolTable();", getScopedName(prefixedModuleName, getInterfaceName((*i)->getPrefixedName())).c_str());
             }
             unindent();
             writeln("default:");

@@ -244,7 +244,7 @@ public:
         }
 
         writeln("static const char* const getQualifiedName() {");
-            writeln("static const char* qualifiedName = \"%s\";", node->getQualifiedName().c_str());
+            writeln("static const char* qualifiedName = \"%s\";", getInterfaceName(node->getQualifiedName()).c_str());
             writeln("return qualifiedName;");
         writeln("}");
 
@@ -647,10 +647,13 @@ public:
 
     void closeAll()
     {
-        write("\n");
-        for (int i = 0; i < packageName.size(); ++i)
+        if (0 < packageName.size())
         {
-            writeln("}");
+            write("\n");
+            for (int i = 0; i < packageName.size(); ++i)
+            {
+                writeln("}");
+            }
         }
         packageName.clear();
     }
