@@ -907,7 +907,7 @@ public:
         fprintf(file, "#ifndef %s\n", included.c_str());
         fprintf(file, "#define %s\n\n", included.c_str());
 
-        if (node->getAttr() | OpDcl::HasCovariant)
+        if (node->getAttr() & OpDcl::HasCovariant)
         {
             fprintf(file, "#include <type_traits>\n");
         }
