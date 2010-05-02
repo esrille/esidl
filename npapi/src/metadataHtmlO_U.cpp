@@ -33,7 +33,6 @@ void initializeHtmlMetaDataO_U()
     ProxyControl::registerMetaData(html::HTMLParamElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLParamElement_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::HTMLPreElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLPreElement_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::HTMLProgressElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLProgressElement_Bridge<Any, invoke> >::createInstance);
-    // TODO: HTMLPropertiesCollection overrides HTMLCollection in a way the current Bridge classes can not handle.
     ProxyControl::registerMetaData(html::HTMLPropertiesCollection::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLPropertiesCollection_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::HTMLQuoteElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLQuoteElement_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::HTMLScriptElement::getMetaData(), Proxy_Impl<ProxyObject, html::HTMLScriptElement_Bridge<Any, invoke> >::createInstance);
