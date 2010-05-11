@@ -475,7 +475,7 @@ public:
 #ifdef USE_CONSTRUCTOR
         if (node->getAttr() & Node::Constructor)
         {
-            className = node->getParent()->getName() + "_" + className;
+            className = node->getParent()->getName() + node->getCtorScope() + className;
         }
 #endif
         return className;

@@ -96,6 +96,7 @@ protected:
     static const char*  baseObjectName; // default base object name
     static const char*  namespaceName;  // flat namespace name if non zero
     static const char*  defaultPrefix;  // ::org::w3c::dom
+    static const char*  ctorScope;      // "::" by default. could be "_"
 
 public:
     // Attribute bits
@@ -625,6 +626,16 @@ public:
     static const char* getDefaultPrefix()
     {
         return defaultPrefix;
+    }
+
+    static void setCtorScope(const char* name)
+    {
+        ctorScope = name;
+    }
+
+    static const char* getCtorScope()
+    {
+        return ctorScope;
     }
 };
 

@@ -321,6 +321,11 @@ int main(int argc, char* argv[])
 
     setBaseFilename("");
 
+    if (java || cplusplus)
+    {
+        Node::setCtorScope("_");
+    }
+
     ProcessExtendedAttributes processExtendedAttributes;
     getSpecification()->accept(&processExtendedAttributes);
 

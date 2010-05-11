@@ -45,7 +45,7 @@ FILE* createFile(const std::string package, const Node* node)
     filename += "/";
     if (node->getAttr() & Node::Constructor)
     {
-        filename += node->getParent()->getName() + "_";
+        filename += node->getParent()->getName() + node->getCtorScope();
     }
     filename += node->getName() + ".java";
 #endif

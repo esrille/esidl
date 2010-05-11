@@ -55,6 +55,7 @@ int Node::level = 1;
 const char* Node::baseObjectName = "::object";
 const char* Node::namespaceName;
 const char* Node::defaultPrefix = "::org::w3c::dom";
+const char* Node::ctorScope = "::";
 
 Node* getSpecification()
 {
@@ -187,7 +188,7 @@ std::string Node::getQualifiedName() const
     std::string qualifiedName;
     for (const Node* node = this; node && node->name != ""; node = node->getParent())
     {
-        qualifiedName = (node->isConstructor() ? "_" : "::") + node->name + qualifiedName;
+        qualifiedName = (node->isConstructor() ? ctorScope : "::") + node->name + qualifiedName;
     }
     return qualifiedName;
 }
@@ -208,7 +209,7 @@ std::string Node::getPrefixedName() const
 {
     if (Node* parent = getParent())
     {
-        return parent->getPrefixedName() + (isConstructor() ? "_" : "::") + getName();
+        return parent->getPrefixedName() + (isConstructor() ? ctorScope : "::") + getName();
     }
     return getName();
 }
