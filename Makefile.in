@@ -57,9 +57,9 @@ am__esidl_SOURCES_DIST = include/cplusplus.h include/cplusplusCall.h \
 	include/cplusplusTemplate.h include/cxx.h include/esidl.h \
 	include/expr.h include/formatter.h include/forward.h \
 	include/info.h include/java.h include/meta.h include/reflect.h \
-	include/utf.h src/cplusplus.cpp src/cxx.cpp src/driver.cpp \
-	src/esidl.cpp src/java.cpp src/lexer.ll src/parser.yy \
-	src/print.cpp src/skeleton.cpp src/template.cpp
+	include/sheet.h include/utf.h src/cplusplus.cpp src/cxx.cpp \
+	src/driver.cpp src/esidl.cpp src/java.cpp src/lexer.ll \
+	src/parser.yy src/print.cpp src/skeleton.cpp src/template.cpp
 @NACL_FALSE@am_esidl_OBJECTS = esidl-cplusplus.$(OBJEXT) \
 @NACL_FALSE@	esidl-cxx.$(OBJEXT) esidl-driver.$(OBJEXT) \
 @NACL_FALSE@	esidl-esidl.$(OBJEXT) esidl-java.$(OBJEXT) \
@@ -303,6 +303,7 @@ DIST_SUBDIRS = testsuite java cplusplus npapi
 @NACL_FALSE@	include/java.h \
 @NACL_FALSE@	include/meta.h \
 @NACL_FALSE@	include/reflect.h \
+@NACL_FALSE@	include/sheet.h \
 @NACL_FALSE@	include/utf.h \
 @NACL_FALSE@	src/cplusplus.cpp \
 @NACL_FALSE@	src/cxx.cpp \

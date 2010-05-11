@@ -17,6 +17,7 @@
 
 #include "esidl.h"
 #include "meta.h"
+#include "sheet.h"
 
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -92,6 +93,7 @@ int main(int argc, char* argv[])
     bool useVirtualBase = false;
     bool java = false;
     bool cplusplus = false;
+    bool sheet = false;
     const char* stringTypeName = "char*";   // C++ string type name to be used
     const char* objectTypeName = "Object";  // C++ object type name to be used
     const char* indent = "es";
@@ -175,6 +177,10 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-template") == 0)
             {
                 generic = true;
+            }
+            else if (strcmp(argv[i], "-sheet") == 0)
+            {
+                sheet = true;
             }
             else if (strcmp(argv[i], "-skeleton") == 0)
             {
@@ -321,7 +327,7 @@ int main(int argc, char* argv[])
 
     setBaseFilename("");
 
-    if (java || cplusplus)
+    if (java || cplusplus || sheet)
     {
         Node::setCtorScope("_");
     }
@@ -342,6 +348,12 @@ int main(int argc, char* argv[])
     else if (cplusplus)
     {
         result = printCPlusPlus(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+    }
+    else if (sheet)
+    {
+        Sheet visitor;
+        getSpecification()->accept(&visitor);
+        result = EXIT_SUCCESS;
     }
     else
     {

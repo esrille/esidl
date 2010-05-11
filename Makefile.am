@@ -40,6 +40,7 @@ esidl_SOURCES = \
 	include/java.h \
 	include/meta.h \
 	include/reflect.h \
+	include/sheet.h \
 	include/utf.h \
 	src/cplusplus.cpp \
 	src/cxx.cpp \
