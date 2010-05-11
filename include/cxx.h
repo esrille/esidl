@@ -190,6 +190,10 @@ public:
         {
             write(stringTypeName.c_str());
         }
+        else if (node->getName() == "Date")
+        {
+            write("unsigned long long");
+        }
         else
         {
             write("%s", node->getName().c_str());
