@@ -2,21 +2,26 @@
 cd
 mkdir nacl
 cd nacl
-wget http://build.chromium.org/buildbot/nacl_archive/nacl/toolchain/latest/naclsdk_linux_x86.tgz
-tar -zxvf naclsdk_linux_x86.tgz
-export PATH=`pwd`/sdk/nacl-sdk/bin:$PATH
+wget http://build.chromium.org/buildbot/nacl_archive/nacl_new_sdk/naclsdk_linux.tgz
+echo export NACL_SDK=`pwd`/`tar -tzf naclsdk_linux.tgz | head -n 1 | tr -d /` > naclvars
+echo export 'PATH=$NACL_SDK/toolchain/linux_x86/bin:$PATH' >> naclvars
+source naclvars
+tar -zxvf naclsdk_linux.tgz
 mkdir esidl
 cd esidl
 svn checkout http://es-operating-system.googlecode.com/svn/trunk/esidl src
 mkdir obj
 cd obj
-../src/configure --prefix=`pwd`/../../sdk/nacl-sdk --disable-java --disable-cplusplus --disable-npapi
+../src/configure --prefix=$NACL_SDK/toolchain/linux_x86 --disable-java --disable-cplusplus --disable-npapi
 make
 make install
 cd ..
 mkdir nacl
 cd nacl
-CXXFLAGS='-fno-rtti -fno-exceptions' ../src/configure --disable-java --host=nacl --target=nacl
+CXXFLAGS='-fno-rtti -fno-exceptions' ../src/configure --prefix=$NACL_SDK/toolchain/linux_x86 --htmldir=$NACL_SDK/../esidl/examples --disable-java --host=nacl --target=nacl
 make
-# install npapi/sample/npessample.nexe and ../src/npapi/sample/sample.nacl.html
-
+make install
+cd ../examples
+python -m CGIHTTPServer &
+/opt/google/chrome/google-chrome --enable-nacl http://localhost:8000/
+kill %python
