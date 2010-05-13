@@ -17,6 +17,7 @@
 
 
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -44,7 +45,8 @@ target_triplet = @target@
 @NACL_FALSE@	npn_gate.cpp
 
 subdir = npapi/sample
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
+DIST_COMMON = $(dist_html_DATA) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -73,7 +75,8 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
+	"$(DESTDIR)$(htmldir)" "$(DESTDIR)$(htmldir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libnpesmd5sum_la_LIBADD =
 am__libnpesmd5sum_la_SOURCES_DIST = np_entry.cpp npp_gate.cpp \
@@ -176,6 +179,7 @@ DIST_SOURCES = $(am__libnpesmd5sum_la_SOURCES_DIST) \
 	$(am__libnpesxhr_la_SOURCES_DIST) \
 	$(am__npesmd5sum_SOURCES_DIST) $(am__npespaint_SOURCES_DIST) \
 	$(am__npestest_SOURCES_DIST) $(am__npesxhr_SOURCES_DIST)
+DATA = $(dist_html_DATA) $(nodist_html_DATA)
 HEADERS = $(nodist_noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -335,20 +339,23 @@ cpp_source_files = np_entry.cpp npp_gate.cpp $(am__append_2)
 @NACL_TRUE@npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
 @NACL_TRUE@npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
 EXTRA_DIST = \
+	md5.idl \
+	test.idl 
+
+dist_html_DATA = \
 	md5sum.html \
 	md5sum.nacl.html \
-	md5.idl \
 	paint.html \
 	paint.nacl.html \
 	eraser.png pen.png tools.png \
 	test.html \
 	test.nacl.html \
-	test.idl \
 	red.css green.css blue.css \
 	xhr.html \
 	xhr.nacl.html \
 	xhr.txt
 
+@NACL_TRUE@nodist_html_DATA = $(bin_PROGRAMS)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -844,6 +851,46 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-dist_htmlDATA: $(dist_html_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(htmldir)" || $(MKDIR_P) "$(DESTDIR)$(htmldir)"
+	@list='$(dist_html_DATA)'; test -n "$(htmldir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(htmldir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(htmldir)" || exit $$?; \
+	done
+
+uninstall-dist_htmlDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_html_DATA)'; test -n "$(htmldir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(htmldir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(htmldir)" && rm -f $$files
+install-nodist_htmlDATA: $(nodist_html_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(htmldir)" || $(MKDIR_P) "$(DESTDIR)$(htmldir)"
+	@list='$(nodist_html_DATA)'; test -n "$(htmldir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(htmldir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(htmldir)" || exit $$?; \
+	done
+
+uninstall-nodist_htmlDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(nodist_html_DATA)'; test -n "$(htmldir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(htmldir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(htmldir)" && rm -f $$files
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -933,11 +980,11 @@ distdir: $(DISTFILES)
 check-am: all-am
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
-all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(DATA) $(HEADERS)
 install-binPROGRAMS: install-libLTLIBRARIES
 
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(htmldir)" "$(DESTDIR)$(htmldir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -990,7 +1037,7 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-dist_htmlDATA install-nodist_htmlDATA
 
 install-dvi: install-dvi-am
 
@@ -1036,7 +1083,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
+uninstall-am: uninstall-binPROGRAMS uninstall-dist_htmlDATA \
+	uninstall-libLTLIBRARIES uninstall-nodist_htmlDATA
 
 .MAKE: all check install install-am install-strip
 
@@ -1045,15 +1093,17 @@ uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 	ctags dist-hook distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-libLTLIBRARIES \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-binPROGRAMS uninstall-libLTLIBRARIES
+	install-data install-data-am install-dist_htmlDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am \
+	install-libLTLIBRARIES install-man install-nodist_htmlDATA \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am \
+	uninstall-binPROGRAMS uninstall-dist_htmlDATA \
+	uninstall-libLTLIBRARIES uninstall-nodist_htmlDATA
 
 
 vpath %.idl = $(srcdir)

@@ -65,19 +65,25 @@ npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.c
 endif
 
 EXTRA_DIST = \
+	md5.idl \
+	test.idl 
+
+dist_html_DATA = \
 	md5sum.html \
 	md5sum.nacl.html \
-	md5.idl \
 	paint.html \
 	paint.nacl.html \
 	eraser.png pen.png tools.png \
 	test.html \
 	test.nacl.html \
-	test.idl \
 	red.css green.css blue.css \
 	xhr.html \
 	xhr.nacl.html \
 	xhr.txt
+
+if NACL
+nodist_html_DATA = $(bin_PROGRAMS)
+endif
 
 clean-local:
 	-rm -rf com org
