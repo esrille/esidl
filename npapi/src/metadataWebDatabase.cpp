@@ -37,4 +37,10 @@ void initializeWebDatabaseMetaData()
     ProxyControl::registerMetaData(webdatabase::SQLTransactionSyncCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionSyncCallback_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(webdatabase::SQLTransactionSync::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLTransactionSync_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(webdatabase::SQLVoidCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLVoidCallback_Bridge<Any, invoke> >::createInstance);
+
+    //
+    // Workaround for WebKit
+    //
+    ProxyControl::registerMetaData(webdatabase::SQLVoidCallback::getMetaData(), Proxy_Impl<ProxyObject, webdatabase::SQLVoidCallback_Bridge<Any, invoke> >::createInstance,
+                                   "VoidCallback");
 }
