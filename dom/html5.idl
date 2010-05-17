@@ -965,6 +965,7 @@ interface Window {
   // the current browsing context
   readonly attribute WindowProxy window;
   readonly attribute WindowProxy self;
+  // readonly attribute Document document;
            attribute DOMString name;
   [PutForwards=href] readonly attribute Location location;
   readonly attribute History history;
@@ -977,6 +978,7 @@ interface Window {
   [Replaceable] readonly attribute BarProp statusbar;
   [Replaceable] readonly attribute BarProp toolbar;
   void close();
+  void stop();
   void focus();
   void blur();
 
@@ -989,7 +991,7 @@ interface Window {
   readonly attribute Element frameElement;
   WindowProxy open(in optional DOMString url, in optional DOMString target, in optional DOMString features, in optional DOMString replace);
   getter WindowProxy (in unsigned long index);
-  getter any (in DOMString name);  // cf. http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#the-window-object
+  getter any (in DOMString name);
   setter void (in DOMString name, in any value);  // for [ReplaceableNamedProperties]
 
   // the user agent
@@ -1002,6 +1004,9 @@ interface Window {
   DOMString prompt(in DOMString message, in optional DOMString default);
   void print();
   any showModalDialog(in DOMString url, in optional any argument);
+
+  // cross-document messaging
+  void postMessage(in any message, in DOMString targetOrigin, in optional MessagePortArray ports);
 
   // event handler IDL attributes
            attribute Function onabort;
