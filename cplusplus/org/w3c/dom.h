@@ -458,6 +458,7 @@
 #include <org/w3c/dom/webgl/WebGLBuffer.h>
 #include <org/w3c/dom/webgl/WebGLByteArray.h>
 #include <org/w3c/dom/webgl/WebGLContextAttributes.h>
+#include <org/w3c/dom/webgl/WebGLContextLostEvent.h>
 #include <org/w3c/dom/webgl/WebGLFloatArray.h>
 #include <org/w3c/dom/webgl/WebGLFramebuffer.h>
 #include <org/w3c/dom/webgl/WebGLIntArray.h>
@@ -466,7 +467,6 @@
 #include <org/w3c/dom/webgl/WebGLProgram.h>
 #include <org/w3c/dom/webgl/WebGLRenderbuffer.h>
 #include <org/w3c/dom/webgl/WebGLRenderingContext.h>
-#include <org/w3c/dom/webgl/WebGLResourceLostEvent.h>
 #include <org/w3c/dom/webgl/WebGLShader.h>
 #include <org/w3c/dom/webgl/WebGLShortArray.h>
 #include <org/w3c/dom/webgl/WebGLTexture.h>
