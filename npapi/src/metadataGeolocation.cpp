@@ -31,4 +31,10 @@ void initializeGeolocationMetaData()
     ProxyControl::registerMetaData(geolocation::PositionError::getMetaData(), Proxy_Impl<ProxyObject, geolocation::PositionError_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(geolocation::Position::getMetaData(), Proxy_Impl<ProxyObject, geolocation::Position_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(geolocation::PositionOptions::getMetaData(), Proxy_Impl<ProxyObject, geolocation::PositionOptions_Bridge<Any, invoke> >::createInstance);
+
+    //
+    // Workaround for WebKit
+    //
+    ProxyControl::registerMetaData(geolocation::Position::getMetaData(), Proxy_Impl<ProxyObject, geolocation::Position_Bridge<Any, invoke> >::createInstance,
+                                   "Geoposition");
 }

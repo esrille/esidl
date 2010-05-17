@@ -84,4 +84,6 @@ void initializeHtmlMetaData()
                                    "DOMSelection");
     ProxyControl::registerMetaData(html::Window::getMetaData(), Proxy_Impl<ProxyObject, html::Window_Bridge<Any, invoke> >::createInstance,
                                    "DOMWindow");
+    ProxyControl::registerMetaData(html::StyleMedia::getMetaData(), Proxy_Impl<ProxyObject, html::StyleMedia_Bridge<Any, invoke> >::createInstance,
+                                   "Media");
 }
