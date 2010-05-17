@@ -793,6 +793,11 @@ public:
         node->getSpec()->accept(this);
     }
 
+    virtual void at(const ConstDcl* node)
+    {
+        node->getSpec()->accept(this);
+    }
+
     void print()
     {
         bool newline = false;
