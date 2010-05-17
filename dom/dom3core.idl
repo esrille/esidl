@@ -50,8 +50,16 @@ module dom {
     // Introduced in XHR Level 2:
     const unsigned short ABORT_ERR                   = 20;
 
+    // Introduced in HTML5:
+    const unsigned short URL_MISMATCH_ERR            = 21;
+    const unsigned short QUOTA_EXCEEDED_ERR          = 22;
+
     // Introduced in XHR Level 2:
     const unsigned short TIMEOUT_ERR                 = 23;
+
+    // Introduced in HTML5:
+    const unsigned short PARSE_ERR                   = 81;
+    const unsigned short SERIALIZE_ERR               = 82;
 
     unsigned short code;
   };
