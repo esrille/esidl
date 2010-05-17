@@ -98,6 +98,7 @@ EXTRA_DIST = \
 	dom/NOTICE \
 	dom/postmsg.idl \
 	dom/progress-events.idl \
+	dom/selectors.idl \
 	dom/smil.idl \
 	dom/svg.idl \
 	dom/webdatabase.idl \

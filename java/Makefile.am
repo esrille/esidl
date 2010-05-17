@@ -34,6 +34,7 @@ w3c_idl_files = \
 	microdata.idl \
 	postmsg.idl \
 	progress-events.idl \
+	selectors.idl \
 	smil.idl \
 	svg.idl \
 	webdatabase.idl \
