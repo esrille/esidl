@@ -3,7 +3,7 @@
  *
  * Web Notifications IDL definitions scraped from the W3C specification, revised for esidl.
  *
- * Original W3C Editor's Draft 10 February 2010:
+ * Original W3C Editor's Draft 22 April 2010
  *
  *   http://dev.w3.org/2006/webapi/WebNotifications/publish/
  */
@@ -11,9 +11,9 @@
 module webnotifications {
 
 typedef events::EventTarget EventTarget;
-typedef html::Window Window;
+typedef html::Navigator Navigator;
 typedef html::Function Function;
-typedef workers::WorkerGlobalScope WorkerGlobalScope;
+typedef workers::WorkerNavigator WorkerNavigator;
 
 interface Notification : EventTarget {
 
@@ -23,6 +23,8 @@ interface Notification : EventTarget {
            attribute Function  ondisplay;
            attribute Function  onerror;
            attribute Function  onclose;
+           attribute long      replaceId;
+           attribute string    dir;
 };
 
 interface NotificationCenter {
@@ -39,12 +41,13 @@ interface NotificationCenter {
                                         // raises(Exception);
 };
 
-[Supplemental] interface Window {
-           attribute NotificationCenter  notifications;
-};
+Navigator implements NotificationCenter;
 
-[Supplemental] interface WorkerGlobalScope {
-           attribute NotificationCenter  notifications;
+WorkerNavigator implements NotificationCenter;
+
+[Supplemental] interface NotificationCenter {
+  Notification createWebNotification(in DOMString url);
+                                        // raises(Exception);
 };
 
 };
