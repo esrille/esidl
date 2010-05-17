@@ -116,6 +116,7 @@ void initializeMetaData()
     ProxyControl::registerMetaData(stylesheets::MediaList::getMetaData(), Proxy_Impl<ProxyObject, stylesheets::MediaList_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(stylesheets::StyleSheet::getMetaData(), Proxy_Impl<ProxyObject, stylesheets::StyleSheet_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(traversal::DocumentTraversal::getMetaData(), Proxy_Impl<ProxyObject, traversal::DocumentTraversal_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(traversal::ElementTraversal::getMetaData(), Proxy_Impl<ProxyObject, traversal::ElementTraversal_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(traversal::NodeFilter::getMetaData(), Proxy_Impl<ProxyObject, traversal::NodeFilter_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(traversal::NodeIterator::getMetaData(), Proxy_Impl<ProxyObject, traversal::NodeIterator_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(traversal::TreeWalker::getMetaData(), Proxy_Impl<ProxyObject, traversal::TreeWalker_Bridge<Any, invoke> >::createInstance);

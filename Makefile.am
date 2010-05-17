@@ -88,6 +88,7 @@ EXTRA_DIST = \
 	dom/dom3ls.idl \
 	dom/dom3validation.idl \
 	dom/dom3xpath.idl \
+	dom/elementtraversal.idl \
 	dom/eventsource.idl \
 	dom/file.idl \
 	dom/geolocation.idl \

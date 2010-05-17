@@ -200,6 +200,7 @@ w3c_idl_files = \
 	dom3ls.idl \
 	dom3validation.idl \
 	dom3xpath.idl \
+	elementtraversal.idl \
 	eventsource.idl \
 	file.idl \
 	geolocation.idl \

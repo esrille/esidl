@@ -424,6 +424,7 @@
 #include <org/w3c/dom/svg/SVGZoomAndPan.h>
 #include <org/w3c/dom/svg/SVGZoomEvent.h>
 #include <org/w3c/dom/traversal/DocumentTraversal.h>
+#include <org/w3c/dom/traversal/ElementTraversal.h>
 #include <org/w3c/dom/traversal/NodeFilter.h>
 #include <org/w3c/dom/traversal/NodeIterator.h>
 #include <org/w3c/dom/traversal/TreeWalker.h>
