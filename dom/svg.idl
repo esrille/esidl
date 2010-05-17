@@ -6,6 +6,10 @@
  * Original W3C Recommendation 14 January 2003:
  *
  *   http://www.w3.org/TR/2003/REC-SVG11-20030114/
+ *
+ * Original W3C Editor’s Draft 26 April 2010 (Second Edition):
+ *
+ *   http://dev.w3.org/SVG/profiles/1.1F2/publish/
  */
 
 module svg
@@ -1425,6 +1429,10 @@ module svg
     readonly attribute SVGAnimatedString in1;
     readonly attribute SVGAnimatedNumber surfaceScale;
     readonly attribute SVGAnimatedNumber diffuseConstant;
+
+    // Introduced in Second Edition
+    readonly attribute SVGAnimatedNumber kernelUnitLengthX;
+    readonly attribute SVGAnimatedNumber kernelUnitLengthY;
   };
 
   interface SVGFEDistantLightElement : SVGElement {
@@ -1490,7 +1498,9 @@ module svg
                 SVGURIReference,
                 SVGLangSpace,
                 SVGExternalResourcesRequired,
-                SVGFilterPrimitiveStandardAttributes {};
+                SVGFilterPrimitiveStandardAttributes {
+    readonly attribute SVGAnimatedPreserveAspectRatio preserveAspectRatio;
+  };
 
   interface SVGFEMergeElement :
                 SVGElement,
