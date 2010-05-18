@@ -195,7 +195,11 @@ public:
             writetab();
         }
 
+#ifdef USE_ABSTRACT
         write("public %s ", constructor ? "abstract class" : "interface");
+#else
+        write("public interface ");
+#endif
 
 #ifdef USE_CONSTRUCTOR
         if (node->getAttr() & Interface::Constructor)
@@ -213,7 +217,11 @@ public:
 
         if (node->getExtends())
         {
+#ifdef USE_ABSTRACT
             const char* separator = constructor ? " implements " : " extends ";
+#else
+            const char* separator = " extends ";
+#endif
             for (NodeList::iterator i = node->getExtends()->begin();
                  i != node->getExtends()->end();
                  ++i)
@@ -230,7 +238,7 @@ public:
         }
         write(" {\n");
 
-#ifdef USE_CONSTRUCTOR
+#ifdef USE_ABSTRACT
         if (constructor)
         {
             methodAccessLevel = "public abstract";
@@ -254,7 +262,7 @@ public:
             currentNode = saved;
         }
 
-#ifdef USE_CONSTRUCTOR
+#ifdef USE_ABSTRACT
         if (constructor)
         {
             methodAccessLevel = "public static";
@@ -365,7 +373,7 @@ public:
         }
         Java::at(node);
 
-#ifdef USE_CONSTRUCTOR
+#ifdef USE_ABSTRACT
         if (methodAccessLevel == "public static")
         {
             writeln("{");
