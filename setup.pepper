@@ -23,5 +23,5 @@ make
 make install
 cd ../examples
 python -m CGIHTTPServer &
-/opt/google/chrome/google-chrome --enable-nacl http://localhost:8000/
+/opt/google/chrome/google-chrome --enable-nacl --enable-webgl http://localhost:8000/
 kill %python
