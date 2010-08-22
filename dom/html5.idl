@@ -3,9 +3,9 @@
  *
  * HTML5
  *
- * Original W3C Working Draft 4 March 2010:
+ * Original W3C WorkingDraft 24 June 2010:
  *
- *   http://www.w3.org/TR/2010/WD-html5-20100304/Overview.html
+ *   http://www.w3.org/TR/2010/WD-html5-20100624/Overview.html
  */
 
 module html {
@@ -117,6 +117,7 @@ interface HTMLDocument {
   void writeln(in DOMString... text);
 
   // user interaction
+  readonly attribute WindowProxy defaultView;
   Selection getSelection();
   readonly attribute Element activeElement;
   boolean hasFocus();
@@ -374,8 +375,6 @@ interface HTMLParagraphElement : HTMLElement {};
 
 interface HTMLHRElement : HTMLElement {};
 
-interface HTMLBRElement : HTMLElement {};
-
 interface HTMLPreElement : HTMLElement {};
 
 interface HTMLQuoteElement : HTMLElement {
@@ -400,7 +399,6 @@ interface HTMLDivElement : HTMLElement {};
 interface HTMLAnchorElement : HTMLElement {
   stringifier attribute DOMString href;
            attribute DOMString target;
-           attribute DOMString ping;
            attribute DOMString rel;
   readonly attribute DOMTokenList relList;
            attribute DOMString media;
@@ -426,6 +424,8 @@ interface HTMLTimeElement : HTMLElement {
 };
 
 interface HTMLSpanElement : HTMLElement {};
+
+interface HTMLBRElement : HTMLElement {};
 
 interface HTMLModElement : HTMLElement {
            attribute DOMString cite;
@@ -590,7 +590,6 @@ interface HTMLAreaElement : HTMLElement {
            attribute DOMString shape;
   stringifier attribute DOMString href;
            attribute DOMString target;
-           attribute DOMString ping;
            attribute DOMString rel;
   readonly attribute DOMTokenList relList;
            attribute DOMString media;
@@ -662,7 +661,7 @@ interface HTMLTableCellElement : HTMLElement {
 interface HTMLFormElement : HTMLElement {
            attribute DOMString acceptCharset;
            attribute DOMString action;
-           attribute boolean autocomplete;
+           attribute DOMString autocomplete;
            attribute DOMString enctype;
            attribute DOMString method;
            attribute DOMString name;
@@ -711,7 +710,7 @@ interface HTMLLabelElement : HTMLElement {
 interface HTMLInputElement : HTMLElement {
            attribute DOMString accept;
            attribute DOMString alt;
-           attribute boolean autocomplete;
+           attribute DOMString autocomplete;
            attribute boolean autofocus;
            attribute boolean defaultChecked;
            attribute boolean checked;
@@ -742,7 +741,7 @@ interface HTMLInputElement : HTMLElement {
            attribute DOMString defaultValue;
            attribute DOMString value;
            attribute Date valueAsDate;
-           attribute float valueAsNumber;
+           attribute double valueAsNumber;
   readonly attribute HTMLOptionElement selectedOption;
            attribute DOMString width;
 
@@ -960,12 +959,12 @@ interface HTMLMenuElement : HTMLElement {
            attribute DOMString label;
 };
 
-[OverrideBuiltins, ReplaceableNamedProperties] 
+[OverrideBuiltins, ReplaceableNamedProperties]
 interface Window {
   // the current browsing context
   readonly attribute WindowProxy window;
   readonly attribute WindowProxy self;
-  // readonly attribute Document document;
+  readonly attribute Document document;
            attribute DOMString name;
   [PutForwards=href] readonly attribute Location location;
   readonly attribute History history;
@@ -995,7 +994,7 @@ interface Window {
   setter void (in DOMString name, in any value);  // for [ReplaceableNamedProperties]
 
   // the user agent
-  readonly attribute Navigator navigator; 
+  readonly attribute Navigator navigator;
   readonly attribute ApplicationCache applicationCache;
 
   // user prompts
@@ -1004,9 +1003,6 @@ interface Window {
   DOMString prompt(in DOMString message, in optional DOMString default);
   void print();
   any showModalDialog(in DOMString url, in optional any argument);
-
-  // cross-document messaging
-  void postMessage(in any message, in DOMString targetOrigin, in optional MessagePortArray ports);
 
   // event handler IDL attributes
            attribute Function onabort;
@@ -1100,7 +1096,7 @@ interface Location {
   void replace(in DOMString url);
   void reload();
 
-  // URL decomposition IDL attributes 
+  // URL decomposition IDL attributes
            attribute DOMString protocol;
            attribute DOMString host;
            attribute DOMString hostname;
@@ -1229,7 +1225,7 @@ interface Selection {
 interface DragEvent : MouseEvent {
   readonly attribute DataTransfer dataTransfer;
 
-  void initDragEvent(in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in AbstractView viewArg, in long detailArg, in long screenXArg, in long screenYArg, in long clientXArg, in long clientYArg, in boolean ctrlKeyArg, in boolean altKeyArg, in boolean shiftKeyArg, in boolean metaKeyArg, in unsigned short buttonArg, in EventTarget relatedTargetArg, in DataTransfer dataTransferArg);
+  void initDragEvent(in DOMString typeArg, in boolean canBubbleArg, in boolean cancelableArg, in any dummyArg, in long detailArg, in long screenXArg, in long screenYArg, in long clientXArg, in long clientYArg, in boolean ctrlKeyArg, in boolean altKeyArg, in boolean shiftKeyArg, in boolean metaKeyArg, in unsigned short buttonArg, in EventTarget relatedTargetArg, in DataTransfer dataTransferArg);
 };
 
 interface DataTransfer {
@@ -1270,7 +1266,7 @@ interface HTMLAppletElement : HTMLElement {
            attribute DOMString height;
            attribute unsigned long hspace;
            attribute DOMString name;
-           attribute DOMString _object; // the underscore is not part of the identifier 
+           attribute DOMString _object; // the underscore is not part of the identifier
            attribute unsigned long vspace;
            attribute DOMString width;
 };
@@ -1349,7 +1345,7 @@ interface HTMLAreaElement {
 interface HTMLBaseFontElement : HTMLElement {
            attribute DOMString color;
            attribute DOMString face;
-           attribute long size; 
+           attribute long size;
 };
 
 [Supplemental]
@@ -1404,17 +1400,12 @@ interface HTMLEmbedElement {
 interface HTMLFontElement : HTMLElement {
            attribute DOMString color;
            attribute DOMString face;
-           attribute DOMString size; 
+           attribute DOMString size;
 };
 
 [Supplemental]
 interface HTMLHeadingElement {
            attribute DOMString align;
-};
-
-[Supplemental]
-interface HTMLHeadElement {
-           attribute DOMString profile;
 };
 
 [Supplemental]

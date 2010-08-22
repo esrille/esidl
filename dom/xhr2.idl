@@ -3,7 +3,7 @@
  *
  * XMLHttpRequest Level 2
  *
- * Original W3C Editor's Draft 19 February 2010:
+ * Original W3CEditor's Draft 8 August 2010:
  *
  *   http://dev.w3.org/2006/webapi/XMLHttpRequest-2/
  */
@@ -29,11 +29,10 @@ interface XMLHttpRequestEventTarget : EventTarget {
 };
 
 interface XMLHttpRequestUpload : XMLHttpRequestEventTarget {
-  // for future use
+
 };
 
-[Constructor,
- Constructor(boolean anon)]
+[Constructor]
 interface XMLHttpRequest : XMLHttpRequestEventTarget {
   // event handler attributes
            attribute Function onreadystatechange;
@@ -71,6 +70,10 @@ interface XMLHttpRequest : XMLHttpRequestEventTarget {
   readonly attribute ByteArray responseBody;
   readonly attribute DOMString responseText;
   readonly attribute Document responseXML;
+};
+
+[Constructor]
+interface AnonXMLHttpRequest : XMLHttpRequest {
 };
 
 [Constructor]

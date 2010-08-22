@@ -3,9 +3,9 @@
  *
  * HTML Canvas 2D Context
  *
- * Original W3C Working Draft 4 March 2010:
+ * OriginalW3C Working Draft 24 June 2010:
  *
- *   http://www.w3.org/TR/2010/WD-2dcontext-20100304/
+ *   http://www.w3.org/TR/2010/WD-2dcontext-20100624/
  */
 
 module html {

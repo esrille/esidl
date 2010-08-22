@@ -3,7 +3,7 @@
  *
  * CSSOM, revised for esidl.
  *
- * Original W3C Editor's Draft 31 March 2010:
+ * Original W3C Editor's Draft 18 August 2010:
  *
  *   http://dev.w3.org/csswg/cssom/
  */
@@ -96,7 +96,7 @@ interface CSSRule {
 
   // Parsing and serialization
            attribute DOMString cssText;
-  
+
   // Context
   readonly attribute CSSRule parentRule;
   readonly attribute CSSStyleSheet parentStyleSheet;
@@ -286,10 +286,20 @@ interface CSSValue {
            attribute DOMString cssText;
 };
 
-[NoInterfaceObject] interface CSSComponentValue {
+[NoInterfaceObject] interface CSSMapValue {
+  getter CSSValue (DOMString name);
 };
 
-interface CSSColorComponentValue : CSSComponentValue {
+[NoInterfaceObject] interface CSSPropertyValueList {
+  readonly attribute CSSValue[] list;
+};
+
+[NoInterfaceObject] interface CSSComponentValue {
+  readonly attribute DOMString type;
+           attribute any value;
+};
+
+[NoInterfaceObject] interface CSSColorComponentValue {
            attribute short red;
            attribute short green;
            attribute short blue;
@@ -297,18 +307,18 @@ interface CSSColorComponentValue : CSSComponentValue {
            attribute float alpha;
 };
 
-interface CSSLengthComponentValue : CSSComponentValue {
+[NoInterfaceObject] interface CSSLengthComponentValue {
            attribute float em;
            attribute float ex;
            attribute float px;
            // figure out what to do with absolute lengths
 };
 
-interface CSSPercentageComponentValue : CSSComponentValue {
+[NoInterfaceObject] interface CSSPercentageComponentValue {
            attribute float percent;
 };
 
-interface CSSURLComponentValue : CSSComponentValue {
+[NoInterfaceObject] interface CSSURLComponentValue {
            attribute DOMString? url;
 };
 

@@ -26,6 +26,7 @@ void initializeHtmlMetaData()
     ProxyControl::registerMetaData(html::ApplicationCache::getMetaData(), Proxy_Impl<ProxyObject, html::ApplicationCache_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::BarProp::getMetaData(), Proxy_Impl<ProxyObject, html::BarProp_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::BeforeUnloadEvent::getMetaData(), Proxy_Impl<ProxyObject, html::BeforeUnloadEvent_Bridge<Any, invoke> >::createInstance);
+    ProxyControl::registerMetaData(html::BooleanCallback::getMetaData(), Proxy_Impl<ProxyObject, html::BooleanCallback_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::CanvasGradient::getMetaData(), Proxy_Impl<ProxyObject, html::CanvasGradient_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::CanvasPattern::getMetaData(), Proxy_Impl<ProxyObject, html::CanvasPattern_Bridge<Any, invoke> >::createInstance);
     ProxyControl::registerMetaData(html::CanvasPixelArray::getMetaData(), Proxy_Impl<ProxyObject, html::CanvasPixelArray_Bridge<Any, invoke> >::createInstance);

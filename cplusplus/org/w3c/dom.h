@@ -114,6 +114,7 @@
 #include <org/w3c/dom/html/ApplicationCache.h>
 #include <org/w3c/dom/html/BarProp.h>
 #include <org/w3c/dom/html/BeforeUnloadEvent.h>
+#include <org/w3c/dom/html/BooleanCallback.h>
 #include <org/w3c/dom/html/CanvasGradient.h>
 #include <org/w3c/dom/html/CanvasPattern.h>
 #include <org/w3c/dom/html/CanvasPixelArray.h>

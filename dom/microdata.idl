@@ -3,9 +3,9 @@
  *
  * HTML Microdata
  *
- * Original W3C Working Draft 4 March 2010:
+ * Original W3C Working Draft 24 June 2010:
  *
- *   http://www.w3.org/TR/2010/WD-microdata-20100304/
+ *   http://www.w3.org/TR/2010/WD-microdata-20100624/
  */
 
 module html {
@@ -22,12 +22,12 @@ interface PropertyNodeList : NodeList {
   readonly attribute PropertyValueArray values;
 };
 
-[Supplemental] interface HTMLDocument { 
+[Supplemental] interface HTMLDocument {
   NodeList getItems(in optional DOMString typeNames); // microdata
 };
 
 [Supplemental] interface HTMLElement {
-  // microdata 
+  // microdata
            attribute boolean itemScope;
            attribute DOMString itemType;
            attribute DOMString itemId;
