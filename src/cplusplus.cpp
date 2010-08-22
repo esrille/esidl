@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -152,14 +153,14 @@ std::string CPlusPlus::getEscapedName(std::string name)
 class CPlusPlusInterface : public CPlusPlus
 {
 public:
-    CPlusPlusInterface(FILE* file, const char* indent = "es") :
-        CPlusPlus(file, "std::string", "Object", true, indent)
+    CPlusPlusInterface(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        CPlusPlus(file, stringTypeName, objectTypeName, useExceptions, indent)
     {
         currentNode = 0;
     }
 
-    CPlusPlusInterface(const Formatter* formattter) :
-        CPlusPlus(formattter, "std::string", "Object", true)
+    CPlusPlusInterface(const Formatter* formattter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        CPlusPlus(formattter, stringTypeName, objectTypeName, useExceptions)
     {
         currentNode = 0;
     }
@@ -269,7 +270,7 @@ public:
             writeln("return 0;");
         writeln("}");
 
-        CPlusPlusMeta meta(this);
+        CPlusPlusMeta meta(this, stringTypeName, objectTypeName, useExceptions);
         const_cast<Interface*>(node)->accept(&meta);
 
 #if 0
@@ -292,11 +293,11 @@ public:
 #endif
 
         writeln("");
-        CPlusPlusCall call(this);
+        CPlusPlusCall call(this, stringTypeName, objectTypeName, useExceptions);
         call.at(node);
 
         writeln("");
-        CPlusPlusInvoke invoke(this);
+        CPlusPlusInvoke invoke(this, stringTypeName, objectTypeName, useExceptions);
         invoke.at(node);
 
         writeln("};");
@@ -430,14 +431,14 @@ class CPlusPlusInclude: public CPlusPlus
     std::set<const Node*> includeSet;
 
 public:
-    CPlusPlusInclude(FILE* file, const char* indent = "es") :
-        CPlusPlus(file, "std::string", "Object", true, indent)
+    CPlusPlusInclude(FILE* file,const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        CPlusPlus(file, stringTypeName, objectTypeName, useExceptions, indent)
     {
         currentNode = 0;
     }
 
-    CPlusPlusInclude(const Formatter* formattter) :
-        CPlusPlus(formattter, "std::string", "Object", true)
+    CPlusPlusInclude(const Formatter* formattter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        CPlusPlus(formattter, stringTypeName, objectTypeName, useExceptions)
     {
         currentNode = 0;
     }
@@ -598,7 +599,7 @@ class CPlusPlusNameSpace : public Formatter
     std::vector<std::string> packageName;
 
 public:
-    CPlusPlusNameSpace(FILE* file, const char* indent) :
+    CPlusPlusNameSpace(FILE* file, const std::string& indent) :
         Formatter(file, indent)
     {
     }
@@ -659,9 +660,13 @@ public:
     }
 };
 
-// Print the required class forward declarations and typedef statments.
+// Print the required class forward declarations and typedef statements.
 class CPlusPlusImport : public Visitor, public Formatter
 {
+    std::string stringTypeName;
+    std::string objectTypeName;
+    bool useExceptions;
+
     const Node* currentNode;
     bool printed;
     std::set<std::string> importSet;
@@ -672,8 +677,11 @@ class CPlusPlusImport : public Visitor, public Formatter
     CPlusPlusNameSpace* ns;
 
 public:
-    CPlusPlusImport(FILE* file, const char* indent, CPlusPlusNameSpace* ns) :
+    CPlusPlusImport(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent, CPlusPlusNameSpace* ns) :
         Formatter(file, indent),
+        stringTypeName(stringTypeName),
+        objectTypeName(objectTypeName),
+        useExceptions(useExceptions),
         currentNode(0),
         importObjectArray(false),
         ns(ns)
@@ -825,7 +833,7 @@ public:
             if (dynamic_cast<Module*>((*i)->getParent()))
             {
                 size_t pos = ns->enter((*i)->getPrefixedName());
-                CPlusPlusInterface cplusplusInterface(this);
+                CPlusPlusInterface cplusplusInterface(this, stringTypeName, objectTypeName, useExceptions);
                 cplusplusInterface.at(*i);
                 newline = true;
             }
@@ -840,12 +848,16 @@ public:
 
 class CPlusPlusVisitor : public Visitor
 {
-    const char* indent;
+    std::string stringTypeName;
     std::string objectTypeName;
+    bool useExceptions;
+    std::string indent;
 
 public:
-    CPlusPlusVisitor(const char* objectTypeName = "Object", const char* indent = "es") :
+    CPlusPlusVisitor(const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        stringTypeName(stringTypeName),
         objectTypeName(objectTypeName),
+        useExceptions(useExceptions),
         indent(indent)
     {
     }
@@ -884,7 +896,7 @@ public:
         CPlusPlusNameSpace ns(file, indent);
         ns.enter(prefixedName);
 
-        CPlusPlusInterface cplusplusInterface(file, indent);
+        CPlusPlusInterface cplusplusInterface(file, stringTypeName, objectTypeName, useExceptions, indent);
         cplusplusInterface.at(node);
 
         ns.closeAll();
@@ -927,24 +939,24 @@ public:
         // body
 
         // The base classes and exception classes need to be defined.
-        CPlusPlusInclude include(file, indent);
+        CPlusPlusInclude include(file, stringTypeName, objectTypeName, useExceptions, indent);
         include.at(node);
         include.print();
 
         CPlusPlusNameSpace ns(file, indent);
 
-        CPlusPlusImport import(file, indent, &ns);
+        CPlusPlusImport import(file, stringTypeName, objectTypeName, useExceptions, indent, &ns);
         import.at(node);
         import.print();
 
         ns.enter(prefixedName);
 
-        CPlusPlusInterface cplusplusInterface(file, indent);
+        CPlusPlusInterface cplusplusInterface(file, stringTypeName, objectTypeName, useExceptions, indent);
         cplusplusInterface.at(node);
 
         fprintf(file, "\n");
 
-        CPlusPlusTemplate cplusplusTemplate(file, indent);
+        CPlusPlusTemplate cplusplusTemplate(file, stringTypeName, objectTypeName, useExceptions, indent);
         cplusplusTemplate.at(node);
 
         ns.closeAll();
@@ -965,7 +977,7 @@ public:
 int printCPlusPlus(const char* stringTypeName, const char* objectTypeName,
                    bool useExceptions, bool useVirtualBase, const char* indent)
 {
-    CPlusPlusVisitor visitor(objectTypeName, indent);
+    CPlusPlusVisitor visitor(stringTypeName, objectTypeName, useExceptions, indent);
     getSpecification()->accept(&visitor);
     return 0;
 }

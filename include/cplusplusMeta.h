@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -61,8 +62,8 @@ class CPlusPlusMeta : public CPlusPlus
     }
 
 public:
-    CPlusPlusMeta(Formatter* formatter) :
-        CPlusPlus(formatter, "std::string", "Object", true),
+    CPlusPlusMeta(Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        CPlusPlus(formatter, stringTypeName, objectTypeName, useExceptions),
         offset(0),
         symbolNumber(0)
     {

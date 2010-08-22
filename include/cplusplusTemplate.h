@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -114,14 +115,14 @@ class CPlusPlusTemplate : public CPlusPlus
     }
 
 public:
-    CPlusPlusTemplate(FILE* file, const char* indent = "es") :
-        CPlusPlus(file, "std::string", "Object", true, indent)
+    CPlusPlusTemplate(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        CPlusPlus(file, stringTypeName, objectTypeName, useExceptions, indent)
     {
         currentNode = 0;
     }
 
-    CPlusPlusTemplate(const Formatter* formattter) :
-        CPlusPlus(formattter, "std::string", "Object", true)
+    CPlusPlusTemplate(const Formatter* formattter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        CPlusPlus(formattter, stringTypeName, objectTypeName, useExceptions)
     {
         currentNode = 0;
     }

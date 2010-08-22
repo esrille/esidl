@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -70,8 +71,8 @@ class CPlusPlusInvoke : public CPlusPlus
     }
 
 public:
-    CPlusPlusInvoke(const Formatter* formattter) :
-        CPlusPlus(formattter, "std::string", "Object", true)
+    CPlusPlusInvoke(const Formatter* formattter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        CPlusPlus(formattter, stringTypeName, objectTypeName, useExceptions)
     {
         currentNode = 0;
     }

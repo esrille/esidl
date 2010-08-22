@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -95,7 +96,7 @@ class Formatter
     }
 
 public:
-    Formatter(FILE* file, const char* indent) :
+    Formatter(FILE* file, const std::string& indent) :
         file(file),
         indentLevel(4),
         caseIndentation(0),
@@ -104,11 +105,11 @@ public:
         bracesOnFuncDeclLine(false)
     {
         initialize();
-        if (strcmp(indent, "google") == 0)
+        if (indent == "google")
         {
             useGoogleStyle();
         }
-        else if (strcmp(indent, "webkit") == 0)
+        else if (indent == "webkit")
         {
             useWebKitStyle();
         }

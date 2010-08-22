@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -25,8 +26,8 @@ class CPlusPlusCall : public CPlusPlus
     unsigned methodNumber;
 
 public:
-    CPlusPlusCall(Formatter* formatter) :
-        CPlusPlus(formatter, "std::string", "Object", true)
+    CPlusPlusCall(Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        CPlusPlus(formatter, stringTypeName, objectTypeName, useExceptions)
     {
         currentNode = 0;
     }

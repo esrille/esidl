@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -118,8 +119,7 @@ protected:
     }
 
 public:
-    CPlusPlus(FILE* file, const char* stringTypeName = "char*", const char* objectTypeName = "object",
-              bool useExceptions = true, const char* indent = "es") :
+    CPlusPlus(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
         Formatter(file, indent),
         stringTypeName(stringTypeName),
         objectTypeName(objectTypeName),
@@ -132,8 +132,7 @@ public:
         prefixedModuleName = currentNode->getPrefixedModuleName();
     }
 
-    CPlusPlus(const Formatter* formatter, const char* stringTypeName = "char*", const char* objectTypeName = "object",
-              bool useExceptions = true) :
+    CPlusPlus(const Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
         Formatter(formatter),
         stringTypeName(stringTypeName),
         objectTypeName(objectTypeName),
@@ -436,16 +435,16 @@ public:
         return qualifiedName;
     }
 
-    static std::string getIncludedName(const std::string headerFilename, const char* indent = "es")
+    static std::string getIncludedName(const std::string headerFilename, const std::string& indent = "es")
     {
         std::string included(headerFilename);
         bool capitalize = true;
 
-        if (strcmp(indent, "google") == 0)
+        if (indent == "google")
         {
             included += "_";
         }
-        else if (strcmp(indent, "es") == 0)
+        else if (indent == "es")
         {
             included += "_INCLUDED";
         }
