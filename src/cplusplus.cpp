@@ -669,7 +669,7 @@ class CPlusPlusImport : public Visitor, public Formatter
 
     const Node* currentNode;
     bool printed;
-    std::set<std::string> importSet;
+    std::set<const Node*> importSet;
     std::list<Member*> typedefList;
     std::set<Member*> typedefSet;
     bool importObjectArray;
@@ -710,16 +710,13 @@ public:
         }
         else if (!resolved->isBaseObject())
         {
-            if (Module* module = dynamic_cast<Module*>(resolved->getParent()))
-            {
-                importSet.insert(module->getPrefixedName() + "::" + resolved->getName());
-            }
+            importSet.insert(resolved);
         }
         currentNode = saved;
 
         if (Member* type = node->isTypedef(currentNode))
         {
-            // The order of definitions is important here.
+            // The order of the definitions needs to be preserved.
             currentNode = type->getParent();
             type->getSpec()->accept(this);
             if (typedefSet.find(type) == typedefSet.end())
@@ -817,13 +814,17 @@ public:
             newline = true;
         }
 
-        for (std::set<std::string>::iterator i = importSet.begin();
+        for (std::set<const Node*>::iterator i = importSet.begin();
              i != importSet.end();
              ++i)
         {
-            size_t pos = ns->enter(*i);
-            writeln("class %s;", (*i).substr(pos).c_str());
-            newline = true;
+            if (Module* module = dynamic_cast<Module*>((*i)->getParent()))
+            {
+                std::string name = module->getPrefixedName() + "::" + (*i)->getName();
+                size_t pos = ns->enter(name);
+                writeln("class %s;", name.substr(pos).c_str());
+                newline = true;
+            }
         }
 
         for (std::list<Member*>::iterator i = typedefList.begin();
@@ -842,6 +843,21 @@ public:
         if (newline)
         {
             write("\n");
+        }
+    }
+
+    void printExtra()
+    {
+        if (!importSet.empty())
+        {
+            write("\n");
+        }
+        for (std::set<const Node*>::iterator i = importSet.begin();
+             i != importSet.end();
+             ++i)
+        {
+            std::string name = createFileName((*i)->getPrefixedName(), objectTypeName);
+            writeln("#include <%s>", name.c_str());
         }
     }
 };
@@ -960,6 +976,11 @@ public:
         cplusplusTemplate.at(node);
 
         ns.closeAll();
+
+        // Include imported, i.e., forward declared, class definitions here
+        // so that template functions can be used without explicitly including
+        // the other generated files.
+        import.printExtra();
 
         // postable
         fprintf(file, "\n#endif  // %s\n", included.c_str());
