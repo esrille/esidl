@@ -195,9 +195,7 @@ public:
                 writeln("virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const {");
                     writeln("return %s::getSymbolTable(interfaceNumber);", getEscapedName(node->getName()).c_str());
                 writeln("}");
-                writeln("virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) {");
-                    writeln("return %s::call(interfaceNumber, methodNumber, argumentCount, arguments);", getEscapedName(node->getName()).c_str());
-                writeln("}");
+                writeln("virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments);");
 
             writeln("};");
             writeln("");

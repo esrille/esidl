@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -93,6 +94,7 @@ int main(int argc, char* argv[])
     bool useVirtualBase = false;
     bool java = false;
     bool cplusplus = false;
+    bool cplusplusSrc = false;
     bool sheet = false;
     const char* stringTypeName = "char*";   // C++ string type name to be used
     const char* objectTypeName = "Object";  // C++ object type name to be used
@@ -119,6 +121,10 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-cplusplus") == 0)
             {
                 cplusplus = true;
+            }
+            else if (strcmp(argv[i], "-cplusplus-src") == 0)
+            {
+                cplusplusSrc = true;
             }
             else if (strcmp(argv[i], "-fexceptions") == 0)
             {
@@ -327,7 +333,7 @@ int main(int argc, char* argv[])
 
     setBaseFilename("");
 
-    if (java || cplusplus || sheet)
+    if (java || cplusplus || cplusplusSrc || sheet)
     {
         Node::setCtorScope("_");
     }
@@ -348,6 +354,10 @@ int main(int argc, char* argv[])
     else if (cplusplus)
     {
         result = printCPlusPlus(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+    }
+    else if (cplusplusSrc)
+    {
+        result = printCPlusPlusSrc(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
     }
     else if (sheet)
     {

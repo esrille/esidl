@@ -1,4 +1,5 @@
 /*
+ * Copyright 2010 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -2054,6 +2055,8 @@ public:
 int printJava(const char* indent);
 int printCPlusPlus(const char* stringTypeName, const char* objectTypeName,
                    bool useExceptions, bool useVirtualBase, const char* indent);
+int printCPlusPlusSrc(const char* stringTypeName, const char* objectTypeName,
+                      bool useExceptions, bool useVirtualBase, const char* indent);
 
 extern void print();
 extern void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName,

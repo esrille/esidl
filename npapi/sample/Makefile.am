@@ -8,26 +8,53 @@ SUFFIXES = .idl
 
 vpath %.idl = $(srcdir)
 
-BUILT_SOURCES = com/rsa/MD5.h org/w3c/dom/Test.h
+generated_headers = \
+	com/rsa/MD5.h \
+	com/rsa/MD5_Constructor.h \
+	org/w3c/dom/Test.h \
+	org/w3c/dom/Test_Constructor.h
 
-nodist_noinst_HEADERS = $(BUILT_SOURCES)
+generated_sources = \
+	com/rsa/MD5.cpp \
+	com/rsa/MD5_Constructor.cpp \
+	org/w3c/dom/Test.cpp \
+	org/w3c/dom/Test_Constructor.cpp
+
+BUILT_SOURCES = $(generated_headers) $(generated_sources)
+
+nodist_noinst_HEADERS = $(generated_headers)
 
 com/rsa/MD5.h : md5.idl
 	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
 
+com/rsa/MD5_Constructor.h : com/rsa/MD5.h
+
+com/rsa/MD5.cpp : md5.idl
+	$(esidl) -cplusplus-src -string std::string -object Object -fvirtualbase $^
+
+com/rsa/MD5_Constructor.cpp : com/rsa/MD5.cpp
+
 org/w3c/dom/Test.h : test.idl
 	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
 
+org/w3c/dom/Test_Constructor.h : org/w3c/dom/Test.h
+
+org/w3c/dom/Test.cpp : test.idl
+	$(esidl) -cplusplus-src -string std::string -object Object -fvirtualbase $^
+
+org/w3c/dom/Test_Constructor.cpp : org/w3c/dom/Test.cpp
+
 AM_CPPFLAGS = \
-	-fshort-wchar -std=gnu++0x \
+	-fshort-wchar -std=gnu++0x -Wall \
+	-I $(builddir) \
+	-I $(builddir)/.. \
 	-I $(srcdir) \
 	-I ../include \
-	-I ../include/w3c \
+	-I $(srcdir)/.. \
 	-I $(srcdir)/../include \
 	-I $(srcdir)/../../include \
-	-I ../../cplusplus \
 	-I $(srcdir)/../../cplusplus \
-	-DXP_UNIX \
+	-DXP_UNIX -DHAVE_CONFIG_H \
 	-fno-implicit-inline-templates -fno-default-inline
 
 if !NACL
@@ -53,15 +80,19 @@ cpp_source_files += \
 endif
 
 if !NACL
-libnpestest_la_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h org/w3c/dom/Test.h
-libnpespaint_la_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
-libnpesxhr_la_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
-libnpesmd5sum_la_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
+nodist_libnpestest_la_SOURCES = org/w3c/dom/Test.h org/w3c/dom/Test.cpp org/w3c/dom/Test_Constructor.cpp
+libnpestest_la_SOURCES = $(cpp_source_files) npp_test.cpp test.cpp test.h
+libnpespaint_la_SOURCES = $(cpp_source_files) npp_paint.cpp paint.cc paint.h
+libnpesxhr_la_SOURCES = $(cpp_source_files) npp_xhr.cpp xhr.cc xhr.h
+nodist_libnpesmd5sum_la_SOURCES = com/rsa/MD5.h com/rsa/MD5.cpp com/rsa/MD5_Constructor.cpp
+libnpesmd5sum_la_SOURCES = $(cpp_source_files) npp_md5sum.cpp md5sum.cc md5sum.h
 else
-npestest_SOURCES = $(cpp_source_files) $(header_files) npp_test.cpp test.cpp test.h org/w3c/dom/Test.h
-npespaint_SOURCES = $(cpp_source_files) $(header_files) npp_paint.cpp paint.cc paint.h
-npesxhr_SOURCES = $(cpp_source_files) $(header_files) npp_xhr.cpp xhr.cc xhr.h
-npesmd5sum_SOURCES = $(cpp_source_files) $(header_files) npp_md5sum.cpp md5sum.cc md5sum.h com/rsa/MD5.h
+nodist_npestest_SOURCES = org/w3c/dom/Test.h org/w3c/dom/Test.cpp org/w3c/dom/Test_Constructor.cpp
+npestest_SOURCES = $(cpp_source_files) npp_test.cpp test.cpp test.h
+npespaint_SOURCES = $(cpp_source_files) npp_paint.cpp paint.cc paint.h
+npesxhr_SOURCES = $(cpp_source_files) npp_xhr.cpp xhr.cc xhr.h
+nodist_npesmd5sum_SOURCES = com/rsa/MD5.h com/rsa/MD5.cpp com/rsa/MD5_Constructor.cpp
+npesmd5sum_SOURCES = $(cpp_source_files) npp_md5sum.cpp md5sum.cc md5sum.h
 endif
 
 EXTRA_DIST = \
@@ -88,6 +119,4 @@ endif
 clean-local:
 	-rm -rf com org
 
-dist-hook:
-	-rm -rf $(distdir)/com $(distdir)/org
 

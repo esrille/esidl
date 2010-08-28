@@ -16,18 +16,18 @@
  * limitations under the License.
  */
 
-#ifndef ESIDL_CPLUSPLUS_CALL_H_INCLUDED
-#define ESIDL_CPLUSPLUS_CALL_H_INCLUDED
+#ifndef ESIDL_CPLUSPLUS_SRC_H_INCLUDED
+#define ESIDL_CPLUSPLUS_SRC_H_INCLUDED
 
 #include "cplusplus.h"
 
-class CPlusPlusCall : public CPlusPlus
+class CPlusPlusSrc : public CPlusPlus
 {
     unsigned methodNumber;
 
 public:
-    CPlusPlusCall(Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
-        CPlusPlus(formatter, stringTypeName, objectTypeName, useExceptions)
+    CPlusPlusSrc(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        CPlusPlus(file, stringTypeName, objectTypeName, useExceptions, indent)
     {
         currentNode = 0;
     }
@@ -49,55 +49,99 @@ public:
         unsigned interfaceNumber;
         std::list<const Interface*> list;
         node->getInterfaceList(&list);
+        std::list<const Interface*> mixinList;
+        node->collectMixins(&mixinList);
 
-        writeln("virtual const char* getMetaData(unsigned interfaceNumber) const {");
-            writeln("switch (interfaceNumber) {");
-            interfaceNumber = 0;
-            for (std::list<const Interface*>::const_iterator i = list.begin();
-                 i != list.end();
-                 ++i, ++interfaceNumber)
+        writeln("Any %s::call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) {",
+                getEscapedName(getClassName(node)).c_str());
+
+            if (mixinList.empty())
             {
+                writeln("switch (interfaceNumber) {");
+                interfaceNumber = 0;
+                for (std::list<const Interface*>::const_iterator i = list.begin();
+                    i != list.end();
+                    ++i, ++interfaceNumber)
+                {
+                    unindent();
+                    writeln("case %u:", interfaceNumber);
+                    indent();
+                    if (interfaceNumber == 0)
+                    {
+                        writeln("return call(methodNumber, argumentCount, arguments);");
+                    }
+                    else
+                    {
+                        writeln("return static_cast<%s*>(this)->call(methodNumber, argumentCount, arguments);",
+                                getScopedName(prefixedModuleName, (*i)->getPrefixedName()).c_str());
+                    }
+                }
                 unindent();
-                writeln("case %u:", interfaceNumber);
+                writeln("default:");
                 indent();
-                writeln("return %s::getMetaData();", getScopedName(prefixedModuleName, getInterfaceName((*i)->getPrefixedName())).c_str());
+                    writeln("return Any();");  // TODO:  should raise an exception?
+                writeln("}");
             }
-            unindent();
-            writeln("default:");
-            indent();
-                writeln("return 0;");  // TODO:  should raise an exception?
-            writeln("}");
-        writeln("}");
-        writeln("virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const {");
-            writeln("switch (interfaceNumber) {");
-            interfaceNumber = 0;
-            for (std::list<const Interface*>::const_iterator i = list.begin();
-                 i != list.end();
-                 ++i, ++interfaceNumber)
+            else
             {
-                unindent();
-                writeln("case %u:", interfaceNumber);
-                indent();
-                writeln("return %s::getSymbolTable();", getScopedName(prefixedModuleName, getInterfaceName((*i)->getPrefixedName())).c_str());
+                writeln("return Any();");  // TODO:  should raise an exception?
             }
-            unindent();
-            writeln("default:");
-            indent();
-                writeln("return 0;");  // TODO:  should raise an exception?
-            writeln("}");
+
         writeln("}");
+
         writeln("");
-
-        writeln("template <class ARGUMENT, void (*resolve)(Object*, const char*, unsigned, ARGUMENT*, unsigned*, unsigned*)>");
-        writeln("Any call(const char* method, unsigned argumentCount, ARGUMENT* arguments) {");
-            writeln("unsigned interfaceNumber;");
-            writeln("unsigned methodNumber;");
-            writeln("resolve(this, method, argumentCount, arguments, &interfaceNumber, &methodNumber);");
-            writeln("return call(interfaceNumber, methodNumber, argumentCount, arguments);");
+        writeln("Any %s::call(unsigned methodNumber, unsigned argumentCount, Any* arguments) {",
+                getEscapedName(getClassName(node)).c_str());
+            writeln("switch (methodNumber) {");
+        {
+            unindent();
+            methodNumber = 0;
+            std::list<const Interface*> interfaceList;
+            node->collectSupplementals(&interfaceList);
+            for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+                i != interfaceList.end();
+                ++i)
+            {
+                const Node* saved = currentNode;
+                currentNode = *i;
+                for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+                {
+                    visitInterfaceElement(*i, *j);
+                }
+                currentNode = saved;
+            }
+            writeln("default:");
+            indent();
+                writeln("return Any();");  // TODO:  should raise an exception?
+            writeln("}");
+        }
         writeln("}");
 
-        writeln("virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments);");
-        writeln("Any call(unsigned methodNumber, unsigned argumentCount, Any* arguments);");
+        if (!mixinList.empty())
+        {
+            writeln("");
+            writeln("Any %s_Mixin::call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments) {",
+                    getEscapedName(getClassName(node)).c_str());
+
+                writeln("switch (interfaceNumber) {");
+                interfaceNumber = 0;
+                for (std::list<const Interface*>::const_iterator i = list.begin();
+                    i != list.end();
+                    ++i, ++interfaceNumber)
+                {
+                    unindent();
+                    writeln("case %u:", interfaceNumber);
+                    indent();
+                    writeln("return static_cast<%s*>(this)->call(methodNumber, argumentCount, arguments);",
+                            getScopedName(prefixedModuleName, (*i)->getPrefixedName()).c_str());
+                }
+                unindent();
+                writeln("default:");
+                indent();
+                    writeln("return Any();");  // TODO:  should raise an exception?
+                writeln("}");
+            writeln("}");
+        }
     }
 
     virtual void at(const Attribute* node)
@@ -236,4 +280,4 @@ public:
      }
  };
 
-#endif  // ESIDL_CPLUSPLUS_CALL_H_INCLUDED
+#endif  // ESIDL_CPLUSPLUS_SRC_H_INCLUDED
