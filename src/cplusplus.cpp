@@ -181,6 +181,8 @@ public:
             writetab();
         }
         write("struct %s {\n", getEscapedName(node->getName()).c_str());
+            writeln("%s(unsigned short code) : code(code) {", getEscapedName(node->getName()).c_str());
+            writeln("}");
             printChildren(node);
         writeln("};");
     }
