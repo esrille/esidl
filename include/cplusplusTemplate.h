@@ -332,11 +332,10 @@ public:
     {
         write("decltype((reinterpret_cast<B*>(0))->");
         write("%s(", getEscapedName(node->getName()).c_str());
-        NodeList::iterator it = node->begin();
-        for (int i = 0; i < getParamCount(); ++i, ++it)
+        for (NodeList::iterator it = node->begin(); it != node->end(); ++it)  // The # of params shouldn't matter...
         {
             ParamDcl* param = static_cast<ParamDcl*>(*it);
-            if (i != 0)
+            if (it != node->begin())
             {
                 write(", ");
             }
