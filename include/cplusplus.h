@@ -256,6 +256,10 @@ public:
         std::string name = getScopedName(prefixedModuleName, "::dom::ObjectArray");
         write("%s<", name.c_str());
         spec->accept(this);
+        if (spec->isInterface(currentNode))
+        {
+            write("*");
+        }
         write(">");
     }
 
