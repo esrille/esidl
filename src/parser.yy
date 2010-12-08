@@ -884,6 +884,7 @@ Type :
             {
                 static_cast<ArrayType*>($2)->setSpec($1);
                 $$ = $2;
+                $$->setParent(getCurrent());
             }
             else
             {
@@ -896,6 +897,7 @@ Type :
             {
                 static_cast<ArrayType*>($2)->setSpec($1);
                 $$ = $2;
+                $$->setParent(getCurrent());
             }
             else
             {
@@ -908,6 +910,7 @@ Type :
             {
                 static_cast<ArrayType*>($2)->setSpec($1);
                 $$ = $2;
+                $$->setParent(getCurrent());
             }
             else
             {
@@ -920,6 +923,7 @@ Type :
             {
                 static_cast<ArrayType*>($2)->setSpec($1);
                 $$ = $2;
+                $$->setParent(getCurrent());
             }
             else
             {
