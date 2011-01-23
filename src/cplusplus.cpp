@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Esrille Inc.
+ * Copyright 2010, 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -27,6 +27,8 @@
 #include "cplusplusSrc.h"
 #include "cplusplusTemplate.h"
 #include "cplusplusMeta.h"
+
+bool CPlusPlus::useVirtualBase = false;
 
 namespace
 {
@@ -216,12 +218,10 @@ public:
             {
                 write(separator);
                 separator = ", public ";
-#ifdef USE_VIRTUAL_BASE
-                if ((*i)->isBaseObject())
+                if (useVirtualBase && (*i)->isBaseObject())
                 {
                     write("virtual ");
                 }
-#endif
                 (*i)->accept(this);
             }
         }
@@ -996,6 +996,7 @@ public:
 int printCPlusPlus(const char* stringTypeName, const char* objectTypeName,
                    bool useExceptions, bool useVirtualBase, const char* indent)
 {
+    CPlusPlus::useVirtualBase = useVirtualBase;
     CPlusPlusVisitor visitor(stringTypeName, objectTypeName, useExceptions, indent);
     getSpecification()->accept(&visitor);
     return 0;
@@ -1092,6 +1093,7 @@ public:
 int printCPlusPlusSrc(const char* stringTypeName, const char* objectTypeName,
                       bool useExceptions, bool useVirtualBase, const char* indent)
 {
+    CPlusPlus::useVirtualBase = useVirtualBase;
     CPlusPlusSrcVisitor visitor(stringTypeName, objectTypeName, useExceptions, indent);
     getSpecification()->accept(&visitor);
     return 0;

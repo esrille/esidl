@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Esrille Inc.
+ * Copyright 2010, 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -916,6 +916,10 @@ public:
 
 class Interface : public Node
 {
+public:
+    static bool useMultipleInheritance;
+
+private:
     Node* extends;
     int constCount;
     int methodCount;
@@ -1079,15 +1083,14 @@ public:
     void implements(Interface* mixin, bool importImplements)
     {
         // cf. http://lists.w3.org/Archives/Public/public-webapps/2009JulSep/0528.html
-        if (!(mixin->attr & Supplemental))
-        {
-            implementList.push_back(mixin);
-        }
         if ((mixin->attr & Supplemental) || importImplements)
         {
             supplementalList.push_back(mixin);
-
             mixin->setAttr(mixin->getAttr() | ImplementedOn);
+        }
+        else
+        {
+            implementList.push_back(mixin);
         }
     }
 

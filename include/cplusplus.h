@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Esrille Inc.
+ * Copyright 2010, 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -20,7 +20,6 @@
 #define ESIDL_CPLUSPLUS_H_INCLUDED
 
 #define USE_CONSTRUCTOR
-#define USE_VIRTUAL_BASE
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -31,6 +30,9 @@
 
 class CPlusPlus : public Visitor, public Formatter
 {
+public:
+    static bool useVirtualBase;
+
 protected:
     std::string stringTypeName;
     std::string objectTypeName;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Esrille Inc.
+ * Copyright 2010, 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -92,6 +92,7 @@ int main(int argc, char* argv[])
     bool isystem = false;
     bool useExceptions = true;
     bool useVirtualBase = false;
+    bool useMultipleInheritance = true;
     bool java = false;
     bool cplusplus = false;
     bool cplusplusSrc = false;
@@ -141,6 +142,14 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-fno-virtualbase") == 0)
             {
                 useVirtualBase = false;
+            }
+            else if (strcmp(argv[i], "-fmultipleinheritance") == 0)
+            {
+                useMultipleInheritance = true;
+            }
+            else if (strcmp(argv[i], "-fno-multipleinheritance") == 0)
+            {
+                useMultipleInheritance = false;
             }
             else if (strcmp(argv[i], "-include") == 0)
             {
@@ -264,6 +273,14 @@ int main(int argc, char* argv[])
                     continue;
                 }
 
+                if (const char* dot = strrchr(argv[i], '.'))
+                {
+                    if (strcasecmp(dot + 1, "idl"))
+                    {
+                        continue;
+                    }
+                }
+
                 FILE* in = fopen(argv[i], "r");
                 if (!in)
                 {
@@ -338,10 +355,12 @@ int main(int argc, char* argv[])
         Node::setCtorScope("_");
     }
 
+    Interface::useMultipleInheritance = useMultipleInheritance;
+
     ProcessExtendedAttributes processExtendedAttributes;
     getSpecification()->accept(&processExtendedAttributes);
 
-    AdjustMethodCount adjustMethodCount(Node::getFlatNamespace());
+    AdjustMethodCount adjustMethodCount(!useMultipleInheritance || Node::getFlatNamespace());
     getSpecification()->accept(&adjustMethodCount);
 
     Meta meta(objectTypeName);
@@ -353,11 +372,13 @@ int main(int argc, char* argv[])
     }
     else if (cplusplus)
     {
-        result = printCPlusPlus(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+        result = printCPlusPlus(stringTypeName, objectTypeName,
+                                useExceptions, useVirtualBase, indent);
     }
     else if (cplusplusSrc)
     {
-        result = printCPlusPlusSrc(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+        result = printCPlusPlusSrc(stringTypeName, objectTypeName,
+                                   useExceptions, useVirtualBase, indent);
     }
     else if (sheet)
     {

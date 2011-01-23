@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -56,6 +57,8 @@ const char* Node::baseObjectName = "::object";
 const char* Node::namespaceName;
 const char* Node::defaultPrefix = "::org::w3c::dom";
 const char* Node::ctorScope = "::";
+
+bool Interface::useMultipleInheritance = false;
 
 Node* getSpecification()
 {
@@ -912,6 +915,9 @@ void Interface::getInterfaceList(std::list<const Interface*>* list) const
 
 void Interface::collectMixins(std::list<const Interface*>* list) const
 {
+    if (!useMultipleInheritance)
+        return;
+
     for (std::list<const Interface*>::const_reverse_iterator i = implementList.rbegin();
          i != implementList.rend();
          ++i)
