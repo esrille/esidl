@@ -252,28 +252,29 @@ generated_headers = \
 	org/w3c/dom/html/ValidityState.h \
 	org/w3c/dom/html/Window.h \
 	org/w3c/dom/indexeddb/IDBCursor.h \
-	org/w3c/dom/indexeddb/IDBCursorRequest.h \
 	org/w3c/dom/indexeddb/IDBCursorSync.h \
-	org/w3c/dom/indexeddb/IDBDatabaseError.h \
-	org/w3c/dom/indexeddb/IDBDatabaseException.h \
 	org/w3c/dom/indexeddb/IDBDatabase.h \
-	org/w3c/dom/indexeddb/IDBDatabaseRequest.h \
+	org/w3c/dom/indexeddb/IDBDatabaseException.h \
 	org/w3c/dom/indexeddb/IDBDatabaseSync.h \
 	org/w3c/dom/indexeddb/IDBEnvironment.h \
 	org/w3c/dom/indexeddb/IDBEnvironmentSync.h \
+	org/w3c/dom/indexeddb/IDBErrorEvent.h \
+	org/w3c/dom/indexeddb/IDBEvent.h \
+	org/w3c/dom/indexeddb/IDBFactory.h \
+	org/w3c/dom/indexeddb/IDBFactorySync.h \
 	org/w3c/dom/indexeddb/IDBIndex.h \
-	org/w3c/dom/indexeddb/IDBIndexRequest.h \
 	org/w3c/dom/indexeddb/IDBIndexSync.h \
 	org/w3c/dom/indexeddb/IDBKeyRange.h \
+	org/w3c/dom/indexeddb/IDBKeyRangeConstructors.h \
 	org/w3c/dom/indexeddb/IDBObjectStore.h \
-	org/w3c/dom/indexeddb/IDBObjectStoreRequest.h \
 	org/w3c/dom/indexeddb/IDBObjectStoreSync.h \
 	org/w3c/dom/indexeddb/IDBRequest.h \
+	org/w3c/dom/indexeddb/IDBSuccessEvent.h \
 	org/w3c/dom/indexeddb/IDBTransaction.h \
-	org/w3c/dom/indexeddb/IDBTransactionRequest.h \
+	org/w3c/dom/indexeddb/IDBTransactionEvent.h \
 	org/w3c/dom/indexeddb/IDBTransactionSync.h \
-	org/w3c/dom/indexeddb/IndexedDatabase.h \
-	org/w3c/dom/indexeddb/IndexedDatabaseRequest.h \
+	org/w3c/dom/indexeddb/IDBVersionChangeEvent.h \
+	org/w3c/dom/indexeddb/IDBVersionChangeRequest.h \
 	org/w3c/dom/ls/DOMImplementationLS.h \
 	org/w3c/dom/ls/LSException.h \
 	org/w3c/dom/ls/LSInput.h \
@@ -752,27 +753,28 @@ generated_sources = \
 	org/w3c/dom/html/ValidityState.cpp \
 	org/w3c/dom/html/Window.cpp \
 	org/w3c/dom/indexeddb/IDBCursor.cpp \
-	org/w3c/dom/indexeddb/IDBCursorRequest.cpp \
 	org/w3c/dom/indexeddb/IDBCursorSync.cpp \
 	org/w3c/dom/indexeddb/IDBDatabase.cpp \
-	org/w3c/dom/indexeddb/IDBDatabaseError.cpp \
-	org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp \
 	org/w3c/dom/indexeddb/IDBDatabaseSync.cpp \
 	org/w3c/dom/indexeddb/IDBEnvironment.cpp \
 	org/w3c/dom/indexeddb/IDBEnvironmentSync.cpp \
+	org/w3c/dom/indexeddb/IDBErrorEvent.cpp \
+	org/w3c/dom/indexeddb/IDBEvent.cpp \
+	org/w3c/dom/indexeddb/IDBFactory.cpp \
+	org/w3c/dom/indexeddb/IDBFactorySync.cpp \
 	org/w3c/dom/indexeddb/IDBIndex.cpp \
-	org/w3c/dom/indexeddb/IDBIndexRequest.cpp \
 	org/w3c/dom/indexeddb/IDBIndexSync.cpp \
 	org/w3c/dom/indexeddb/IDBKeyRange.cpp \
+	org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp \
 	org/w3c/dom/indexeddb/IDBObjectStore.cpp \
-	org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp \
 	org/w3c/dom/indexeddb/IDBObjectStoreSync.cpp \
 	org/w3c/dom/indexeddb/IDBRequest.cpp \
+	org/w3c/dom/indexeddb/IDBSuccessEvent.cpp \
 	org/w3c/dom/indexeddb/IDBTransaction.cpp \
-	org/w3c/dom/indexeddb/IDBTransactionRequest.cpp \
+	org/w3c/dom/indexeddb/IDBTransactionEvent.cpp \
 	org/w3c/dom/indexeddb/IDBTransactionSync.cpp \
-	org/w3c/dom/indexeddb/IndexedDatabase.cpp \
-	org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp \
+	org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp \
+	org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp \
 	org/w3c/dom/ls/DOMImplementationLS.cpp \
 	org/w3c/dom/ls/LSInput.cpp \
 	org/w3c/dom/ls/LSLoadEvent.cpp \

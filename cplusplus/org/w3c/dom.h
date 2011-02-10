@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -223,28 +224,29 @@
 #include <org/w3c/dom/html/ValidityState.h>
 #include <org/w3c/dom/html/Window.h>
 #include <org/w3c/dom/indexeddb/IDBCursor.h>
-#include <org/w3c/dom/indexeddb/IDBCursorRequest.h>
 #include <org/w3c/dom/indexeddb/IDBCursorSync.h>
-#include <org/w3c/dom/indexeddb/IDBDatabaseError.h>
-#include <org/w3c/dom/indexeddb/IDBDatabaseException.h>
 #include <org/w3c/dom/indexeddb/IDBDatabase.h>
-#include <org/w3c/dom/indexeddb/IDBDatabaseRequest.h>
+#include <org/w3c/dom/indexeddb/IDBDatabaseException.h>
 #include <org/w3c/dom/indexeddb/IDBDatabaseSync.h>
 #include <org/w3c/dom/indexeddb/IDBEnvironment.h>
 #include <org/w3c/dom/indexeddb/IDBEnvironmentSync.h>
+#include <org/w3c/dom/indexeddb/IDBErrorEvent.h>
+#include <org/w3c/dom/indexeddb/IDBEvent.h>
+#include <org/w3c/dom/indexeddb/IDBFactory.h>
+#include <org/w3c/dom/indexeddb/IDBFactorySync.h>
 #include <org/w3c/dom/indexeddb/IDBIndex.h>
-#include <org/w3c/dom/indexeddb/IDBIndexRequest.h>
 #include <org/w3c/dom/indexeddb/IDBIndexSync.h>
 #include <org/w3c/dom/indexeddb/IDBKeyRange.h>
+#include <org/w3c/dom/indexeddb/IDBKeyRangeConstructors.h>
 #include <org/w3c/dom/indexeddb/IDBObjectStore.h>
-#include <org/w3c/dom/indexeddb/IDBObjectStoreRequest.h>
 #include <org/w3c/dom/indexeddb/IDBObjectStoreSync.h>
 #include <org/w3c/dom/indexeddb/IDBRequest.h>
+#include <org/w3c/dom/indexeddb/IDBSuccessEvent.h>
 #include <org/w3c/dom/indexeddb/IDBTransaction.h>
-#include <org/w3c/dom/indexeddb/IDBTransactionRequest.h>
+#include <org/w3c/dom/indexeddb/IDBTransactionEvent.h>
 #include <org/w3c/dom/indexeddb/IDBTransactionSync.h>
-#include <org/w3c/dom/indexeddb/IndexedDatabase.h>
-#include <org/w3c/dom/indexeddb/IndexedDatabaseRequest.h>
+#include <org/w3c/dom/indexeddb/IDBVersionChangeEvent.h>
+#include <org/w3c/dom/indexeddb/IDBVersionChangeRequest.h>
 #include <org/w3c/dom/ls/DOMImplementationLS.h>
 #include <org/w3c/dom/ls/LSException.h>
 #include <org/w3c/dom/ls/LSInput.h>

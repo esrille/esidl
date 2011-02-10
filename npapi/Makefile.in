@@ -184,36 +184,37 @@ am__objects_1 = Console.$(OBJEXT) \
 	StyleMedia.$(OBJEXT) TextMetrics.$(OBJEXT) \
 	TimeRanges.$(OBJEXT) UndoManager.$(OBJEXT) \
 	UndoManagerEvent.$(OBJEXT) ValidityState.$(OBJEXT) \
-	Window.$(OBJEXT) IDBCursor.$(OBJEXT) \
-	IDBCursorRequest.$(OBJEXT) IDBCursorSync.$(OBJEXT) \
-	IDBDatabase.$(OBJEXT) IDBDatabaseError.$(OBJEXT) \
-	IDBDatabaseRequest.$(OBJEXT) IDBDatabaseSync.$(OBJEXT) \
+	Window.$(OBJEXT) IDBCursor.$(OBJEXT) IDBCursorSync.$(OBJEXT) \
+	IDBDatabase.$(OBJEXT) IDBDatabaseSync.$(OBJEXT) \
 	IDBEnvironment.$(OBJEXT) IDBEnvironmentSync.$(OBJEXT) \
-	IDBIndex.$(OBJEXT) IDBIndexRequest.$(OBJEXT) \
-	IDBIndexSync.$(OBJEXT) IDBKeyRange.$(OBJEXT) \
-	IDBObjectStore.$(OBJEXT) IDBObjectStoreRequest.$(OBJEXT) \
-	IDBObjectStoreSync.$(OBJEXT) IDBRequest.$(OBJEXT) \
-	IDBTransaction.$(OBJEXT) IDBTransactionRequest.$(OBJEXT) \
-	IDBTransactionSync.$(OBJEXT) IndexedDatabase.$(OBJEXT) \
-	IndexedDatabaseRequest.$(OBJEXT) DOMImplementationLS.$(OBJEXT) \
-	LSInput.$(OBJEXT) LSLoadEvent.$(OBJEXT) LSOutput.$(OBJEXT) \
-	LSParser.$(OBJEXT) LSParserFilter.$(OBJEXT) \
-	LSProgressEvent.$(OBJEXT) LSResourceResolver.$(OBJEXT) \
-	LSSerializer.$(OBJEXT) LSSerializerFilter.$(OBJEXT) \
-	NamedNodeMap.$(OBJEXT) NameList.$(OBJEXT) Node.$(OBJEXT) \
-	NodeList.$(OBJEXT) Notation.$(OBJEXT) \
-	ProcessingInstruction.$(OBJEXT) DocumentRange.$(OBJEXT) \
-	Range.$(OBJEXT) ElementTimeControl.$(OBJEXT) \
-	TimeEvent.$(OBJEXT) LinkStyle.$(OBJEXT) MediaList.$(OBJEXT) \
-	StyleSheet.$(OBJEXT) GetSVGDocument.$(OBJEXT) \
-	SVGAElement.$(OBJEXT) SVGAltGlyphDefElement.$(OBJEXT) \
-	SVGAltGlyphElement.$(OBJEXT) SVGAltGlyphItemElement.$(OBJEXT) \
-	SVGAngle.$(OBJEXT) SVGAnimateColorElement.$(OBJEXT) \
-	SVGAnimatedAngle.$(OBJEXT) SVGAnimatedBoolean.$(OBJEXT) \
-	SVGAnimatedEnumeration.$(OBJEXT) SVGAnimatedInteger.$(OBJEXT) \
-	SVGAnimatedLength.$(OBJEXT) SVGAnimatedLengthList.$(OBJEXT) \
-	SVGAnimatedNumber.$(OBJEXT) SVGAnimatedNumberList.$(OBJEXT) \
-	SVGAnimatedPathData.$(OBJEXT) SVGAnimatedPoints.$(OBJEXT) \
+	IDBErrorEvent.$(OBJEXT) IDBEvent.$(OBJEXT) \
+	IDBFactory.$(OBJEXT) IDBFactorySync.$(OBJEXT) \
+	IDBIndex.$(OBJEXT) IDBIndexSync.$(OBJEXT) \
+	IDBKeyRange.$(OBJEXT) IDBKeyRangeConstructors.$(OBJEXT) \
+	IDBObjectStore.$(OBJEXT) IDBObjectStoreSync.$(OBJEXT) \
+	IDBRequest.$(OBJEXT) IDBSuccessEvent.$(OBJEXT) \
+	IDBTransaction.$(OBJEXT) IDBTransactionEvent.$(OBJEXT) \
+	IDBTransactionSync.$(OBJEXT) IDBVersionChangeEvent.$(OBJEXT) \
+	IDBVersionChangeRequest.$(OBJEXT) \
+	DOMImplementationLS.$(OBJEXT) LSInput.$(OBJEXT) \
+	LSLoadEvent.$(OBJEXT) LSOutput.$(OBJEXT) LSParser.$(OBJEXT) \
+	LSParserFilter.$(OBJEXT) LSProgressEvent.$(OBJEXT) \
+	LSResourceResolver.$(OBJEXT) LSSerializer.$(OBJEXT) \
+	LSSerializerFilter.$(OBJEXT) NamedNodeMap.$(OBJEXT) \
+	NameList.$(OBJEXT) Node.$(OBJEXT) NodeList.$(OBJEXT) \
+	Notation.$(OBJEXT) ProcessingInstruction.$(OBJEXT) \
+	DocumentRange.$(OBJEXT) Range.$(OBJEXT) \
+	ElementTimeControl.$(OBJEXT) TimeEvent.$(OBJEXT) \
+	LinkStyle.$(OBJEXT) MediaList.$(OBJEXT) StyleSheet.$(OBJEXT) \
+	GetSVGDocument.$(OBJEXT) SVGAElement.$(OBJEXT) \
+	SVGAltGlyphDefElement.$(OBJEXT) SVGAltGlyphElement.$(OBJEXT) \
+	SVGAltGlyphItemElement.$(OBJEXT) SVGAngle.$(OBJEXT) \
+	SVGAnimateColorElement.$(OBJEXT) SVGAnimatedAngle.$(OBJEXT) \
+	SVGAnimatedBoolean.$(OBJEXT) SVGAnimatedEnumeration.$(OBJEXT) \
+	SVGAnimatedInteger.$(OBJEXT) SVGAnimatedLength.$(OBJEXT) \
+	SVGAnimatedLengthList.$(OBJEXT) SVGAnimatedNumber.$(OBJEXT) \
+	SVGAnimatedNumberList.$(OBJEXT) SVGAnimatedPathData.$(OBJEXT) \
+	SVGAnimatedPoints.$(OBJEXT) \
 	SVGAnimatedPreserveAspectRatio.$(OBJEXT) \
 	SVGAnimatedRect.$(OBJEXT) SVGAnimatedString.$(OBJEXT) \
 	SVGAnimatedTransformList.$(OBJEXT) SVGAnimateElement.$(OBJEXT) \
@@ -791,28 +792,29 @@ generated_headers = \
 	org/w3c/dom/html/ValidityState.h \
 	org/w3c/dom/html/Window.h \
 	org/w3c/dom/indexeddb/IDBCursor.h \
-	org/w3c/dom/indexeddb/IDBCursorRequest.h \
 	org/w3c/dom/indexeddb/IDBCursorSync.h \
-	org/w3c/dom/indexeddb/IDBDatabaseError.h \
-	org/w3c/dom/indexeddb/IDBDatabaseException.h \
 	org/w3c/dom/indexeddb/IDBDatabase.h \
-	org/w3c/dom/indexeddb/IDBDatabaseRequest.h \
+	org/w3c/dom/indexeddb/IDBDatabaseException.h \
 	org/w3c/dom/indexeddb/IDBDatabaseSync.h \
 	org/w3c/dom/indexeddb/IDBEnvironment.h \
 	org/w3c/dom/indexeddb/IDBEnvironmentSync.h \
+	org/w3c/dom/indexeddb/IDBErrorEvent.h \
+	org/w3c/dom/indexeddb/IDBEvent.h \
+	org/w3c/dom/indexeddb/IDBFactory.h \
+	org/w3c/dom/indexeddb/IDBFactorySync.h \
 	org/w3c/dom/indexeddb/IDBIndex.h \
-	org/w3c/dom/indexeddb/IDBIndexRequest.h \
 	org/w3c/dom/indexeddb/IDBIndexSync.h \
 	org/w3c/dom/indexeddb/IDBKeyRange.h \
+	org/w3c/dom/indexeddb/IDBKeyRangeConstructors.h \
 	org/w3c/dom/indexeddb/IDBObjectStore.h \
-	org/w3c/dom/indexeddb/IDBObjectStoreRequest.h \
 	org/w3c/dom/indexeddb/IDBObjectStoreSync.h \
 	org/w3c/dom/indexeddb/IDBRequest.h \
+	org/w3c/dom/indexeddb/IDBSuccessEvent.h \
 	org/w3c/dom/indexeddb/IDBTransaction.h \
-	org/w3c/dom/indexeddb/IDBTransactionRequest.h \
+	org/w3c/dom/indexeddb/IDBTransactionEvent.h \
 	org/w3c/dom/indexeddb/IDBTransactionSync.h \
-	org/w3c/dom/indexeddb/IndexedDatabase.h \
-	org/w3c/dom/indexeddb/IndexedDatabaseRequest.h \
+	org/w3c/dom/indexeddb/IDBVersionChangeEvent.h \
+	org/w3c/dom/indexeddb/IDBVersionChangeRequest.h \
 	org/w3c/dom/ls/DOMImplementationLS.h \
 	org/w3c/dom/ls/LSException.h \
 	org/w3c/dom/ls/LSInput.h \
@@ -1291,27 +1293,28 @@ generated_sources = \
 	org/w3c/dom/html/ValidityState.cpp \
 	org/w3c/dom/html/Window.cpp \
 	org/w3c/dom/indexeddb/IDBCursor.cpp \
-	org/w3c/dom/indexeddb/IDBCursorRequest.cpp \
 	org/w3c/dom/indexeddb/IDBCursorSync.cpp \
 	org/w3c/dom/indexeddb/IDBDatabase.cpp \
-	org/w3c/dom/indexeddb/IDBDatabaseError.cpp \
-	org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp \
 	org/w3c/dom/indexeddb/IDBDatabaseSync.cpp \
 	org/w3c/dom/indexeddb/IDBEnvironment.cpp \
 	org/w3c/dom/indexeddb/IDBEnvironmentSync.cpp \
+	org/w3c/dom/indexeddb/IDBErrorEvent.cpp \
+	org/w3c/dom/indexeddb/IDBEvent.cpp \
+	org/w3c/dom/indexeddb/IDBFactory.cpp \
+	org/w3c/dom/indexeddb/IDBFactorySync.cpp \
 	org/w3c/dom/indexeddb/IDBIndex.cpp \
-	org/w3c/dom/indexeddb/IDBIndexRequest.cpp \
 	org/w3c/dom/indexeddb/IDBIndexSync.cpp \
 	org/w3c/dom/indexeddb/IDBKeyRange.cpp \
+	org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp \
 	org/w3c/dom/indexeddb/IDBObjectStore.cpp \
-	org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp \
 	org/w3c/dom/indexeddb/IDBObjectStoreSync.cpp \
 	org/w3c/dom/indexeddb/IDBRequest.cpp \
+	org/w3c/dom/indexeddb/IDBSuccessEvent.cpp \
 	org/w3c/dom/indexeddb/IDBTransaction.cpp \
-	org/w3c/dom/indexeddb/IDBTransactionRequest.cpp \
+	org/w3c/dom/indexeddb/IDBTransactionEvent.cpp \
 	org/w3c/dom/indexeddb/IDBTransactionSync.cpp \
-	org/w3c/dom/indexeddb/IndexedDatabase.cpp \
-	org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp \
+	org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp \
+	org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp \
 	org/w3c/dom/ls/DOMImplementationLS.cpp \
 	org/w3c/dom/ls/LSInput.cpp \
 	org/w3c/dom/ls/LSLoadEvent.cpp \
@@ -1881,28 +1884,29 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HashChangeEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/History.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBCursor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBCursorRequest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBCursorSync.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBDatabase.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBDatabaseError.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBDatabaseRequest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBDatabaseSync.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBEnvironment.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBEnvironmentSync.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBErrorEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBFactory.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBFactorySync.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBIndex.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBIndexRequest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBIndexSync.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBKeyRange.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBKeyRangeConstructors.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBObjectStore.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBObjectStoreRequest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBObjectStoreSync.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBRequest.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBSuccessEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBTransaction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBTransactionRequest.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBTransactionEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBTransactionSync.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBVersionChangeEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IDBVersionChangeRequest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ImageData.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IndexedDatabase.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IndexedDatabaseRequest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/KeyboardEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSInput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSLoadEvent.Po@am__quote@
@@ -5381,20 +5385,6 @@ IDBCursor.obj: org/w3c/dom/indexeddb/IDBCursor.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBCursor.obj `if test -f 'org/w3c/dom/indexeddb/IDBCursor.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBCursor.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBCursor.cpp'; fi`
 
-IDBCursorRequest.o: org/w3c/dom/indexeddb/IDBCursorRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBCursorRequest.o -MD -MP -MF $(DEPDIR)/IDBCursorRequest.Tpo -c -o IDBCursorRequest.o `test -f 'org/w3c/dom/indexeddb/IDBCursorRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBCursorRequest.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBCursorRequest.Tpo $(DEPDIR)/IDBCursorRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBCursorRequest.cpp' object='IDBCursorRequest.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBCursorRequest.o `test -f 'org/w3c/dom/indexeddb/IDBCursorRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBCursorRequest.cpp
-
-IDBCursorRequest.obj: org/w3c/dom/indexeddb/IDBCursorRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBCursorRequest.obj -MD -MP -MF $(DEPDIR)/IDBCursorRequest.Tpo -c -o IDBCursorRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBCursorRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBCursorRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBCursorRequest.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBCursorRequest.Tpo $(DEPDIR)/IDBCursorRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBCursorRequest.cpp' object='IDBCursorRequest.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBCursorRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBCursorRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBCursorRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBCursorRequest.cpp'; fi`
-
 IDBCursorSync.o: org/w3c/dom/indexeddb/IDBCursorSync.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBCursorSync.o -MD -MP -MF $(DEPDIR)/IDBCursorSync.Tpo -c -o IDBCursorSync.o `test -f 'org/w3c/dom/indexeddb/IDBCursorSync.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBCursorSync.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBCursorSync.Tpo $(DEPDIR)/IDBCursorSync.Po
@@ -5422,34 +5412,6 @@ IDBDatabase.obj: org/w3c/dom/indexeddb/IDBDatabase.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBDatabase.cpp' object='IDBDatabase.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBDatabase.obj `if test -f 'org/w3c/dom/indexeddb/IDBDatabase.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBDatabase.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBDatabase.cpp'; fi`
-
-IDBDatabaseError.o: org/w3c/dom/indexeddb/IDBDatabaseError.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBDatabaseError.o -MD -MP -MF $(DEPDIR)/IDBDatabaseError.Tpo -c -o IDBDatabaseError.o `test -f 'org/w3c/dom/indexeddb/IDBDatabaseError.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBDatabaseError.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBDatabaseError.Tpo $(DEPDIR)/IDBDatabaseError.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBDatabaseError.cpp' object='IDBDatabaseError.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBDatabaseError.o `test -f 'org/w3c/dom/indexeddb/IDBDatabaseError.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBDatabaseError.cpp
-
-IDBDatabaseError.obj: org/w3c/dom/indexeddb/IDBDatabaseError.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBDatabaseError.obj -MD -MP -MF $(DEPDIR)/IDBDatabaseError.Tpo -c -o IDBDatabaseError.obj `if test -f 'org/w3c/dom/indexeddb/IDBDatabaseError.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBDatabaseError.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBDatabaseError.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBDatabaseError.Tpo $(DEPDIR)/IDBDatabaseError.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBDatabaseError.cpp' object='IDBDatabaseError.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBDatabaseError.obj `if test -f 'org/w3c/dom/indexeddb/IDBDatabaseError.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBDatabaseError.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBDatabaseError.cpp'; fi`
-
-IDBDatabaseRequest.o: org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBDatabaseRequest.o -MD -MP -MF $(DEPDIR)/IDBDatabaseRequest.Tpo -c -o IDBDatabaseRequest.o `test -f 'org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBDatabaseRequest.Tpo $(DEPDIR)/IDBDatabaseRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp' object='IDBDatabaseRequest.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBDatabaseRequest.o `test -f 'org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp
-
-IDBDatabaseRequest.obj: org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBDatabaseRequest.obj -MD -MP -MF $(DEPDIR)/IDBDatabaseRequest.Tpo -c -o IDBDatabaseRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBDatabaseRequest.Tpo $(DEPDIR)/IDBDatabaseRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp' object='IDBDatabaseRequest.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBDatabaseRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBDatabaseRequest.cpp'; fi`
 
 IDBDatabaseSync.o: org/w3c/dom/indexeddb/IDBDatabaseSync.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBDatabaseSync.o -MD -MP -MF $(DEPDIR)/IDBDatabaseSync.Tpo -c -o IDBDatabaseSync.o `test -f 'org/w3c/dom/indexeddb/IDBDatabaseSync.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBDatabaseSync.cpp
@@ -5493,6 +5455,62 @@ IDBEnvironmentSync.obj: org/w3c/dom/indexeddb/IDBEnvironmentSync.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBEnvironmentSync.obj `if test -f 'org/w3c/dom/indexeddb/IDBEnvironmentSync.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBEnvironmentSync.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBEnvironmentSync.cpp'; fi`
 
+IDBErrorEvent.o: org/w3c/dom/indexeddb/IDBErrorEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBErrorEvent.o -MD -MP -MF $(DEPDIR)/IDBErrorEvent.Tpo -c -o IDBErrorEvent.o `test -f 'org/w3c/dom/indexeddb/IDBErrorEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBErrorEvent.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBErrorEvent.Tpo $(DEPDIR)/IDBErrorEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBErrorEvent.cpp' object='IDBErrorEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBErrorEvent.o `test -f 'org/w3c/dom/indexeddb/IDBErrorEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBErrorEvent.cpp
+
+IDBErrorEvent.obj: org/w3c/dom/indexeddb/IDBErrorEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBErrorEvent.obj -MD -MP -MF $(DEPDIR)/IDBErrorEvent.Tpo -c -o IDBErrorEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBErrorEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBErrorEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBErrorEvent.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBErrorEvent.Tpo $(DEPDIR)/IDBErrorEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBErrorEvent.cpp' object='IDBErrorEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBErrorEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBErrorEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBErrorEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBErrorEvent.cpp'; fi`
+
+IDBEvent.o: org/w3c/dom/indexeddb/IDBEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBEvent.o -MD -MP -MF $(DEPDIR)/IDBEvent.Tpo -c -o IDBEvent.o `test -f 'org/w3c/dom/indexeddb/IDBEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBEvent.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBEvent.Tpo $(DEPDIR)/IDBEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBEvent.cpp' object='IDBEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBEvent.o `test -f 'org/w3c/dom/indexeddb/IDBEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBEvent.cpp
+
+IDBEvent.obj: org/w3c/dom/indexeddb/IDBEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBEvent.obj -MD -MP -MF $(DEPDIR)/IDBEvent.Tpo -c -o IDBEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBEvent.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBEvent.Tpo $(DEPDIR)/IDBEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBEvent.cpp' object='IDBEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBEvent.cpp'; fi`
+
+IDBFactory.o: org/w3c/dom/indexeddb/IDBFactory.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBFactory.o -MD -MP -MF $(DEPDIR)/IDBFactory.Tpo -c -o IDBFactory.o `test -f 'org/w3c/dom/indexeddb/IDBFactory.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBFactory.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBFactory.Tpo $(DEPDIR)/IDBFactory.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBFactory.cpp' object='IDBFactory.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBFactory.o `test -f 'org/w3c/dom/indexeddb/IDBFactory.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBFactory.cpp
+
+IDBFactory.obj: org/w3c/dom/indexeddb/IDBFactory.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBFactory.obj -MD -MP -MF $(DEPDIR)/IDBFactory.Tpo -c -o IDBFactory.obj `if test -f 'org/w3c/dom/indexeddb/IDBFactory.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBFactory.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBFactory.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBFactory.Tpo $(DEPDIR)/IDBFactory.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBFactory.cpp' object='IDBFactory.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBFactory.obj `if test -f 'org/w3c/dom/indexeddb/IDBFactory.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBFactory.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBFactory.cpp'; fi`
+
+IDBFactorySync.o: org/w3c/dom/indexeddb/IDBFactorySync.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBFactorySync.o -MD -MP -MF $(DEPDIR)/IDBFactorySync.Tpo -c -o IDBFactorySync.o `test -f 'org/w3c/dom/indexeddb/IDBFactorySync.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBFactorySync.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBFactorySync.Tpo $(DEPDIR)/IDBFactorySync.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBFactorySync.cpp' object='IDBFactorySync.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBFactorySync.o `test -f 'org/w3c/dom/indexeddb/IDBFactorySync.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBFactorySync.cpp
+
+IDBFactorySync.obj: org/w3c/dom/indexeddb/IDBFactorySync.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBFactorySync.obj -MD -MP -MF $(DEPDIR)/IDBFactorySync.Tpo -c -o IDBFactorySync.obj `if test -f 'org/w3c/dom/indexeddb/IDBFactorySync.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBFactorySync.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBFactorySync.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBFactorySync.Tpo $(DEPDIR)/IDBFactorySync.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBFactorySync.cpp' object='IDBFactorySync.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBFactorySync.obj `if test -f 'org/w3c/dom/indexeddb/IDBFactorySync.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBFactorySync.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBFactorySync.cpp'; fi`
+
 IDBIndex.o: org/w3c/dom/indexeddb/IDBIndex.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBIndex.o -MD -MP -MF $(DEPDIR)/IDBIndex.Tpo -c -o IDBIndex.o `test -f 'org/w3c/dom/indexeddb/IDBIndex.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBIndex.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBIndex.Tpo $(DEPDIR)/IDBIndex.Po
@@ -5506,20 +5524,6 @@ IDBIndex.obj: org/w3c/dom/indexeddb/IDBIndex.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBIndex.cpp' object='IDBIndex.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBIndex.obj `if test -f 'org/w3c/dom/indexeddb/IDBIndex.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBIndex.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBIndex.cpp'; fi`
-
-IDBIndexRequest.o: org/w3c/dom/indexeddb/IDBIndexRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBIndexRequest.o -MD -MP -MF $(DEPDIR)/IDBIndexRequest.Tpo -c -o IDBIndexRequest.o `test -f 'org/w3c/dom/indexeddb/IDBIndexRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBIndexRequest.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBIndexRequest.Tpo $(DEPDIR)/IDBIndexRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBIndexRequest.cpp' object='IDBIndexRequest.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBIndexRequest.o `test -f 'org/w3c/dom/indexeddb/IDBIndexRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBIndexRequest.cpp
-
-IDBIndexRequest.obj: org/w3c/dom/indexeddb/IDBIndexRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBIndexRequest.obj -MD -MP -MF $(DEPDIR)/IDBIndexRequest.Tpo -c -o IDBIndexRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBIndexRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBIndexRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBIndexRequest.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBIndexRequest.Tpo $(DEPDIR)/IDBIndexRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBIndexRequest.cpp' object='IDBIndexRequest.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBIndexRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBIndexRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBIndexRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBIndexRequest.cpp'; fi`
 
 IDBIndexSync.o: org/w3c/dom/indexeddb/IDBIndexSync.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBIndexSync.o -MD -MP -MF $(DEPDIR)/IDBIndexSync.Tpo -c -o IDBIndexSync.o `test -f 'org/w3c/dom/indexeddb/IDBIndexSync.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBIndexSync.cpp
@@ -5549,6 +5553,20 @@ IDBKeyRange.obj: org/w3c/dom/indexeddb/IDBKeyRange.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBKeyRange.obj `if test -f 'org/w3c/dom/indexeddb/IDBKeyRange.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBKeyRange.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBKeyRange.cpp'; fi`
 
+IDBKeyRangeConstructors.o: org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBKeyRangeConstructors.o -MD -MP -MF $(DEPDIR)/IDBKeyRangeConstructors.Tpo -c -o IDBKeyRangeConstructors.o `test -f 'org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBKeyRangeConstructors.Tpo $(DEPDIR)/IDBKeyRangeConstructors.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp' object='IDBKeyRangeConstructors.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBKeyRangeConstructors.o `test -f 'org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp
+
+IDBKeyRangeConstructors.obj: org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBKeyRangeConstructors.obj -MD -MP -MF $(DEPDIR)/IDBKeyRangeConstructors.Tpo -c -o IDBKeyRangeConstructors.obj `if test -f 'org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBKeyRangeConstructors.Tpo $(DEPDIR)/IDBKeyRangeConstructors.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp' object='IDBKeyRangeConstructors.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBKeyRangeConstructors.obj `if test -f 'org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBKeyRangeConstructors.cpp'; fi`
+
 IDBObjectStore.o: org/w3c/dom/indexeddb/IDBObjectStore.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBObjectStore.o -MD -MP -MF $(DEPDIR)/IDBObjectStore.Tpo -c -o IDBObjectStore.o `test -f 'org/w3c/dom/indexeddb/IDBObjectStore.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBObjectStore.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBObjectStore.Tpo $(DEPDIR)/IDBObjectStore.Po
@@ -5562,20 +5580,6 @@ IDBObjectStore.obj: org/w3c/dom/indexeddb/IDBObjectStore.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBObjectStore.cpp' object='IDBObjectStore.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBObjectStore.obj `if test -f 'org/w3c/dom/indexeddb/IDBObjectStore.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBObjectStore.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBObjectStore.cpp'; fi`
-
-IDBObjectStoreRequest.o: org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBObjectStoreRequest.o -MD -MP -MF $(DEPDIR)/IDBObjectStoreRequest.Tpo -c -o IDBObjectStoreRequest.o `test -f 'org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBObjectStoreRequest.Tpo $(DEPDIR)/IDBObjectStoreRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp' object='IDBObjectStoreRequest.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBObjectStoreRequest.o `test -f 'org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp
-
-IDBObjectStoreRequest.obj: org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBObjectStoreRequest.obj -MD -MP -MF $(DEPDIR)/IDBObjectStoreRequest.Tpo -c -o IDBObjectStoreRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBObjectStoreRequest.Tpo $(DEPDIR)/IDBObjectStoreRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp' object='IDBObjectStoreRequest.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBObjectStoreRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBObjectStoreRequest.cpp'; fi`
 
 IDBObjectStoreSync.o: org/w3c/dom/indexeddb/IDBObjectStoreSync.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBObjectStoreSync.o -MD -MP -MF $(DEPDIR)/IDBObjectStoreSync.Tpo -c -o IDBObjectStoreSync.o `test -f 'org/w3c/dom/indexeddb/IDBObjectStoreSync.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBObjectStoreSync.cpp
@@ -5605,6 +5609,20 @@ IDBRequest.obj: org/w3c/dom/indexeddb/IDBRequest.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBRequest.cpp'; fi`
 
+IDBSuccessEvent.o: org/w3c/dom/indexeddb/IDBSuccessEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBSuccessEvent.o -MD -MP -MF $(DEPDIR)/IDBSuccessEvent.Tpo -c -o IDBSuccessEvent.o `test -f 'org/w3c/dom/indexeddb/IDBSuccessEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBSuccessEvent.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBSuccessEvent.Tpo $(DEPDIR)/IDBSuccessEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBSuccessEvent.cpp' object='IDBSuccessEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBSuccessEvent.o `test -f 'org/w3c/dom/indexeddb/IDBSuccessEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBSuccessEvent.cpp
+
+IDBSuccessEvent.obj: org/w3c/dom/indexeddb/IDBSuccessEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBSuccessEvent.obj -MD -MP -MF $(DEPDIR)/IDBSuccessEvent.Tpo -c -o IDBSuccessEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBSuccessEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBSuccessEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBSuccessEvent.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBSuccessEvent.Tpo $(DEPDIR)/IDBSuccessEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBSuccessEvent.cpp' object='IDBSuccessEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBSuccessEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBSuccessEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBSuccessEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBSuccessEvent.cpp'; fi`
+
 IDBTransaction.o: org/w3c/dom/indexeddb/IDBTransaction.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBTransaction.o -MD -MP -MF $(DEPDIR)/IDBTransaction.Tpo -c -o IDBTransaction.o `test -f 'org/w3c/dom/indexeddb/IDBTransaction.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBTransaction.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBTransaction.Tpo $(DEPDIR)/IDBTransaction.Po
@@ -5619,19 +5637,19 @@ IDBTransaction.obj: org/w3c/dom/indexeddb/IDBTransaction.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBTransaction.obj `if test -f 'org/w3c/dom/indexeddb/IDBTransaction.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBTransaction.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBTransaction.cpp'; fi`
 
-IDBTransactionRequest.o: org/w3c/dom/indexeddb/IDBTransactionRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBTransactionRequest.o -MD -MP -MF $(DEPDIR)/IDBTransactionRequest.Tpo -c -o IDBTransactionRequest.o `test -f 'org/w3c/dom/indexeddb/IDBTransactionRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBTransactionRequest.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBTransactionRequest.Tpo $(DEPDIR)/IDBTransactionRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBTransactionRequest.cpp' object='IDBTransactionRequest.o' libtool=no @AMDEPBACKSLASH@
+IDBTransactionEvent.o: org/w3c/dom/indexeddb/IDBTransactionEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBTransactionEvent.o -MD -MP -MF $(DEPDIR)/IDBTransactionEvent.Tpo -c -o IDBTransactionEvent.o `test -f 'org/w3c/dom/indexeddb/IDBTransactionEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBTransactionEvent.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBTransactionEvent.Tpo $(DEPDIR)/IDBTransactionEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBTransactionEvent.cpp' object='IDBTransactionEvent.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBTransactionRequest.o `test -f 'org/w3c/dom/indexeddb/IDBTransactionRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBTransactionRequest.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBTransactionEvent.o `test -f 'org/w3c/dom/indexeddb/IDBTransactionEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBTransactionEvent.cpp
 
-IDBTransactionRequest.obj: org/w3c/dom/indexeddb/IDBTransactionRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBTransactionRequest.obj -MD -MP -MF $(DEPDIR)/IDBTransactionRequest.Tpo -c -o IDBTransactionRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBTransactionRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBTransactionRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBTransactionRequest.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBTransactionRequest.Tpo $(DEPDIR)/IDBTransactionRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBTransactionRequest.cpp' object='IDBTransactionRequest.obj' libtool=no @AMDEPBACKSLASH@
+IDBTransactionEvent.obj: org/w3c/dom/indexeddb/IDBTransactionEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBTransactionEvent.obj -MD -MP -MF $(DEPDIR)/IDBTransactionEvent.Tpo -c -o IDBTransactionEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBTransactionEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBTransactionEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBTransactionEvent.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBTransactionEvent.Tpo $(DEPDIR)/IDBTransactionEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBTransactionEvent.cpp' object='IDBTransactionEvent.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBTransactionRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBTransactionRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBTransactionRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBTransactionRequest.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBTransactionEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBTransactionEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBTransactionEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBTransactionEvent.cpp'; fi`
 
 IDBTransactionSync.o: org/w3c/dom/indexeddb/IDBTransactionSync.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBTransactionSync.o -MD -MP -MF $(DEPDIR)/IDBTransactionSync.Tpo -c -o IDBTransactionSync.o `test -f 'org/w3c/dom/indexeddb/IDBTransactionSync.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBTransactionSync.cpp
@@ -5647,33 +5665,33 @@ IDBTransactionSync.obj: org/w3c/dom/indexeddb/IDBTransactionSync.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBTransactionSync.obj `if test -f 'org/w3c/dom/indexeddb/IDBTransactionSync.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBTransactionSync.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBTransactionSync.cpp'; fi`
 
-IndexedDatabase.o: org/w3c/dom/indexeddb/IndexedDatabase.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IndexedDatabase.o -MD -MP -MF $(DEPDIR)/IndexedDatabase.Tpo -c -o IndexedDatabase.o `test -f 'org/w3c/dom/indexeddb/IndexedDatabase.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IndexedDatabase.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IndexedDatabase.Tpo $(DEPDIR)/IndexedDatabase.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IndexedDatabase.cpp' object='IndexedDatabase.o' libtool=no @AMDEPBACKSLASH@
+IDBVersionChangeEvent.o: org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBVersionChangeEvent.o -MD -MP -MF $(DEPDIR)/IDBVersionChangeEvent.Tpo -c -o IDBVersionChangeEvent.o `test -f 'org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBVersionChangeEvent.Tpo $(DEPDIR)/IDBVersionChangeEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp' object='IDBVersionChangeEvent.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IndexedDatabase.o `test -f 'org/w3c/dom/indexeddb/IndexedDatabase.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IndexedDatabase.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBVersionChangeEvent.o `test -f 'org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp
 
-IndexedDatabase.obj: org/w3c/dom/indexeddb/IndexedDatabase.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IndexedDatabase.obj -MD -MP -MF $(DEPDIR)/IndexedDatabase.Tpo -c -o IndexedDatabase.obj `if test -f 'org/w3c/dom/indexeddb/IndexedDatabase.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IndexedDatabase.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IndexedDatabase.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IndexedDatabase.Tpo $(DEPDIR)/IndexedDatabase.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IndexedDatabase.cpp' object='IndexedDatabase.obj' libtool=no @AMDEPBACKSLASH@
+IDBVersionChangeEvent.obj: org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBVersionChangeEvent.obj -MD -MP -MF $(DEPDIR)/IDBVersionChangeEvent.Tpo -c -o IDBVersionChangeEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBVersionChangeEvent.Tpo $(DEPDIR)/IDBVersionChangeEvent.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp' object='IDBVersionChangeEvent.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IndexedDatabase.obj `if test -f 'org/w3c/dom/indexeddb/IndexedDatabase.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IndexedDatabase.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IndexedDatabase.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBVersionChangeEvent.obj `if test -f 'org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBVersionChangeEvent.cpp'; fi`
 
-IndexedDatabaseRequest.o: org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IndexedDatabaseRequest.o -MD -MP -MF $(DEPDIR)/IndexedDatabaseRequest.Tpo -c -o IndexedDatabaseRequest.o `test -f 'org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IndexedDatabaseRequest.Tpo $(DEPDIR)/IndexedDatabaseRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp' object='IndexedDatabaseRequest.o' libtool=no @AMDEPBACKSLASH@
+IDBVersionChangeRequest.o: org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBVersionChangeRequest.o -MD -MP -MF $(DEPDIR)/IDBVersionChangeRequest.Tpo -c -o IDBVersionChangeRequest.o `test -f 'org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBVersionChangeRequest.Tpo $(DEPDIR)/IDBVersionChangeRequest.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp' object='IDBVersionChangeRequest.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IndexedDatabaseRequest.o `test -f 'org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBVersionChangeRequest.o `test -f 'org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp' || echo '$(srcdir)/'`org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp
 
-IndexedDatabaseRequest.obj: org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IndexedDatabaseRequest.obj -MD -MP -MF $(DEPDIR)/IndexedDatabaseRequest.Tpo -c -o IndexedDatabaseRequest.obj `if test -f 'org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IndexedDatabaseRequest.Tpo $(DEPDIR)/IndexedDatabaseRequest.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp' object='IndexedDatabaseRequest.obj' libtool=no @AMDEPBACKSLASH@
+IDBVersionChangeRequest.obj: org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IDBVersionChangeRequest.obj -MD -MP -MF $(DEPDIR)/IDBVersionChangeRequest.Tpo -c -o IDBVersionChangeRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IDBVersionChangeRequest.Tpo $(DEPDIR)/IDBVersionChangeRequest.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp' object='IDBVersionChangeRequest.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IndexedDatabaseRequest.obj `if test -f 'org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IndexedDatabaseRequest.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IDBVersionChangeRequest.obj `if test -f 'org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp'; then $(CYGPATH_W) 'org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/indexeddb/IDBVersionChangeRequest.cpp'; fi`
 
 DOMImplementationLS.o: org/w3c/dom/ls/DOMImplementationLS.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementationLS.o -MD -MP -MF $(DEPDIR)/DOMImplementationLS.Tpo -c -o DOMImplementationLS.o `test -f 'org/w3c/dom/ls/DOMImplementationLS.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/DOMImplementationLS.cpp
