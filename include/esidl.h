@@ -673,6 +673,7 @@ public:
     }
 
     Node* search(const Node* scope) const;
+    Node* searchCplusplus(const Node* scope) const;
 
     virtual int compare(const char* str, const Node* scope) const
     {

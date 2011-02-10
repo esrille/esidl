@@ -864,6 +864,30 @@ Node* ScopedName::search(const Node* scope) const
     return resolved;
 }
 
+// Do not resolve typedef of sequence and array for C++
+Node* ScopedName::searchCplusplus(const Node* scope) const
+{
+    Node* resolved = resolve(scope, name);
+    if (resolved)
+    {
+        if (Member* member = dynamic_cast<Member*>(resolved))
+        {
+            if (member->isTypedef(member->getParent()))
+            {
+                if (ScopedName* node = dynamic_cast<ScopedName*>(member->getSpec()))
+                {
+                    resolved = node;
+                    if (Node* found = node->searchCplusplus(member->getParent()))
+                    {
+                        resolved = found;
+                    }
+                }
+            }
+        }
+    }
+    return resolved;
+}
+
 // This method works only after AdjustMethodCount visitor has been applied.
 int Interface::getInterfaceCount() const
 {

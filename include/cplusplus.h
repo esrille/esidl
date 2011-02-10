@@ -151,20 +151,35 @@ public:
     {
         if (0 < node->getName().size())
         {
-            std::string name = node->getName();
-            Node* resolved = resolve(currentNode, name);
-            if (resolved)
-            {
-                name = resolved->getPrefixedName();
-                name = getInterfaceName(name);
-                name = getScopedName(prefixedModuleName, name);
-            }
-            write("%s", name.c_str());
+            write("%s", getEscapedName(node->getName()).c_str());
         }
         else
         {
             printChildren(node);
         }
+    }
+
+    virtual void at(const ScopedName* node)
+    {
+        Node* resolved = node->searchCplusplus(currentNode);
+        node->check(resolved, "%s could not resolved.", node->getName().c_str());
+        const Node* saved = currentNode;
+        if (resolved->getParent())
+        {
+            currentNode = resolved->getParent();
+        }
+        if (!dynamic_cast<Interface*>(resolved) && !dynamic_cast<ExceptDcl*>(resolved) && !resolved->isTypedef(resolved->getParent()))
+        {
+            resolved->accept(this);
+        }
+        else
+        {
+            std::string name = resolved->getPrefixedName();
+            name = getInterfaceName(name);
+            name = getScopedName(prefixedModuleName, name);
+            write("%s", name.c_str());
+        }
+        currentNode = saved;
     }
 
     virtual void at(const Module* node)
@@ -255,7 +270,7 @@ public:
         Node* spec = node->getSpec();
         Type* type = dynamic_cast<Type*>(spec);
         // Note we don't need separate array types for primitive types in C++.
-        std::string name = getScopedName(prefixedModuleName, "::dom::ObjectArray");
+        std::string name = getScopedName(prefixedModuleName, "::org::w3c::dom::ObjectArray");
         write("%s<", name.c_str());
         spec->accept(this);
         if (spec->isInterface(currentNode))

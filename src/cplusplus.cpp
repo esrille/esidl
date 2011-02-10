@@ -335,16 +335,20 @@ public:
 
     virtual void at(const Member* node)
     {
+        if (node->isTypedef(node->getParent()))
+        {
+            Node* spec = node->getSpec();
+            if (dynamic_cast<ScopedName*>(spec))
+                return;
+            write("typedef ");
+        }
+        // This node is an exception class member.
         if (!currentNode)
         {
             currentNode = node->getParent();
             prefixedModuleName = currentNode->getPrefixedModuleName();
         }
         writetab();
-        if (node->isTypedef(node->getParent()))
-        {
-            write("typedef ");
-        }  // else this node is an exception class member.
         node->getSpec()->accept(this);
         write(" %s;\n", getEscapedName(node->getName()).c_str());
     }

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -83,7 +84,7 @@ void PaintInstance::down(events::Event* evt) {
   if (!canvas) {
     return;
   }
-  ClientRect* rect = canvas->getBoundingClientRect();
+  views::ClientRect* rect = canvas->getBoundingClientRect();
   if (!rect) {
     return;
   }
@@ -113,7 +114,7 @@ void PaintInstance::move(events::Event* evt) {
   if (!canvas) {
     return;
   }
-  ClientRect* rect = canvas->getBoundingClientRect();
+  views::ClientRect* rect = canvas->getBoundingClientRect();
   if (!rect) {
     return;
   }
@@ -165,7 +166,7 @@ void PaintInstance::select(events::Event* evt) {
   if (!tools) {
     return;
   }
-  ClientRect* rect = tools->getBoundingClientRect();
+  views::ClientRect* rect = tools->getBoundingClientRect();
   if (!rect) {
     return;
   }
