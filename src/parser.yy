@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -104,6 +105,7 @@ int yylex();
 %token SETTER
 %token SEQUENCE
 %token SHORT
+%token STATIC
 %token STRING
 %token STRINGIFIER
 %token TRUE
@@ -142,7 +144,7 @@ int yylex();
 %type <node>        GetRaises
 %type <node>        SetRaises
 %type <node>        Operation
-%type <attr>        OmittableSpecials
+%type <attr>        Qualifiers
 %type <attr>        Specials
 %type <attr>        Special
 %type <node>        OperationRest
@@ -171,11 +173,11 @@ int yylex();
 %type <node>        ReturnType
 %type <node>        ConstType
 %type <node>        ScopedNameList
-%type <node>        ScopedNames
 %type <node>        ScopedName
 %type <node>        AbsoluteScopedName
 %type <node>        RelativeScopedName
 %type <node>        ScopedNameParts
+%type <node>        ScopedNamePartList
 %type <node>        ExtendedAttribute
 %type <node>        ExtendedAttributeNoArg
 %type <node>        ExtendedAttributeArgList
@@ -195,7 +197,7 @@ int yylex();
 %type <node>        PrimaryExpr
 %type <name>        UnaryOperator
 %type <node>        Preprocessor
-%type <node>        OptionalBracketsList
+%type <node>        Array
 %type <node>        BracketsList
 %type <node>        Brackets
 %type <node>        positive_int_const
@@ -626,7 +628,7 @@ SetRaises :
     ;
 
 Operation :
-    OmittableSpecials OperationRest
+    Qualifiers OperationRest
         {
             OpDcl* op = static_cast<OpDcl*>($2);
             if (op)
@@ -657,8 +659,12 @@ Operation :
         }
     ;
 
-OmittableSpecials :
-    OMITTABLE Specials
+Qualifiers :
+    STATIC
+        {
+            $$ = OpDcl::Static;
+        }
+    | OMITTABLE Specials
         {
             $$ = OpDcl::Omittable | $2;
         }
@@ -670,7 +676,7 @@ Specials :
         {
             $$ = 0;
         }
-    | Special Specials
+    | Specials Special  /* Use left recursion */
         {
             $$ = $1 | $2;
         }
@@ -744,12 +750,12 @@ ExceptionList :
 
 ArgumentList :
     /* empty */
-    | Argument Arguments
+    | Arguments
     ;
 
 Arguments :
-    /* empty */
-    | ',' Argument Arguments
+    Argument
+    | Arguments ',' Argument   /* Use left recursion */
     ;
 
 Argument :
@@ -814,47 +820,34 @@ ExtendedAttributeList :
         {
             pushJavadoc();
         }
-    '[' JavaDoc
+    '[' ExtendedAttributes ']'
         {
-            setJavadoc($3);
-            free($3);
-        }
-    ExtendedAttribute ExtendedAttributes ']'
-        {
+            $$ = $3;
             popJavadoc();
-            if ($6)
-            {
-                $$ = $6;
-            }
-            else
-            {
-                $$ = new NodeList;
-            }
-            $$->push_front($5);
         }
     ;
 
 ExtendedAttributes :
-    /* empty */
+    JavaDoc
         {
-            $$ = 0;
+            setJavadoc($1);
+            free($1);
         }
-    | ',' JavaDoc
+    ExtendedAttribute
         {
-            setJavadoc($2);
-            free($2);
+            $$ = new NodeList;
+            $$->push_back($3);
         }
-    ExtendedAttribute ExtendedAttributes
+    | ExtendedAttributes ',' JavaDoc  /* Use left recursion */
         {
-            if ($5)
-            {
-                $$ = $5;
-            }
-            else
-            {
-                $$ = new NodeList;
-            }
-            $$->push_front($4);
+            setJavadoc($3);
+            free($3);
+        }
+    ExtendedAttribute
+        {
+            assert($1);
+            $$ = $1;
+            $$->push_back($5);
         }
     ;
 
@@ -878,7 +871,7 @@ ExtendedAttribute :
     ;
 
 Type :
-    NullableType OptionalBracketsList
+    NullableType Array
         {
             if ($2)
             {
@@ -891,7 +884,7 @@ Type :
                 $$ = $1;
             }
         }
-    | ScopedName OptionalBracketsList /* Note in esidl, "object" is treated as a ScopedName. */
+    | ScopedName Array /* Note in esidl, "object" is treated as a ScopedName. */
         {
             if ($2)
             {
@@ -904,7 +897,7 @@ Type :
                 $$ = $1;
             }
         }
-    | AnyType OptionalBracketsList
+    | AnyType Array
         {
             if ($2)
             {
@@ -917,7 +910,7 @@ Type :
                 $$ = $1;
             }
         }
-    | DateType OptionalBracketsList
+    | DateType Array
         {
             if ($2)
             {
@@ -1083,6 +1076,36 @@ Nullable :
         }
     ;
 
+Array :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | BracketsList
+        {
+        }
+    ;
+
+BracketsList :
+    Brackets
+    | Brackets BracketsList
+        {
+            static_cast<ArrayType*>($1)->setSpec($2);
+            $$ = $1;
+        }
+    ;
+
+Brackets :
+    '[' ']'
+        {
+            $$ = new ArrayType;
+        }
+    | '[' positive_int_const ']'  /* Note positive_int_const is an esidl extension. */
+        {
+            $$ = new ArrayType($2);
+        }
+    ;
+
 ReturnType :
     Type
     | VOID
@@ -1102,46 +1125,29 @@ ConstType :
     ;
 
 ScopedNameList :
-    ScopedName ScopedNames
+    ScopedName
         {
-            if ($2)
-            {
-                $$ = $2;
-            }
-            else
-            {
-                $$ = new Node();
-            }
-            $$->addFront($1);
+            $$ = new Node();
+            $$->add($1);
         }
-
-ScopedNames :
-    /* empty */
+    | ScopedNameList ',' ScopedName  /* Use left recursion */
         {
-            $$ = 0;
+            assert($1);
+            $$ = $1;
+            $$->add($3);
         }
-    | ',' ScopedName ScopedNames
-        {
-            if ($3)
-            {
-                $$ = $3;
-            }
-            else
-            {
-                $$ = new Node();
-            }
-            $$->addFront($2);
-        }
+    ;
 
 ScopedName :
     AbsoluteScopedName
-       {
+        {
             $$->setLocation(&@1);
         }
     | RelativeScopedName
         {
             $$->setLocation(&@1);
         }
+    ;
 
 AbsoluteScopedName :
     OP_SCOPE IDENTIFIER ScopedNameParts
@@ -1175,6 +1181,7 @@ AbsoluteScopedName :
             }
             free($2);
         }
+    ;
 
 RelativeScopedName :
     IDENTIFIER ScopedNameParts
@@ -1205,43 +1212,47 @@ RelativeScopedName :
             }
             free($1);
         }
+    ;
 
 ScopedNameParts :
     /* empty */
         {
             $$ = 0;
         }
-    | OP_SCOPE IDENTIFIER ScopedNameParts
+    | ScopedNamePartList
+    ;
+
+ScopedNamePartList :
+    OP_SCOPE IDENTIFIER
         {
             if (!Node::getFlatNamespace())
             {
-                if (!$3)
-                {
-                    ScopedName* name = new ScopedName("::");
-                    name->getName() += $2;
-                    $$ = name;
-                }
-                else
-                {
-                    ScopedName* name = static_cast<ScopedName*>($3);
-                    name->getName() = $2 + name->getName();
-                    name->getName() = "::" + name->getName();
-                    $$ = name;
-                }
+                ScopedName* name = new ScopedName("::");
+                name->getName() += $2;
+                $$ = name;
             }
             else
             {
-                if ($3)
-                {
-                    $$ = $3;
-                }
-                else
-                {
-                    $$ = new ScopedName($2);
-                }
+                $$ = new ScopedName($2);
             }
             free($2);
         }
+    | ScopedNamePartList OP_SCOPE IDENTIFIER  /* Use left recursion */
+        {
+            if (!Node::getFlatNamespace())
+            {
+                ScopedName* name = static_cast<ScopedName*>($1);
+                name->getName() += "::";
+                name->getName() += $3;
+                $$ = name;
+            }
+            else
+            {
+                $$ = new ScopedName($3);
+            }
+            free($3);
+        }
+    ;
 
 ExtendedAttributeNoArg :
     IDENTIFIER
@@ -1313,39 +1324,6 @@ ForwardDcl :
 
 positive_int_const :
     ConstExpr
-    ;
-
-OptionalBracketsList :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | BracketsList
-        {
-        }
-    ;
-
-BracketsList :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | Brackets BracketsList
-        {
-            static_cast<ArrayType*>($1)->setSpec($2);
-            $$ = $1;
-        }
-    ;
-
-Brackets :
-    '[' ']'
-        {
-            $$ = new ArrayType;
-        }
-    | '[' positive_int_const ']'
-        {
-            $$ = new ArrayType($2);
-        }
     ;
 
 Preprocessor :

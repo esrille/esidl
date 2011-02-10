@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -241,6 +242,10 @@ setter              {
 short               {
                         stepLocation();
                         return SHORT;
+                    }
+static              {
+                        stepLocation();
+                        return STATIC;
                     }
 string              {
                         stepLocation();

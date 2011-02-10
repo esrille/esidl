@@ -117,17 +117,18 @@ public:
     static const uint32_t Omittable =                0x00000100;
     static const uint32_t Variadic =                 0x00000200;
     static const uint32_t Nullable =                 0x00000400;
+    static const uint32_t Static =                   0x00000800;
     // [Callback]
-    static const uint32_t CallbackMask =             0x00001800;
-    static const uint32_t Callback =                 0x00001800;
-    static const uint32_t CallbackIsFunctionOnly =   0x00000800;
-    static const uint32_t CallbackIsPropertyOnly =   0x00001000;
+    static const uint32_t CallbackMask =             0x00003000;
+    static const uint32_t Callback =                 0x00003000;
+    static const uint32_t CallbackIsFunctionOnly =   0x00001000;
+    static const uint32_t CallbackIsPropertyOnly =   0x00002000;
     // [NoInterfaceObject]
-    static const uint32_t NoInterfaceObject =        0x00002000;
-    // [PrototypeRoot ]
-    static const uint32_t PrototypeRoot =            0x00004000;
+    static const uint32_t NoInterfaceObject =        0x00004000;
+    // [NamespaceObject]
+    static const uint32_t NamespaceObject =          0x00008000;
     // [Null]
-    static const uint32_t NullIsEmpty =              0x00008000;
+    static const uint32_t NullIsEmpty =              0x00010000;
     // [Undefined]
     static const uint32_t UndefinedIsEmpty =         0x00020000;
     static const uint32_t UndefinedIsNull =          0x00040000;
@@ -136,21 +137,21 @@ public:
     // [Replaceable]
     static const uint32_t Replaceable =              0x00100000;
     // [Optional]
-    static const uint32_t Optional =                 0x00400000;
+    static const uint32_t Optional =                 0x00200000;
     // [ImplementedOn]
-    static const uint32_t ImplementedOn =            0x01000000;
+    static const uint32_t ImplementedOn =            0x00400000;
     // [Supplemental]
-    static const uint32_t Supplemental =             0x02000000;
+    static const uint32_t Supplemental =             0x00800000;
     // [Constructor]
-    static const uint32_t Constructor =              0x04000000;
+    static const uint32_t Constructor =              0x01000000;
     // [OverrideBuiltins]
-    static const uint32_t OverrideBuiltins =         0x08000000;  // TODO: Update meta
+    static const uint32_t OverrideBuiltins =         0x02000000;  // TODO: Update meta
     // [ReplaceableNamedProperties]
     // cf. http://www.w3.org/Bugs/Public/show_bug.cgi?id=8241
-    static const uint32_t ReplaceableNamedProperties=0x10000000;  // TODO: Update metat
+    static const uint32_t ReplaceableNamedProperties=0x04000000;  // TODO: Update meta
 
     // misc. bits
-    static const uint32_t HasCovariant =             0x00010000;
+    static const uint32_t HasCovariant =             0x10000000;
     static const uint32_t HasIndexedProperties =     0x20000000;
     static const uint32_t HasNamedProperties =       0x40000000;
     static const uint32_t UnnamedProperty =          0x80000000;  // This should be banned.

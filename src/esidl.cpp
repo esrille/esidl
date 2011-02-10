@@ -406,6 +406,10 @@ void Module::processExtendedAttributes()
                 prefix = name->getName();
             }
         }
+        else if (ext->getName() == "NamespaceObject")
+        {
+            attr |= NamespaceObject;
+        }
         else if (ext->getName() == "ExceptionConsts")
         {
             ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
@@ -454,10 +458,6 @@ void Interface::processExtendedAttributes()
         {
             attr |= NoInterfaceObject;
         }
-        else if (ext->getName() == "PrototypeRoot")
-        {
-            attr |= PrototypeRoot;
-        }
         else if (ext->getName() == "Constructor" || ext->getName() == "NamedConstructor")
         {
             if (constructor == NULL)
@@ -501,7 +501,8 @@ void Interface::processExtendedAttributes()
         else if (ext->getName() == "NoIndexingOperations" ||
                  ext->getName() == "ImplementedOn" ||
                  ext->getName() == "Callable" ||
-                 ext->getName() == "Stringifies")
+                 ext->getName() == "Stringifies" ||
+                 ext->getName() == "PrototypeRoot")
         {
             ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }
