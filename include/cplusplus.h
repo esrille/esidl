@@ -270,7 +270,7 @@ public:
         Node* spec = node->getSpec();
         Type* type = dynamic_cast<Type*>(spec);
         // Note we don't need separate array types for primitive types in C++.
-        std::string name = getScopedName(prefixedModuleName, "::org::w3c::dom::ObjectArray");
+        std::string name = getScopedName(prefixedModuleName, std::string(Node::getDefaultPrefix()) + "::ObjectArray");
         write("%s<", name.c_str());
         spec->accept(this);
         if (spec->isInterface(currentNode))
