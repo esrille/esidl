@@ -10,39 +10,27 @@ vpath %.idl = $(srcdir)
 
 generated_headers = \
 	com/rsa/MD5.h \
-	com/rsa/MD5_Constructor.h \
-	org/w3c/dom/Test.h \
-	org/w3c/dom/Test_Constructor.h
+	org/w3c/dom/Test.h
 
 generated_sources = \
 	com/rsa/MD5.cpp \
-	com/rsa/MD5_Constructor.cpp \
-	org/w3c/dom/Test.cpp \
-	org/w3c/dom/Test_Constructor.cpp
+	org/w3c/dom/Test.cpp
 
 BUILT_SOURCES = $(generated_headers) $(generated_sources)
 
 nodist_noinst_HEADERS = $(generated_headers)
 
 com/rsa/MD5.h : md5.idl
-	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
-
-com/rsa/MD5_Constructor.h : com/rsa/MD5.h
+	$(esidl) -messenger -string std::string -object Object -fno-multipleinheritance $^
 
 com/rsa/MD5.cpp : md5.idl
-	$(esidl) -cplusplus-src -string std::string -object Object -fvirtualbase $^
-
-com/rsa/MD5_Constructor.cpp : com/rsa/MD5.cpp
+	$(esidl) -messenger-src -string std::string -object Object -fno-multipleinheritance $^
 
 org/w3c/dom/Test.h : test.idl
-	$(esidl) -cplusplus -string std::string -object Object -fvirtualbase $^
-
-org/w3c/dom/Test_Constructor.h : org/w3c/dom/Test.h
+	$(esidl) -messenger -string std::string -object Object -fno-multipleinheritance $^
 
 org/w3c/dom/Test.cpp : test.idl
-	$(esidl) -cplusplus-src -string std::string -object Object -fvirtualbase $^
-
-org/w3c/dom/Test_Constructor.cpp : org/w3c/dom/Test.cpp
+	$(esidl) -messenger-src -string std::string -object Object -fno-multipleinheritance $^
 
 AM_CPPFLAGS = \
 	-fshort-wchar -std=gnu++0x -Wall \
@@ -59,10 +47,10 @@ AM_CPPFLAGS = \
 
 if !NACL
 AM_CPPFLAGS += -fPIC
-lib_LTLIBRARIES = libnpestest.la libnpespaint.la libnpesxhr.la libnpesmd5sum.la
+lib_LTLIBRARIES = libnpespaint.la libnpesxhr.la libnpesmd5sum.la libnpestest.la 
 AM_LDFLAGS = -L.. -ldl -lesnpapi
 else
-bin_PROGRAMS = npestest npespaint npesxhr npesmd5sum
+bin_PROGRAMS = npespaint npestest npesxhr npesmd5sum
 AM_LDFLAGS = -L.. -lesnpapi -lgoogle_nacl_npruntime -lgoogle_nacl_imc -lpthread -lsrpc
 npestest_CPPFLAGS = $(AM_CPPFLAGS)
 npespaint_CPPFLAGS = $(AM_CPPFLAGS)
@@ -80,18 +68,18 @@ cpp_source_files += \
 endif
 
 if !NACL
-nodist_libnpestest_la_SOURCES = org/w3c/dom/Test.h org/w3c/dom/Test.cpp org/w3c/dom/Test_Constructor.cpp
+nodist_libnpestest_la_SOURCES = org/w3c/dom/Test.h org/w3c/dom/Test.cpp
 libnpestest_la_SOURCES = $(cpp_source_files) npp_test.cpp test.cpp test.h
 libnpespaint_la_SOURCES = $(cpp_source_files) npp_paint.cpp paint.cc paint.h
 libnpesxhr_la_SOURCES = $(cpp_source_files) npp_xhr.cpp xhr.cc xhr.h
-nodist_libnpesmd5sum_la_SOURCES = com/rsa/MD5.h com/rsa/MD5.cpp com/rsa/MD5_Constructor.cpp
+nodist_libnpesmd5sum_la_SOURCES = com/rsa/MD5.h com/rsa/MD5.cpp
 libnpesmd5sum_la_SOURCES = $(cpp_source_files) npp_md5sum.cpp md5sum.cc md5sum.h
 else
-nodist_npestest_SOURCES = org/w3c/dom/Test.h org/w3c/dom/Test.cpp org/w3c/dom/Test_Constructor.cpp
-npestest_SOURCES = $(cpp_source_files) npp_test.cpp test.cpp test.h
+nodist_npestest_SOURCES = org/w3c/dom/Test.h org/w3c/dom/Test.cpp
 npespaint_SOURCES = $(cpp_source_files) npp_paint.cpp paint.cc paint.h
+npestest_SOURCES = $(cpp_source_files) npp_test.cpp test.cpp test.h
 npesxhr_SOURCES = $(cpp_source_files) npp_xhr.cpp xhr.cc xhr.h
-nodist_npesmd5sum_SOURCES = com/rsa/MD5.h com/rsa/MD5.cpp com/rsa/MD5_Constructor.cpp
+nodist_npesmd5sum_SOURCES = com/rsa/MD5.h com/rsa/MD5.cpp
 npesmd5sum_SOURCES = $(cpp_source_files) npp_md5sum.cpp md5sum.cc md5sum.h
 endif
 

@@ -26,6 +26,9 @@ BUILT_SOURCES = lexer.cc parser.cc parser.h
 bin_PROGRAMS = esidl
 
 esidl_SOURCES = \
+	include/messenger.h \
+	include/messengerDispatch.h \
+	include/messengerInvoke.h \
 	include/cplusplus.h\
 	include/cplusplusCall.h \
 	include/cplusplusInvoke.h \
@@ -42,6 +45,7 @@ esidl_SOURCES = \
 	include/reflect.h \
 	include/sheet.h \
 	include/utf.h \
+	src/messenger.cpp \
 	src/cplusplus.cpp \
 	src/cxx.cpp \
 	src/driver.cpp \
@@ -88,6 +92,7 @@ EXTRA_DIST = \
 	dom/dom3ls.idl \
 	dom/dom3validation.idl \
 	dom/dom3xpath.idl \
+	dom/domcore.idl \
 	dom/elementtraversal.idl \
 	dom/eventsource.idl \
 	dom/file.idl \
@@ -102,6 +107,8 @@ EXTRA_DIST = \
 	dom/selectors.idl \
 	dom/smil.idl \
 	dom/svg.idl \
+	dom/typedarray.idl \
+	dom/url.idl \
 	dom/webdatabase.idl \
 	dom/webgl.idl \
 	dom/webnotifications.idl \

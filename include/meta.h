@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -115,7 +116,7 @@ public:
             Node* resolved = resolve(currentNode, name);
             if (resolved)
             {
-                name = resolved->getQualifiedName();
+                name = resolved->getPrefixedName();
             }
             output << name.length() << name;
         }
@@ -131,12 +132,12 @@ public:
         node->check(resolved, "%s could not resolved.", node->getName().c_str());
         if (dynamic_cast<ExceptDcl*>(resolved))
         {
-            std::string name = resolved->getQualifiedName();
+            std::string name = resolved->getPrefixedName();
             output << name.length() << name;
         }
         else if (dynamic_cast<Interface*>(resolved))
         {
-            std::string name = resolved->getQualifiedName();
+            std::string name = resolved->getPrefixedName();
             name = getInterfaceName(name);
             output << Reflect::kObject << name.length() << name;
         }
@@ -381,6 +382,7 @@ public:
             setter(node);
         }
         node->getMeta() = node->getMetaGetter() + node->getMetaSetter();
+        node->setHash();
     }
 
     virtual void at(const OpDcl* node)
@@ -458,6 +460,7 @@ public:
             // Insert Reflect::kVariadic just after Reflect::kOperation.
             node->getMetaOp(optionalStage).insert(1, 1, Reflect::kVariadic);
         }
+        node->setHash();
     }
 
     virtual void at(const ParamDcl* node)
@@ -482,7 +485,7 @@ public:
 
         output.str("");
         output << Reflect::kInterface;
-        std::string name = node->getQualifiedName();
+        std::string name = node->getPrefixedName();
         name = getInterfaceName(name);
         output << name.length() << name;
 
@@ -496,7 +499,7 @@ public:
                 Node* resolved = scopedName->search(node->getParent());
                 scopedName->check(resolved, "could not resolve '%s'.", scopedName->getName().c_str());
                 output << Reflect::kExtends;
-                std::string name = resolved->getQualifiedName();
+                std::string name = resolved->getPrefixedName();
                 name = getInterfaceName(name);
                 output << name.length() << name;
             }
@@ -507,7 +510,7 @@ public:
              ++i)
         {
             output << Reflect::kImplements;
-            std::string name = (*i)->getQualifiedName();
+            std::string name = (*i)->getPrefixedName();
             name = getInterfaceName(name);
             output << name.length() << name;
         }
@@ -628,6 +631,7 @@ public:
         }
         output << ' ';
         node->getMeta() = output.str();
+        node->setHash();
     }
 
     virtual void at(const Member* node)

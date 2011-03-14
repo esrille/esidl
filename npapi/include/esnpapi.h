@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2009, 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,41 +37,51 @@ using std::strlen;  // for STRINGZ_TO_NPVARIANT
 
 #include "object.h"
 #include "any.h"
-#include "reflect.h"
 
-namespace org {
-namespace w3c {
-namespace dom {
-namespace html {
-class Window;
-}
-}
-}
-}
+#include <org/w3c/dom/html/Window.h>
 
-class ProxyObject
+class ObjectImp : public Object
+{
+    unsigned int count;
+protected:
+    virtual unsigned int retain_() {
+        return ++count;
+    };
+    virtual unsigned int release_() {
+        if (0 < count)
+            --count;
+        if (count == 0) {
+            delete this;
+            return 0;
+        }
+        return count;
+    };
+public:
+    ObjectImp() :
+        Object(this),
+        count(0) {
+    }
+};
+
+class ProxyObject : public Object
 {
     friend class ProxyControl;
 
     NPObject*    object;
     NPP          npp;
     unsigned int count;
-    unsigned int age;
 
-    // age constants
-    static const unsigned int CREATED = 0;
-    static const unsigned int NEW = 1;
-    static const unsigned int OLD = 2;
+    ProxyObject(const ProxyObject&);
+    ProxyObject(NPObject* object, NPP npp);
+
+protected:
+    virtual unsigned int retain_();
+    virtual unsigned int release_();
 
 public:
-    ProxyObject(NPObject* object, NPP npp);
-    ProxyObject(const ProxyObject& original);
     virtual ~ProxyObject();
 
-    unsigned int retain();
-    unsigned int release();
-    unsigned int mark();
-    void invalidate();
+    // void invalidate();
 
     NPObject* getNPObject()
     {
@@ -81,45 +92,28 @@ public:
         return npp;
     }
 
-    static const char* const getQualifiedName()
-    {
-        static const char* qualifiedName = "ProxyObject";
-        return qualifiedName;
-    }
+    // Object
+    virtual Any message_(uint32_t selector, const char* name, int argc, Any* argv);
 };
 
 class ProxyControl
 {
     NPP npp;
-    long nestingCount;  // more than zero if the control is in plugin module
-
-    std::list<ProxyObject*> oldList;
-    std::list<ProxyObject*> newList;
-
-    // Map from interfaceName to constructors.
-    static std::map<const std::string, Object* (*)(ProxyObject object)> proxyConstructorMap;
+    std::map<NPObject*, ProxyObject*> proxyMap;
 
 public:
     explicit ProxyControl(NPP npp);
     ~ProxyControl();
 
-    Object* createProxy(NPObject* object, const Reflect::Type type);
-
-    long enter();
-    long leave();
-    void track(ProxyObject* proxy);
-    void untrack(ProxyObject* proxy);
-
-    static void registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias = 0);
+    ProxyObject* findProxy(NPObject* object);
+    ProxyObject* createProxy(NPObject* object);
+    void remove(NPObject* object);
 };
 
 class StubObject : public NPObject
 {
     NPP npp;
-    Object* object;
-
-    bool call(unsigned interfaceNumber, const Reflect::SymbolData* data, const char* metaData,
-              const NPVariant* args, uint32_t arg_count, NPVariant* result);
+    Object object;
 
 public:
     StubObject(NPP npp) :
@@ -128,17 +122,14 @@ public:
     {
     }
 
-    Object* getObject() const
+    Object* getObject()
     {
-        return object;
+        return &object;
     }
     void setObject(Object* object)
     {
         this->object = object;
     }
-
-    long enter();
-    long leave();
 
     void deallocate();
     void invalidate();
@@ -179,9 +170,6 @@ class PluginInstance
     ProxyControl proxyControl;
     StubControl stubControl;
 
-protected:
-    org::w3c::dom::html::Window* window;
-
 public:
     PluginInstance(NPP npp, NPObject* window);
     virtual ~PluginInstance();
@@ -201,68 +189,15 @@ public:
         return &stubControl;
     }
 
-    unsigned int retain(Object* stub);
-    unsigned int release(Object* stub);
+    org::w3c::dom::html::Window window;
 };
+
+extern PluginInstance* currentPluginInstance;
 
 std::string getInterfaceName(NPP npp, NPObject* object);
 
-void convertToVariant(NPP npp, bool value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, int8_t value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, uint8_t value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, int16_t value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, uint16_t value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, int32_t value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, uint32_t value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, int64_t value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, uint64_t value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, double value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, const std::string& value, NPVariant* variant, bool result);
-void convertToVariant(NPP npp, Object* value, NPVariant* variant, bool result);
 void convertToVariant(NPP npp, const Any& any, NPVariant* variant, bool result);
-
-bool convertToBool(NPP npp, const NPVariant* variant);
-int8_t convertToByte(NPP npp, const NPVariant* variant);
-uint8_t convertToOctet(NPP npp, const NPVariant* variant);
-int16_t convertToShort(NPP npp, const NPVariant* variant);
-uint16_t convertToUnsignedShort(NPP npp, const NPVariant* variant);
-int32_t convertToLong(NPP npp, const NPVariant* variant);
-uint32_t convertToUnsignedLong(NPP npp, const NPVariant* variant);
-int64_t convertToLongLong(NPP npp, const NPVariant* variant);
-uint64_t convertToUnsignedLongLong(NPP npp, const NPVariant* variant);
-float convertToFloat(NPP npp, const NPVariant* variant);
-double convertToDouble(NPP npp, const NPVariant* variant);
-std::string convertToString(NPP npp, const NPVariant* variant, unsigned attribute = 0);
-Object* convertToObject(NPP npp, const NPVariant* variant, const Reflect::Type type = Reflect::Type("v"));
 Any convertToAny(NPP npp, const NPVariant* variant);
-Any convertToAny(NPP npp, const NPVariant* variant, const Reflect::Type type);
-
-Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
-           const char* meta, unsigned offset,
-           unsigned argumentCount, Any* arguments);
-
-// The following four functions are called from initializeHtmlMetaData();
-void initializeHtmlMetaDataA_G();
-void initializeHtmlMetaDataH_N();
-void initializeHtmlMetaDataO_U();
-void initializeHtmlMetaDataV_Z();
-
-// The following five functions are called from initializeSvgMetaData();
-void initializeSvgMetaDataA_E();
-void initializeSvgMetaDataF_G();
-void initializeSvgMetaDataH_N();
-void initializeSvgMetaDataO_U();
-void initializeSvgMetaDataV_Z();
-
-void initializeMetaData();
-void initializeFileMetaData();
-void initializeGeolocationMetaData();
-void initializeHtmlMetaData();
-void initializeIndexedDBMetaData();
-void initializeSvgMetaData();
-void initializeWebDatabaseMetaData();
-void initializeWebGLMetaData();
-void initializeWorkersMetaData();
 
 extern "C" NPObject* NPP_GetScriptableInstance(NPP instance);
 

@@ -58,6 +58,8 @@ const char* Node::namespaceName;
 const char* Node::defaultPrefix = "::org::w3c::dom";
 const char* Node::ctorScope = "::";
 
+std::map<uint32_t, std::string> Node::hashMap;
+
 bool Interface::useMultipleInheritance = false;
 
 Node* getSpecification()

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,64 +19,56 @@
 #define SAMPLE_MD5SUM_H_
 
 #include <esnpapi.h>
-
-#include <org/w3c/dom.h>
 #include <com/rsa/MD5.h>
 
-class MD5Class;
-
-class MD5SumInstance : public PluginInstance {
- public:
-  MD5SumInstance(NPP npp, NPObject* window)
-      : PluginInstance(npp, window) {
-    initialize();
-  }
-  ~MD5SumInstance();
-
- private:
-  void initialize();
-
-  MD5Class* md5class;
+class MD5SumInstance : public PluginInstance
+{
+    Object md5class;
+    void initialize();
+public:
+    MD5SumInstance(NPP npp, NPObject* window) :
+        PluginInstance(npp, window) {
+        initialize();
+    }
+    ~MD5SumInstance();
 };
 
-class MD5Object : public com::rsa::MD5 {
- public:
-  explicit MD5Object(MD5SumInstance* instance)
-      : instance(instance) {
-  }
-  virtual void update(std::string input) {
-  }
-  virtual std::string final() {
-    return "900150983cd24fb0d6963f7d28e17f72";  // dummy
-  }
-  unsigned int retain() {
-    return instance->retain(this);
-  };
-  unsigned int release() {
-    return instance->release(this);
-  };
-
- private:
-  MD5SumInstance* instance;
+class MD5Object : public ObjectImp
+{
+    MD5SumInstance* instance;
+public:
+    explicit MD5Object(MD5SumInstance* instance) :
+        instance(instance) {
+    }
+    void update(std::string input) {
+    }
+    std::string final() {
+        return "900150983cd24fb0d6963f7d28e17f72";  // dummy
+    }
+    // Object
+    virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {
+        return com::rsa::MD5::dispatch(this, selector, id, argc, argv);
+    }
 };
 
-class MD5Class : public com::rsa::MD5_Constructor {
- public:
-  explicit MD5Class(MD5SumInstance* instance)
-      : instance(instance) {
-  }
-  virtual com::rsa::MD5* createInstance() {
-    return new (std::nothrow) MD5Object(instance);
-  }
-  unsigned int retain() {
-    return instance->retain(this);
-  };
-  unsigned int release() {
-    return instance->release(this);
-  };
-
- private:
-  MD5SumInstance* instance;
+class MD5Constructor : public ObjectImp {
+    MD5SumInstance* instance;
+public:
+    explicit MD5Constructor(MD5SumInstance* instance) :
+        instance(instance) {
+    }
+    // Object
+    virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {
+        MD5Object* md5 = 0;
+        switch (argc) {
+        case 0:
+            md5 = new(std::nothrow) MD5Object(instance);
+            break;
+        default:
+            break;
+        }
+        return md5;
+    }
 };
 
 #endif  // SAMPLE_MD5SUM_H_

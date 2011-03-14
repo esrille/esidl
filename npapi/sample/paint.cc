@@ -18,175 +18,126 @@
 #include "paint.h"
 #include <new>
 
+#include <org/w3c/dom/Document.h>
+#include <org/w3c/dom/events/MouseEvent.h>
+#include <org/w3c/dom/html/CanvasRenderingContext2D.h>
+#include <org/w3c/dom/html/HTMLCanvasElement.h>
+#include <org/w3c/dom/views/ClientRect.h>
+
 using namespace org::w3c::dom;
 
-void PaintInstance::initialize() {
-  downHandler = new (std::nothrow) EventHandler(this, &PaintInstance::down);
-  moveHandler = new (std::nothrow) EventHandler(this, &PaintInstance::move);
-  upHandler = new (std::nothrow) EventHandler(this, &PaintInstance::up);
-  selectHandler = new (std::nothrow) EventHandler(this, &PaintInstance::select);
+void PaintInstance::initialize()
+{
+    downHandler = new(std::nothrow) EventHandler(this, &PaintInstance::down);
+    moveHandler = new(std::nothrow) EventHandler(this, &PaintInstance::move);
+    upHandler = new(std::nothrow) EventHandler(this, &PaintInstance::up);
+    selectHandler = new(std::nothrow) EventHandler(this, &PaintInstance::select);
 
-  Document* document = window->getDocument();
-  if (document) {
-    html::HTMLCanvasElement* canvas =
-      interface_cast<html::HTMLCanvasElement*>(
-        document->getElementById("canvas"));
-    if (canvas) {
-      html::CanvasRenderingContext2D* context =
-        interface_cast<html::CanvasRenderingContext2D*>(
-          canvas->getContext("2d"));
-      if (context) {
-        context->setFillStyle("white");
-        context->fillRect(0, 0, 320, 240);
-      }
-      events::EventTarget* eventTarget =
-        interface_cast<events::EventTarget*>(canvas);
-      if (eventTarget) {
-        eventTarget->addEventListener("mousedown", downHandler, true);
-        eventTarget->addEventListener("mouseup", upHandler, true);
-      }
+    Document document = window.getDocument();
+    if (!document)
+        return;
+    html::HTMLCanvasElement canvas = interface_cast<html::HTMLCanvasElement>(document.getElementById("canvas"));
+    if (!canvas)
+        return;
+    html::CanvasRenderingContext2D context = interface_cast<html::CanvasRenderingContext2D>(canvas.getContext("2d"));
+    if (context) {
+        context.setFillStyle("white");
+        context.fillRect(0, 0, 320, 240);
     }
-    html::HTMLElement* tools =
-      interface_cast<html::HTMLElement*>(document->getElementById("tools"));
-    if (tools) {
-      events::EventTarget* eventTarget =
-        interface_cast<events::EventTarget*>(tools);
-      if (eventTarget) {
-        eventTarget->addEventListener("mousedown", selectHandler, true);
-      }
+    canvas.addEventListener("mousedown", downHandler, true);
+    canvas.addEventListener("mouseup", upHandler, true);
+    html::HTMLElement tools = interface_cast<html::HTMLElement>(document.getElementById("tools"));
+    if (tools)
+        tools.addEventListener("mousedown", selectHandler, true);
+}
+
+PaintInstance::~PaintInstance()
+{
+}
+
+void PaintInstance::down(events::Event evt)
+{
+    events::MouseEvent mouse = interface_cast<events::MouseEvent>(evt);
+    if (!mouse)
+        return;
+    html::HTMLCanvasElement canvas = interface_cast<html::HTMLCanvasElement>(mouse.getTarget());
+    if (!canvas)
+        return;
+    views::ClientRect rect = canvas.getBoundingClientRect();
+    if (!rect)
+        return;
+    html::CanvasRenderingContext2D context = interface_cast<html::CanvasRenderingContext2D>(canvas.getContext("2d"));
+    if (context) {
+        context.beginPath();
+        float x = mouse.getClientX() - rect.getLeft();
+        float y = mouse.getClientY() - rect.getTop();
+        context.moveTo(x, y);
     }
-  }
+    canvas.addEventListener("mousemove", moveHandler, true);
 }
 
-PaintInstance::~PaintInstance() {
-  if (downHandler) {
-    downHandler->release();
-  }
-  if (moveHandler) {
-    moveHandler->release();
-  }
-  if (upHandler) {
-    upHandler->release();
-  }
-  if (selectHandler) {
-    selectHandler->release();
-  }
-}
-
-void PaintInstance::down(events::Event* evt) {
-  events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
-  printf("down %p\n", mouse);
-  if (!mouse) {
-    return;
-  }
-  html::HTMLCanvasElement* canvas =
-    interface_cast<html::HTMLCanvasElement*>(mouse->getTarget());
-  if (!canvas) {
-    return;
-  }
-  views::ClientRect* rect = canvas->getBoundingClientRect();
-  if (!rect) {
-    return;
-  }
-  html::CanvasRenderingContext2D* context =
-    interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
-  if (context) {
-    context->beginPath();
-    float x = mouse->getClientX() - rect->getLeft();
-    float y = mouse->getClientY() - rect->getTop();
-    context->moveTo(x, y);
-  }
-  events::EventTarget* eventTarget =
-    interface_cast<events::EventTarget*>(canvas);
-  if (eventTarget) {
-    eventTarget->addEventListener("mousemove", moveHandler, true);
-  }
-}
-
-void PaintInstance::move(events::Event* evt) {
-  events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
-  printf("move %p\n", mouse);
-  if (!mouse) {
-    return;
-  }
-  html::HTMLCanvasElement* canvas =
-    interface_cast<html::HTMLCanvasElement*>(mouse->getTarget());
-  if (!canvas) {
-    return;
-  }
-  views::ClientRect* rect = canvas->getBoundingClientRect();
-  if (!rect) {
-    return;
-  }
-  html::CanvasRenderingContext2D* context =
-    interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
-  if (context) {
-    float x = mouse->getClientX() - rect->getLeft();
-    float y = mouse->getClientY() - rect->getTop();
-    context->lineTo(x, y);
-    context->stroke();
-  }
-}
-
-void PaintInstance::up(events::Event* evt) {
-  events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
-  printf("up %p\n", mouse);
-  if (!mouse) {
-    return;
-  }
-  html::HTMLCanvasElement* canvas =
-    interface_cast<html::HTMLCanvasElement*>(mouse->getTarget());
-  if (!canvas) {
-    return;
-  }
-  html::CanvasRenderingContext2D* context =
-    interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
-  if (context) {
-    context->closePath();
-  }
-  events::EventTarget* eventTarget =
-  interface_cast<events::EventTarget*>(canvas);
-  if (eventTarget) {
-    eventTarget->removeEventListener("mousemove", moveHandler, true);
-  }
-}
-
-void PaintInstance::select(events::Event* evt) {
-  events::MouseEvent* mouse = interface_cast<events::MouseEvent*>(evt);
-  printf("select %p\n", mouse);
-  if (!mouse) {
-    return;
-  }
-  Document* document = window->getDocument();
-  if (!document) {
-    return;
-  }
-  html::HTMLElement* tools =
-    interface_cast<html::HTMLElement*>(mouse->getTarget());
-  if (!tools) {
-    return;
-  }
-  views::ClientRect* rect = tools->getBoundingClientRect();
-  if (!rect) {
-    return;
-  }
-  float y = mouse->getClientY() - rect->getTop();
-  html::HTMLCanvasElement* canvas = interface_cast<html::HTMLCanvasElement*>(
-    document->getElementById("canvas"));
-  if (!canvas) {
-    return;
-  }
-  html::CanvasRenderingContext2D* context =
-    interface_cast<html::CanvasRenderingContext2D*>(canvas->getContext("2d"));
-  if (context) {
-    if (y < 24) {
-      context->setStrokeStyle("black");
-      context->setLineWidth(1);
-      canvas->setAttribute("class", "pen");
-    } else {
-      context->setStrokeStyle("white");
-      context->setLineWidth(10);
-      canvas->setAttribute("class", "eraser");
+void PaintInstance::move(events::Event evt)
+{
+    events::MouseEvent mouse = interface_cast<events::MouseEvent>(evt);
+    if (!mouse)
+        return;
+    html::HTMLCanvasElement canvas = interface_cast<html::HTMLCanvasElement>(mouse.getTarget());
+    if (!canvas)
+        return;
+    views::ClientRect rect = canvas.getBoundingClientRect();
+    if (!rect)
+        return;
+    html::CanvasRenderingContext2D context = interface_cast<html::CanvasRenderingContext2D>(canvas.getContext("2d"));
+    if (context) {
+        float x = mouse.getClientX() - rect.getLeft();
+        float y = mouse.getClientY() - rect.getTop();
+        context.lineTo(x, y);
+        context.stroke();
     }
-  }
+}
+
+void PaintInstance::up(events::Event evt)
+{
+    events::MouseEvent mouse = interface_cast<events::MouseEvent>(evt);
+    if (!mouse)
+        return;
+    html::HTMLCanvasElement canvas = interface_cast<html::HTMLCanvasElement>(mouse.getTarget());
+    if (!canvas)
+        return;
+    html::CanvasRenderingContext2D context = interface_cast<html::CanvasRenderingContext2D>(canvas.getContext("2d"));
+    if (context)
+        context.closePath();
+    canvas.removeEventListener("mousemove", moveHandler, true);
+}
+
+void PaintInstance::select(events::Event evt)
+{
+    events::MouseEvent mouse = interface_cast<events::MouseEvent>(evt);
+    if (!mouse)
+        return;
+    Document document = window.getDocument();
+    if (!document)
+        return;
+    html::HTMLElement tools = interface_cast<html::HTMLElement>(mouse.getTarget());
+    if (!tools)
+        return;
+    views::ClientRect rect = tools.getBoundingClientRect();
+    if (!rect)
+        return;
+    float y = mouse.getClientY() - rect.getTop();
+    html::HTMLCanvasElement canvas = interface_cast<html::HTMLCanvasElement>(document.getElementById("canvas"));
+    if (!canvas)
+        return;
+    html::CanvasRenderingContext2D context = interface_cast<html::CanvasRenderingContext2D>(canvas.getContext("2d"));
+    if (context) {
+        if (y < 24) {
+            context.setStrokeStyle("black");
+            context.setLineWidth(1);
+            canvas.setAttribute("class", "pen");
+        } else {
+            context.setStrokeStyle("white");
+            context.setLineWidth(10);
+            canvas.setAttribute("class", "eraser");
+        }
+    }
 }

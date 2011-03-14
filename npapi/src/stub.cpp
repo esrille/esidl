@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +21,22 @@
 
 namespace
 {
+
+// a public domain hash function - one_at_a_time
+// cf. http://burtleburtle.net/bob/hash/doobs.html
+inline uint32_t Hash(const char* key)
+{
+    uint32_t hash, i;
+    for (hash = 0, i = 0; key[i]; ++i) {
+        hash += key[i];
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+    }
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+    return hash;
+}
 
 NPObject* stubAllocate(NPP npp, NPClass* aClass)
 {
@@ -81,259 +98,49 @@ bool stubConstruct(NPObject* object, const NPVariant* args, uint32_t argCount, N
     return static_cast<StubObject*>(object)->construct(args, argCount, result);
 }
 
-const Reflect::SymbolData* lookupSymbolTalbe(Object* object, const char* identifier, unsigned& interfaceNumber, unsigned& symbolNumber)
-{
-    const Reflect::SymbolData* symbolTable;
-    while (symbolTable = object->getSymbolTable(interfaceNumber))
-    {
-        unsigned offset = 0;
-        for (symbolTable += symbolNumber; symbolTable->symbol; ++symbolNumber, ++symbolTable)
-        {
-            if (!std::strcmp(symbolTable->symbol, identifier))
-            {
-                return symbolTable;
-            }
-        }
-        ++interfaceNumber;
-    }
-    return 0;
-}
-
-template <typename T>
-Any convertToSequence(NPP npp, const NPVariant* args, unsigned count, const Reflect::Type type)
-{
-    Sequence<T> sequence(count);
-    for (unsigned i = 0; i < count; ++i)
-    {
-        Any value = convertToAny(npp, args++, type);
-        sequence.setElement(i, static_cast<T>(value));
-    }
-    return sequence;
-}
-
 }   // namespace
-
-long StubObject::enter()
-{
-    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
-    if (instance)
-    {
-        ProxyControl* proxyControl = instance->getProxyControl();
-        if (proxyControl)
-        {
-            return proxyControl->enter();
-        }
-    }
-    return 0;
-}
-
-long StubObject::leave()
-{
-    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
-    if (instance)
-    {
-        ProxyControl* proxyControl = instance->getProxyControl();
-        if (proxyControl)
-        {
-            return proxyControl->leave();
-        }
-    }
-    return 0;
-}
 
 // Note deallocate() can be invoked after the plugin instance is destroyed.
 void StubObject::deallocate()
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     printf("%s()\n", __func__);
-    PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
-    if (instance)
+    if (currentPluginInstance)
     {
-        StubControl* stubControl = instance->getStubControl();
+        StubControl* stubControl = currentPluginInstance->getStubControl();
         if (stubControl)
         {
-            stubControl->remove(object);
+            stubControl->remove(&object);
         }
     }
-    delete object;
     delete this;
 }
 
 void StubObject::invalidate()
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     printf("%s()\n", __func__);
 }
 
 bool StubObject::hasMethod(NPIdentifier name)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
     if (!identifier)
     {
         return false;
     }
+    printf("%s(%s)\n", __func__, identifier);
 
-    bool found = false;
-    unsigned interfaceNumber = 0;
-    unsigned symbolNumber = 0;
-    for (;; ++symbolNumber)
-    {
-        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!data)
-        {
-            break;
-        }
-        const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += data->offset;
-        if (*metaData == Reflect::kOperation)
-        {
-            found = true;
-            break;
-        }
-    }
-    if (!found)
-    {
-        if (!std::strcmp(identifier, "toString"))
-        {
-            found = true;
-        }
-    }
-    printf("%s(%s) : %d\n", __func__, identifier, found);
+    Any property = object.self()->message_(Hash(identifier), identifier, Object::HAS_OPERATION_, 0);
+    bool result = property.toBoolean();
     NPN_MemFree(identifier);
-    return found;
-}
-
-bool StubObject::call(unsigned interfaceNumber, const Reflect::SymbolData* data, const char* metaData,
-                      const NPVariant* args, uint32_t arg_count, NPVariant* result)
-{
-    Reflect::Method method(metaData);
-    unsigned argumentCount = method.getParameterCount();
-    if (argumentCount != arg_count && (!method.isVariadic() || arg_count + 1 < argumentCount))
-    {
-        return false;
-    }
-
-    enter();
-    Any arguments[argumentCount];
-    if (method.isVariadic())
-    {
-        --argumentCount;
-    }
-    Reflect::Parameter parameter = method.listParameter();
-    for (unsigned i = 0; i < argumentCount; ++i)
-    {
-        parameter.next();
-        arguments[i] = convertToAny(npp, &args[i], parameter.getType());
-    }
-    if (method.isVariadic())
-    {
-        Reflect::Parameter param = method.listParameter();
-        for (int i = 0; i < method.getParameterCount(); ++i)
-        {
-            param.next();
-        }
-        arg_count -= argumentCount;
-        Reflect::Type type = param.getType();
-        if (type.isNullable())
-        {
-            switch (type.getType())
-            {
-            case Reflect::kBoolean:
-                arguments[argumentCount] = convertToSequence<Nullable<bool> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kByte:
-                arguments[argumentCount] = convertToSequence<Nullable<int8_t> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kOctet:
-                arguments[argumentCount] = convertToSequence<Nullable<uint8_t> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kShort:
-                arguments[argumentCount] = convertToSequence<Nullable<int16_t> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kUnsignedShort:
-                arguments[argumentCount] = convertToSequence<Nullable<uint16_t> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kLong:
-                arguments[argumentCount] = convertToSequence<Nullable<int32_t> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kUnsignedLong:
-                arguments[argumentCount] = convertToSequence<Nullable<uint32_t> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kLongLong:
-                arguments[argumentCount] = convertToSequence<Nullable<int64_t> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kUnsignedLongLong:
-                arguments[argumentCount] = convertToSequence<Nullable<uint64_t> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kFloat:
-                arguments[argumentCount] = convertToSequence<Nullable<float> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kDouble:
-                arguments[argumentCount] = convertToSequence<Nullable<double> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kString:
-                arguments[argumentCount] = convertToSequence<Nullable<std::string> >(npp, &args[argumentCount], arg_count, type);
-                break;
-            }
-        }
-        else
-        {
-            switch (type.getType())
-            {
-            case Reflect::kBoolean:
-                arguments[argumentCount] = convertToSequence<bool>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kByte:
-                arguments[argumentCount] = convertToSequence<int8_t>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kOctet:
-                arguments[argumentCount] = convertToSequence<uint8_t>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kShort:
-                arguments[argumentCount] = convertToSequence<int16_t>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kUnsignedShort:
-                arguments[argumentCount] = convertToSequence<uint16_t>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kLong:
-                arguments[argumentCount] = convertToSequence<int32_t>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kUnsignedLong:
-                arguments[argumentCount] = convertToSequence<uint32_t>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kLongLong:
-                arguments[argumentCount] = convertToSequence<int64_t>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kUnsignedLongLong:
-                arguments[argumentCount] = convertToSequence<uint64_t>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kFloat:
-                arguments[argumentCount] = convertToSequence<float>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kDouble:
-                arguments[argumentCount] = convertToSequence<double>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kString:
-                arguments[argumentCount] = convertToSequence<std::string>(npp, &args[argumentCount], arg_count, type);
-                break;
-            case Reflect::kAny:
-                arguments[argumentCount] = convertToSequence<Any>(npp, &args[argumentCount], arg_count, type);
-                break;
-            // TODO: kSequence???
-            case Reflect::kObject:
-            default:
-                arguments[argumentCount] = convertToSequence<Object*>(npp, &args[argumentCount], arg_count, type);
-                break;
-            }
-        }
-        ++argumentCount;
-    }
-    Any value = object->call(interfaceNumber, data->number, argumentCount, arguments);
-    convertToVariant(npp, value, result, true);
-    leave();
-    return true;
+    return result;
 }
 
 bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_count, NPVariant* result)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
     if (!identifier)
     {
@@ -341,134 +148,60 @@ bool StubObject::invoke(NPIdentifier name, const NPVariant* args, uint32_t arg_c
     }
 
     printf("%s(%s, %p, %u, %p)\n", __func__, identifier, args, arg_count, result);
-    bool found = false;
-    unsigned interfaceNumber = 0;
-    unsigned symbolNumber = 0;
-    for (;; ++symbolNumber)
+
+    Any arguments[arg_count];
+    for (unsigned i = 0; i < arg_count; ++i)
     {
-        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!data)
-        {
-            break;
-        }
-        const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += data->offset;
-        if (*metaData == Reflect::kOperation &&
-            (found = call(interfaceNumber, data, metaData, args, arg_count, result)))
-        {
-            break;
-        }
+        arguments[i] = convertToAny(npp, &args[i]);
     }
-    if (!found)
-    {
-        if (!std::strcmp(identifier, "toString"))
-        {
-            const char* metaData = object->getMetaData(0);
-            unsigned length;
-            const char* qualifiedName = Reflect::skipDigits(metaData + 1, &length);
-            std::string name(qualifiedName, length);
-            size_t pos = name.rfind(':');
-            name = name.substr(pos + 1);
-            if (12 < name.length() && !name.compare(name.length() - 12, 12, "_Constructor"))
-            {
-                name = name.substr(0, name.length() - 12);
-                name = "function " + name + "() { [native code] }";
-            }
-            else
-            {
-                name = "[object " + name + "]";
-            }
-            convertToVariant(npp, name, result, true);
-            found = true;
-        }
-    }
+    Any value = object.self()->message_(Hash(identifier), identifier, arg_count, arguments);
+    convertToVariant(npp, value, result, true);
     NPN_MemFree(identifier);
-    return found;
+    return true;  // XXX check undefined
 }
 
 bool StubObject::invokeDefault(const NPVariant* args, uint32_t arg_count, NPVariant* result)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     printf("%s()\n", __func__);
     return false;
 }
 
 bool StubObject::hasProperty(NPIdentifier name)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
     if (!identifier)
     {
         return false;
     }
-
     printf("%s(%s)\n", __func__, identifier);
 
-    bool found = false;
-    unsigned interfaceNumber = 0;
-    unsigned symbolNumber = 0;
-    for (;; ++symbolNumber)
-    {
-        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!data)
-        {
-            break;
-        }
-        const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += data->offset;
-        if (*metaData == Reflect::kConstant || *metaData == Reflect::kGetter || *metaData == Reflect::kSetter)
-        {
-            found = true;
-            break;
-        }
-    }
+    Any property = object.self()->message_(Hash(identifier), identifier, Object::HAS_PROPERTY_, 0);
+    bool result = property.toBoolean();
     NPN_MemFree(identifier);
-    return found;
+    return result;
 }
 
 bool StubObject::getProperty(NPIdentifier name, NPVariant* result)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
     if (!identifier)
     {
         return false;
     }
-
     printf("%s(%s)\n", __func__, identifier);
 
-    bool found = false;
-    unsigned interfaceNumber = 0;
-    unsigned symbolNumber = 0;
-    for (;; ++symbolNumber)
-    {
-        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!data)
-        {
-            break;
-        }
-        const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += data->offset;
-        if (*metaData == Reflect::kConstant)
-        {
-            Reflect::Constant constant(metaData);
-            convertToVariant(npp, constant.getValue(), result, true);
-            found = true;
-            break;
-        }
-        if (*metaData == Reflect::kGetter)
-        {
-            enter();
-            Any property = object->call(interfaceNumber, data->number, 0, 0);
-            convertToVariant(npp, property, result, true);
-            found = true;
-            leave();
-            break;
-        }
-    }
+    Any property = object.self()->message_(Hash(identifier), identifier, Object::GETTER_, 0);
+    convertToVariant(npp, property, result, true);
     NPN_MemFree(identifier);
-    return found;
+    return true;  // XXX check undefined
 }
 
 bool StubObject::setProperty(NPIdentifier name, const NPVariant* value)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     NPUTF8* identifier = NPN_UTF8FromIdentifier(name);
     if (!identifier)
     {
@@ -477,68 +210,38 @@ bool StubObject::setProperty(NPIdentifier name, const NPVariant* value)
 
     printf("%s(%s)\n", __func__, identifier);
 
-    bool found = false;
-    unsigned interfaceNumber = 0;
-    unsigned symbolNumber = 0;
-    for (;; ++symbolNumber)
-    {
-        const Reflect::SymbolData* data = lookupSymbolTalbe(object, identifier, interfaceNumber, symbolNumber);
-        if (!data)
-        {
-            break;
-        }
-        const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += data->offset;
-        if (*metaData == Reflect::kSetter)
-        {
-            Reflect::Method method(metaData);
-            Reflect::Parameter parameter = method.listParameter();
-            parameter.next();
-            enter();
-            Any argument = convertToAny(npp, value, parameter.getType());
-            object->call(interfaceNumber, data->number, 1, &argument);
-            found = true;
-            leave();
-            break;
-        }
-    }
+    Any argument;
+    argument = convertToAny(npp, value);
+    object.self()->message_(0x957e2539, "setLength", Object::SETTER_, &argument);
     NPN_MemFree(identifier);
-    return found;
+    return true;  // XXX check undefined
 }
 
 bool StubObject::removeProperty(NPIdentifier name)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     return false;
 }
 
 bool StubObject::enumeration(NPIdentifier** value, uint32_t* count)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     return false;
 }
 
 bool StubObject::construct(const NPVariant* args, uint32_t arg_count, NPVariant* result)
 {
+    currentPluginInstance = static_cast<PluginInstance*>(npp->pdata);
     printf("%s(%p, %u, %p)\n", __func__, args, arg_count, result);
 
-    bool found = false;
-    unsigned interfaceNumber = 0;
-    unsigned symbolNumber = 0;
-    for (;; ++symbolNumber)
+    Any arguments[arg_count];
+    for (unsigned i = 0; i < arg_count; ++i)
     {
-        const Reflect::SymbolData* data = lookupSymbolTalbe(object, "createInstance", interfaceNumber, symbolNumber);
-        if (!data)
-        {
-            break;
-        }
-        const char* metaData = object->getMetaData(interfaceNumber);
-        metaData += data->offset;
-        if (*metaData == Reflect::kConstructor &&
-            (found = call(interfaceNumber, data, metaData, args, arg_count, result)))
-        {
-            break;
-        }
+        arguments[i] = convertToAny(npp, &args[i]);
     }
-    return found;
+    Any value = object.self()->message_(0, "", arg_count, arguments);
+    convertToVariant(npp, value, result, true);
+    return true;  // XXX check undefined
 }
 
 NPClass StubObject::npclass =
@@ -599,28 +302,4 @@ NPObject* StubControl::createStub(Object* object)
 void StubControl::remove(Object* object)
 {
     stubMap.erase(object);
-}
-
-unsigned int PluginInstance::retain(Object* stub)
-{
-    NPObject* npobject = stubControl.findStub(stub);
-    if (!npobject)
-    {
-        return 1;
-    }
-    NPN_RetainObject(npobject);
-    return npobject->referenceCount;
-}
-
-unsigned int PluginInstance::release(Object* stub)
-{
-    NPObject* npobject = stubControl.findStub(stub);
-    if (!npobject)
-    {
-        delete stub;
-        return 0;
-    }
-    unsigned int count = npobject->referenceCount;
-    NPN_ReleaseObject(npobject);
-    return --count;
 }

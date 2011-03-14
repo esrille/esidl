@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +18,8 @@
 #ifndef ORG_W3C_DOM_OBJECTARRAY_INCLUDED
 #define ORG_W3C_DOM_OBJECTARRAY_INCLUDED
 
+#include <object.h>
+
 namespace org
 {
 namespace w3c
@@ -28,10 +31,67 @@ template <typename E>
 class ObjectArray : public Object
 {
 public:
-    virtual unsigned int getLength() = 0;
-    virtual void setLength(unsigned int length) = 0;
-    virtual E getElement(unsigned int index) = 0;
-    virtual void setElement(unsigned int index, const E value) = 0;
+    unsigned int getLength()
+    {
+        return static_cast<unsigned int>(message_(0x957e2539, "getLength", GETTER_, 0));
+    }
+    void setLength(unsigned int length)
+    {
+        Any argument;
+        argument = length;
+        message_(0x957e2539, "setLength", SETTER_, &argument);
+    }
+    E getElement(unsigned int index)
+    {
+        Any argument;
+        argument = index;
+        Any e = message_(0x58994e97, "getElement", SPECIAL_GETTER_, &argument);
+        return e.as<E>();
+    }
+    void setElement(unsigned int index, E value)
+    {
+        Any arguments[2];
+        arguments[1] = index;
+        arguments[2] = value;
+        message_(0x58994e97, "setElement", SPECIAL_SETTER_, &arguments);
+    }
+    ObjectArray(Object* object) :
+        Object(object)
+    {
+    }
+    ObjectArray(const ObjectArray& object) :
+        Object(object)
+    {
+    }
+    ObjectArray& operator=(const ObjectArray& object)
+    {
+        Object::operator =(object);
+        return *this;
+    }
+    template <class IMP>
+    static Any dispatch(IMP* self, uint32_t selector, const char* id, int argumentCount, Any* arguments)
+    {
+        switch (selector)
+        {
+        case 0x957e2539:
+            if (argumentCount == GETTER_)
+                return self->getLength();
+            if (argumentCount == SETTER_)
+                self->setLength(arguments[0]);
+            if (argumentCount == HAS_PROPERTY_)
+                return true;
+            break;
+        case 0x58994e97:
+            if (argumentCount == SPECIAL_GETTER_)
+                return self->getElement(arguments[0]);
+            if (argumentCount == SPECIAL_SETTER_)
+                self->setElement(arguments[0], arguments[1].as<E>());
+            if (argumentCount == HAS_OPERATION_)
+                return true;
+            break;
+        }
+        return Any();
+    };
 };
 
 }

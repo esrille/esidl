@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,15 +20,13 @@
 
 using namespace org::w3c::dom;
 
-void MD5SumInstance::initialize() {
-  md5class = new (std::nothrow) MD5Class(this);
-  if (md5class) {
-    window->setElement("MD5", md5class);
-  }
+void MD5SumInstance::initialize()
+{
+    md5class = new(std::nothrow) MD5Constructor(this);
+    if (md5class)
+        window.setElement("MD5", md5class);
 }
 
-MD5SumInstance::~MD5SumInstance() {
-  if (md5class) {
-      md5class->release();
-  }
+MD5SumInstance::~MD5SumInstance()
+{
 }

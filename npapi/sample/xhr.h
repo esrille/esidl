@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,48 +19,45 @@
 #define SAMPLE_XHR_H_
 
 #include <esnpapi.h>
+#include <org/w3c/dom/events/Event.h>
+#include <org/w3c/dom/events/EventListener.h>
 
-#include <org/w3c/dom.h>
+class XHRInstance;
 
-class EventHandler;
-
-class XHRInstance : public PluginInstance {
- public:
-  XHRInstance(NPP npp, NPObject* window)
-      : PluginInstance(npp, window) {
-    initialize();
-  }
-  ~XHRInstance();
-
- private:
-  EventHandler* loadHandler;
-  EventHandler* displayHandler;
-
-  void initialize();
-  void load(org::w3c::dom::events::Event* evt);
-  void display(org::w3c::dom::events::Event* evt);
+class EventHandler : public ObjectImp
+{
+    XHRInstance* instance;
+    void (XHRInstance::*handler)(org::w3c::dom::events::Event evt);
+public:
+    EventHandler(XHRInstance* instance,
+                 void (XHRInstance::*handler)(org::w3c::dom::events::Event)) :
+        instance(instance),
+        handler(handler) {
+    }
+    virtual void handleEvent(org::w3c::dom::events::Event evt) {
+        (instance->*handler)(evt);
+    }
+    // Object
+    virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {
+        return org::w3c::dom::events::EventListener::dispatch(this, selector, id, argc, argv);
+    }
 };
 
-class EventHandler : public org::w3c::dom::events::EventListener {
- public:
-  EventHandler(XHRInstance* instance,
-               void (XHRInstance::*handler)(org::w3c::dom::events::Event*))
-      : instance(instance),
-        handler(handler) {
-  }
-  virtual void handleEvent(org::w3c::dom::events::Event* evt) {
-    (instance->*handler)(evt);
-  }
-  unsigned int retain() {
-    return instance->retain(this);
-  };
-  unsigned int release() {
-    return instance->release(this);
-  };
+class XHRInstance : public PluginInstance {
+    org::w3c::dom::events::EventListener loadHandler;
+    org::w3c::dom::events::EventListener displayHandler;
 
- private:
-  XHRInstance* instance;
-  void (XHRInstance::*handler)(org::w3c::dom::events::Event* evt);
+    void initialize();
+    void load(org::w3c::dom::events::Event evt);
+    void display(org::w3c::dom::events::Event evt);
+public:
+    XHRInstance(NPP npp, NPObject* window) :
+        PluginInstance(npp, window),
+        loadHandler(0),
+        displayHandler(0) {
+        initialize();
+    }
+    ~XHRInstance();
 };
 
 #endif  // SAMPLE_XHR_H_

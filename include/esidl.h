@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <list>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -45,6 +46,7 @@ class Node;
     class Type;
     class NativeType;
     class SequenceType;
+    class VariadicType;
     class ArrayType;
     class BinaryExpr;
     class UnaryExpr;
@@ -73,6 +75,22 @@ void setJavadoc(const char* doc);
 std::string& popJavadoc();
 void pushJavadoc();
 
+// a public domain hash function.
+// cf. http://burtleburtle.net/bob/hash/doobs.html
+inline uint32_t one_at_a_time(const char* key, size_t len)
+{
+    uint32_t hash, i;
+    for (hash = 0, i = 0; i < len; ++i) {
+        hash += key[i];
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+    }
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+    return hash;
+}
+
 class Node
 {
 protected:
@@ -92,12 +110,15 @@ protected:
     int                 lastColumn;
 
     mutable std::string meta;           // TODO: meta should not be mutable. fix later.
+    mutable uint32_t    hash;
 
     static int          level;          // current include level
     static const char*  baseObjectName; // default base object name
     static const char*  namespaceName;  // flat namespace name if non zero
     static const char*  defaultPrefix;  // ::org::w3c::dom
     static const char*  ctorScope;      // "::" by default. could be "_"
+
+    static std::map<uint32_t, std::string> hashMap;
 
 public:
     // Attribute bits
@@ -198,7 +219,8 @@ public:
         offset(0),
         extendedAttributes(0),
         source(getFilename()),
-        rank(level)
+        rank(level),
+        hash(0)
     {
     }
 
@@ -210,7 +232,8 @@ public:
         offset(0),
         extendedAttributes(0),
         source(getFilename()),
-        rank(level)
+        rank(level),
+        hash(0)
     {
     }
 
@@ -220,7 +243,8 @@ public:
         offset(0),
         extendedAttributes(0),
         source(getFilename()),
-        rank(level)
+        rank(level),
+        hash(0)
     {
         setChildren(children);
     }
@@ -232,7 +256,8 @@ public:
         offset(0),
         extendedAttributes(0),
         source(getFilename()),
-        rank(level)
+        rank(level),
+        hash(0)
     {
         setChildren(children);
     }
@@ -271,6 +296,22 @@ public:
     std::string& getMeta() const
     {
         return meta;
+    }
+
+    uint32_t getHash() const
+    {
+        return hash;
+    }
+
+    void setHash() const  // XXX
+    {
+        hash = one_at_a_time(name.c_str(), name.length());
+        std::map<uint32_t, std::string>::iterator found = hashMap.find(hash);
+        if (found != hashMap.end()) {
+            if (found->second != name) {
+                fprintf(stderr, "Warning. Hash collision: %u, %s, %s\n", hash, found->second.c_str(), name.c_str());
+            }
+        }
     }
 
     uint32_t getAttr() const
@@ -1187,6 +1228,34 @@ public:
     virtual void accept(Visitor* visitor);
 };
 
+class VariadicType : public Node
+{
+    Node* spec;
+
+public:
+    VariadicType(Node* spec) :
+        Node("variadic"),  // Default name
+        spec(spec)
+    {
+    }
+
+    ~VariadicType()
+    {
+    }
+
+    Node* getSpec() const
+    {
+        return spec;
+    }
+
+    void setSpec(Node* spec)
+    {
+        this->spec = spec;
+    }
+
+    virtual void accept(Visitor* visitor);
+};
+
 class ArrayType : public Node
 {
     Node* spec;
@@ -1800,6 +1869,11 @@ public:
         at(static_cast<const Node*>(node));
     }
 
+    virtual void at(const VariadicType* node)
+    {
+        at(static_cast<const Node*>(node));
+    }
+
     virtual void at(const ArrayType* node)
     {
         at(static_cast<const Node*>(node));
@@ -1915,6 +1989,11 @@ inline void NativeType::accept(Visitor* visitor)
 }
 
 inline void SequenceType::accept(Visitor* visitor)
+{
+    visitor->at(this);
+}
+
+inline void VariadicType::accept(Visitor* visitor)
 {
     visitor->at(this);
 }
@@ -2057,7 +2136,13 @@ public:
     }
 };
 
+int printMessenger(const char* stringTypeName, const char* objectTypeName,
+                   bool useExceptions, bool useVirtualBase, const char* indent);
+int printMessengerSrc(const char* stringTypeName, const char* objectTypeName,
+                      bool useExceptions, bool useVirtualBase, const char* indent);
+
 int printJava(const char* indent);
+
 int printCPlusPlus(const char* stringTypeName, const char* objectTypeName,
                    bool useExceptions, bool useVirtualBase, const char* indent);
 int printCPlusPlusSrc(const char* stringTypeName, const char* objectTypeName,

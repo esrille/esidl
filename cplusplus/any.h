@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2010 Google Inc.
+ * Copyright 2011 Esrille Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,434 +14,282 @@
  * limitations under the License.
  */
 
-#ifndef ES_ANY_H_INCLUDED
-#define ES_ANY_H_INCLUDED
-
-#include <inttypes.h>
-#include <limits.h>
+#ifndef ES_ANY_H
+#define ES_ANY_H
 
 #include <new>
+#include <stdexcept>
 #include <string>
+#include <typeinfo>
+#include <type_traits>
 
 #include <nullable.h>
-#include <sequence.h>
 
 class Object;
 
-struct AnyBase
+// The Any type for Web IDL
+class Any
 {
-    union
-    {
-        bool        boolValue;
-        int8_t      byteValue;
-        uint8_t     octetValue;
-        int16_t     shortValue;
-        uint16_t    unsignedShortValue;
-        int32_t     longValue;
-        uint32_t    unsignedLongValue;
-        int64_t     longLongValue;
-        uint64_t    unsignedLongLongValue;
-        float       floatValue;
-        double      doubleValue;
-        Object*     objectValue;
-        char        stringValue[sizeof(std::string)];
-        char        sequenceValue[sizeof(std::string)];
+    // The type of the heap for the data stored in an Any instance.
+    // Note an Any instance cannot contain an object that is larger
+    // than the size of Heap.
+    union Heap {
+        int32_t  i32;
+        uint32_t u32;
+        int64_t  i64;
+        uint64_t u64;
+        float    f32;
+        double   f64;
     };
-    unsigned        type;
-};
 
-// The any type for Web IDL
-class Any : private AnyBase
-{
-    void release()
-    {
-        if (isSequence())
-        {
-            const Sequence<int>* p = reinterpret_cast<const Sequence<int>*>(&sequenceValue);  // TODO: not type safe
-            p->~Sequence<int>();
+    // The virtual table for non-primitive types
+    struct VirtualTable {
+        const std::type_info& (*getType)();
+        void (*destruct)(Heap*);
+        void (*clone)(Heap const*, Heap*);
+    };
+
+    // The type erasure for non-primitive types
+    template<typename T>
+    struct TypeErasure {
+        static VirtualTable vtable;
+        static const std::type_info& getType() {
+            return typeid(T);
         }
-        else if (isString())
-        {
-            using std::string;
-
-            const string* p = reinterpret_cast<const string*>(stringValue);
-            p->~string();
+        static void destruct(Heap* value) {
+            reinterpret_cast<T*>(value)->~T();
         }
-    }
-
-    Any& assign(const Any& value)
-    {
-        type = value.type ;
-        if (isSequence())
-        {
-            new (sequenceValue) Sequence<std::string>(*reinterpret_cast<const Sequence<std::string>*>(value.sequenceValue));
+        static void clone(Heap const* src, Heap* dest) {
+            new(dest) T(*reinterpret_cast<T const*>(src));
         }
-        else if (isString())
-        {
-            new (stringValue) std::string(*reinterpret_cast<const std::string*>(value.stringValue));
-        }
-        else
-        {
-            unsignedLongLongValue = value.unsignedLongLongValue;
-        }
-        return *this;
+    };
+
+public:
+    enum {
+        Empty,
+        Bool,
+        Int32,
+        Uint32,
+        Int64,
+        Uint64,
+        Float32,
+        Float64,
+        Dynamic  // i.e., not a primitive value
+    };
+
+private:
+    unsigned type;
+    VirtualTable* vtable;
+    Heap heap;
+
+    template<typename T>
+    void initialize(T const& value, typename std::enable_if<!std::is_base_of<Object, T>::value>::type* =0) {
+        vtable = &TypeErasure<T>::vtable;
+        static_assert(sizeof(T) <= sizeof(heap), "size mismatch");
+        new(&heap) T(value);
+        type = Dynamic;
     }
 
-    Any& assign(bool value)
-    {
-        boolValue = value;
-        type = TypeBool;
-        return *this;
+    template<typename T>
+    void initialize(T const& value, typename std::enable_if<std::is_base_of<Object, T>::value>::type* =0) {
+        vtable = &TypeErasure<Object>::vtable;
+        new(&heap) Object(value.self());
+        type = Dynamic;
     }
 
-    Any& assign(signed char value)
-    {
-        byteValue = value;
-        type = TypeByte;
-        return *this;
-    }
-
-    Any& assign(unsigned char value)
-    {
-        octetValue = value;
-        type = TypeOctet;
-        return *this;
-    }
-
-    Any& assign(short value)
-    {
-        shortValue = value;
-        type = TypeShort;
-        return *this;
-    }
-
-    Any& assign(unsigned short value)
-    {
-        unsignedShortValue = value;
-        type = TypeUnsignedShort;
-        return *this;
-    }
-
-    // Since int32_t can be either long or int, use int so as not to conflict with constructor for long
-    Any& assign(int value)
-    {
-        longValue = value;
-        type = TypeLong;
-        return *this;
-    }
-
-    // Since uint32_t can be either long or int, use int so as not to conflict with constructor for unsigned long
-    Any& assign(unsigned int value)
-    {
-        unsignedLongValue = value;
-        type = TypeUnsignedLong;
-        return *this;
-    }
-
-    // To support constants declared with intptr_t, constructor for long is necessary.
-    Any& assign(long value)
-    {
-#if 2147483647L < LONG_MAX
-        longLongValue = value;
-        type = TypeLongLong;
-#else
-        longValue = value;
-        type = TypeLong;
-#endif
-        return *this;
-    }
-
-    // To support constants declared with uintptr_t, constructor for long is necessary.
-    Any& assign(unsigned long value)
-    {
-#if 4294967295UL < ULONG_MAX
-        unsignedLongValue = value;
-        type = TypeUnsignedLong;
-#else
-        unsignedLongValue = value;
-        type = TypeUnsignedLong;
-#endif
-        return *this;
-    }
-
-    // To support constants declared with LL, long long variant cannot be int64_t.
-    Any& assign(long long value)
-    {
-        longLongValue = value;
-        type = TypeLongLong;
-        return *this;
-    }
-
-    // To support constants declared with LLu, long long variant cannot be uint64_t.
-    Any& assign(unsigned long long value)
-    {
-        unsignedLongLongValue = value;
-        type = TypeUnsignedLongLong;
-        return *this;
-    }
-
-    Any& assign(float value)
-    {
-        floatValue = value;
-        type = TypeFloat;
-        return *this;
-    }
-
-    Any& assign(double value)
-    {
-        doubleValue = value;
-        type = TypeDouble;
-        return *this;
-    }
-
-    Any& assign(const std::string& value)
-    {
-        new (stringValue) std::string(value);
-        type = TypeString;
-        return *this;
+    template<typename T>
+    void initialize(T* value, typename std::enable_if<std::is_base_of<Object, T>::value>::type* =0) {
+        vtable = &TypeErasure<Object>::vtable;
+        new(&heap) Object(value);
+        type = Dynamic;
     }
 
     template <typename T>
-    Any& assign(const Sequence<T>& sequence)
-    {
-        T value;
-        assign(value);  // Just for setting type for T
-        release();
-        new (sequenceValue) Sequence<T>(sequence);
-        type |= FlagSequence;
-        return *this;
-    }
-
-    Any& assign(const Sequence<Any>& sequence)
-    {
-        new (sequenceValue) Sequence<Any>(sequence);
-        type = FlagSequence | FlagAny;
-        return *this;
-    }
-
-    template <typename T>
-    Any& assign(const Nullable<T> nullable)
-    {
+    void initialize(const Nullable<T> nullable) {
         if (!nullable.hasValue())
-        {
-            longLongValue = 0;
-            type = TypeVoid;
-        }
+            type = Empty;
         else
-        {
-            assign(nullable.value());
+            initialize(nullable.value());
+    }
+
+    void initialize(const Any& value) {
+        type = value.type;
+        if (type != Dynamic)
+            heap = value.heap;
+        else {
+            vtable = value.vtable;
+            vtable->clone(&value.heap, &heap);
         }
-        type |= FlagNullable;
-        return *this;
     }
 
-    Any& assign(const char* value)
-    {
-        new (stringValue) std::string(value);
-        type = TypeString;
-        return *this;
+    void initialize(bool value) {
+        heap.i32 = value;
+        type = Bool;
+    }
+    void initialize(unsigned char value) {
+        heap.u32 = value;
+        type = Uint32;
+    }
+    void initialize(signed char value) {
+        heap.i32 = value;
+        type = Int32;
+    }
+    void initialize(unsigned short value) {
+        heap.u32 = value;
+        type = Uint32;
+    }
+    void initialize(signed short value) {
+        heap.i32 = value;
+        type = Int32;
+    }
+    void initialize(unsigned int value) {
+        heap.u32 = value;
+        type = Uint32;
+    }
+    void initialize(signed int value) {
+        heap.i32 = value;
+        type = Int32;
+    }
+    void initialize(unsigned long long value) {
+        heap.u64 = value;
+        type = Uint64;
+    }
+    void initialize(signed long long value) {
+        heap.i64 = value;
+        type = Int64;
+    }
+    void initialize(float value) {
+        heap.f32= value;
+        type = Float32;
+    }
+    void initialize(double value) {
+        heap.f64 = value;
+        type = Float64;
     }
 
-    Any& assign(Object* value)
-    {
-        objectValue = value;
-        type = TypeObject;
-        return *this;
+    template<typename T>
+    T cast(typename std::enable_if<std::is_arithmetic<T>::value>::type* = 0) const {
+        switch (type) {
+        case Bool:
+        case Int32:
+            return static_cast<T>(heap.i32);
+        case Uint32:
+            return static_cast<T>(heap.u32);
+        case Int64:
+            return static_cast<T>(heap.i64);
+        case Uint64:
+            return static_cast<T>(heap.u64);
+        case Float32:
+            return static_cast<T>(heap.f32);
+        case Float64:
+            return static_cast<T>(heap.f64);
+        default:
+            return static_cast<T>(toNumber());
+        }
+    }
+
+    template<typename T>
+    const T cast(typename std::enable_if<std::is_base_of<Object, T>::value>::type* = 0) const {
+        if (isObject())
+            return toObject();
+        if (type == Empty)
+            return 0;
+        throw std::bad_cast();
+    }
+
+    template<typename T>
+    const T cast(typename std::enable_if<!std::is_base_of<Object, T>::value && !std::is_arithmetic<T>::value>::type* = 0) const {
+        if (type == Dynamic && vtable->getType() == typeid(T))
+            return *reinterpret_cast<const T*>(&heap);
+        throw std::bad_cast();
     }
 
 public:
-    enum
-    {
-        TypeVoid,
-        TypeBool,
-        TypeByte,
-        TypeOctet,
-        TypeShort,
-        TypeUnsignedShort,
-        TypeLong,
-        TypeUnsignedLong,
-        TypeLongLong,
-        TypeUnsignedLongLong,
-        TypeFloat,
-        TypeDouble,
-        TypeString,
-        TypeObject,
-        PrimitiveMask = 0x0fffffff,
-        FlagSequence = 0x20000000,
-        FlagAny = 0x40000000,
-        FlagNullable = 0x80000000
-    };
+    Any() :
+        type(Empty) {
+    }
 
-    Any()
-    {
-        longLongValue = 0;
-        type = TypeVoid;
+    Any(const Any& value) {
+        initialize(value);
     }
 
     template <typename T>
-    Any(T value)
-    {
-        assign(value);
+    Any(const T& x) {
+        initialize(x);
     }
 
-    // Copy constructor
-    Any(const Any& value)
-    {
-        assign(value);
+    Any(const char* x) {
+        initialize(std::string(x));
     }
 
-    ~Any()
-    {
-        release();
+    Any(const char16_t* x) {
+        initialize(std::u16string(x));
     }
 
-    template <typename T>
-    Any& operator=(T value)
-    {
-        release();
-        assign(value);
+    ~Any() {
+        if (type == Dynamic)
+            vtable->destruct(&heap);
+    }
+
+    Any& operator=(const Any& x) {
+        if (this != &x) {
+            if (type == Dynamic)
+                vtable->destruct(&heap);
+            initialize(x);
+        }
         return *this;
     }
 
-    Any& operator=(const Any& value)
-    {
-        assign(value);
+    template<typename T>
+    Any& operator=(const T& x) {
+        if (type == Dynamic)
+            vtable->destruct(&heap);
+        initialize(x);
         return *this;
     }
 
-    operator signed char() const
-    {
-        return byteValue;
+    Any& operator=(const char* x) {
+        return operator=(std::string(x));
     }
 
-    operator unsigned char() const
-    {
-        return octetValue;
+    Any& operator=(const char16_t* x) {
+        return operator=(std::u16string(x));
     }
 
-    operator short() const
-    {
-        return shortValue;
+    template<typename T>
+    T as() const {
+        return cast<T>();
     }
 
-    operator unsigned short() const
-    {
-        return unsignedShortValue;
+    template<typename T>
+    operator T() const {
+        return cast<T>();
     }
 
-    operator int() const
-    {
-        return longValue;
+    bool isObject() const;
+    Object* toObject() const;
+
+    bool toBoolean() const;
+    double toNumber() const;
+
+    bool isString() const;
+    std::string toString() const;
+
+    bool hasValue() const {
+        return type != Empty;
     }
 
-    operator unsigned int() const
-    {
-        return unsignedLongValue;
+    unsigned getType() const {
+        return type;
     }
+};
 
-    operator long() const
-    {
-#if 2147483647L < LONG_MAX
-        return longLongValue;
-#else
-        return longValue;
-#endif
-    }
-
-    operator unsigned long() const
-    {
-#if 4294967295UL < ULONG_MAX
-        return unsignedLongLongValue;
-#else
-        return unsignedLongValue;
-#endif
-    }
-
-    operator long long() const
-    {
-        return longLongValue;
-    }
-
-    operator unsigned long long() const
-    {
-        return unsignedLongLongValue;
-    }
-
-    operator bool() const
-    {
-        return boolValue;
-    }
-
-    operator float() const
-    {
-        return floatValue;
-    }
-
-    operator double() const
-    {
-        return doubleValue;
-    }
-
-    operator const std::string() const
-    {
-        return *reinterpret_cast<const std::string*>(stringValue);
-    }
-
-    operator Object*() const
-    {
-        return objectValue;
-    }
-
-    int getType() const
-    {
-        return (type & PrimitiveMask);
-    }
-
-    void makeAny()
-    {
-        type |= FlagAny;
-    }
-
-    bool isNullable() const
-    {
-        return (type & FlagNullable);
-    }
-
-    bool isAny() const
-    {
-        return (type & FlagAny);
-    }
-
-    bool isString() const
-    {
-        return getType() == TypeString;
-    }
-
-    bool isObject() const
-    {
-        return getType() == TypeObject;
-    }
-
-    bool isNull() const
-    {
-        return getType() == TypeVoid;
-    }
-
-    bool isSequence() const
-    {
-        return (type & FlagSequence);
-    }
-
-    bool hasValue() const
-    {
-        return getType() != TypeVoid;
-    }
-
-    template <typename T>
-    const Sequence<T>* getSequence() const
-    {
-        return reinterpret_cast<const Sequence<T>*>(&sequenceValue);
-    };
+// TypeErasure vtable initializer
+template<class T>
+Any::VirtualTable Any::TypeErasure<T>::vtable = {
+    Any::TypeErasure<T>::getType,
+    Any::TypeErasure<T>::destruct,
+    Any::TypeErasure<T>::clone
 };
 
 template <typename T>
@@ -450,21 +298,8 @@ Nullable<T>::Nullable(const Any& any)
     hasValue_ = any.hasValue();
     if (hasValue_)
     {
-        value_ = static_cast<T>(any);
+        value_ = any.as<T>();
     }
-}
-
-template <typename T>
-Sequence<T>::Sequence(const Any& any)
-{
-    if (any.isSequence())
-    {
-        const Sequence<T>* value = any.getSequence<T>();
-        ++value->rep->count;
-        rep = value->rep;
-        return;
-    }
-    rep = new Rep();  // create an empty sequence
 }
 
 #endif // ESNPAPI_ANY_H_INCLUDED

@@ -52,20 +52,23 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__esidl_SOURCES_DIST = include/cplusplus.h include/cplusplusCall.h \
+am__esidl_SOURCES_DIST = include/messenger.h \
+	include/messengerDispatch.h include/messengerInvoke.h \
+	include/cplusplus.h include/cplusplusCall.h \
 	include/cplusplusInvoke.h include/cplusplusMeta.h \
 	include/cplusplusTemplate.h include/cxx.h include/esidl.h \
 	include/expr.h include/formatter.h include/forward.h \
 	include/info.h include/java.h include/meta.h include/reflect.h \
-	include/sheet.h include/utf.h src/cplusplus.cpp src/cxx.cpp \
-	src/driver.cpp src/esidl.cpp src/java.cpp src/lexer.ll \
-	src/parser.yy src/print.cpp src/skeleton.cpp src/template.cpp
-@NACL_FALSE@am_esidl_OBJECTS = esidl-cplusplus.$(OBJEXT) \
-@NACL_FALSE@	esidl-cxx.$(OBJEXT) esidl-driver.$(OBJEXT) \
-@NACL_FALSE@	esidl-esidl.$(OBJEXT) esidl-java.$(OBJEXT) \
-@NACL_FALSE@	esidl-lexer.$(OBJEXT) esidl-parser.$(OBJEXT) \
-@NACL_FALSE@	esidl-print.$(OBJEXT) esidl-skeleton.$(OBJEXT) \
-@NACL_FALSE@	esidl-template.$(OBJEXT)
+	include/sheet.h include/utf.h src/messenger.cpp \
+	src/cplusplus.cpp src/cxx.cpp src/driver.cpp src/esidl.cpp \
+	src/java.cpp src/lexer.ll src/parser.yy src/print.cpp \
+	src/skeleton.cpp src/template.cpp
+@NACL_FALSE@am_esidl_OBJECTS = esidl-messenger.$(OBJEXT) \
+@NACL_FALSE@	esidl-cplusplus.$(OBJEXT) esidl-cxx.$(OBJEXT) \
+@NACL_FALSE@	esidl-driver.$(OBJEXT) esidl-esidl.$(OBJEXT) \
+@NACL_FALSE@	esidl-java.$(OBJEXT) esidl-lexer.$(OBJEXT) \
+@NACL_FALSE@	esidl-parser.$(OBJEXT) esidl-print.$(OBJEXT) \
+@NACL_FALSE@	esidl-skeleton.$(OBJEXT) esidl-template.$(OBJEXT)
 esidl_OBJECTS = $(am_esidl_OBJECTS)
 esidl_LDADD = $(LDADD)
 esidl_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
@@ -289,6 +292,9 @@ SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR)
 DIST_SUBDIRS = testsuite java cplusplus npapi
 @NACL_FALSE@BUILT_SOURCES = lexer.cc parser.cc parser.h
 @NACL_FALSE@esidl_SOURCES = \
+@NACL_FALSE@	include/messenger.h \
+@NACL_FALSE@	include/messengerDispatch.h \
+@NACL_FALSE@	include/messengerInvoke.h \
 @NACL_FALSE@	include/cplusplus.h\
 @NACL_FALSE@	include/cplusplusCall.h \
 @NACL_FALSE@	include/cplusplusInvoke.h \
@@ -305,6 +311,7 @@ DIST_SUBDIRS = testsuite java cplusplus npapi
 @NACL_FALSE@	include/reflect.h \
 @NACL_FALSE@	include/sheet.h \
 @NACL_FALSE@	include/utf.h \
+@NACL_FALSE@	src/messenger.cpp \
 @NACL_FALSE@	src/cplusplus.cpp \
 @NACL_FALSE@	src/cxx.cpp \
 @NACL_FALSE@	src/driver.cpp \
@@ -341,6 +348,7 @@ EXTRA_DIST = \
 	dom/dom3ls.idl \
 	dom/dom3validation.idl \
 	dom/dom3xpath.idl \
+	dom/domcore.idl \
 	dom/elementtraversal.idl \
 	dom/eventsource.idl \
 	dom/file.idl \
@@ -355,6 +363,8 @@ EXTRA_DIST = \
 	dom/selectors.idl \
 	dom/smil.idl \
 	dom/svg.idl \
+	dom/typedarray.idl \
+	dom/url.idl \
 	dom/webdatabase.idl \
 	dom/webgl.idl \
 	dom/webnotifications.idl \
@@ -468,6 +478,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-esidl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-java.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-lexer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-messenger.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-parser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-print.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-skeleton.Po@am__quote@
@@ -493,6 +504,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
+
+esidl-messenger.o: src/messenger.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-messenger.o -MD -MP -MF $(DEPDIR)/esidl-messenger.Tpo -c -o esidl-messenger.o `test -f 'src/messenger.cpp' || echo '$(srcdir)/'`src/messenger.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/esidl-messenger.Tpo $(DEPDIR)/esidl-messenger.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/messenger.cpp' object='esidl-messenger.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-messenger.o `test -f 'src/messenger.cpp' || echo '$(srcdir)/'`src/messenger.cpp
+
+esidl-messenger.obj: src/messenger.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-messenger.obj -MD -MP -MF $(DEPDIR)/esidl-messenger.Tpo -c -o esidl-messenger.obj `if test -f 'src/messenger.cpp'; then $(CYGPATH_W) 'src/messenger.cpp'; else $(CYGPATH_W) '$(srcdir)/src/messenger.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/esidl-messenger.Tpo $(DEPDIR)/esidl-messenger.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/messenger.cpp' object='esidl-messenger.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-messenger.obj `if test -f 'src/messenger.cpp'; then $(CYGPATH_W) 'src/messenger.cpp'; else $(CYGPATH_W) '$(srcdir)/src/messenger.cpp'; fi`
 
 esidl-cplusplus.o: src/cplusplus.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-cplusplus.o -MD -MP -MF $(DEPDIR)/esidl-cplusplus.Tpo -c -o esidl-cplusplus.o `test -f 'src/cplusplus.cpp' || echo '$(srcdir)/'`src/cplusplus.cpp

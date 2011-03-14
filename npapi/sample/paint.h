@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,52 +19,54 @@
 #define SAMPLE_PAINT_H_
 
 #include <esnpapi.h>
+#include <org/w3c/dom/events/Event.h>
+#include <org/w3c/dom/events/EventListener.h>
 
-#include <org/w3c/dom.h>
+class PaintInstance;
 
-class EventHandler;
-
-class PaintInstance : public PluginInstance {
- public:
-  PaintInstance(NPP npp, NPObject* window)
-      : PluginInstance(npp, window) {
-    initialize();
-  }
-  ~PaintInstance();
-
- private:
-  EventHandler* downHandler;
-  EventHandler* moveHandler;
-  EventHandler* upHandler;
-  EventHandler* selectHandler;
-
-  void initialize();
-  void down(org::w3c::dom::events::Event* evt);
-  void move(org::w3c::dom::events::Event* evt);
-  void up(org::w3c::dom::events::Event* evt);
-  void select(org::w3c::dom::events::Event* evt);
+class EventHandler : public ObjectImp
+{
+    PaintInstance* instance;
+    void (PaintInstance::*handler)(org::w3c::dom::events::Event evt);
+public:
+    EventHandler(PaintInstance* instance,
+                 void (PaintInstance::*handler)(org::w3c::dom::events::Event)) :
+        instance(instance),
+        handler(handler) {
+    }
+    virtual void handleEvent(org::w3c::dom::events::Event evt) {
+        (instance->*handler)(evt);
+    }
+    // Object
+    virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {
+        return org::w3c::dom::events::EventListener::dispatch(this, selector, id, argc, argv);
+    }
 };
 
-class EventHandler : public org::w3c::dom::events::EventListener {
- public:
-  EventHandler(PaintInstance* instance,
-               void (PaintInstance::*handler)(org::w3c::dom::events::Event*))
-      : instance(instance),
-        handler(handler) {
-  }
-  virtual void handleEvent(org::w3c::dom::events::Event* evt) {
-    (instance->*handler)(evt);
-  }
-  unsigned int retain() {
-    return instance->retain(this);
-  };
-  unsigned int release() {
-    return instance->release(this);
-  };
+class PaintInstance : public PluginInstance
+{
+public:
+    PaintInstance(NPP npp, NPObject* window) :
+        PluginInstance(npp, window),
+        downHandler(0),
+        moveHandler(0),
+        upHandler(0),
+        selectHandler(0) {
+        initialize();
+    }
+    ~PaintInstance();
 
- private:
-  PaintInstance* instance;
-  void (PaintInstance::*handler)(org::w3c::dom::events::Event* evt);
+private:
+    org::w3c::dom::events::EventListener downHandler;
+    org::w3c::dom::events::EventListener moveHandler;
+    org::w3c::dom::events::EventListener upHandler;
+    org::w3c::dom::events::EventListener selectHandler;
+
+    void initialize();
+    void down(org::w3c::dom::events::Event evt);
+    void move(org::w3c::dom::events::Event evt);
+    void up(org::w3c::dom::events::Event evt);
+    void select(org::w3c::dom::events::Event evt);
 };
 
 #endif  // SAMPLE_PAINT_H_

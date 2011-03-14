@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2009, 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,163 +16,65 @@
  */
 
 #include <esnpapi.h>
-#include <org/w3c/dom.h>
 
 #include <assert.h>
+#include <stdarg.h>
 
-std::map<const std::string, Object* (*)(ProxyObject object)> ProxyControl::proxyConstructorMap;
+PluginInstance* currentPluginInstance;
 
 ProxyControl::ProxyControl(NPP npp) :
-    npp(npp),
-    nestingCount(1)
+    npp(npp)
 {
 }
 
 ProxyControl::~ProxyControl()
 {
-    printf("%s: newList.size(): %u\n", __func__, newList.size());
-    printf("%s: oldList.size(): %u\n", __func__, oldList.size());
-    while (!newList.empty())
-    {
-        ProxyObject* proxy = newList.front();
-        proxy->invalidate();
-    }
-    while (!oldList.empty())
-    {
-        ProxyObject* proxy = oldList.front();
-        proxy->invalidate();
-    }
-    assert(newList.size() == 0);
-    assert(oldList.size() == 0);
+    assert(proxyMap.size() == 0);
 }
 
-Object* ProxyControl::createProxy(NPObject* object, const Reflect::Type type)
+ProxyObject* ProxyControl::findProxy(NPObject* object)
 {
-    if (!object)
+    std::map<NPObject*, ProxyObject*>::iterator i;
+    i = proxyMap.find(object);
+    if (i != proxyMap.end())
     {
-        return 0;
-    }
-
-    std::string className = getInterfaceName(npp, object);
-    bool usedHint = false;
-    for (;;)
-    {
-        std::map<const std::string, Object* (*)(ProxyObject object)>::iterator it;
-        it = proxyConstructorMap.find(className);
-        if (it != proxyConstructorMap.end())
-        {
-            ProxyObject browserObject(object, npp);
-            if (Object* object = (*it).second(browserObject))
-            {
-                track(interface_cast<ProxyObject*>(object));
-                return object;
-            }
-        }
-        if (12 < className.length() && !className.compare(className.length() - 12, 12, "_Constructor"))
-        {
-            className = "Function";
-            usedHint = true;
-            continue;
-        }
-        if (!type.isObject() || usedHint)
-        {
-            break;
-        }
-        className = type.getQualifiedName();
-        size_t pos = className.rfind(':');
-        if (pos != std::string::npos)
-        {
-            className = className.substr(pos + 1);
-            printf("%s: use the class name '%s' as hinted.\n", __func__, className.c_str());
-        }
-        usedHint = true;
+        return i->second;
     }
     return 0;
 }
 
-long ProxyControl::enter()
+ProxyObject* ProxyControl::createProxy(NPObject* object)
 {
-    return ++nestingCount;
-}
-
-long ProxyControl::leave()
-{
-    --nestingCount;
-    assert(0 <= nestingCount);
-    if (nestingCount == 0)
+    ProxyObject* proxy = findProxy(object);
+    if (proxy)
     {
-        while (!newList.empty())
-        {
-            ProxyObject* proxy = newList.front();
-            if (0 < proxy->release())
-            {
-                newList.pop_front();
-                assert(proxy);
-                assert(proxy->age == ProxyObject::NEW);
-                proxy->age = ProxyObject::OLD;
-                oldList.push_back(proxy);
-            }
-        }
+        return proxy;
     }
-    return nestingCount;
-}
-
-void ProxyControl::track(ProxyObject* proxy)
-{
-    assert(proxy);
-    assert(proxy->age == ProxyObject::CREATED);
-    proxy->age = ProxyObject::NEW;
-    newList.push_back(proxy);
-}
-
-void ProxyControl::untrack(ProxyObject* proxy)
-{
-    assert(proxy);
-    switch (proxy->age)
+    proxy = new(std::nothrow) ProxyObject(object, npp);
+    if (!proxy)
     {
-    case ProxyObject::NEW:
-        newList.remove(proxy);
-        break;
-    case ProxyObject::OLD:
-        oldList.remove(proxy);
-        break;
-    default:
-        break;
+        return 0;
     }
+    proxyMap.insert(std::pair<NPObject*, ProxyObject*>(object, proxy));
+    return proxy;
 }
 
-void ProxyControl::registerMetaData(const char* meta, Object* (*createProxy)(ProxyObject object), const char* alias)
+void ProxyControl::remove(NPObject* object)
 {
-    Reflect::Interface interface(meta);
-    std::string name = interface.getName();
-    if (alias)
-    {
-        name = alias;
-    }
-    proxyConstructorMap[name] = createProxy;
-    printf("%s\n", name.c_str());
+    proxyMap.erase(object);
 }
 
 ProxyObject::ProxyObject(NPObject* object, NPP npp) :
+    Object(this),
     object(object),
     npp(npp),
-    count(0),
-    age(CREATED)
+    count(0)
 {
-}
-
-ProxyObject::ProxyObject(const ProxyObject& original) :
-    object(original.object),
-    npp(original.npp),
-    count(original.count),
-    age(original.age)
-{
-    assert(age == CREATED);
+    assert(object);
 }
 
 ProxyObject::~ProxyObject()
 {
-    // Remove this from newList or oldList if it is still included
     PluginInstance* instance = static_cast<PluginInstance*>(npp->pdata);
     if (!instance)
     {
@@ -179,26 +82,22 @@ ProxyObject::~ProxyObject()
     }
     ProxyControl* proxyControl = instance->getProxyControl();
     assert(proxyControl);
-    proxyControl->untrack(this);
+    proxyControl->remove(object);
 }
 
-unsigned int ProxyObject::retain()
+unsigned int ProxyObject::retain_()
 {
     if (count == 0)
-    {
         NPN_RetainObject(object);
-    }
     return ++count;
 }
 
-unsigned int ProxyObject::release()
+unsigned int ProxyObject::release_()
 {
     if (0 < count)
     {
         if (count == 1)
-        {
             NPN_ReleaseObject(object);
-        }
         --count;
     }
     if (count == 0)
@@ -209,39 +108,16 @@ unsigned int ProxyObject::release()
     return count;
 }
 
-unsigned int ProxyObject::mark()
-{
-    return ++count;
-}
-
-void ProxyObject::invalidate()
-{
-    if (1 < count)
-    {
-        count = 1;  // Enforce delete by release()
-    }
-    release();
-}
-
 PluginInstance::PluginInstance(NPP npp, NPObject* window) :
     proxyControl(npp),
     stubControl(npp),
-    window(0)
+    window(proxyControl.createProxy(window))
 {
     npp->pdata = this;
-    this->window = interface_cast<org::w3c::dom::html::Window*>(proxyControl.createProxy(window, Reflect::Type("O14::html::Window")));
-    if (this->window)
-    {
-        ProxyObject* proxy = interface_cast<ProxyObject*>(this->window);
-        proxy->mark();
-        proxy->retain();
-    }
+    currentPluginInstance = this;
 }
 
 PluginInstance::~PluginInstance()
 {
-    if (window)
-    {
-        window->release();
-    }
+    currentPluginInstance = 0;
 }

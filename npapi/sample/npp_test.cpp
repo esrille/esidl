@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +16,8 @@
  */
 
 #include "test.h"
-#include "proxyImpl.h"
 
 #include <any.h>
-#include <reflect.h>
-#include <org/w3c/dom.h>
-#include <com/getfirebug/Console.h>
 
 using namespace org::w3c::dom;
 
@@ -36,12 +33,6 @@ char* NPP_GetMIMEDescription()
 NPError NPP_Initialize()
 {
     printf("%s\n", __func__);
-
-    initializeMetaData();
-    initializeHtmlMetaData();
-    initializeWebGLMetaData();
-    
-    ProxyControl::registerMetaData(com::getfirebug::Console::getMetaData(), Proxy_Impl<ProxyObject, com::getfirebug::Console_Bridge<Any, invoke> >::createInstance);
 
     return NPERR_NO_ERROR;
 }
@@ -70,10 +61,6 @@ NPError NPP_New(NPMIMEType pluginType, NPP npp, uint16_t mode,
     {
         NPN_ReleaseObject(window);
         return NPERR_INVALID_INSTANCE_ERROR;
-    }
-    if (ProxyControl* proxyControl = instance->getProxyControl())
-    {
-        proxyControl->leave();
     }
     return NPERR_NO_ERROR;
 }

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,78 +18,58 @@
 #include "xhr.h"
 #include <new>
 
-#include <stdio.h>
+#include <org/w3c/dom/Document.h>
+#include <org/w3c/dom/XMLHttpRequest.h>
+#include <org/w3c/dom/html/HTMLButtonElement.h>
+#include <org/w3c/dom/html/HTMLFormElement.h>
+#include <org/w3c/dom/html/HTMLInputElement.h>
 
-// Define TEST_STUBOBJECT_DEALLOCATE to test StubObject::deallocate().
-// #define TEST_STUBOBJECT_DEALLOCATE
+#include <stdio.h>
 
 using namespace org::w3c::dom;
 
-void XHRInstance::initialize() {
-  loadHandler = new (std::nothrow) EventHandler(this, &XHRInstance::load);
-  displayHandler = new (std::nothrow) EventHandler(this, &XHRInstance::display);
-
-  html::HTMLDocument* document = interface_cast<html::HTMLDocument*>(window->getDocument());
-  if (document) {
-    html::HTMLFormElement* form = interface_cast<html::HTMLFormElement*>(document->getElement("form"));
-    if (form) {
-      html::HTMLButtonElement* button = interface_cast<html::HTMLButtonElement*>(form->namedItem("button"));
-      if (button) {
-        events::EventTarget* eventTarget = interface_cast<events::EventTarget*>(button);
-        if (eventTarget) {
-          eventTarget->addEventListener("click", loadHandler, true);
-        }
-      }
-    }
-  }
+void XHRInstance::initialize()
+{
+    loadHandler = new(std::nothrow) EventHandler(this, &XHRInstance::load);
+    displayHandler = new(std::nothrow) EventHandler(this, &XHRInstance::display);
+    Document document = interface_cast<Document>(window.getDocument());
+    if (!document)
+        return;
+    html::HTMLFormElement form = interface_cast<html::HTMLFormElement>(document.getElement("form"));
+    if (!form)
+        return;
+    html::HTMLButtonElement button = interface_cast<html::HTMLButtonElement>(form.namedItem("button"));
+    if (!button)
+        return;
+    button.addEventListener("click", loadHandler, true);
 }
 
-XHRInstance::~XHRInstance() {
-  if (loadHandler) {
-      loadHandler->release();
-  }
-  if (displayHandler) {
-    displayHandler->release();
-  }
+XHRInstance::~XHRInstance()
+{
 }
 
-void XHRInstance::load(events::Event* evt) {
-  XMLHttpRequest_Constructor* xmlHttpRequest = interface_cast<XMLHttpRequest_Constructor*>(window->getElement("XMLHttpRequest"));
-  if (xmlHttpRequest) {
-    XMLHttpRequest* xhr = xmlHttpRequest->createInstance();
-    if (xhr) {
-      xhr->addEventListener("load", displayHandler, true);
-      xhr->open("GET", "xhr.txt", true);
-      xhr->send();
-    }
-  }
-
-#ifdef TEST_STUBOBJECT_DEALLOCATE
-  html::HTMLButtonElement* button =
-    interface_cast<html::HTMLButtonElement*>(evt->getTarget());
-  if (button) {
-    events::EventTarget* eventTarget = interface_cast<events::EventTarget*>(button);
-    if (eventTarget) {
-      eventTarget->removeEventListener("click", loadHandler, true);
-      unsigned count = loadHandler->release();
-      loadHandler = 0;
-    }
-  }
-#endif  // TEST_STUBOBJECT_DEALLOCATE
+void XHRInstance::load(events::Event evt)
+{
+    XMLHttpRequest xhr;
+    if (!xhr)
+        return;
+    xhr.addEventListener("load", displayHandler, true);
+    xhr.open("GET", "xhr.txt", true);
+    xhr.send();
 }
 
-void XHRInstance::display(events::Event* evt) {
-  XMLHttpRequest* xhr = interface_cast<XMLHttpRequest*>(evt->getTarget());
-  if (xhr) {
-    html::HTMLDocument* document = interface_cast<html::HTMLDocument*>(window->getDocument());
-    if (document) {
-      html::HTMLFormElement* form = interface_cast<html::HTMLFormElement*>(document->getElement("form"));
-      if (form) {
-        html::HTMLInputElement* result = interface_cast<html::HTMLInputElement*>(form->namedItem("result"));
-        if (result) {
-            result->setValue(xhr->getResponseText());
-        }
-      }
-    }
-  }
+void XHRInstance::display(events::Event evt)
+{
+    XMLHttpRequest xhr = interface_cast<XMLHttpRequest>(evt.getTarget());
+    if (!xhr)
+        return;
+    Document document = window.getDocument();
+    if (!document)
+        return;
+    html::HTMLFormElement form = interface_cast<html::HTMLFormElement>(document.getElement("form"));
+    if (!form)
+        return;
+    html::HTMLInputElement result = interface_cast<html::HTMLInputElement>(form.namedItem("result"));
+    if (result)
+        result.setValue(xhr.getResponseText());
 }

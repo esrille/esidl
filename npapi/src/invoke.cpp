@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2009, 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +28,7 @@ NPIdentifier getSpecialIdentifier(const Any& any)
 
     if (any.isString())
     {
-        id =  NPN_GetStringIdentifier(static_cast<const std::string>(any).c_str());
+        id = NPN_GetStringIdentifier(any.toString().c_str());
     }
     else
     {
@@ -36,31 +37,14 @@ NPIdentifier getSpecialIdentifier(const Any& any)
     return id;
 }
 
-template <typename T>
-void expandSequence(NPP npp, const Sequence<T> sequence, NPVariant* variantArray)
+Any processResult(NPP npp, NPVariant* variant)
 {
-    for (unsigned i = 0; i < sequence.getLength(); ++i)
-    {
-        convertToVariant(npp, sequence[i], variantArray + i, false);
-    }
-}
-
-Any processResult(NPP npp, NPVariant* variant, const Reflect::Type type)
-{
-    Any result = convertToAny(npp, variant, type);
+    Any result = convertToAny(npp, variant);
     if (NPVARIANT_IS_OBJECT(*variant))
     {
-        if (result.isSequence() || !result.isObject())
+        if (!result.isObject())
         {
             NPN_ReleaseObject(NPVARIANT_TO_OBJECT(*variant));
-        }
-        else if (!StubObject::isStub(NPVARIANT_TO_OBJECT(*variant)))
-        {
-            ProxyObject* proxy = interface_cast<ProxyObject*>(static_cast<Object*>(result));
-            if (proxy)
-            {
-                proxy->mark();
-            }
         }
     }
     else
@@ -72,198 +56,75 @@ Any processResult(NPP npp, NPVariant* variant, const Reflect::Type type)
 
 }  // namespace
 
-Any invoke(Object* object, unsigned interfaceNumber, unsigned methodNumber,
-           const char* meta, unsigned offset,
-           unsigned argumentCount, Any* arguments)
+Any ProxyObject::message_(uint32_t selector, const char* name, int argumentCount, Any* arguments)
 {
-    ProxyObject* proxy = interface_cast<ProxyObject*>(object);
-    if (!proxy)
-    {
-        return Any();
-    }
-    Reflect::Interface interface = Reflect::Interface(meta);
-    Reflect::Method method = Reflect::Method(meta + offset);
-    Reflect::Type type = method.getReturnType();
-
-    printf("invoke %s::%s %p : %s\n", interface.getName().c_str(), method.getName().c_str(), proxy->getNPObject(), type.getQualifiedName().c_str());
+    printf("message_(%s, %d, ...)\n", name, argumentCount);
 
     NPIdentifier id;
     NPVariant result;
     VOID_TO_NPVARIANT(result);
 
-    if (method.isGetter())
+    if (argumentCount == GETTER_)
     {
-        id = NPN_GetStringIdentifier(method.getName().c_str());
-        if (NPN_GetProperty(proxy->getNPP(), proxy->getNPObject(), id, &result))
+        id = NPN_GetStringIdentifier(name);
+        if (NPN_GetProperty(getNPP(), getNPObject(), id, &result))
         {
-            return processResult(proxy->getNPP(), &result, type);
+            return processResult(getNPP(), &result);
         }
     }
-    else if (method.isSetter())
+    else if (argumentCount == SETTER_)
     {
-        id = NPN_GetStringIdentifier(method.getName().c_str());
+        id = NPN_GetStringIdentifier(name);
         NPVariant value;
-        convertToVariant(proxy->getNPP(), arguments[argumentCount - 1], &value, false);
-        NPN_SetProperty(proxy->getNPP(), proxy->getNPObject(), id, &value);
+        convertToVariant(getNPP(), arguments[0], &value, false);
+        NPN_SetProperty(getNPP(), getNPObject(), id, &value);
     }
-    else if (method.isSpecialGetter())
+    else if (argumentCount == SPECIAL_GETTER_)
     {
-        id = getSpecialIdentifier(arguments[argumentCount - 1]);
-        if (NPN_GetProperty(proxy->getNPP(), proxy->getNPObject(), id, &result))
+        id = getSpecialIdentifier(arguments[0]);
+        if (NPN_GetProperty(getNPP(), getNPObject(), id, &result))
         {
-            return processResult(proxy->getNPP(), &result, type);
+            return processResult(getNPP(), &result);
         }
     }
-    else if (method.isSpecialSetter() || method.isSpecialCreator())
+    else if (argumentCount == SPECIAL_SETTER_ || argumentCount == SPECIAL_CREATOR_ || argumentCount == SPECIAL_SETTER_CREATOR_)
     {
-        id = getSpecialIdentifier(arguments[argumentCount - 2]);
+        id = getSpecialIdentifier(arguments[0]);
         NPVariant value;
-        convertToVariant(proxy->getNPP(), arguments[argumentCount - 1], &value, false);
-        NPN_SetProperty(proxy->getNPP(), proxy->getNPObject(), id, &value);
+        convertToVariant(getNPP(), arguments[1], &value, false);
+        NPN_SetProperty(getNPP(), getNPObject(), id, &value);
     }
-    else if (method.isSpecialDeleter())
+    else if (argumentCount == SPECIAL_DELETER_)
     {
-        id = getSpecialIdentifier(arguments[argumentCount - 1]);
-        NPN_RemoveProperty(proxy->getNPP(), proxy->getNPObject(), id);
+        id = getSpecialIdentifier(arguments[0]);
+        NPN_RemoveProperty(getNPP(), getNPObject(), id);
     }
     else
     {
-        unsigned variadicCount = 0;
-        if (method.isVariadic())
-        {
-            --argumentCount;
-            Sequence<int> sequence(arguments[argumentCount]);  // TODO: make sure this works ignoring T
-            variadicCount = sequence.getLength();
-        }
-
-        unsigned variantCount = argumentCount + variadicCount;
-        NPVariant variantArray[variantCount];
+        NPVariant variantArray[argumentCount];
         for (int i = 0; i < argumentCount; ++i)
         {
-            convertToVariant(proxy->getNPP(), arguments[i], &variantArray[i], false);
+            convertToVariant(getNPP(), arguments[i], &variantArray[i], false);
         }
-
-        if (0 < variadicCount)
+        id = NPN_GetStringIdentifier(name);
+        if (selector)
         {
-            Reflect::Parameter param = method.listParameter();
-            for (int i = 0; i < method.getParameterCount(); ++i)
+            if (NPN_Invoke(getNPP(), getNPObject(), id, variantArray, argumentCount, &result))
             {
-                param.next();
-            }
-            Reflect::Type type = param.getType();
-            if (type.isNullable())
-            {
-                switch (type.getType())
-                {
-                case Reflect::kBoolean:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<bool> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kByte:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<int8_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kOctet:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<uint8_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kShort:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<int16_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kUnsignedShort:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<uint16_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kLong:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<int32_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kUnsignedLong:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<uint32_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kLongLong:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<int64_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kUnsignedLongLong:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<uint64_t> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kFloat:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<float> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kDouble:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<double> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kString:
-                    expandSequence(proxy->getNPP(), Sequence<Nullable<std::string> >(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                }
-            }
-            else
-            {
-                switch (type.getType())
-                {
-                case Reflect::kBoolean:
-                    expandSequence(proxy->getNPP(), Sequence<bool>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kByte:
-                    expandSequence(proxy->getNPP(), Sequence<int8_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kOctet:
-                    expandSequence(proxy->getNPP(), Sequence<uint8_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kShort:
-                    expandSequence(proxy->getNPP(), Sequence<int16_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kUnsignedShort:
-                    expandSequence(proxy->getNPP(), Sequence<uint16_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kLong:
-                    expandSequence(proxy->getNPP(), Sequence<int32_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kUnsignedLong:
-                    expandSequence(proxy->getNPP(), Sequence<uint32_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kLongLong:
-                    expandSequence(proxy->getNPP(), Sequence<int64_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kUnsignedLongLong:
-                    expandSequence(proxy->getNPP(), Sequence<uint64_t>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kFloat:
-                    expandSequence(proxy->getNPP(), Sequence<float>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kDouble:
-                    expandSequence(proxy->getNPP(), Sequence<double>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kString:
-                    expandSequence(proxy->getNPP(), Sequence<std::string>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                case Reflect::kAny:
-                    expandSequence(proxy->getNPP(), Sequence<Any>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                // TODO: kSequence???
-                case Reflect::kObject:
-                default:
-                    expandSequence(proxy->getNPP(), Sequence<Object*>(arguments[argumentCount]), &variantArray[argumentCount]);
-                    break;
-                }
+                return processResult(getNPP(), &result);
             }
         }
-
-        id = NPN_GetStringIdentifier(method.getName().c_str());
-        if (method.isOperation())
-        {
-            if (NPN_Invoke(proxy->getNPP(), proxy->getNPObject(), id, variantArray, variantCount, &result))
-            {
-                return processResult(proxy->getNPP(), &result, type);
-            }
-        }
-        else if (method.isConstructor())
+        else // [Constructor]
         {
             // Chrome uses NPN_Construct()
-            if (NPN_Construct(proxy->getNPP(), proxy->getNPObject(), variantArray, variantCount, &result))
+            if (NPN_Construct(getNPP(), getNPObject(), variantArray, argumentCount, &result))
             {
-                return processResult(proxy->getNPP(), &result, type);
+                return processResult(getNPP(), &result);
             }
             // Firefox uses NPN_InvokeDefault()
-            if (NPN_InvokeDefault(proxy->getNPP(), proxy->getNPObject(), variantArray, variantCount, &result))
+            if (NPN_InvokeDefault(getNPP(), getNPObject(), variantArray, argumentCount, &result))
             {
-                return processResult(proxy->getNPP(), &result, type);
+                return processResult(getNPP(), &result);
             }
         }
     }

@@ -93,6 +93,8 @@ int main(int argc, char* argv[])
     bool useExceptions = true;
     bool useVirtualBase = false;
     bool useMultipleInheritance = true;
+    bool messenger = false;
+    bool messengerSrc = false;
     bool java = false;
     bool cplusplus = false;
     bool cplusplusSrc = false;
@@ -118,6 +120,14 @@ int main(int argc, char* argv[])
                 {
                     setIncludePath(&argv[i][2]);
                 }
+            }
+            else if (strcmp(argv[i], "-messenger") == 0)
+            {
+                messenger = true;
+            }
+            else if (strcmp(argv[i], "-messenger-src") == 0)
+            {
+                messengerSrc = true;
             }
             else if (strcmp(argv[i], "-cplusplus") == 0)
             {
@@ -366,7 +376,17 @@ int main(int argc, char* argv[])
     Meta meta(objectTypeName);
     getSpecification()->accept(&meta);
 
-    if (java)
+    if (messenger)
+    {
+        result = printMessenger(stringTypeName, objectTypeName,
+                                useExceptions, useVirtualBase, indent);
+    }
+    else if (messengerSrc)
+    {
+        result = printMessengerSrc(stringTypeName, objectTypeName,
+                                    useExceptions, useVirtualBase, indent);
+    }
+    else if (java)
     {
         result = printJava(indent);
     }

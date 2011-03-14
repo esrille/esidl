@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2006, 2007 Nintendo Co., Ltd.
  *
@@ -18,86 +19,93 @@
 #ifndef ESNPAPI_OBJECT_H_INCLUDED
 #define ESNPAPI_OBJECT_H_INCLUDED
 
-#include <reflect.h>
 #include <any.h>
+#include <nullable.h>
+#include <sequence.h>
+#include <Variadic.h>
+
+#include <assert.h>
 
 class Object
 {
+protected:
+    Object* object;
+
 public:
-    virtual ~Object()
-    {
+    virtual unsigned int retain_() {
+        if (object && object != this)
+            return object->retain_();
+        return 1;
     }
-    static const char* const getQualifiedName()
-    {
-        static const char* qualifiedName = "::Object";
-        return qualifiedName;
-    }
-    virtual void* queryInterface(const char* qualifiedName)
-    {
-        if (qualifiedName == getQualifiedName())
-        {
-            return this;
+    virtual unsigned int release_() {
+        if (object && object != this) {
+            if (object->release_() == 0)
+                object = 0;
         }
         return 0;
     }
-    static const char* const getMetaData()
-    {
-        static const char* metaData =
-            /* 0 */ "I8::Object";
-        return metaData;
-    }
-    static const Reflect::SymbolData* const getSymbolTable()
-    {
-        static const Reflect::SymbolData symbolTable[] =
-        {
-            { 0, 0 },
-        };
-        return symbolTable;
-    }
 
-    virtual const char* getMetaData(unsigned interfaceNumber) const
-    {
-        switch (interfaceNumber)
-        {
-        case 0:
-            return Object::getMetaData();
-        default:
-            return 0;
-        }
+public:
+    Object() :
+        object(0) {
     }
-    virtual const Reflect::SymbolData* const getSymbolTable(unsigned interfaceNumber) const
-    {
-        switch (interfaceNumber)
-        {
-        case 0:
-            return Object::getSymbolTable();
-        default:
-            return 0;
-        }
+    Object(Object* other) :
+        object(other) {
+        if (other)
+            other->retain_();
     }
-    virtual Any call(unsigned interfaceNumber, unsigned methodNumber, unsigned argumentCount, Any* arguments)
-    {
+    Object(const Object& other) :
+        object(other.self()) {
+        const_cast<Object*>(&other)->retain_();
+    }
+    virtual ~Object() {
+        release_();
+    }
+    virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {
+        if (object && object != this)
+            return object->message_(selector, id, argc, argv);
+        printf("Warning: %s: forwarding a message '%s' to self(%p->%p)", __func__, id, this, object);
+        assert(0);
         return Any();
     }
+    bool operator!() const {
+        return !object;
+    }
+    operator void*( ) const {
+        return object;
+    }
+    Object* self() const {
+        return object;
+    }
+    Object& operator=(const Object& other)
+    {
+        if (this != &other) {
+            const_cast<Object*>(&other)->retain_();
+            release_();
+            object = other.self();
+        }
+        return *this;
+    }
 
-    virtual unsigned int retain() = 0;
-    virtual unsigned int release() = 0;
-};
+    // Predefined argument count
+    static const int GETTER_ = -1;
+    static const int SETTER_ = -2;
+    static const int SPECIAL_GETTER_ = -3;
+    static const int SPECIAL_DELETER_ = -4;
+    static const int SPECIAL_SETTER_ = -5;
+    static const int SPECIAL_CREATOR_ = -6;
+    static const int SPECIAL_SETTER_CREATOR_ = -7;
+    static const int HAS_PROPERTY_ = -8;
+    static const int HAS_OPERATION_ = -9;
 
-template<class ARGUMENT, Any (*invoke)(Object*, unsigned, unsigned, const char*, unsigned, unsigned, ARGUMENT*), unsigned I = 0, class B = Object>
-class Object_Bridge : public B
-{
-public:
+    // Max # of variadic arguments
+    static const int MAX_VARIADIC_ = 16;
 };
 
 template <typename X>
-X interface_cast(Object* object)
+X interface_cast(const Object& object)
 {
-    if (object)
-    {
-        return static_cast<X>(object->queryInterface(static_cast<X>(0)->getQualifiedName()));
-    }
-    return 0;
+    return X(object.self());
 }
 
 #endif  // ESNPAPI_OBJECT_H_INCLUDED
