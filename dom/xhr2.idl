@@ -46,19 +46,14 @@ interface XMLHttpRequest : XMLHttpRequestEventTarget {
   readonly attribute unsigned short readyState;
 
   // request
-  void open(DOMString method, DOMString url);
-  void open(DOMString method, DOMString url, boolean async);
-  void open(DOMString method, DOMString url, boolean async, DOMString? user);
-  void open(DOMString method, DOMString url, boolean async, DOMString? user, DOMString? password);
+  void open(DOMString method, DOMString url, optional boolean async, optional DOMString? user, optional DOMString? password);
   void setRequestHeader(DOMString header, DOMString value);
            attribute unsigned long timeout;
            attribute boolean withCredentials;
   readonly attribute XMLHttpRequestUpload upload;
   void send();
-  void send(Blob data);
-  void send(Document data);
+  void send(object data);  // data can be a Blob, Document or FormData
   void send([AllowAny] DOMString? data);
-  void send(FormData data);
   void abort();
 
   // response

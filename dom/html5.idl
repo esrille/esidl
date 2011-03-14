@@ -3,7 +3,7 @@
  *
  * HTML5
  *
- * Original W3C WorkingDraft 24 June 2010:
+ * Original W3C Working Draft 24 June 2010:
  *
  *   http://www.w3.org/TR/2010/WD-html5-20100624/Overview.html
  */
@@ -13,7 +13,10 @@ module html {
 typedef css::CSSStyleDeclaration CSSStyleDeclaration;
 typedef dom::Document Document;
 typedef dom::DOMImplementation DOMImplementation;
+typedef dom::DOMSettableTokenList DOMSettableTokenList;
 typedef dom::DOMStringList DOMStringList;
+typedef dom::DOMStringMap DOMStringMap;
+typedef dom::DOMTokenList DOMTokenList;
 typedef dom::Element Element;
 typedef dom::Node Node;
 typedef dom::NodeList NodeList;
@@ -27,11 +30,15 @@ typedef views::AbstractView AbstractView;
 
 typedef Window WindowProxy;
 
+#if 0  // Moved to DOM Core
+
 interface HTMLCollection {
   readonly attribute unsigned long length;
   caller getter object item(in unsigned long index); // only returns Element
   caller getter object namedItem(in DOMString name); // only returns Element
 };
+
+#endif
 
 interface HTMLAllCollection : HTMLCollection {
   // inherits length and item()
@@ -57,6 +64,8 @@ interface HTMLOptionsCollection : HTMLCollection {
   void remove(in long index);
 };
 
+#if 0  // Moved to DOM Core
+
 interface DOMTokenList {
   readonly attribute unsigned long length;
   getter DOMString item(in unsigned long index);
@@ -78,6 +87,8 @@ interface DOMStringMap {
   deleter void (in DOMString name);
 };
 
+#endif
+
 [OverrideBuiltins]
 interface HTMLDocument {
   // resource metadata management
@@ -87,7 +98,7 @@ interface HTMLDocument {
   readonly attribute DOMString referrer;
            attribute DOMString cookie;
   readonly attribute DOMString lastModified;
-  readonly attribute DOMString compatMode;
+  // readonly attribute DOMString compatMode;  // now defined in DOM Core
            attribute DOMString charset;
   readonly attribute DOMString characterSet;
   readonly attribute DOMString defaultCharset;
@@ -106,7 +117,7 @@ interface HTMLDocument {
   readonly attribute HTMLCollection forms;
   readonly attribute HTMLCollection scripts;
   NodeList getElementsByName(in DOMString elementName);
-  NodeList getElementsByClassName(in DOMString classNames);
+  // NodeList getElementsByClassName(in DOMString classNames);  // Now defined in Document in DOM Core
 
   // dynamic markup insertion
            attribute DOMString innerHTML;
@@ -189,12 +200,6 @@ interface HTMLDocument {
            attribute Function onwaiting;
 };
 Document implements HTMLDocument;
-
-[Supplemental, NoInterfaceObject]
-interface DOMHTMLImplementation {
-  Document createHTMLDocument(in DOMString title);
-};
-DOMImplementation implements DOMHTMLImplementation;
 
 interface HTMLElement : Element {
   // DOM tree accessors
@@ -960,7 +965,7 @@ interface HTMLMenuElement : HTMLElement {
 };
 
 [OverrideBuiltins, ReplaceableNamedProperties]
-interface Window {
+interface Window : EventTarget {
   // the current browsing context
   readonly attribute WindowProxy window;
   readonly attribute WindowProxy self;
@@ -1075,7 +1080,6 @@ interface Window {
            attribute Function onvolumechange;
            attribute Function onwaiting;
 };
-Window implements EventTarget;
 
 interface BarProp {
            attribute boolean visible;
@@ -1129,7 +1133,7 @@ interface BeforeUnloadEvent : Event {
            attribute DOMString returnValue;
 };
 
-interface ApplicationCache {
+interface ApplicationCache : EventTarget {
 
   // update status
   const unsigned short UNCACHED = 0;
@@ -1154,7 +1158,6 @@ interface ApplicationCache {
            attribute Function oncached;
            attribute Function onobsolete;
 };
-ApplicationCache implements EventTarget;
 
 [Callback=FunctionOnly, NoInterfaceObject]
 interface Function {
@@ -1583,4 +1586,3 @@ interface HTMLDocument {
 };
 
 };
-

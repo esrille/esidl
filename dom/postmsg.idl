@@ -3,7 +3,7 @@
  *
  * HTML5 Web Messaging
  *
- * Original W3C Editor's Draft 11 August 2010:
+ * Original W3C Editor's Draft 4 March 2011:
  *
  *   http://dev.w3.org/html5/postmsg/
  */
@@ -27,7 +27,7 @@ interface MessageChannel {
 
 typedef sequence<MessagePort> MessagePortArray;
 
-interface MessagePort {
+interface MessagePort : EventTarget {
   void postMessage(in any message, in optional MessagePortArray ports);
   void start();
   void close();
@@ -35,6 +35,5 @@ interface MessagePort {
   // event handlers
            attribute Function onmessage;
 };
-MessagePort implements EventTarget;
 
 };

@@ -3,9 +3,9 @@
  *
  * Server-Sent Events
  *
- * Original W3C Working Draft 22 December 2009:
+ * Original W3C Editor's Draft 28 February 2011:
  *
- *   http://www.w3.org/TR/eventsource/
+ *   http://dev.w3.org/html5/eventsource/
  */
 
 module eventsource {
@@ -14,8 +14,8 @@ typedef events::EventTarget EventTarget;
 typedef html::Function Function;
 
 [Constructor(in DOMString url)]
-interface EventSource {
-  readonly attribute DOMString URL;
+interface EventSource : EventTarget {
+  readonly attribute DOMString url;
 
   // ready state
   const unsigned short CONNECTING = 0;
@@ -29,7 +29,6 @@ interface EventSource {
            attribute Function onerror;
   void close();
 };
-EventSource implements EventTarget;
 
 };
 

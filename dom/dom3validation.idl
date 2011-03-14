@@ -8,6 +8,24 @@
  *   http://www.w3.org/TR/2004/REC-DOM-Level-3-Val-20040127/validation.idl
  */
 
+//
+// historical interface
+//
+module dom {
+
+  // Introduced in DOM Level 3:
+  interface NameList {
+    // DOMString? used here since DOM3Val assumes null can be used for both name and namespaceURI.
+    DOMString?          getName(in unsigned long index);
+    DOMString?          getNamespaceURI(in unsigned long index);
+    readonly attribute unsigned long   length;
+    boolean            contains(in DOMString? str);
+    boolean            containsNS(in DOMString? namespaceURI,
+                                  in DOMString? name);
+  };
+
+};
+
 module validation {
 
   typedef dom::DOMStringList DOMStringList;
@@ -41,10 +59,10 @@ module validation {
 
     readonly attribute DOMString?      defaultValue;
     readonly attribute DOMStringList   enumeratedValues;
-    unsigned short     canInsertBefore(in Node newChild, 
+    unsigned short     canInsertBefore(in Node newChild,
                                        in Node refChild);
     unsigned short     canRemoveChild(in Node oldChild);
-    unsigned short     canReplaceChild(in Node newChild, 
+    unsigned short     canReplaceChild(in Node newChild,
                                        in Node oldChild);
     unsigned short     canAppendChild(in Node newChild);
     unsigned short     nodeValidity(in unsigned short valType);
@@ -68,18 +86,18 @@ module validation {
     readonly attribute NameList        requiredAttributes;
     readonly attribute unsigned short  contentType;
     unsigned short     canSetTextContent(in DOMString? possibleTextContent);
-    unsigned short     canSetAttribute(in DOMString attrname, 
+    unsigned short     canSetAttribute(in DOMString attrname,
                                        in DOMString attrval);
     unsigned short     canSetAttributeNode(in Attr attrNode);
-    unsigned short     canSetAttributeNS(in DOMString? namespaceURI, 
-                                         in DOMString qualifiedName, 
+    unsigned short     canSetAttributeNS(in DOMString? namespaceURI,
+                                         in DOMString qualifiedName,
                                          in DOMString value);
     unsigned short     canRemoveAttribute(in DOMString attrname);
-    unsigned short     canRemoveAttributeNS(in DOMString? namespaceURI, 
+    unsigned short     canRemoveAttributeNS(in DOMString? namespaceURI,
                                             in DOMString localName);
     unsigned short     canRemoveAttributeNode(in Node attrNode);
     unsigned short     isElementDefined(in DOMString name);
-    unsigned short     isElementDefinedNS(in DOMString? namespaceURI, 
+    unsigned short     isElementDefinedNS(in DOMString? namespaceURI,
                                           in DOMString name);
   };
 
@@ -87,14 +105,14 @@ module validation {
     unsigned short     isWhitespaceOnly();
     unsigned short     canSetData(in DOMString arg);
     unsigned short     canAppendData(in DOMString arg);
-    unsigned short     canReplaceData(in unsigned long offset, 
-                                      in unsigned long count, 
+    unsigned short     canReplaceData(in unsigned long offset,
+                                      in unsigned long count,
                                       in DOMString arg)
                                         raises(DOMException);
-    unsigned short     canInsertData(in unsigned long offset, 
+    unsigned short     canInsertData(in unsigned long offset,
                                      in DOMString arg)
                                         raises(DOMException);
-    unsigned short     canDeleteData(in unsigned long offset, 
+    unsigned short     canDeleteData(in unsigned long offset,
                                      in unsigned long count)
                                         raises(DOMException);
   };

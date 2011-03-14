@@ -8,6 +8,25 @@
  *   http://www.w3.org/TR/2004/REC-DOM-Level-3-LS-20040407/ls.idl
  */
 
+//
+// historical interfaces
+//
+module dom {
+
+  // Introduced in DOM Level 3:
+  interface DOMConfiguration {
+    void               setParameter(in DOMString name,
+                                    in DOMUserData value)
+                                        raises(DOMException);
+    DOMUserData        getParameter(in DOMString name)
+                                        raises(DOMException);
+    boolean            canSetParameter(in DOMString name,
+                                       in DOMUserData value);
+    readonly attribute DOMStringList   parameterNames;
+  };
+
+};
+
 module ls {
 
   typedef   object LSInputStream;
@@ -39,7 +58,7 @@ module ls {
     const unsigned short      MODE_SYNCHRONOUS               = 1;
     const unsigned short      MODE_ASYNCHRONOUS              = 2;
 
-    LSParser           createLSParser(in unsigned short mode, 
+    LSParser           createLSParser(in unsigned short mode,
                                       in DOMString? schemaType)
                                         raises(DOMException);
     LSSerializer       createLSSerializer();
@@ -55,10 +74,10 @@ module ls {
     readonly attribute boolean         async;
     readonly attribute boolean         busy;
     Document           parse(in LSInput input)
-                                        raises(DOMException, 
+                                        raises(DOMException,
                                                LSException);
     Document           parseURI(in DOMString uri)
-                                        raises(DOMException, 
+                                        raises(DOMException,
                                                LSException);
 
     // ACTION_TYPES
@@ -68,10 +87,10 @@ module ls {
     const unsigned short      ACTION_INSERT_AFTER            = 4;
     const unsigned short      ACTION_REPLACE                 = 5;
 
-    Node               parseWithContext(in LSInput input, 
-                                        in Node contextArg, 
+    Node               parseWithContext(in LSInput input,
+                                        in Node contextArg,
                                         in unsigned short action)
-                                        raises(DOMException, 
+                                        raises(DOMException,
                                                LSException);
     void               abort();
   };
@@ -92,10 +111,10 @@ module ls {
 
   [Callback]
   interface LSResourceResolver {
-    LSInput            resolveResource(in DOMString type, 
-                                       in DOMString? namespaceURI, 
-                                       in DOMString? publicId, 
-                                       in DOMString? systemId, 
+    LSInput            resolveResource(in DOMString type,
+                                       in DOMString? namespaceURI,
+                                       in DOMString? publicId,
+                                       in DOMString? systemId,
                                        in DOMString? baseURI);
   };
 
@@ -117,14 +136,14 @@ module ls {
     readonly attribute DOMConfiguration domConfig;
              attribute DOMString?      newLine;
              attribute LSSerializerFilter filter;
-    boolean            write(in Node nodeArg, 
+    boolean            write(in Node nodeArg,
                              in LSOutput destination)
                                         raises(LSException);
-    boolean            writeToURI(in Node nodeArg, 
+    boolean            writeToURI(in Node nodeArg,
                                   in DOMString uri)
                                         raises(LSException);
     DOMString          writeToString(in Node nodeArg)
-                                        raises(DOMException, 
+                                        raises(DOMException,
                                                LSException);
   };
 

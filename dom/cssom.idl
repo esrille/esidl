@@ -3,7 +3,7 @@
  *
  * CSSOM, revised for esidl.
  *
- * Original W3C Editor's Draft 18 August 2010:
+ * Original W3C Editor's Draft 31 August 2010:
  *
  *   http://dev.w3.org/csswg/cssom/
  */
@@ -36,7 +36,7 @@ interface StyleSheet {
            attribute boolean disabled;
 };
 
-typedef sequence<StyleSheet> StyleSheetList;
+typedef StyleSheet[] StyleSheetList;
 
 };
 
@@ -82,7 +82,7 @@ module css {
 
 typedef stylesheets::MediaList MediaList;
 
-typedef sequence<CSSRule> CSSRuleList;
+typedef CSSRule[] CSSRuleList;
 
 interface CSSRule {
   // Types
@@ -149,8 +149,9 @@ interface CSSStyleDeclaration {
   readonly attribute CSSStyleDeclarationValue values;
 
   readonly attribute CSSRule parentRule;
+};
 
-  // CSS Properties
+interface CSS2Properties {
            attribute DOMString? azimuth;
            attribute DOMString? background;
            attribute DOMString? backgroundAttachment;
@@ -274,6 +275,7 @@ interface CSSStyleDeclaration {
            attribute DOMString? wordSpacing;
            attribute DOMString? zIndex;
 };
+CSSStyleDeclaration implements CSS2Properties;
 
 interface CSSStyleDeclarationValue {
   // ...
@@ -282,7 +284,7 @@ interface CSSStyleDeclarationValue {
 
 };
 
-interface CSSValue {
+interface CSSPropertyValue {
            attribute DOMString cssText;
 };
 
@@ -299,11 +301,22 @@ interface CSSValue {
            attribute any value;
 };
 
+[NoInterfaceObject] interface CSSStringComponentValue {
+           attribute DOMString _string;
+};
+
+[NoInterfaceObject] interface CSSKeywordComponentValue {
+           attribute DOMString keyword;
+};
+
+[NoInterfaceObject] interface CSSIdentifierComponentValue {
+           attribute DOMString identifier;
+};
+
 [NoInterfaceObject] interface CSSColorComponentValue {
            attribute short red;
            attribute short green;
            attribute short blue;
-
            attribute float alpha;
 };
 
