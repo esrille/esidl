@@ -116,7 +116,7 @@ public:
             Node* resolved = resolve(currentNode, name);
             if (resolved)
             {
-                name = resolved->getPrefixedName();
+                name = resolved->getQualifiedName();
             }
             output << name.length() << name;
         }
@@ -132,12 +132,12 @@ public:
         node->check(resolved, "%s could not resolved.", node->getName().c_str());
         if (dynamic_cast<ExceptDcl*>(resolved))
         {
-            std::string name = resolved->getPrefixedName();
+            std::string name = resolved->getQualifiedName();
             output << name.length() << name;
         }
         else if (dynamic_cast<Interface*>(resolved))
         {
-            std::string name = resolved->getPrefixedName();
+            std::string name = resolved->getQualifiedName();
             name = getInterfaceName(name);
             output << Reflect::kObject << name.length() << name;
         }
@@ -485,7 +485,7 @@ public:
 
         output.str("");
         output << Reflect::kInterface;
-        std::string name = node->getPrefixedName();
+        std::string name = node->getQualifiedName();
         name = getInterfaceName(name);
         output << name.length() << name;
 
@@ -499,7 +499,7 @@ public:
                 Node* resolved = scopedName->search(node->getParent());
                 scopedName->check(resolved, "could not resolve '%s'.", scopedName->getName().c_str());
                 output << Reflect::kExtends;
-                std::string name = resolved->getPrefixedName();
+                std::string name = resolved->getQualifiedName();
                 name = getInterfaceName(name);
                 output << name.length() << name;
             }
@@ -510,7 +510,7 @@ public:
              ++i)
         {
             output << Reflect::kImplements;
-            std::string name = (*i)->getPrefixedName();
+            std::string name = (*i)->getQualifiedName();
             name = getInterfaceName(name);
             output << name.length() << name;
         }
