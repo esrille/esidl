@@ -58,7 +58,9 @@ class Sequence
     public:
         Rep()
         {
-            init(0);
+            length = 0;
+            sequence = 0;
+            count = 1;
         }
 
         Rep(const T* sequence, unsigned int length)
