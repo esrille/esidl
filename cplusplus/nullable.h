@@ -29,6 +29,7 @@ class Nullable
     bool hasValue_;
 
     Nullable(Object* object);
+
     template <typename U>
     Nullable(const Nullable<U>&);
 
@@ -66,6 +67,12 @@ public:
 
     Nullable(const char* str) :
         value_(std::string(str)),
+        hasValue_(true)
+    {
+    }
+
+    Nullable(const char16_t* str) :
+        value_(std::u16string(str)),
         hasValue_(true)
     {
     }
