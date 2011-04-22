@@ -3,7 +3,7 @@
  *
  * XMLHttpRequest Level 2
  *
- * Original W3CEditor's Draft 8 August 2010:
+ * Original Editor's Draft 4 March 2011:
  *
  *   http://dev.w3.org/2006/webapi/XMLHttpRequest-2/
  */
@@ -13,8 +13,8 @@ module dom {
 typedef events::EventTarget EventTarget;
 typedef file::Blob Blob;
 typedef html::Function Function;
-
-typedef sequence<octet> ByteArray;  // TBD at W3C
+typedef html::HTMLFormElement HTMLFormElement;
+typedef typedarray::ArrayBuffer ArrayBuffer;
 
 [NoInterfaceObject]
 interface XMLHttpRequestEventTarget : EventTarget {
@@ -46,13 +46,19 @@ interface XMLHttpRequest : XMLHttpRequestEventTarget {
   readonly attribute unsigned short readyState;
 
   // request
-  void open(DOMString method, DOMString url, optional boolean async, optional DOMString? user, optional DOMString? password);
+  void open(DOMString method, DOMString url);
+  void open(DOMString method, DOMString url, boolean async);
+  void open(DOMString method, DOMString url, boolean async, DOMString? user);
+  void open(DOMString method, DOMString url, boolean async, DOMString? user, DOMString? password);
   void setRequestHeader(DOMString header, DOMString value);
            attribute unsigned long timeout;
            attribute boolean withCredentials;
   readonly attribute XMLHttpRequestUpload upload;
   void send();
-  void send(object data);  // data can be a Blob, Document or FormData
+  void send(ArrayBuffer data);
+  void send(Blob data);
+  void send(Document data);
+  void send(FormData data);
   void send([AllowAny] DOMString? data);
   void abort();
 
@@ -62,7 +68,8 @@ interface XMLHttpRequest : XMLHttpRequestEventTarget {
   DOMString getResponseHeader(DOMString header);
   DOMString getAllResponseHeaders();
   void overrideMimeType(DOMString mime);
-  readonly attribute ByteArray responseBody;
+           attribute DOMString responseType;
+  readonly attribute any response;
   readonly attribute DOMString responseText;
   readonly attribute Document responseXML;
 };
@@ -71,7 +78,8 @@ interface XMLHttpRequest : XMLHttpRequestEventTarget {
 interface AnonXMLHttpRequest : XMLHttpRequest {
 };
 
-[Constructor]
+[Constructor,
+ Constructor(HTMLFormElement form)]
 interface FormData {
   void append(DOMString name, Blob value);
   void append(DOMString name, DOMString value);
