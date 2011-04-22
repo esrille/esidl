@@ -3,7 +3,7 @@
  *
  * File API IDL definitions scraped from the W3C specification, revised for esidl.
  *
- * Original W3C Editor’s Draft 8 March 2011:
+ * Original W3C Editor’s Draft 18 April 2011:
  *
  *   http://dev.w3.org/2006/webapi/FileAPI/
  */
@@ -14,10 +14,10 @@ module file {
     typedef html::Function Function;
     typedef typedarray::ArrayBuffer ArrayBuffer;
 
-
-    typedef sequence<File> FileList;
-
-
+    interface FileList {
+      getter File item(unsigned long index);
+      readonly attribute unsigned long length;
+    };
 
     interface Blob {
 
