@@ -266,6 +266,21 @@ public:
         return cast<T>();
     }
 
+    bool isPrimitive() const {
+        switch (type) {
+        case Bool:
+        case Int32:
+        case Uint32:
+        case Int64:
+        case Uint64:
+        case Float32:
+        case Float64:
+            return true;
+        default:
+            return false;
+        }
+    }
+
     bool isObject() const;
     Object* toObject() const;
 
