@@ -17,7 +17,6 @@ idl_files = \
 	dom2css.idl \
 	dom2ranges.idl \
 	dom2traversal.idl \
-	dom2views.idl \
 	dom3events.idl \
 	dom3ls.idl \
 	dom3validation.idl \
@@ -89,7 +88,6 @@ generated_headers = \
 	org/w3c/dom/css/ElementCSSInlineStyle.h \
 	org/w3c/dom/css/Rect.h \
 	org/w3c/dom/css/RGBColor.h \
-	org/w3c/dom/css/ViewCSS.h \
 	org/w3c/dom/events/CompositionEvent.h \
 	org/w3c/dom/events/CustomEvent.h \
 	org/w3c/dom/events/EventException.h \
@@ -259,10 +257,8 @@ generated_headers = \
 	org/w3c/dom/validation/ElementEditVAL.h \
 	org/w3c/dom/validation/ExceptionVAL.h \
 	org/w3c/dom/validation/NodeEditVAL.h \
-	org/w3c/dom/views/AbstractView.h \
 	org/w3c/dom/views/ClientRect.h \
 	org/w3c/dom/views/ClientRectList.h \
-	org/w3c/dom/views/DocumentView.h \
 	org/w3c/dom/webgl/WebGLActiveInfo.h \
 	org/w3c/dom/webgl/WebGLBuffer.h \
 	org/w3c/dom/webgl/WebGLContextAttributes.h \
@@ -335,7 +331,6 @@ generated_sources = \
 	org/w3c/dom/css/ElementCSSInlineStyle.cpp \
 	org/w3c/dom/css/Rect.cpp \
 	org/w3c/dom/css/RGBColor.cpp \
-	org/w3c/dom/css/ViewCSS.cpp \
 	org/w3c/dom/events/CompositionEvent.cpp \
 	org/w3c/dom/events/CustomEvent.cpp \
 	org/w3c/dom/events/Event.cpp \
@@ -500,10 +495,8 @@ generated_sources = \
 	org/w3c/dom/validation/DocumentEditVAL.cpp \
 	org/w3c/dom/validation/ElementEditVAL.cpp \
 	org/w3c/dom/validation/NodeEditVAL.cpp \
-	org/w3c/dom/views/AbstractView.cpp \
 	org/w3c/dom/views/ClientRect.cpp \
 	org/w3c/dom/views/ClientRectList.cpp \
-	org/w3c/dom/views/DocumentView.cpp \
 	org/w3c/dom/webgl/WebGLActiveInfo.cpp \
 	org/w3c/dom/webgl/WebGLBuffer.cpp \
 	org/w3c/dom/webgl/WebGLContextAttributes.cpp \

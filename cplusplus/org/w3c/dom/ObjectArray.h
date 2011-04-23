@@ -89,9 +89,26 @@ public:
             if (argumentCount == HAS_OPERATION_)
                 return true;
             break;
+        case 0x0:
+            if (argumentCount == IS_KIND_OF_)
+                return getPrefixedName() == id || !std::strcmp(getPrefixedName(), id);
+            break;
         }
         return Any();
     };
+    static const char* const getPrefixedName()
+    {
+        static const char* const prefixedName = "::org::w3c::dom::ObjectArray";  // TODO: include <E>
+        return prefixedName;
+    }
+    static bool hasInstance(Object& object)
+    {
+        return static_cast<bool>(object.message_(0, getPrefixedName(), IS_KIND_OF_, 0));
+    }
+    static bool hasInstance(Object* object)
+    {
+        return object && static_cast<bool>(object->message_(0, getPrefixedName(), IS_KIND_OF_, 0));
+    }
 };
 
 }

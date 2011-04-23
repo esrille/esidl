@@ -516,6 +516,11 @@ public:
         return compare("string", scope) == 0;
     }
 
+    virtual bool isObject(const Node* scope) const
+    {
+        return isBaseObject();
+    }
+
     virtual bool isInterface(const Node* scope) const
     {
         return false;
@@ -724,6 +729,16 @@ public:
             return *str;
         }
         return node->compare(str, node->getParent());
+    }
+
+    virtual bool isObject(const Node* scope) const
+    {
+        Node* node = search(scope);
+        if (!node)
+        {
+            return false;
+        }
+        return node->isObject(node->getParent());
     }
 
     virtual bool isInterface(const Node* scope) const
@@ -1438,6 +1453,15 @@ public:
         return spec->compare(str, scope);
     }
 
+    virtual bool isObject(const Node* scope) const
+    {
+        if (!type)
+        {
+            return 0;
+        }
+        return spec->isObject(scope);
+    }
+
     virtual bool isInterface(const Node* scope) const
     {
         if (!type)
@@ -2140,6 +2164,10 @@ int printMessenger(const char* stringTypeName, const char* objectTypeName,
                    bool useExceptions, bool useVirtualBase, const char* indent);
 int printMessengerSrc(const char* stringTypeName, const char* objectTypeName,
                       bool useExceptions, bool useVirtualBase, const char* indent);
+int printMessengerImp(const char* stringTypeName, const char* objectTypeName,
+                      bool useExceptions, bool useVirtualBase, const char* indent);
+int printMessengerImpSrc(const char* stringTypeName, const char* objectTypeName,
+                         bool useExceptions, bool useVirtualBase, const char* indent);
 
 int printJava(const char* indent);
 
@@ -2148,28 +2176,27 @@ int printCPlusPlus(const char* stringTypeName, const char* objectTypeName,
 int printCPlusPlusSrc(const char* stringTypeName, const char* objectTypeName,
                       bool useExceptions, bool useVirtualBase, const char* indent);
 
-extern void print();
-extern void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName,
-                     bool useExceptions, bool useVirtualBase, const char* indent);
-extern void printSkeleton(const char* source, bool isystem, const char* indent);
-extern void printTemplate(const char* source, const char* stringTypeName, const char* objectTypeName,
-                          bool useExceptions, bool isystem, const char* indent);
+void print();
+void printCxx(const char* source, const char* stringTypeName, const char* objectTypeName,
+              bool useExceptions, bool useVirtualBase, const char* indent);
+void printSkeleton(const char* source, bool isystem, const char* indent);
+void printTemplate(const char* source, const char* stringTypeName, const char* objectTypeName,
+                   bool useExceptions, bool isystem, const char* indent);
 
-extern std::string getOutputFilename(std::string, const char* suffix);
-extern std::string getIncludedName(const std::string& header);
+std::string getOutputFilename(std::string, const char* suffix);
+std::string getIncludedName(const std::string& header);
 
-extern std::string getScopedName(std::string moduleName, std::string absoluteName);
+std::string getScopedName(std::string moduleName, std::string absoluteName);
 
-extern const char* getIncludePath();
-extern void setIncludePath(const char* path);
+const char* getIncludePath();
+void setIncludePath(const char* path);
 
-extern int input(int fd,
-                 bool isystem, bool useExceptions, const char* stringTypeName);
+int input(int fd, bool isystem, bool useExceptions, const char* stringTypeName);
 
-extern int output(const char* filename,
-                  bool isystem, bool useExceptions, bool useMultipleInheritance,
-                  const char* stringTypeName, const char* objectTypeName, const char* indent,
-                  bool skeleton,
-                  bool generic);
+int output(const char* filename,
+           bool isystem, bool useExceptions, bool useMultipleInheritance,
+           const char* stringTypeName, const char* objectTypeName, const char* indent,
+           bool skeleton,
+           bool generic);
 
 #endif  // ESIDL_H_INCLUDED

@@ -24,6 +24,7 @@
 #include "messenger.h"
 #include "messengerDispatch.h"
 #include "messengerInvoke.h"
+#include "messengerMeta.h"
 
 bool Messenger::useVirtualBase = false;
 
@@ -159,8 +160,8 @@ public:
         currentNode = 0;
     }
 
-    MessengerInterface(const Formatter* formattter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
-        Messenger(formattter, stringTypeName, objectTypeName, useExceptions)
+    MessengerInterface(const Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        Messenger(formatter, stringTypeName, objectTypeName, useExceptions)
     {
         currentNode = 0;
     }
@@ -336,6 +337,9 @@ public:
             writeln("static Object getConstructor();");
         }
 
+        MessengerMeta meta(this, stringTypeName, objectTypeName, useExceptions);
+        const_cast<Interface*>(node)->accept(&meta);
+
         writeln("};");
     }
 
@@ -436,21 +440,36 @@ public:
     }
 };
 
-class MessengerInclude: public Messenger
+class MessengerInclude: public Visitor, public Formatter
 {
+    const Node* currentNode;
+    std::string objectTypeName;
+    bool useExceptions;
     std::set<const Node*> includeSet;
+    bool overloaded;
 
 public:
-    MessengerInclude(FILE* file,const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
-        Messenger(file, stringTypeName, objectTypeName, useExceptions, indent)
+    MessengerInclude(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        Formatter(file, indent),
+        currentNode(0),
+        objectTypeName(objectTypeName),
+        useExceptions(useExceptions),
+        overloaded(false)
     {
-        currentNode = 0;
     }
 
-    MessengerInclude(const Formatter* formattter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
-        Messenger(formattter, stringTypeName, objectTypeName, useExceptions)
+    MessengerInclude(const Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        Formatter(formatter),
+        currentNode(0),
+        objectTypeName(objectTypeName),
+        useExceptions(useExceptions),
+        overloaded(false)
     {
-        currentNode = 0;
+    }
+
+    virtual void at(const Node* node)
+    {
+        visitChildren(node);
     }
 
     virtual void at(const ScopedName* node)
@@ -464,9 +483,13 @@ public:
         {
             currentNode = resolved->getParent();
         }
-        if (dynamic_cast<ExceptDcl*>(resolved))
+        if (!dynamic_cast<Interface*>(resolved))
         {
             resolved->accept(this);
+        }
+        else if (!resolved->isBaseObject())
+        {
+            includeSet.insert(resolved);
         }
         currentNode = saved;
     }
@@ -476,6 +499,16 @@ public:
         includeSet.insert(node);
     }
 
+    virtual void at(const SequenceType* node)
+    {
+        node->getSpec()->accept(this);
+    }
+
+    virtual void at(const ArrayType* node)
+    {
+        node->getSpec()->accept(this);
+    }
+
     virtual void at(const Interface* node)
     {
         Interface* constructor = node->getConstructor();
@@ -483,7 +516,6 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            prefixedModuleName = currentNode->getPrefixedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
@@ -517,6 +549,8 @@ public:
             }
         }
 
+        std::multimap<uint32_t, OpDcl*> operations;
+
         // Expand supplementals
         std::list<const Interface*> interfaceList;
         node->collectSupplementals(&interfaceList);
@@ -525,24 +559,51 @@ public:
              ++i)
         {
             const Node* saved = currentNode;
+            currentNode = *i;
             for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
             {
-                currentNode = *i;
-                visitInterfaceElement(*i, *j);
+                if (OpDcl* op = dynamic_cast<OpDcl*>(*j))
+                {
+                    if (!(op->getAttr() & OpDcl::UnnamedProperty))
+                        operations.insert(std::pair<uint32_t, OpDcl*>(op->getHash(), op));
+                    if (op->getAttr() & (OpDcl::UnnamedProperty | OpDcl::Omittable | OpDcl::Caller))
+                        operations.insert(std::pair<uint32_t, OpDcl*>(0, op));
+                    continue;
+                }
+                (*j)->accept(this);
             }
             currentNode = saved;
         }
 
-#ifdef USE_CONSTRUCTOR
-        if (constructor)
+        for (std::multimap<uint32_t, OpDcl*>::iterator i = operations.begin(); i != operations.end(); ++i)
         {
-            for (NodeList::iterator i = constructor->begin();
-                 i != constructor->end();
-                 ++i)
+            int count = operations.count(i->first);
+            if (count == 1)
             {
-                visitInterfaceElement(constructor, *i);
+                // Process non-overloaded operations
+                overloaded = false;
+                const Node* saved = currentNode;
+                currentNode = i->second->getParent();
+                (i->second)->accept(this);
+                currentNode = saved;
+            }
+            else
+            {
+                // Process overloaded operations
+                overloaded = true;
+                for (; 0 < count; --count, ++i) {
+                    OpDcl* op = i->second;
+                    const Node* saved = currentNode;
+                    currentNode = op->getParent();
+                    op->accept(this);
+                    currentNode = saved;
+                };
+                --i;
             }
         }
+
+#ifdef USE_CONSTRUCTOR
+        visitChildren(constructor);
 #endif
     }
 
@@ -581,10 +642,19 @@ public:
             // cf. namedItem() in HTMLPropertiesCollection
             includeSet.insert(spec);
         }
+        if (overloaded)
+        {
+            visitChildren(node);
+        }
         if (useExceptions && node->getRaises())
         {
             visitChildren(node->getRaises());
         }
+    }
+
+    virtual void at(const ParamDcl* node)
+    {
+        node->getSpec()->accept(this);
     }
 
     void print()
@@ -1097,6 +1167,450 @@ int printMessengerSrc(const char* stringTypeName, const char* objectTypeName,
 {
     Messenger::useVirtualBase = useVirtualBase;
     MessengerSrcVisitor visitor(stringTypeName, objectTypeName, useExceptions, indent);
+    getSpecification()->accept(&visitor);
+    return 0;
+}
+
+class MessengerImp : public Messenger
+{
+public:
+    MessengerImp(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        Messenger(file, stringTypeName, objectTypeName, useExceptions, indent)
+    {
+        currentNode = 0;
+        targetModuleName = "::org::w3c::dom::bootstrap";
+    }
+
+    MessengerImp(const Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
+        Messenger(formatter, stringTypeName, objectTypeName, useExceptions)
+    {
+        currentNode = 0;
+        targetModuleName = "::org::w3c::dom::bootstrap";
+    }
+
+    virtual void at(const Interface* node)
+    {
+        Interface* constructor = node->getConstructor();
+
+        if (!currentNode)
+        {
+            currentNode = node->getParent();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
+        }
+        assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
+
+        writetab();
+        write("class %sImp : public ObjectMixin<%sImp",
+              getEscapedName(getClassName(node)).c_str(),
+              getEscapedName(getClassName(node)).c_str());
+
+        if (node->getExtends())
+        {
+            for (NodeList::iterator i = node->getExtends()->begin();
+                 i != node->getExtends()->end();
+                 ++i)
+            {
+                if (!(*i)->isBaseObject())
+                {
+                    Node* resolved = static_cast<ScopedName*>(*i)->searchCplusplus(node);
+                    write(", %sImp", getEscapedName(resolved->getName()).c_str());
+                }
+            }
+        }
+        write("> {\n");
+        unindent();
+        writeln("public:");
+        indent();
+
+        // Expand supplementals
+        std::list<const Interface*> interfaceList;
+        node->collectSupplementals(&interfaceList);
+        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+             i != interfaceList.end();
+             ++i)
+        {
+            writeln("// %s", (*i)->getName().c_str());
+            const Node* saved = currentNode;
+            for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+            {
+                currentNode = *i;
+                visitInterfaceElement(*i, *j);
+            }
+            currentNode = saved;
+        }
+
+        // Object
+        writeln("// Object");
+        writeln("virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {");
+            writeln("return %s::dispatch(this, selector, id, argc, argv);",
+                    getScopedName(targetModuleName, getInterfaceName(node->getPrefixedName())).c_str());
+        writeln("}");
+
+
+        writeln("static const char* const getMetaData() {");
+            writeln("return %s::getMetaData();",
+                    getScopedName(targetModuleName, getInterfaceName(node->getPrefixedName())).c_str());
+        writeln("}");
+
+        writeln("};");
+    }
+
+    virtual void at(const Member* node)
+    {
+    }
+
+    virtual void at(const Attribute* node)
+    {
+        writetab();
+
+        // getter
+        Messenger::getter(node);
+        write(" __attribute__((weak));\n");
+
+        if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
+        {
+            // setter
+            writetab();
+            Messenger::setter(node);
+            write(" __attribute__((weak));\n");
+        }
+    }
+
+    virtual void at(const OpDcl* node)
+    {
+        writetab();
+        Messenger::at(node);
+        write(" __attribute__((weak));\n");
+    }
+};
+
+class MessengerImpVisitor : public Visitor
+{
+    std::string stringTypeName;
+    std::string objectTypeName;
+    bool useExceptions;
+    std::string indent;
+
+public:
+    MessengerImpVisitor(const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        stringTypeName(stringTypeName),
+        objectTypeName(objectTypeName),
+        useExceptions(useExceptions),
+        indent(indent)
+    {
+    }
+
+    virtual void at(const Node* node)
+    {
+        if (1 < node->getRank())
+        {
+            return;
+        }
+        visitChildren(node);
+    }
+
+    virtual void at(const ExceptDcl* node)
+    {
+    }
+
+    virtual void at(const Interface* node)
+    {
+        if (1 < node->getRank() || node->isLeaf() ||
+            (node->getAttr() & Interface::Supplemental))
+        {
+            return;
+        }
+
+        std::string prefixedName("::org::w3c::dom::bootstrap::");
+        prefixedName += node->getName() + "Imp";
+        FILE* file = createFile(prefixedName, objectTypeName, ".h");
+        if (!file)
+        {
+            return;
+        }
+
+        // preamble
+        fprintf(file, "// Generated by esidl (r%s).\n", SVN_REVISION);
+        fprintf(file, "// This file is expected to be modified for the Web IDL interface\n");
+        fprintf(file, "// implementation.  Permission to use, copy, modify and distribute\n");
+        fprintf(file, "// this file in any software license is hereby granted.\n\n");
+
+        std::string included = Messenger::getIncludedName(createFileName(prefixedName, objectTypeName), indent);
+        fprintf(file, "#ifndef %s\n", included.c_str());
+        fprintf(file, "#define %s\n\n", included.c_str());
+
+        fprintf(file, "#ifdef HAVE_CONFIG_H\n");
+        fprintf(file, "#include \"config.h\"\n");
+        fprintf(file, "#endif\n\n");
+        if (!node->isConstructor())
+        {
+            fprintf(file, "#include <%s>\n", createFileName(node->getPrefixedName(), objectTypeName).c_str());
+        }
+        else
+        {
+            fprintf(file, "#include <%s>\n", createFileName(node->getParent()->getPrefixedName(), objectTypeName).c_str());
+        }
+
+        if (node->getExtends())
+        {
+            for (NodeList::iterator i = node->getExtends()->begin();
+                 i != node->getExtends()->end();
+                 ++i)
+            {
+                if (!(*i)->isBaseObject())
+                {
+                    Node* resolved = static_cast<ScopedName*>(*i)->searchCplusplus(node);
+                    fprintf(file, "#include \"%sImp.h\"\n", resolved->getName().c_str());
+                }
+            }
+        }
+
+        // body
+        MessengerNameSpace ns(file, indent);
+
+        MessengerImport import(file, stringTypeName, objectTypeName, useExceptions, indent, &ns);
+        import.at(node);
+        // Include imported, i.e., forward declared, class definitions here
+        // so that template functions can be used without explicitly including
+        // the other generated files.
+        import.printExtra();
+        fprintf(file, "\n");
+
+        ns.enter(prefixedName);
+
+        MessengerImp messengerImp(file, stringTypeName, objectTypeName, useExceptions, indent);
+        messengerImp.at(node);
+
+        ns.closeAll();
+
+        // postable
+        fprintf(file, "\n#endif  // %s\n", included.c_str());
+        fclose(file);
+    }
+};
+
+int printMessengerImp(const char* stringTypeName, const char* objectTypeName,
+                      bool useExceptions, bool useVirtualBase, const char* indent)
+{
+    Messenger::useVirtualBase = useVirtualBase;
+    MessengerImpVisitor visitor(stringTypeName, objectTypeName, useExceptions, indent);
+    getSpecification()->accept(&visitor);
+    return 0;
+}
+
+class MessengerImpSrc : public Messenger
+{
+    std::string className;
+
+    void writeInvoke(const Node* node, Node* spec)
+    {
+        if (spec->isVoid(node))
+        {
+            return;
+        }
+
+        if (spec->isSequence(node))
+        {
+            writetab();
+            write("return ");
+            spec->accept(this);
+            write("();\n");
+        }
+        else if (spec->isInterface(node))
+        {
+            writeln("return static_cast<Object*>(0);");
+        }
+        else if (spec->isString(node))
+        {
+            writeln("return u\"\";");
+        }
+        else
+        {
+            writeln("return 0;");
+        }
+    }
+
+public:
+    MessengerImpSrc(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        Messenger(file, stringTypeName, objectTypeName, useExceptions, indent)
+    {
+        currentNode = 0;
+        targetModuleName = "::org::w3c::dom::bootstrap";
+    }
+
+    virtual void at(const Member* node)
+    {
+    }
+
+    virtual void at(const Interface* node)
+    {
+        Interface* constructor = node->getConstructor();
+
+        if (!currentNode)
+        {
+            currentNode = node->getParent();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
+            className = node->getName() + "Imp";
+            if (constructorMode && (node->getAttr() & Interface::Constructor))
+            {
+                className = currentNode->getName();
+            }
+        }
+        assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
+
+        std::list<const Interface*> interfaceList;
+        node->collectSupplementals(&interfaceList);
+        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+             i != interfaceList.end();
+             ++i)
+        {
+            const Node* saved = currentNode;
+            currentNode = *i;
+            for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+            {
+                visitInterfaceElement(*i, *j);
+            }
+            currentNode = saved;
+        }
+    }
+
+    virtual void at(const Attribute* node)
+    {
+        // getter
+        static Type replaceable("any");
+        Node* spec = node->getSpec();
+        if (node->isReplaceable())
+        {
+            spec = &replaceable;
+        }
+
+        writeln("");
+        writetab();
+        getter(node, className);
+        writeln("{");
+            writeln("// TODO: implement me!");
+            writeInvoke(node, spec);
+        writeln("}");
+
+        if (node->isReadonly() && !node->isPutForwards() && !node->isReplaceable())
+        {
+            return;
+        }
+
+        // setter
+        writeln("");
+        writetab();
+        setter(node, className);
+        writeln("{");
+            writeln("// TODO: implement me!");
+        writeln("}");
+    }
+
+    virtual void at(const OpDcl* node)
+    {
+        Interface* interface = dynamic_cast<Interface*>(node->getParent());
+        assert(interface);
+
+        writeln("");
+        noDefaultArgument = true;
+        Messenger::at(node, className);
+        noDefaultArgument = false;
+        if (constructorMode)
+        {
+            Interface* prototype = dynamic_cast<Interface*>(interface->getParent());
+            if (prototype && prototype->getExtends())
+            {
+                const char* separator = " : ";
+                for (NodeList::iterator i = prototype->getExtends()->begin();
+                    i != prototype->getExtends()->end();
+                    ++i)
+                {
+                    write(separator);
+                    separator = ", ";
+                    (*i)->accept(this);
+                    write("(0)");
+                }
+            }
+        }
+        writeln("{");
+            writeln("// TODO: implement me!");
+            writeInvoke(node, node->getSpec());
+        writeln("}");
+    }
+};
+
+class MessengerImpSrcVisitor : public Visitor
+{
+    std::string stringTypeName;
+    std::string objectTypeName;
+    bool useExceptions;
+    std::string indent;
+
+public:
+    MessengerImpSrcVisitor(const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        stringTypeName(stringTypeName),
+        objectTypeName(objectTypeName),
+        useExceptions(useExceptions),
+        indent(indent)
+    {
+    }
+
+    virtual void at(const Node* node)
+    {
+        if (1 < node->getRank())
+        {
+            return;
+        }
+        visitChildren(node);
+    }
+
+    virtual void at(const ExceptDcl* node)
+    {
+    }
+
+    virtual void at(const Interface* node)
+    {
+        if (1 < node->getRank() || node->isLeaf() ||
+            (node->getAttr() & Interface::Supplemental))
+        {
+            return;
+        }
+
+        std::string prefixedName("::org::w3c::dom::bootstrap::");
+        prefixedName += node->getName() + "Imp";
+        FILE* file = createFile(prefixedName, objectTypeName, ".cpp");
+        if (!file)
+        {
+            return;
+        }
+
+        // preamble
+        fprintf(file, "// Generated by esidl (r%s).\n", SVN_REVISION);
+        fprintf(file, "// This file is expected to be modified for the Web IDL interface\n");
+        fprintf(file, "// implementation.  Permission to use, copy, modify and distribute\n");
+        fprintf(file, "// this file in any software license is hereby granted.\n\n");
+        fprintf(file, "#include \"%s.h\"\n\n", (node->getName() + "Imp").c_str());
+
+        // body
+        MessengerNameSpace ns(file, indent);
+
+        ns.enter(prefixedName);
+
+        MessengerImpSrc messengerImpSrc(file, stringTypeName, objectTypeName, useExceptions, indent);
+        messengerImpSrc.at(node);
+
+        ns.closeAll();
+
+        // postable
+        fclose(file);
+    }
+};
+
+int printMessengerImpSrc(const char* stringTypeName, const char* objectTypeName,
+                         bool useExceptions, bool useVirtualBase, const char* indent)
+{
+    Messenger::useVirtualBase = useVirtualBase;
+    MessengerImpSrcVisitor visitor(stringTypeName, objectTypeName, useExceptions, indent);
     getSpecification()->accept(&visitor);
     return 0;
 }

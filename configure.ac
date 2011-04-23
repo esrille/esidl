@@ -10,7 +10,7 @@ AC_PROG_CC
 AM_PROG_AS
 AC_PROG_LEX
 AM_PROG_LIBTOOL
-AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile java/Makefile cplusplus/Makefile npapi/Makefile npapi/sample/Makefile)
+AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile java/Makefile cplusplus/Makefile npapi/Makefile npapi/sample/Makefile jsapi/Makefile)
 
 AC_DEFINE(SVN_REVISION, "svnversion", [SVN Revision])
 
@@ -55,6 +55,13 @@ AC_ARG_ENABLE(cplusplus, AC_HELP_STRING([--enable-cplusplus],
               [], [enable_cplusplus="yes"])
 AC_MSG_RESULT([$enable_cplusplus])
 AM_CONDITIONAL(ENABLE_CPLUSPLUS, test "$enable_cplusplus" = "yes")
+
+AC_MSG_CHECKING([whether to generate JSAPI interfaces])
+AC_ARG_ENABLE(jsapi, AC_HELP_STRING([--enable-jsapi],
+                                    [enable JSAPI; environment variable GECKO_SDK needs to be set up first. [[default=no]]]), 
+              [], [enable_jsapi="no"])
+AC_MSG_RESULT([$enable_jsapi])
+AM_CONDITIONAL(ENABLE_JSAPI, test "$enable_jsapi" = "yes")
 
 AC_OUTPUT
 

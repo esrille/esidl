@@ -16,6 +16,8 @@ typedef dom::DOMTimeStamp DOMTimeStamp;
 typedef dom::Node Node;
 typedef dom::DOMException DOMException;
 
+typedef html::Window AbstractView;  // AbstractView has been practically obsoleted.
+
 #if 0  // obsoleted by DOM Core
 
 // Introduced in DOM Level 2:
@@ -120,12 +122,12 @@ Document implements DocumentEvent;
 
 // Introduced in DOM Level 2:
 interface UIEvent : Event {
-  readonly attribute views::AbstractView view;
+  readonly attribute AbstractView view;
   readonly attribute long            detail;
   void                               initUIEvent(in DOMString typeArg,
                                                  in boolean canBubbleArg,
                                                  in boolean cancelableArg,
-                                                 in views::AbstractView viewArg,
+                                                 in AbstractView viewArg,
                                                  in long detailArg);
 };
 
@@ -137,7 +139,7 @@ interface FocusEvent : UIEvent {
   void                             initFocusEvent(in DOMString typeArg,
                                                   in boolean canBubbleArg,
                                                   in boolean cancelableArg,
-                                                  in views::AbstractView viewArg,
+                                                  in AbstractView viewArg,
                                                   in long detailArg,
                                                   in EventTarget relatedTargetArg);
 };
@@ -160,7 +162,7 @@ interface MouseEvent : UIEvent {
   void                               initMouseEvent(in DOMString typeArg,
                                                 in boolean canBubbleArg,
                                                 in boolean cancelableArg,
-                                                in views::AbstractView viewArg,
+                                                in AbstractView viewArg,
                                                 in long detailArg,
                                                 in long screenXArg,
                                                 in long screenYArg,
@@ -193,7 +195,7 @@ interface WheelEvent : MouseEvent {
   void                               initWheelEvent(in DOMString typeArg,
                                                     in boolean canBubbleArg,
                                                     in boolean cancelableArg,
-                                                    in views::AbstractView viewArg,
+                                                    in AbstractView viewArg,
                                                     in long detailArg,
                                                     in long screenXArg,
                                                     in long screenYArg,
@@ -230,7 +232,7 @@ interface TextEvent : UIEvent {
   void                               initTextEvent(in DOMString typeArg,
                                                    in boolean canBubbleArg,
                                                    in boolean cancelableArg,
-                                                   in views::AbstractView viewArg,
+                                                   in AbstractView viewArg,
                                                    in DOMString dataArg,
                                                    in unsigned long inputMode);
 };
@@ -261,7 +263,7 @@ interface KeyboardEvent : UIEvent {
   void                               initKeyboardEvent(in DOMString typeArg,
                                                        in boolean canBubbleArg,
                                                        in boolean cancelableArg,
-                                                       in views::AbstractView viewArg,
+                                                       in AbstractView viewArg,
                                                        in DOMString keyArg,
                                                        in unsigned long locationArg,
                                                        in DOMString modifiersListArg,
@@ -276,7 +278,7 @@ interface CompositionEvent : UIEvent {
   void                               initCompositionEvent(in DOMString typeArg,
                                                           in boolean canBubbleArg,
                                                           in boolean cancelableArg,
-                                                          in views::AbstractView viewArg,
+                                                          in AbstractView viewArg,
                                                           in DOMString dataArg);
 };
 

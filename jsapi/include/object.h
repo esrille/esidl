@@ -88,6 +88,19 @@ public:
         return *this;
     }
 
+    bool operator==(const Object& other) const
+    {
+        return self() == other.self();
+    }
+    bool operator!=(const Object& other) const
+    {
+        return self() != other.self();
+    }
+    bool operator<(const Object& other) const
+    {
+        return self() < other.self();
+    }
+
     // Predefined argument count
     static const int GETTER_ = -1;
     static const int SETTER_ = -2;
@@ -110,5 +123,80 @@ X interface_cast(const Object& object)
 {
     return X(object.self());
 }
+
+class ObjectImp : public Object
+{
+    unsigned int count;
+    void* privateDate;
+public:
+    unsigned int count_() const {
+        return count;
+    }
+    virtual unsigned int retain_() {
+        return ++count;
+    };
+    virtual unsigned int release_() {
+        if (0 < count)
+            --count;
+        if (count == 0) {
+            delete this;
+            return 0;
+        }
+        return count;
+    };
+    ObjectImp() :
+        Object(this),
+        count(0),
+        privateDate(0) {
+    }
+public:
+    void* getPrivate() const {
+        return privateDate;
+    }
+    void setPrivate(void* data) {
+        privateDate = data;
+    }
+    virtual void* getStaticPrivate() const = 0;
+};
+
+template <typename T, typename B = ObjectImp>
+class ObjectMixin : public B
+{
+    static void* staticPrivate;
+protected:
+    ObjectMixin() :
+        B()
+    {
+    }
+
+    template<class... As>
+    ObjectMixin(As&&... as) :
+        B(std::forward<As>(as)...)
+    {
+    }
+
+public:
+    virtual void* getStaticPrivate() const {
+        return staticPrivate;
+    }
+
+    static void setStaticPrivate(void* p) {
+        staticPrivate = p;
+    }
+};
+
+template <typename T>
+class Retained : public T
+{
+public:
+    Retained()
+    {
+        static_assert(std::is_base_of<ObjectImp, T>::value, "not ObjectImp");
+        T::retain_();
+    }
+};
+
+template <typename T, typename B>
+void* ObjectMixin<T, B>::staticPrivate = 0;
 
 #endif  // ESNPAPI_OBJECT_H_INCLUDED

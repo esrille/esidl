@@ -634,40 +634,16 @@ void OpDcl::processExtendedAttributes()
     {
         ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
         assert(ext);
-        if (ext->getName() == "TreatNullAs")
-        {
-            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
-            {
-                if (name->getName() == "EmptyString")
-                {
-                    attr |= NullIsEmpty;
-                }
-            }
-        }
-        else if (ext->getName() == "TreatUndefinedAs")
-        {
-            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
-            {
-                if (name->getName() == "EmptyString")
-                {
-                    attr |= UndefinedIsEmpty;
-                }
-                else if (name->getName() == "Null")
-                {
-                    attr |= UndefinedIsNull;
-                }
-            }
-        }
-        else if (ext->getName() == "Null" ||
-                 ext->getName() == "Undefined" ||
-                 ext->getName() == "IndexCreator" ||
-                 ext->getName() == "IndexDeleter" ||
-                 ext->getName() == "IndexGetter" ||
-                 ext->getName() == "IndexSetter" ||
-                 ext->getName() == "NameCreator" ||
-                 ext->getName() == "NameDeleter" ||
-                 ext->getName() == "NameGetter" ||
-                 ext->getName() == "NameSetter")
+        if (ext->getName() == "Null" ||
+            ext->getName() == "Undefined" ||
+            ext->getName() == "IndexCreator" ||
+            ext->getName() == "IndexDeleter" ||
+            ext->getName() == "IndexGetter" ||
+            ext->getName() == "IndexSetter" ||
+            ext->getName() == "NameCreator" ||
+            ext->getName() == "NameDeleter" ||
+            ext->getName() == "NameGetter" ||
+            ext->getName() == "NameSetter")
         {
             ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
         }

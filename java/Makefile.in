@@ -193,7 +193,6 @@ w3c_idl_files = \
 	dom2css.idl \
 	dom2ranges.idl \
 	dom2traversal.idl \
-	dom2views.idl \
 	dom3events.idl \
 	dom3ls.idl \
 	dom3validation.idl \

@@ -100,21 +100,20 @@ am__objects_1 = AnonXMLHttpRequest.$(OBJEXT) Attr.$(OBJEXT) \
 	CSSURLComponentValue.$(OBJEXT) CSSValue.$(OBJEXT) \
 	CSSValueList.$(OBJEXT) DocumentCSS.$(OBJEXT) \
 	DOMImplementationCSS.$(OBJEXT) ElementCSSInlineStyle.$(OBJEXT) \
-	Rect.$(OBJEXT) RGBColor.$(OBJEXT) ViewCSS.$(OBJEXT) \
-	CompositionEvent.$(OBJEXT) CustomEvent.$(OBJEXT) \
-	Event.$(OBJEXT) EventListener.$(OBJEXT) EventTarget.$(OBJEXT) \
-	FocusEvent.$(OBJEXT) KeyboardEvent.$(OBJEXT) \
-	MouseEvent.$(OBJEXT) MutationEvent.$(OBJEXT) \
-	MutationNameEvent.$(OBJEXT) EventSource.$(OBJEXT) \
-	ProgressEvent.$(OBJEXT) TextEvent.$(OBJEXT) UIEvent.$(OBJEXT) \
-	WheelEvent.$(OBJEXT) Blob.$(OBJEXT) File.$(OBJEXT) \
-	FileError.$(OBJEXT) FileReader.$(OBJEXT) \
-	FileReaderSync.$(OBJEXT) ApplicationCache.$(OBJEXT) \
-	BarProp.$(OBJEXT) BeforeUnloadEvent.$(OBJEXT) \
-	BooleanCallback.$(OBJEXT) CanvasGradient.$(OBJEXT) \
-	CanvasPattern.$(OBJEXT) CanvasPixelArray.$(OBJEXT) \
-	CanvasRenderingContext2D.$(OBJEXT) DataTransfer.$(OBJEXT) \
-	DragEvent.$(OBJEXT) Function.$(OBJEXT) \
+	Rect.$(OBJEXT) RGBColor.$(OBJEXT) CompositionEvent.$(OBJEXT) \
+	CustomEvent.$(OBJEXT) Event.$(OBJEXT) EventListener.$(OBJEXT) \
+	EventTarget.$(OBJEXT) FocusEvent.$(OBJEXT) \
+	KeyboardEvent.$(OBJEXT) MouseEvent.$(OBJEXT) \
+	MutationEvent.$(OBJEXT) MutationNameEvent.$(OBJEXT) \
+	EventSource.$(OBJEXT) ProgressEvent.$(OBJEXT) \
+	TextEvent.$(OBJEXT) UIEvent.$(OBJEXT) WheelEvent.$(OBJEXT) \
+	Blob.$(OBJEXT) File.$(OBJEXT) FileError.$(OBJEXT) \
+	FileReader.$(OBJEXT) FileReaderSync.$(OBJEXT) \
+	ApplicationCache.$(OBJEXT) BarProp.$(OBJEXT) \
+	BeforeUnloadEvent.$(OBJEXT) BooleanCallback.$(OBJEXT) \
+	CanvasGradient.$(OBJEXT) CanvasPattern.$(OBJEXT) \
+	CanvasPixelArray.$(OBJEXT) CanvasRenderingContext2D.$(OBJEXT) \
+	DataTransfer.$(OBJEXT) DragEvent.$(OBJEXT) Function.$(OBJEXT) \
 	HashChangeEvent.$(OBJEXT) History.$(OBJEXT) \
 	HTMLAllCollection.$(OBJEXT) HTMLAnchorElement.$(OBJEXT) \
 	HTMLAppletElement.$(OBJEXT) HTMLAreaElement.$(OBJEXT) \
@@ -180,9 +179,8 @@ am__objects_1 = AnonXMLHttpRequest.$(OBJEXT) Attr.$(OBJEXT) \
 	Uint16Array.$(OBJEXT) Uint32Array.$(OBJEXT) \
 	Uint8Array.$(OBJEXT) CharacterDataEditVAL.$(OBJEXT) \
 	DocumentEditVAL.$(OBJEXT) ElementEditVAL.$(OBJEXT) \
-	NodeEditVAL.$(OBJEXT) AbstractView.$(OBJEXT) \
-	ClientRect.$(OBJEXT) ClientRectList.$(OBJEXT) \
-	DocumentView.$(OBJEXT) WebGLActiveInfo.$(OBJEXT) \
+	NodeEditVAL.$(OBJEXT) ClientRect.$(OBJEXT) \
+	ClientRectList.$(OBJEXT) WebGLActiveInfo.$(OBJEXT) \
 	WebGLBuffer.$(OBJEXT) WebGLContextAttributes.$(OBJEXT) \
 	WebGLContextEvent.$(OBJEXT) WebGLFramebuffer.$(OBJEXT) \
 	WebGLObject.$(OBJEXT) WebGLProgram.$(OBJEXT) \
@@ -399,7 +397,6 @@ idl_files = \
 	dom2css.idl \
 	dom2ranges.idl \
 	dom2traversal.idl \
-	dom2views.idl \
 	dom3events.idl \
 	dom3ls.idl \
 	dom3validation.idl \
@@ -471,7 +468,6 @@ generated_headers = \
 	org/w3c/dom/css/ElementCSSInlineStyle.h \
 	org/w3c/dom/css/Rect.h \
 	org/w3c/dom/css/RGBColor.h \
-	org/w3c/dom/css/ViewCSS.h \
 	org/w3c/dom/events/CompositionEvent.h \
 	org/w3c/dom/events/CustomEvent.h \
 	org/w3c/dom/events/EventException.h \
@@ -641,10 +637,8 @@ generated_headers = \
 	org/w3c/dom/validation/ElementEditVAL.h \
 	org/w3c/dom/validation/ExceptionVAL.h \
 	org/w3c/dom/validation/NodeEditVAL.h \
-	org/w3c/dom/views/AbstractView.h \
 	org/w3c/dom/views/ClientRect.h \
 	org/w3c/dom/views/ClientRectList.h \
-	org/w3c/dom/views/DocumentView.h \
 	org/w3c/dom/webgl/WebGLActiveInfo.h \
 	org/w3c/dom/webgl/WebGLBuffer.h \
 	org/w3c/dom/webgl/WebGLContextAttributes.h \
@@ -717,7 +711,6 @@ generated_sources = \
 	org/w3c/dom/css/ElementCSSInlineStyle.cpp \
 	org/w3c/dom/css/Rect.cpp \
 	org/w3c/dom/css/RGBColor.cpp \
-	org/w3c/dom/css/ViewCSS.cpp \
 	org/w3c/dom/events/CompositionEvent.cpp \
 	org/w3c/dom/events/CustomEvent.cpp \
 	org/w3c/dom/events/Event.cpp \
@@ -882,10 +875,8 @@ generated_sources = \
 	org/w3c/dom/validation/DocumentEditVAL.cpp \
 	org/w3c/dom/validation/ElementEditVAL.cpp \
 	org/w3c/dom/validation/NodeEditVAL.cpp \
-	org/w3c/dom/views/AbstractView.cpp \
 	org/w3c/dom/views/ClientRect.cpp \
 	org/w3c/dom/views/ClientRectList.cpp \
-	org/w3c/dom/views/DocumentView.cpp \
 	org/w3c/dom/webgl/WebGLActiveInfo.cpp \
 	org/w3c/dom/webgl/WebGLBuffer.cpp \
 	org/w3c/dom/webgl/WebGLContextAttributes.cpp \
@@ -1004,7 +995,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbstractView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AnonXMLHttpRequest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Any.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ApplicationCache.Po@am__quote@
@@ -1068,7 +1058,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentRange.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentTraversal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentType.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DragEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Element.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ElementCSSInlineStyle.Po@am__quote@
@@ -1220,7 +1209,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UndoManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UndoManagerEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ValidityState.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ViewCSS.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLActiveInfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLBuffer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLContextAttributes.Po@am__quote@
@@ -2081,20 +2069,6 @@ RGBColor.obj: org/w3c/dom/css/RGBColor.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/css/RGBColor.cpp' object='RGBColor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RGBColor.obj `if test -f 'org/w3c/dom/css/RGBColor.cpp'; then $(CYGPATH_W) 'org/w3c/dom/css/RGBColor.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/css/RGBColor.cpp'; fi`
-
-ViewCSS.o: org/w3c/dom/css/ViewCSS.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ViewCSS.o -MD -MP -MF $(DEPDIR)/ViewCSS.Tpo -c -o ViewCSS.o `test -f 'org/w3c/dom/css/ViewCSS.cpp' || echo '$(srcdir)/'`org/w3c/dom/css/ViewCSS.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ViewCSS.Tpo $(DEPDIR)/ViewCSS.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/css/ViewCSS.cpp' object='ViewCSS.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ViewCSS.o `test -f 'org/w3c/dom/css/ViewCSS.cpp' || echo '$(srcdir)/'`org/w3c/dom/css/ViewCSS.cpp
-
-ViewCSS.obj: org/w3c/dom/css/ViewCSS.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ViewCSS.obj -MD -MP -MF $(DEPDIR)/ViewCSS.Tpo -c -o ViewCSS.obj `if test -f 'org/w3c/dom/css/ViewCSS.cpp'; then $(CYGPATH_W) 'org/w3c/dom/css/ViewCSS.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/css/ViewCSS.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ViewCSS.Tpo $(DEPDIR)/ViewCSS.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/css/ViewCSS.cpp' object='ViewCSS.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ViewCSS.obj `if test -f 'org/w3c/dom/css/ViewCSS.cpp'; then $(CYGPATH_W) 'org/w3c/dom/css/ViewCSS.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/css/ViewCSS.cpp'; fi`
 
 CompositionEvent.o: org/w3c/dom/events/CompositionEvent.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CompositionEvent.o -MD -MP -MF $(DEPDIR)/CompositionEvent.Tpo -c -o CompositionEvent.o `test -f 'org/w3c/dom/events/CompositionEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/events/CompositionEvent.cpp
@@ -4392,20 +4366,6 @@ NodeEditVAL.obj: org/w3c/dom/validation/NodeEditVAL.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o NodeEditVAL.obj `if test -f 'org/w3c/dom/validation/NodeEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/NodeEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/NodeEditVAL.cpp'; fi`
 
-AbstractView.o: org/w3c/dom/views/AbstractView.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbstractView.o -MD -MP -MF $(DEPDIR)/AbstractView.Tpo -c -o AbstractView.o `test -f 'org/w3c/dom/views/AbstractView.cpp' || echo '$(srcdir)/'`org/w3c/dom/views/AbstractView.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbstractView.Tpo $(DEPDIR)/AbstractView.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/views/AbstractView.cpp' object='AbstractView.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbstractView.o `test -f 'org/w3c/dom/views/AbstractView.cpp' || echo '$(srcdir)/'`org/w3c/dom/views/AbstractView.cpp
-
-AbstractView.obj: org/w3c/dom/views/AbstractView.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbstractView.obj -MD -MP -MF $(DEPDIR)/AbstractView.Tpo -c -o AbstractView.obj `if test -f 'org/w3c/dom/views/AbstractView.cpp'; then $(CYGPATH_W) 'org/w3c/dom/views/AbstractView.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/views/AbstractView.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbstractView.Tpo $(DEPDIR)/AbstractView.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/views/AbstractView.cpp' object='AbstractView.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbstractView.obj `if test -f 'org/w3c/dom/views/AbstractView.cpp'; then $(CYGPATH_W) 'org/w3c/dom/views/AbstractView.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/views/AbstractView.cpp'; fi`
-
 ClientRect.o: org/w3c/dom/views/ClientRect.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ClientRect.o -MD -MP -MF $(DEPDIR)/ClientRect.Tpo -c -o ClientRect.o `test -f 'org/w3c/dom/views/ClientRect.cpp' || echo '$(srcdir)/'`org/w3c/dom/views/ClientRect.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ClientRect.Tpo $(DEPDIR)/ClientRect.Po
@@ -4433,20 +4393,6 @@ ClientRectList.obj: org/w3c/dom/views/ClientRectList.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/views/ClientRectList.cpp' object='ClientRectList.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ClientRectList.obj `if test -f 'org/w3c/dom/views/ClientRectList.cpp'; then $(CYGPATH_W) 'org/w3c/dom/views/ClientRectList.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/views/ClientRectList.cpp'; fi`
-
-DocumentView.o: org/w3c/dom/views/DocumentView.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DocumentView.o -MD -MP -MF $(DEPDIR)/DocumentView.Tpo -c -o DocumentView.o `test -f 'org/w3c/dom/views/DocumentView.cpp' || echo '$(srcdir)/'`org/w3c/dom/views/DocumentView.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DocumentView.Tpo $(DEPDIR)/DocumentView.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/views/DocumentView.cpp' object='DocumentView.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DocumentView.o `test -f 'org/w3c/dom/views/DocumentView.cpp' || echo '$(srcdir)/'`org/w3c/dom/views/DocumentView.cpp
-
-DocumentView.obj: org/w3c/dom/views/DocumentView.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DocumentView.obj -MD -MP -MF $(DEPDIR)/DocumentView.Tpo -c -o DocumentView.obj `if test -f 'org/w3c/dom/views/DocumentView.cpp'; then $(CYGPATH_W) 'org/w3c/dom/views/DocumentView.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/views/DocumentView.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DocumentView.Tpo $(DEPDIR)/DocumentView.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/views/DocumentView.cpp' object='DocumentView.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DocumentView.obj `if test -f 'org/w3c/dom/views/DocumentView.cpp'; then $(CYGPATH_W) 'org/w3c/dom/views/DocumentView.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/views/DocumentView.cpp'; fi`
 
 WebGLActiveInfo.o: org/w3c/dom/webgl/WebGLActiveInfo.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLActiveInfo.o -MD -MP -MF $(DEPDIR)/WebGLActiveInfo.Tpo -c -o WebGLActiveInfo.o `test -f 'org/w3c/dom/webgl/WebGLActiveInfo.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLActiveInfo.cpp

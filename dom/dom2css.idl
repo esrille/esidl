@@ -14,7 +14,6 @@ module css {
   typedef dom::Element Element;
   typedef dom::DOMImplementation DOMImplementation;
   typedef dom::DOMException DOMException;
-  typedef views::AbstractView AbstractView;
 
   // Introduced in DOM Level 2:
   interface CSSCharsetRule : CSSRule {
@@ -372,13 +371,15 @@ module css {
   };
 */
 
+/* Obsoleted by CSSOM
   // Introduced in DOM Level 2:
-  interface ViewCSS /*: views::AbstractView*/ {
+  interface ViewCSS {
     CSSStyleDeclaration getComputedStyle(in Element elt,
                                          in DOMString? pseudoElt);
   };
 
   AbstractView implements ViewCSS;
+ */
 
   // Introduced in DOM Level 2:
   interface DocumentCSS /*: stylesheets::DocumentStyle*/ {

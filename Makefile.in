@@ -54,11 +54,12 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__esidl_SOURCES_DIST = include/messenger.h \
 	include/messengerDispatch.h include/messengerInvoke.h \
-	include/cplusplus.h include/cplusplusCall.h \
-	include/cplusplusInvoke.h include/cplusplusMeta.h \
-	include/cplusplusTemplate.h include/cxx.h include/esidl.h \
-	include/expr.h include/formatter.h include/forward.h \
-	include/info.h include/java.h include/meta.h include/reflect.h \
+	include/messengerMeta.h include/cplusplus.h \
+	include/cplusplusCall.h include/cplusplusInvoke.h \
+	include/cplusplusMeta.h include/cplusplusTemplate.h \
+	include/cxx.h include/esidl.h include/expr.h \
+	include/formatter.h include/forward.h include/info.h \
+	include/java.h include/meta.h include/reflect.h \
 	include/sheet.h include/utf.h src/messenger.cpp \
 	src/cplusplus.cpp src/cxx.cpp src/driver.cpp src/esidl.cpp \
 	src/java.cpp src/lexer.ll src/parser.yy src/print.cpp \
@@ -288,13 +289,16 @@ top_srcdir = @top_srcdir@
 @ENABLE_CPLUSPLUS_TRUE@CPLUSPLUSDIR = cplusplus
 @ENABLE_NPAPI_FALSE@NPAPIDIR = 
 @ENABLE_NPAPI_TRUE@NPAPIDIR = npapi
-SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR)
-DIST_SUBDIRS = testsuite java cplusplus npapi
+@ENABLE_JSAPI_FALSE@JSAPIDIR = 
+@ENABLE_JSAPI_TRUE@JSAPIDIR = jsapi
+SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR)
+DIST_SUBDIRS = testsuite java cplusplus npapi jsapi
 @NACL_FALSE@BUILT_SOURCES = lexer.cc parser.cc parser.h
 @NACL_FALSE@esidl_SOURCES = \
 @NACL_FALSE@	include/messenger.h \
 @NACL_FALSE@	include/messengerDispatch.h \
 @NACL_FALSE@	include/messengerInvoke.h \
+@NACL_FALSE@	include/messengerMeta.h \
 @NACL_FALSE@	include/cplusplus.h\
 @NACL_FALSE@	include/cplusplusCall.h \
 @NACL_FALSE@	include/cplusplusInvoke.h \

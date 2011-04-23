@@ -64,7 +64,14 @@ Any ProxyObject::message_(uint32_t selector, const char* name, int argumentCount
     NPVariant result;
     VOID_TO_NPVARIANT(result);
 
-    if (argumentCount == GETTER_)
+    if (argumentCount == IS_KIND_OF_)
+    {
+        std::string interfaceName = getInterfaceName(getNPP(), getNPObject());
+        if (const char* id = strrchr(name, ':'))
+            name = id + 1;
+        return interfaceName.compare(name) == 0;
+    }
+    else if (argumentCount == GETTER_)
     {
         id = NPN_GetStringIdentifier(name);
         if (NPN_GetProperty(getNPP(), getNPObject(), id, &result))

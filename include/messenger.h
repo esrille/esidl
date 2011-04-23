@@ -48,6 +48,7 @@ protected:
     const ParamDcl* variadicParam;  // Non-NULL if the last parameter of the previously evaluated operation is variadic
 
     std::string prefixedModuleName;
+    std::string targetModuleName;
 
     bool noDefaultArgument;
 
@@ -134,7 +135,7 @@ public:
         variadicParam(0),
         noDefaultArgument(false)
     {
-        prefixedModuleName = currentNode->getPrefixedModuleName();
+        targetModuleName = prefixedModuleName = currentNode->getPrefixedModuleName();
     }
 
     Messenger(const Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
@@ -148,7 +149,7 @@ public:
         variadicParam(0),
         noDefaultArgument(false)
     {
-        prefixedModuleName = currentNode->getPrefixedModuleName();
+        targetModuleName = prefixedModuleName = currentNode->getPrefixedModuleName();
     }
 
     virtual void at(const Node* node)
@@ -180,7 +181,7 @@ public:
         {
             std::string name = resolved->getPrefixedName();
             name = getInterfaceName(name);
-            name = getScopedName(prefixedModuleName, name);
+            name = getScopedName(targetModuleName, name);
             write("%s", name.c_str());
         }
         currentNode = saved;
@@ -278,7 +279,7 @@ public:
         Node* spec = node->getSpec();
         Type* type = dynamic_cast<Type*>(spec);
         // Note we don't need separate array types for primitive types in C++.
-        std::string name = getScopedName(prefixedModuleName, std::string(Node::getDefaultPrefix()) + "::ObjectArray");
+        std::string name = getScopedName(targetModuleName, std::string(Node::getDefaultPrefix()) + "::ObjectArray");
         write("%s<", name.c_str());
         spec->accept(this);
         write(">");

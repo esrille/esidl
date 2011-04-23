@@ -73,6 +73,14 @@ public:
         writeln("template <class IMP>");
         writeln("static Any dispatch(IMP* self, unsigned selector, const char* id, int argumentCount, Any* arguments) {");
         {
+            bool doneSelectorZero = false;
+
+            if (node->isCallback())
+            {
+                writeln("if (CALLBACK_ <= argumentCount) {");
+                    writeln("argumentCount -= CALLBACK_;");
+                writeln("}");
+            }
             writeln("switch (selector) {");
             unindent();
             std::list<const Interface*> interfaceList;
@@ -87,7 +95,10 @@ public:
                 {
                     if (OpDcl* op = dynamic_cast<OpDcl*>(*j))
                     {
-                        operations.insert(std::pair<uint32_t, OpDcl*>(op->getHash(), op));
+                        if (!(op->getAttr() & OpDcl::UnnamedProperty))
+                            operations.insert(std::pair<uint32_t, OpDcl*>(op->getHash(), op));
+                        if (op->getAttr() & (OpDcl::UnnamedProperty | OpDcl::Omittable | OpDcl::Caller))
+                            operations.insert(std::pair<uint32_t, OpDcl*>(0, op));
                         continue;
                     }
                     if (Attribute* attr = dynamic_cast<Attribute*>(*j))
@@ -132,6 +143,26 @@ public:
                 indent();
                     writeln("return true;");
                 unindent();
+                if (i->first == 0)
+                {
+                    doneSelectorZero = true;
+                    writeln("if (argumentCount == IS_KIND_OF_)");
+                    indent();
+                        writeln("return getPrefixedName() == id || !std::strcmp(getPrefixedName(), id);");
+                    unindent();
+                }
+                writeln("return Any();");
+                unindent();
+            }
+
+            if (!doneSelectorZero)
+            {
+                writeln("case 0x0:");
+                indent();
+                    writeln("if (argumentCount == IS_KIND_OF_)");
+                    indent();
+                        writeln("return getPrefixedName() == id || !std::strcmp(getPrefixedName(), id);");
+                    unindent();
                 writeln("return Any();");
                 unindent();
             }
@@ -204,7 +235,13 @@ public:
         // getter
         writeln("case 0x%x:", node->getHash());
         indent();
-            writeln("if (argumentCount == GETTER_)");
+            writetab();
+            write("if (argumentCount == GETTER_");
+            if (node->getAttr() & Attribute::Stringifier)
+            {
+                write(" || argumentCount == 0");
+            }
+            write(")\n");
             indent();
                 writeln("return self->get%s();", cap.c_str());
             unindent();
@@ -262,37 +299,54 @@ public:
         int paramCount = getParamCount(node);
 
         writetab();
-        switch (node->getAttr() & OpDcl::IndexMask)
+        if (node->getAttr() & OpDcl::IndexMask) {
+            write("if (");
+            if (node->getAttr() & OpDcl::Caller)
+            {
+                if (!getVariadic())
+                {
+                    write("(argumentCount == %d || ", paramCount);
+                }
+                else
+                {
+                    --paramCount;
+                    write("(%d <= argumentCount || ", paramCount);
+                }
+            }
+            switch (node->getAttr() & OpDcl::IndexMask)
+            {
+            case OpDcl::IndexCreator:
+                write("argumentCount == SPECIAL_CREATOR_");
+                break;
+            case OpDcl::IndexDeleter:
+                write("argumentCount == SPECIAL_DELETER_");
+                break;
+            case OpDcl::IndexGetter:
+                write("argumentCount == SPECIAL_GETTER_");
+                break;
+            case OpDcl::IndexSetter:
+                write("argumentCount == SPECIAL_SETTER_");
+                break;
+            case OpDcl::IndexSetter | OpDcl::IndexCreator:
+                write("argumentCount == SPECIAL_SETTER_CREATOR_");
+                break;
+            default:
+                node->check(node->getAttr(), "%s has invalid specials", node->getName().c_str(), node->getAttr());
+                break;
+            }
+            if (node->getAttr() & OpDcl::Caller)
+            {
+                write(")");
+            }
+        }
+        else if (!getVariadic())
         {
-        case OpDcl::IndexCreator:
-            write("if (argumentCount == SPECIAL_CREATOR_");
-            break;
-        case OpDcl::IndexDeleter:
-            write("if (argumentCount == SPECIAL_DELETER_");
-            break;
-        case OpDcl::IndexGetter:
-            write("if (argumentCount == SPECIAL_GETTER_");
-            break;
-        case OpDcl::IndexSetter:
-            write("if (argumentCount == SPECIAL_SETTER_");
-            break;
-        case OpDcl::IndexSetter | OpDcl::IndexCreator:
-            write("if (argumentCount == SPECIAL_SETTER_CREATOR_");
-            break;
-        case 0:
-            if (!getVariadic())
-            {
-                write("if (argumentCount == %d", paramCount);
-            }
-            else
-            {
-                --paramCount;
-                write("if (%d <= argumentCount", paramCount);
-            }
-            break;
-        default:
-            node->check(node->getAttr(), "%s has invalid specials", node->getName().c_str(), node->getAttr());
-            break;
+            write("if (argumentCount == %d", paramCount);
+        }
+        else
+        {
+            --paramCount;
+            write("if (%d <= argumentCount", paramCount);
         }
 
         if (overloaded)
@@ -302,18 +356,37 @@ public:
             {
                 ParamDcl* param = dynamic_cast<ParamDcl*>(*i);
                 assert(param);
-                if (param->getSpec()->isInterface(node->getParent()))
+                if (!(param->getAttr() & ParamDcl::AllowAny))
                 {
                     write(" &&\n");
                     writetab();
-                    write("    arguments[%u].isObject()", n);
-                }
-                else
-                {
-                    // TODO:
-                    write(" &&\n");
-                    writetab();
-                    write("    !arguments[%u].isObject()", n);
+                    write("    (");
+                    if (param->getAttr() & (ParamDcl::Nullable || ParamDcl::NullIsEmpty))
+                    {
+                        write("!arguments[%u].hasValue() || ", n);
+                    }
+                    if (param->getSpec()->isInterface(node->getParent()))
+                    {
+                        write("arguments[%u].isObject()", n);
+                        if (!param->getSpec()->isObject(interface))
+                        {
+                            write(" && ");
+                            param->getSpec()->accept(this);
+                            write("::hasInstance(arguments[%u].toObject())", n);
+                        }
+                    }
+                    else if (param->getSpec()->isString(node->getParent()))
+                    {
+                        write("arguments[%u].isString()", n);
+                    }
+                    else
+                    {
+                        // TODO: sequence
+                        assert(!param->getSpec()->isSequence(node->getParent()));
+                        // Now arguments[n] should be a primitive value
+                        write("arguments[%u].isPrimitive()", n);
+                    }
+                    write(")");
                 }
             }
         }
@@ -355,13 +428,22 @@ public:
         }
         else if (spec->isInterface(node->getParent()))
         {
-            write("arguments[%u].toObject()", getParamCount() - 1);
+            if (overloaded)
+            {
+                write("interface_cast<");
+                spec->accept(this);
+                write(">(arguments[%u].toObject())", getParamCount() - 1);
+            }
+            else
+            {
+                write("arguments[%u].toObject()", getParamCount() - 1);
+            }
         }
         else
         {
             write("static_cast<");
             spec->accept(this);
-            write(" >(arguments[%u])", getParamCount() - 1);
+            write(">(arguments[%u])", getParamCount() - 1);
         }
      }
  };

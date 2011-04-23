@@ -30,7 +30,7 @@ class MessengerInvoke : public Messenger
     std::string className;
     unsigned offset;
 
-    const char* writeInvoke(const Node* node, Node* spec, const Node* nameNode)
+    const char* writeInvoke(const Node* node, Node* spec)
     {
         const char* post = ")";
 
@@ -63,11 +63,10 @@ class MessengerInvoke : public Messenger
             write(">(message_(");
             post = "))";
         }
-        if (!constructorMode)
-            write("0x%x, ", node->getHash());
+        if (constructorMode || (node->getAttr() & Node::UnnamedProperty))
+            write("0, \"\", ");
         else
-            write("0, ");
-        write("\"%s\", ", node->getName().c_str());
+            write("0x%x, \"%s\", ", node->getHash(), node->getName().c_str());
         ++methodNumber;
         return post;
     }
@@ -138,7 +137,7 @@ public:
         writetab();
         getter(node, className);
         writeln("{");
-            const char* post = writeInvoke(node, spec, node);
+            const char* post = writeInvoke(node, spec);
             write("GETTER_, 0%s;\n", post);
         writeln("}");
         offset += node->getMetaGetter().length();
@@ -217,7 +216,7 @@ public:
                     writeln("}");
                 }
             }
-            const char* post = writeInvoke(node, node->getSpec(), node->getSpec());
+            const char* post = writeInvoke(node, node->getSpec());
             switch (node->getAttr() & OpDcl::IndexMask)
             {
             case OpDcl::IndexCreator:
@@ -236,6 +235,10 @@ public:
                 write("SPECIAL_SETTER_CREATOR_");
                 break;
             case 0:
+                if (interface->isCallback())
+                {
+                    write("CALLBACK_ | ");
+                }
                 if (!getVariadic())
                 {
                     write("%u", paramCount);

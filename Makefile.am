@@ -16,8 +16,14 @@ else
 NPAPIDIR =
 endif
 
-SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR)
-DIST_SUBDIRS = testsuite java cplusplus npapi
+if ENABLE_JSAPI
+JSAPIDIR = jsapi
+else
+JSAPIDIR =
+endif
+
+SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR)
+DIST_SUBDIRS = testsuite java cplusplus npapi jsapi
 
 if !NACL
 
@@ -29,6 +35,7 @@ esidl_SOURCES = \
 	include/messenger.h \
 	include/messengerDispatch.h \
 	include/messengerInvoke.h \
+	include/messengerMeta.h \
 	include/cplusplus.h\
 	include/cplusplusCall.h \
 	include/cplusplusInvoke.h \

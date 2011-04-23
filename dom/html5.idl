@@ -26,7 +26,6 @@ typedef events::MouseEvent MouseEvent;
 typedef file::FileList FileList;
 typedef ranges::Range Range;
 typedef stylesheets::LinkStyle LinkStyle;
-typedef views::AbstractView AbstractView;
 
 typedef Window WindowProxy;
 

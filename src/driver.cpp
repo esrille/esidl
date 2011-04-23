@@ -95,6 +95,8 @@ int main(int argc, char* argv[])
     bool useMultipleInheritance = true;
     bool messenger = false;
     bool messengerSrc = false;
+    bool messengerImp = false;
+    bool messengerImpSrc = false;
     bool java = false;
     bool cplusplus = false;
     bool cplusplusSrc = false;
@@ -128,6 +130,14 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-messenger-src") == 0)
             {
                 messengerSrc = true;
+            }
+            else if (strcmp(argv[i], "-messenger-imp") == 0)
+            {
+                messengerImp = true;
+            }
+            else if (strcmp(argv[i], "-messenger-imp-src") == 0)
+            {
+                messengerImpSrc = true;
             }
             else if (strcmp(argv[i], "-cplusplus") == 0)
             {
@@ -378,13 +388,19 @@ int main(int argc, char* argv[])
 
     if (messenger)
     {
-        result = printMessenger(stringTypeName, objectTypeName,
-                                useExceptions, useVirtualBase, indent);
+        result = printMessenger(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
     }
     else if (messengerSrc)
     {
-        result = printMessengerSrc(stringTypeName, objectTypeName,
-                                    useExceptions, useVirtualBase, indent);
+        result = printMessengerSrc(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+    }
+    else if (messengerImp)
+    {
+        result = printMessengerImp(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
+    }
+    else if (messengerImpSrc)
+    {
+        result = printMessengerImpSrc(stringTypeName, objectTypeName, useExceptions, useVirtualBase, indent);
     }
     else if (java)
     {
