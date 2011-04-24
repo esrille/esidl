@@ -50,6 +50,16 @@ std::string toString(double value)
     return std::string(buffer);
 }
 
+std::string toString(Object* object)
+{
+    if (!object)
+        return "null";
+    Any result = object->message_(0, 0, Object::STRINGIFY_, 0);
+    if (result.isString())
+        return result.toString();
+    return "";
+}
+
 char* skipSpace(const char* str)
 {
     static const char* rgsp[] =
@@ -167,7 +177,8 @@ std::string Any::toString() const
     case Dynamic:
         if (vtable->getType() == typeid(std::string))
             return *reinterpret_cast<const std::string*>(&heap);
-        // TODO: support Object
+        if (vtable->getType() == typeid(Object))
+            return ::toString(const_cast<Object*>(reinterpret_cast<const Object*>(&heap)->self()));
         break;
     default:
         break;

@@ -536,7 +536,7 @@ Any ProxyObject::message_(uint32_t selector, const char* id, int argc, Any* argv
     if (callback)
         argc -= CALLBACK_;
     jsval result;
-    jsval arguments[argc];
+    jsval arguments[(0 < argc) ? argc : 1];
     JSBool found;
     std::u16string name;
     switch (argc) {
@@ -571,6 +571,10 @@ Any ProxyObject::message_(uint32_t selector, const char* id, int argc, Any* argv
         name = argv[0].toString();
         if (JS_DeleteUCProperty2(jscontext, jsobject, reinterpret_cast<const jschar*>(name.c_str()), name.length(), &result))
             return result == JS_TRUE;
+        break;
+    case STRINGIFY_:
+        if (JS_CallFunctionName(jscontext, jsobject, "toString", 0, 0, &result) == JS_TRUE)
+            return convert(jscontext, result);
         break;
     default:
         for (int i = 0; i < argc; ++i)

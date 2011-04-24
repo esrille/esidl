@@ -26,6 +26,32 @@
 class MessengerDispatch : public Messenger
 {
     bool overloaded;
+
+    void writeSelectorZero(Node* stringifier)
+    {
+        writeln("if (argumentCount == IS_KIND_OF_)");
+        indent();
+            writeln("return getPrefixedName() == id || !std::strcmp(getPrefixedName(), id);");
+        unindent();
+        if (!stringifier)
+        {
+            return;
+        }
+        writeln("if (argumentCount == STRINGIFY_)");
+        indent();
+            if (dynamic_cast<class OpDcl*>(stringifier))
+            {
+                writeln("return self->%s();", getEscapedName(stringifier->getName()).c_str());
+            }
+            else
+            {
+                std::string cap = stringifier->getName();
+                cap[0] = toupper(cap[0]);
+                writeln("return self->get%s();", cap.c_str());
+            }
+        unindent();
+    }
+
 public:
     MessengerDispatch(Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
         Messenger(formatter, stringTypeName, objectTypeName, useExceptions),
@@ -85,6 +111,7 @@ public:
             unindent();
             std::list<const Interface*> interfaceList;
             node->collectSupplementals(&interfaceList);
+            Node* stringifier = 0;
             for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
                 i != interfaceList.end();
                 ++i)
@@ -93,6 +120,10 @@ public:
                 currentNode = *i;
                 for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
                 {
+                    if (!stringifier && ((*j)->getAttr() & Node::Stringifier))
+                    {
+                        stringifier = *j;
+                    }
                     if (OpDcl* op = dynamic_cast<OpDcl*>(*j))
                     {
                         if (!(op->getAttr() & OpDcl::UnnamedProperty))
@@ -146,10 +177,7 @@ public:
                 if (i->first == 0)
                 {
                     doneSelectorZero = true;
-                    writeln("if (argumentCount == IS_KIND_OF_)");
-                    indent();
-                        writeln("return getPrefixedName() == id || !std::strcmp(getPrefixedName(), id);");
-                    unindent();
+                    writeSelectorZero(stringifier);
                 }
                 writeln("return Any();");
                 unindent();
@@ -159,10 +187,7 @@ public:
             {
                 writeln("case 0x0:");
                 indent();
-                    writeln("if (argumentCount == IS_KIND_OF_)");
-                    indent();
-                        writeln("return getPrefixedName() == id || !std::strcmp(getPrefixedName(), id);");
-                    unindent();
+                    writeSelectorZero(stringifier);
                 writeln("return Any();");
                 unindent();
             }
@@ -221,8 +246,8 @@ public:
 
     virtual void at(const Attribute* node)
     {
-        std::string cap = node->getName().c_str();
-        cap[0] = toupper(cap[0]);   // XXX
+        std::string cap = node->getName();
+        cap[0] = toupper(cap[0]);
 
         static Type replaceable("any");
         Node* spec = node->getSpec();

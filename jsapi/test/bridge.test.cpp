@@ -62,6 +62,8 @@ const char* script =
     "r += target + '\\n';"
     "target.overloaded(target.collection);"
     "target.overloaded(target.dataset);"
+    "c.namedItem(target);"
+    "c.namedItem(Function);"
     "r;";
 
 int main(int argc, const char* argv[])

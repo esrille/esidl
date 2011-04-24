@@ -112,6 +112,7 @@ public:
     static const int HAS_PROPERTY_ = -8;
     static const int HAS_OPERATION_ = -9;
     static const int IS_KIND_OF_ = -10;
+    static const int STRINGIFY_ = -11;
     static const int CALLBACK_ = 0x4000000;
 
     // Max # of variadic arguments
