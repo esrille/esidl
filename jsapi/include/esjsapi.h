@@ -28,7 +28,7 @@ class ObjectImp;
 
 class NativeClass
 {
-    static const size_t MAX_METHOD_COUNT = 64;
+    static const size_t MAX_METHOD_COUNT = 256;
     static const size_t MAX_CONSTRUCTOR_COUNT = 64;
     static const size_t MAX_RANK = 16;
 

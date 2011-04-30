@@ -583,9 +583,9 @@ html::Window WindowImp::getWindow()
 }
 
 const char* script =
-    "for(prop in Node.prototype)"
-    "    alert(prop + '\\n');"
-    "window.alert('Hello, world.\\n');";
+    "for (prop in Node.prototype)"
+    "    window.alert(prop + '\\n');"
+    "alert('Hello, world.\\n');";
 
 int main(int argc, const char* argv[])
 {

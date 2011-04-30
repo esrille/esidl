@@ -420,7 +420,7 @@ public:
             operationCount(interface.operationCount),
             attributeCount(interface.attributeCount),
             constantCount(interface.constantCount),
-            stringSize(0)
+            stringSize(interface.stringSize)
         {
         }
 

@@ -142,9 +142,7 @@ JSBool caller(JSContext* cx, uintN argc, jsval* vp)
 template <int N>
 JSBool operation(JSContext* cx, uintN argc, jsval* vp)
 {
-    jsval thisval = JS_THIS(cx, vp);
-    if (JSVAL_IS_OBJECT(thisval)) {
-        JSObject* obj = JSVAL_TO_OBJECT(thisval);
+    if (JSObject* obj = JS_THIS_OBJECT(cx, vp)) {
         ObjectImp* native = static_cast<ObjectImp*>(JS_GetPrivate(cx, obj));
         Any arguments[argc];
         for (unsigned i = 0; i < argc; ++i)
@@ -336,7 +334,46 @@ JSNative NativeClass::operations[MAX_METHOD_COUNT] =
     &operation<45>, &operation<46>, &operation<47>, &operation<48>, &operation<49>,
     &operation<50>, &operation<51>, &operation<52>, &operation<53>, &operation<54>,
     &operation<55>, &operation<56>, &operation<57>, &operation<58>, &operation<59>,
-    &operation<60>, &operation<61>, &operation<62>, &operation<63>
+    &operation<60>, &operation<61>, &operation<62>, &operation<63>, &operation<64>,
+    &operation<65>, &operation<66>, &operation<67>, &operation<68>, &operation<69>,
+    &operation<70>, &operation<71>, &operation<72>, &operation<73>, &operation<74>,
+    &operation<75>, &operation<76>, &operation<77>, &operation<78>, &operation<79>,
+    &operation<80>, &operation<81>, &operation<82>, &operation<83>, &operation<84>,
+    &operation<85>, &operation<86>, &operation<87>, &operation<88>, &operation<89>,
+    &operation<90>, &operation<91>, &operation<92>, &operation<93>, &operation<94>,
+    &operation<95>, &operation<96>, &operation<97>, &operation<98>, &operation<99>,
+    &operation<100>, &operation<101>, &operation<102>, &operation<103>, &operation<104>,
+    &operation<105>, &operation<106>, &operation<107>, &operation<108>, &operation<109>,
+    &operation<110>, &operation<111>, &operation<112>, &operation<113>, &operation<114>,
+    &operation<115>, &operation<116>, &operation<117>, &operation<118>, &operation<119>,
+    &operation<120>, &operation<121>, &operation<122>, &operation<123>, &operation<124>,
+    &operation<125>, &operation<126>, &operation<127>, &operation<128>, &operation<129>,
+    &operation<130>, &operation<131>, &operation<132>, &operation<133>, &operation<134>,
+    &operation<135>, &operation<136>, &operation<137>, &operation<138>, &operation<139>,
+    &operation<140>, &operation<141>, &operation<142>, &operation<143>, &operation<144>,
+    &operation<145>, &operation<146>, &operation<147>, &operation<148>, &operation<149>,
+    &operation<150>, &operation<151>, &operation<152>, &operation<153>, &operation<154>,
+    &operation<155>, &operation<156>, &operation<157>, &operation<158>, &operation<159>,
+    &operation<160>, &operation<161>, &operation<162>, &operation<163>, &operation<164>,
+    &operation<165>, &operation<166>, &operation<167>, &operation<168>, &operation<169>,
+    &operation<170>, &operation<171>, &operation<172>, &operation<173>, &operation<174>,
+    &operation<175>, &operation<176>, &operation<177>, &operation<178>, &operation<179>,
+    &operation<180>, &operation<181>, &operation<182>, &operation<183>, &operation<184>,
+    &operation<185>, &operation<186>, &operation<187>, &operation<188>, &operation<189>,
+    &operation<190>, &operation<191>, &operation<192>, &operation<193>, &operation<194>,
+    &operation<195>, &operation<196>, &operation<197>, &operation<198>, &operation<199>,
+    &operation<200>, &operation<201>, &operation<202>, &operation<203>, &operation<204>,
+    &operation<205>, &operation<206>, &operation<207>, &operation<208>, &operation<209>,
+    &operation<210>, &operation<211>, &operation<212>, &operation<213>, &operation<214>,
+    &operation<215>, &operation<216>, &operation<217>, &operation<218>, &operation<219>,
+    &operation<220>, &operation<221>, &operation<222>, &operation<223>, &operation<224>,
+    &operation<225>, &operation<226>, &operation<227>, &operation<228>, &operation<229>,
+    &operation<230>, &operation<231>, &operation<232>, &operation<233>, &operation<234>,
+    &operation<235>, &operation<236>, &operation<237>, &operation<238>, &operation<239>,
+    &operation<240>, &operation<241>, &operation<242>, &operation<243>, &operation<244>,
+    &operation<245>, &operation<246>, &operation<247>, &operation<248>, &operation<249>,
+    &operation<250>, &operation<251>, &operation<252>, &operation<253>, &operation<254>,
+    &operation<255>
 };
 
 JSNative NativeClass::constructors[MAX_CONSTRUCTOR_COUNT] =
@@ -407,10 +444,12 @@ NativeClass::NativeClass(JSContext* cx, const char* metadata, Object (*getConstr
     for (auto chain = proto; chain; chain = chain->proto)
         ++protoRank;
 
-    std::unique_ptr<JSPropertySpec[]> ps(new JSPropertySpec[meta.getAttributeCount() + 1]);
-    std::unique_ptr<JSFunctionSpec[]> fs(new JSFunctionSpec[meta.getOperationCount() + 2]);  // +1 for stringifier
+    const int attributeCount = meta.getAttributeCount() + 1;
+    const int operationCount = meta.getOperationCount() + 2;  // +1 for stringifier
+    std::unique_ptr<JSPropertySpec[]> ps(new JSPropertySpec[attributeCount]);
+    std::unique_ptr<JSFunctionSpec[]> fs(new JSFunctionSpec[operationCount]);
     std::unique_ptr<char[]> stringHeap(new char[meta.getStringSize()]);
-    size_t propertyCount = meta.getAttributeCount() + meta.getOperationCount();
+    size_t propertyCount = attributeCount + operationCount;
     if (0 < propertyCount) {
         auto table = std::unique_ptr<uint32_t[]>(new uint32_t[propertyCount]);
         hashTable = std::move(table);
@@ -435,8 +474,8 @@ NativeClass::NativeClass(JSContext* cx, const char* metadata, Object (*getConstr
                 pfs->call = operations[propertyNumber];
                 pfs->nargs = 0;
                 pfs->flags = JSPROP_ENUMERATE | JSPROP_PERMANENT;
-                ++pfs;
                 heap = storeName(heap, prop);
+                ++pfs;
                 ++propertyNumber;
             }
             if (prop.isGetter())
@@ -466,8 +505,9 @@ NativeClass::NativeClass(JSContext* cx, const char* metadata, Object (*getConstr
                 pps->flags |= JSPROP_READONLY;
             pps->getter = getters[protoRank];
             pps->setter = setters[protoRank];
-            ++pps;
             heap = storeName(heap, prop);
+            ++pps;
+
             if (prop.isStringifier()) {
                 hashTable.get()[propertyNumber] = one_at_a_time(prop.getName().c_str(), prop.getName().length());
                 pfs->name = "toString";
@@ -499,6 +539,10 @@ NativeClass::NativeClass(JSContext* cx, const char* metadata, Object (*getConstr
         constructorGetters[constructorCount] = getConstructor;
     }
 
+    assert(propertyNumber <= propertyCount);
+    assert(pps - ps.get() <= attributeCount);
+    assert(pfs - fs.get() <= operationCount);
+    assert(heap - stringHeap.get() <= meta.getStringSize());
     JS_InitClass(cx, JS_GetGlobalObject(cx),
                  parentProto,
                  &jsclass,
@@ -536,7 +580,6 @@ Any ProxyObject::message_(uint32_t selector, const char* id, int argc, Any* argv
     if (callback)
         argc -= CALLBACK_;
     jsval result;
-    jsval arguments[(0 < argc) ? argc : 1];
     JSBool found;
     std::u16string name;
     switch (argc) {
@@ -576,7 +619,9 @@ Any ProxyObject::message_(uint32_t selector, const char* id, int argc, Any* argv
         if (JS_CallFunctionName(jscontext, jsobject, "toString", 0, 0, &result) == JS_TRUE)
             return convert(jscontext, result);
         break;
-    default:
+    default: {
+        assert(0 <= argc);
+        jsval arguments[0 < argc ? argc : 1];
         for (int i = 0; i < argc; ++i)
             arguments[i] = convert(jscontext, argv[i]);
         if (callback &&
@@ -584,6 +629,7 @@ Any ProxyObject::message_(uint32_t selector, const char* id, int argc, Any* argv
             return convert(jscontext, result);
         if (JS_CallFunctionName(jscontext, jsobject, id, argc, arguments, &result) == JS_TRUE)
             return convert(jscontext, result);
+        }
         break;
     }
     return Any();
