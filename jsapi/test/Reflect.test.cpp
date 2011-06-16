@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+#include "Reflect.h"
+
 #include <iostream>
 
-#include "Reflect.h"
+#include <object.h>
 
 const char* nodeData =
             "I21::org::w3c::dom::Node"

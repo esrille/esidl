@@ -949,6 +949,68 @@ public:
     }
 };
 
+class MessengerStaticData : public Messenger
+{
+    std::string className;
+
+public:
+    MessengerStaticData(FILE* file, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions, const std::string& indent) :
+        Messenger(file, stringTypeName, objectTypeName, useExceptions, indent)
+    {
+        currentNode = 0;
+    }
+
+    virtual void at(const Member* node)
+    {
+    }
+
+    virtual void at(const ConstDcl* node)
+    {
+        if (node->getJavadoc().size())
+        {
+            write("%s\n", node->getJavadoc().c_str());
+        }
+        write("const ");
+        node->getSpec()->accept(this);
+        write(" %s::%s", className.c_str(), getEscapedName(node->getName()).c_str());
+        // write(" = ");
+        // node->getExp()->accept(this);
+        write(";\n");
+    }
+
+    virtual void at(const Interface* node)
+    {
+        Interface* constructor = node->getConstructor();
+
+        if (!currentNode)
+        {
+            currentNode = node->getParent();
+            prefixedModuleName = currentNode->getPrefixedModuleName();
+            className = node->getName();
+            if (constructorMode && (node->getAttr() & Interface::Constructor))
+            {
+                className = currentNode->getName();
+            }
+        }
+        assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
+
+        std::list<const Interface*> interfaceList;
+        node->collectSupplementals(&interfaceList);
+        for (std::list<const Interface*>::const_iterator i = interfaceList.begin();
+             i != interfaceList.end();
+             ++i)
+        {
+            const Node* saved = currentNode;
+            currentNode = *i;
+            for (NodeList::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+            {
+                visitInterfaceElement(*i, *j);
+            }
+            currentNode = saved;
+        }
+    }
+};
+
 class MessengerVisitor : public Visitor
 {
     std::string stringTypeName;
@@ -1143,6 +1205,10 @@ public:
         fprintf(file, "\n");
 
         ns.enter(prefixedName);
+
+        MessengerStaticData messengerStaticData(file, stringTypeName, objectTypeName, useExceptions, indent);
+        messengerStaticData.at(node);
+        fprintf(file, "\n");
 
         MessengerInvoke messengerInvoke(file, stringTypeName, objectTypeName, useExceptions, indent);
         messengerInvoke.at(node);
