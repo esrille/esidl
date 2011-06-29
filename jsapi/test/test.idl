@@ -2,7 +2,7 @@ module test {
 
 [Constructor(DOMString type)]
 interface Event {
-  readonly attribute DOMString type;
+  attribute DOMString type;
 };
 
 interface EventTarget {

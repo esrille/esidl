@@ -500,7 +500,7 @@ NativeClass::NativeClass(JSContext* cx, const char* metadata, Object (*getConstr
             hashTable.get()[propertyNumber] = one_at_a_time(prop.getName().c_str(), prop.getName().length());
             pps->name = heap;
             pps->tinyid = propertyNumber++;
-            pps->flags = JSPROP_ENUMERATE | JSPROP_PERMANENT;
+            pps->flags = JSPROP_ENUMERATE | JSPROP_PERMANENT | JSPROP_SHARED;
             if (prop.isReadOnly())
                 pps->flags |= JSPROP_READONLY;
             pps->getter = getters[protoRank];
@@ -513,7 +513,7 @@ NativeClass::NativeClass(JSContext* cx, const char* metadata, Object (*getConstr
                 pfs->name = "toString";
                 pfs->call = operations[propertyNumber];
                 pfs->nargs = 0;
-                pfs->flags = JSPROP_ENUMERATE | JSPROP_PERMANENT;
+                pfs->flags = JSPROP_ENUMERATE | JSPROP_PERMANENT | JSPROP_SHARED;
                 ++pfs;
                 ++propertyNumber;
             }

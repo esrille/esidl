@@ -26,6 +26,9 @@ public:
     std::u16string getType() {
         return type;
     }
+    void setType(std::u16string type) {
+        this->type = type;
+    }
 
     // Object
     virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {

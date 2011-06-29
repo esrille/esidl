@@ -41,13 +41,14 @@ void reportError(JSContext* cx, const char* message, JSErrorReport* report)
 }
 
 const char* script =
-    "var l = function(e) { r += '\\ndone!\\n' };"
+    "var l = function(e) { r += e.type + '\\ndone!\\n' };"
     "var r = new String('');"
     "for(prop in target.__proto__)"
     "    r += prop + '\\n';"
     "r += 'EventTarget.TEXT_NODE = ' + EventTarget.TEXT_NODE + '\\n';"
     "target.addEventListener('t', l);"
-    "var e = Event('t');"
+    "var e = Event('_type_');"
+    "e.type = '_TYPE_';"
     "target.dispatchEvent(e);"
     "var m = target.dataset;"
     "var x = m.x;"
