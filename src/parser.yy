@@ -22,17 +22,8 @@
  *
  * W3C,
  * Web IDL,
- * W3C Editor’s Draft 30 September 2009.
+ * W3C Editor’s Draft 30 June 2011.
  * http://dev.w3.org/2006/webapi/WebIDL/
- *
- * W3C,
- * Web IDL,
- * W3C Working Draft 19 December 2008.
- * http://www.w3.org/TR/WebIDL/
- *
- * Common Object Request Broker Architecture: Core Specification,
- * Version 3.0.3, Object Management Group, Inc., March 2004.
- * http://www.omg.org/technology/documents/formal/corba_iiop.htm.
  */
 
 %{
@@ -81,6 +72,7 @@ int yylex();
 %token CREATOR
 %token DATE
 %token DELETER
+%token DICTIONARY
 %token DOUBLE
 %token EOL
 %token ELLIPSIS
@@ -130,6 +122,9 @@ int yylex();
 %type <node>        Interface
 %type <node>        InterfaceInheritance
 %type <node>        InterfaceMember
+%type <node>        Dictionary
+%type <node>        DictionaryMember
+%type <node>        DefaultValue
 %type <node>        Exception
 %type <node>        Typedef
 %type <node>        ImplementsStatement
@@ -226,6 +221,7 @@ Definitions :
 Definition :
     Module
     | InterfaceDcl
+    | Dictionary
     | Exception
     | Typedef
     | ImplementsStatement
@@ -356,6 +352,84 @@ InterfaceMember :
     | Preprocessor
     ;
 
+Dictionary :
+    DICTIONARY IDENTIFIER InterfaceInheritance
+        {
+            Node* extends = $3;
+            if (!extends)
+            {
+                std::string qualifiedName = getCurrent()->getQualifiedName();
+                qualifiedName += "::";
+                qualifiedName += $2;
+                assert((qualifiedName != Node::getBaseObjectName()));  // TODO: make this runtime check
+                ScopedName* name = new ScopedName(Node::getBaseObjectName());
+                extends = new Node();
+                extends->add(name);
+            }
+            Interface* node = new Dictionary($2, extends);
+            if (Node::getFlatNamespace() && !extends)
+            {
+                setCurrent(getSpecification());
+            }
+            getCurrent()->add(node);
+            setCurrent(node);
+            free($2);
+        }
+    '{' DictionaryMembers '}' ';'
+        {
+            getCurrent()->setLocation(&@1, &@8);
+            $$ = getCurrent();
+            setCurrent(getCurrent()->getParent());
+            if (Node::getFlatNamespace() && getCurrent() == getSpecification())
+            {
+                setCurrent(dynamic_cast<Module*>(getSpecification()->search(Node::getFlatNamespace())));
+            }
+        }
+    ;
+
+DictionaryMembers :
+    /* empty */
+    | JavaDoc
+        {
+            setJavadoc($1);
+            free($1);
+        }
+    ExtendedAttributeList DictionaryMember
+        {
+            if ($4)
+            {
+                $4->setExtendedAttributes($3);
+            }
+            setJavadoc(0);
+        }
+    DictionaryMembers
+    ;
+
+DictionaryMember :
+    Type IDENTIFIER DefaultValue ';'
+        {
+            Attribute* attr = new Attribute($2, $1);
+            if ($3)
+            {
+                attr->setDefaultValue($3);
+            }
+            getCurrent()->add(attr);
+            $$ = attr;
+        }
+
+    ;
+
+DefaultValue :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | '=' ConstExpr
+        {
+            $$ = $2;
+        }
+    ;
+
 Exception :
     EXCEPTION IDENTIFIER
         {
@@ -429,9 +503,6 @@ Const :
         }
     ;
 
-/* Note in Web IDL, ConstExpr is just a literal.
- * The support for the expressions are the ES extensions.
- */
 ConstExpr :
     OrExpr
     ;

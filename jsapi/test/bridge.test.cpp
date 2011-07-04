@@ -41,14 +41,14 @@ void reportError(JSContext* cx, const char* message, JSErrorReport* report)
 }
 
 const char* script =
-    "var l = function(e) { r += e.type + '\\ndone!\\n' };"
+    "var l = function(e) { r += e.type + ' ' + e.color + '\\ndone!\\n' };"
     "var r = new String('');"
     "for(prop in target.__proto__)"
     "    r += prop + '\\n';"
     "r += 'EventTarget.TEXT_NODE = ' + EventTarget.TEXT_NODE + '\\n';"
     "target.addEventListener('t', l);"
-    "var e = Event('_type_');"
-    "e.type = '_TYPE_';"
+    "var e = Event('type', { color: 'blue'});"
+    "e.type = 'TYPE';"
     "target.dispatchEvent(e);"
     "var m = target.dataset;"
     "var x = m.x;"
@@ -129,6 +129,9 @@ public:
         switch (argc) {
         case 1:
             evt = new(std::nothrow) EventImp(argv[0].toString());
+            break;
+        case 2:
+            evt = new(std::nothrow) EventImp(argv[0].toString(), argv[1].toObject());
             break;
         default:
             break;

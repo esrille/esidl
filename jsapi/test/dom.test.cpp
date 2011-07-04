@@ -61,7 +61,6 @@
 #include <org/w3c/dom/bootstrap/CanvasPixelArrayImp.h>
 #include <org/w3c/dom/bootstrap/CanvasRenderingContext2DImp.h>
 #include <org/w3c/dom/bootstrap/CaretPositionImp.h>
-#include <org/w3c/dom/bootstrap/CharacterDataEditVALImp.h>
 #include <org/w3c/dom/bootstrap/CharacterDataImp.h>
 #include <org/w3c/dom/bootstrap/ClientRectImp.h>
 #include <org/w3c/dom/bootstrap/ClientRectListImp.h>
@@ -69,10 +68,8 @@
 #include <org/w3c/dom/bootstrap/CompositionEventImp.h>
 #include <org/w3c/dom/bootstrap/CounterImp.h>
 #include <org/w3c/dom/bootstrap/CustomEventImp.h>
-#include <org/w3c/dom/bootstrap/DOMConfigurationImp.h>
 #include <org/w3c/dom/bootstrap/DOMImplementationCSSImp.h>
 #include <org/w3c/dom/bootstrap/DOMImplementationImp.h>
-#include <org/w3c/dom/bootstrap/DOMImplementationLSImp.h>
 #include <org/w3c/dom/bootstrap/DOMSettableTokenListImp.h>
 #include <org/w3c/dom/bootstrap/DOMStringListImp.h>
 #include <org/w3c/dom/bootstrap/DOMStringMapImp.h>
@@ -80,7 +77,6 @@
 #include <org/w3c/dom/bootstrap/DataTransferImp.h>
 #include <org/w3c/dom/bootstrap/DataViewImp.h>
 #include <org/w3c/dom/bootstrap/DocumentCSSImp.h>
-#include <org/w3c/dom/bootstrap/DocumentEditVALImp.h>
 #include <org/w3c/dom/bootstrap/DocumentFragmentImp.h>
 #include <org/w3c/dom/bootstrap/DocumentImp.h>
 #include <org/w3c/dom/bootstrap/DocumentRangeImp.h>
@@ -88,7 +84,6 @@
 #include <org/w3c/dom/bootstrap/DocumentTypeImp.h>
 #include <org/w3c/dom/bootstrap/DragEventImp.h>
 #include <org/w3c/dom/bootstrap/ElementCSSInlineStyleImp.h>
-#include <org/w3c/dom/bootstrap/ElementEditVALImp.h>
 #include <org/w3c/dom/bootstrap/ElementImp.h>
 #include <org/w3c/dom/bootstrap/EventImp.h>
 #include <org/w3c/dom/bootstrap/EventListenerImp.h>
@@ -188,15 +183,6 @@
 #include <org/w3c/dom/bootstrap/Int32ArrayImp.h>
 #include <org/w3c/dom/bootstrap/Int8ArrayImp.h>
 #include <org/w3c/dom/bootstrap/KeyboardEventImp.h>
-#include <org/w3c/dom/bootstrap/LSInputImp.h>
-#include <org/w3c/dom/bootstrap/LSLoadEventImp.h>
-#include <org/w3c/dom/bootstrap/LSOutputImp.h>
-#include <org/w3c/dom/bootstrap/LSParserFilterImp.h>
-#include <org/w3c/dom/bootstrap/LSParserImp.h>
-#include <org/w3c/dom/bootstrap/LSProgressEventImp.h>
-#include <org/w3c/dom/bootstrap/LSResourceResolverImp.h>
-#include <org/w3c/dom/bootstrap/LSSerializerFilterImp.h>
-#include <org/w3c/dom/bootstrap/LSSerializerImp.h>
 #include <org/w3c/dom/bootstrap/LinkStyleImp.h>
 #include <org/w3c/dom/bootstrap/LocationImp.h>
 #include <org/w3c/dom/bootstrap/MediaErrorImp.h>
@@ -207,9 +193,7 @@
 #include <org/w3c/dom/bootstrap/MouseEventImp.h>
 #include <org/w3c/dom/bootstrap/MutationEventImp.h>
 #include <org/w3c/dom/bootstrap/MutationNameEventImp.h>
-#include <org/w3c/dom/bootstrap/NameListImp.h>
 #include <org/w3c/dom/bootstrap/NavigatorImp.h>
-#include <org/w3c/dom/bootstrap/NodeEditVALImp.h>
 #include <org/w3c/dom/bootstrap/NodeFilterImp.h>
 #include <org/w3c/dom/bootstrap/NodeImp.h>
 #include <org/w3c/dom/bootstrap/NodeIteratorImp.h>
@@ -233,35 +217,17 @@
 #include <org/w3c/dom/bootstrap/TimeRangesImp.h>
 #include <org/w3c/dom/bootstrap/TreeWalkerImp.h>
 #include <org/w3c/dom/bootstrap/UIEventImp.h>
-#include <org/w3c/dom/bootstrap/URLImp.h>
 #include <org/w3c/dom/bootstrap/Uint16ArrayImp.h>
 #include <org/w3c/dom/bootstrap/Uint32ArrayImp.h>
 #include <org/w3c/dom/bootstrap/Uint8ArrayImp.h>
 #include <org/w3c/dom/bootstrap/UndoManagerEventImp.h>
 #include <org/w3c/dom/bootstrap/UndoManagerImp.h>
 #include <org/w3c/dom/bootstrap/ValidityStateImp.h>
-#include <org/w3c/dom/bootstrap/WebGLActiveInfoImp.h>
-#include <org/w3c/dom/bootstrap/WebGLBufferImp.h>
-#include <org/w3c/dom/bootstrap/WebGLContextAttributesImp.h>
-#include <org/w3c/dom/bootstrap/WebGLContextEventImp.h>
-#include <org/w3c/dom/bootstrap/WebGLFramebufferImp.h>
-#include <org/w3c/dom/bootstrap/WebGLObjectImp.h>
-#include <org/w3c/dom/bootstrap/WebGLProgramImp.h>
-#include <org/w3c/dom/bootstrap/WebGLRenderbufferImp.h>
-#include <org/w3c/dom/bootstrap/WebGLRenderingContextImp.h>
-#include <org/w3c/dom/bootstrap/WebGLShaderImp.h>
-#include <org/w3c/dom/bootstrap/WebGLTextureImp.h>
-#include <org/w3c/dom/bootstrap/WebGLUniformLocationImp.h>
 #include <org/w3c/dom/bootstrap/WheelEventImp.h>
 #include <org/w3c/dom/bootstrap/WindowImp.h>
 #include <org/w3c/dom/bootstrap/XMLHttpRequestEventTargetImp.h>
 #include <org/w3c/dom/bootstrap/XMLHttpRequestImp.h>
 #include <org/w3c/dom/bootstrap/XMLHttpRequestUploadImp.h>
-#include <org/w3c/dom/bootstrap/XPathEvaluatorImp.h>
-#include <org/w3c/dom/bootstrap/XPathExpressionImp.h>
-#include <org/w3c/dom/bootstrap/XPathNSResolverImp.h>
-#include <org/w3c/dom/bootstrap/XPathNamespaceImp.h>
-#include <org/w3c/dom/bootstrap/XPathResultImp.h>
 
 using namespace org::w3c::dom::bootstrap;
 using namespace org::w3c::dom;
@@ -307,7 +273,6 @@ void registerClasses(JSContext* cx)
     ClientRectImp::setStaticPrivate(new NativeClass(cx, ClientRectImp::getMetaData()));
     ClientRectListImp::setStaticPrivate(new NativeClass(cx, ClientRectListImp::getMetaData()));
     CounterImp::setStaticPrivate(new NativeClass(cx, CounterImp::getMetaData()));
-    DOMConfigurationImp::setStaticPrivate(new NativeClass(cx, DOMConfigurationImp::getMetaData()));
     DOMStringListImp::setStaticPrivate(new NativeClass(cx, DOMStringListImp::getMetaData()));
     DOMStringMapImp::setStaticPrivate(new NativeClass(cx, DOMStringMapImp::getMetaData()));
     DataTransferImp::setStaticPrivate(new NativeClass(cx, DataTransferImp::getMetaData()));
@@ -323,7 +288,6 @@ void registerClasses(JSContext* cx)
     MediaErrorImp::setStaticPrivate(new NativeClass(cx, MediaErrorImp::getMetaData()));
     MessageChannelImp::setStaticPrivate(new NativeClass(cx, MessageChannelImp::getMetaData()));
     MessagePortImp::setStaticPrivate(new NativeClass(cx, MessagePortImp::getMetaData()));
-    NameListImp::setStaticPrivate(new NativeClass(cx, NameListImp::getMetaData()));
     NavigatorImp::setStaticPrivate(new NativeClass(cx, NavigatorImp::getMetaData()));
     NodeFilterImp::setStaticPrivate(new NativeClass(cx, NodeFilterImp::getMetaData()));
     NodeIteratorImp::setStaticPrivate(new NativeClass(cx, NodeIteratorImp::getMetaData()));
@@ -338,7 +302,6 @@ void registerClasses(JSContext* cx)
     TextMetricsImp::setStaticPrivate(new NativeClass(cx, TextMetricsImp::getMetaData()));
     TimeRangesImp::setStaticPrivate(new NativeClass(cx, TimeRangesImp::getMetaData()));
     TreeWalkerImp::setStaticPrivate(new NativeClass(cx, TreeWalkerImp::getMetaData()));
-    URLImp::setStaticPrivate(new NativeClass(cx, URLImp::getMetaData()));
     UndoManagerImp::setStaticPrivate(new NativeClass(cx, UndoManagerImp::getMetaData()));
     ValidityStateImp::setStaticPrivate(new NativeClass(cx, ValidityStateImp::getMetaData()));
 
@@ -505,19 +468,6 @@ void registerClasses(JSContext* cx)
     AnonXMLHttpRequestImp::setStaticPrivate(new NativeClass(cx, AnonXMLHttpRequestImp::getMetaData()));
     XMLHttpRequestUploadImp::setStaticPrivate(new NativeClass(cx, XMLHttpRequestUploadImp::getMetaData()));
 
-    // NodeEditVALImp
-    NodeEditVALImp::setStaticPrivate(new NativeClass(cx, NodeEditVALImp::getMetaData()));
-    CharacterDataEditVALImp::setStaticPrivate(new NativeClass(cx, CharacterDataEditVALImp::getMetaData()));
-    DocumentEditVALImp::setStaticPrivate(new NativeClass(cx, DocumentEditVALImp::getMetaData()));
-    ElementEditVALImp::setStaticPrivate(new NativeClass(cx, ElementEditVALImp::getMetaData()));
-
-    // xpath
-    XPathEvaluatorImp::setStaticPrivate(new NativeClass(cx, XPathEvaluatorImp::getMetaData()));
-    XPathExpressionImp::setStaticPrivate(new NativeClass(cx, XPathExpressionImp::getMetaData()));
-    XPathNSResolverImp::setStaticPrivate(new NativeClass(cx, XPathNSResolverImp::getMetaData()));
-    XPathNamespaceImp::setStaticPrivate(new NativeClass(cx, XPathNamespaceImp::getMetaData()));
-    XPathResultImp::setStaticPrivate(new NativeClass(cx, XPathResultImp::getMetaData()));
-
     // file
     FileErrorImp::setStaticPrivate(new NativeClass(cx, FileErrorImp::getMetaData()));
     FileImp::setStaticPrivate(new NativeClass(cx, FileImp::getMetaData()));
@@ -539,32 +489,6 @@ void registerClasses(JSContext* cx)
 #endif
     ArrayBufferViewImp::setStaticPrivate(new NativeClass(cx, ArrayBufferViewImp::getMetaData()));
     DataViewImp::setStaticPrivate(new NativeClass(cx, DataViewImp::getMetaData()));
-
-    // WebGL
-    WebGLObjectImp::setStaticPrivate(new NativeClass(cx, WebGLObjectImp::getMetaData()));
-    WebGLActiveInfoImp::setStaticPrivate(new NativeClass(cx, WebGLActiveInfoImp::getMetaData()));
-    WebGLBufferImp::setStaticPrivate(new NativeClass(cx, WebGLBufferImp::getMetaData()));
-    WebGLContextAttributesImp::setStaticPrivate(new NativeClass(cx, WebGLContextAttributesImp::getMetaData()));
-    WebGLContextEventImp::setStaticPrivate(new NativeClass(cx, WebGLContextEventImp::getMetaData()));
-    WebGLFramebufferImp::setStaticPrivate(new NativeClass(cx, WebGLFramebufferImp::getMetaData()));
-    WebGLProgramImp::setStaticPrivate(new NativeClass(cx, WebGLProgramImp::getMetaData()));
-    WebGLRenderbufferImp::setStaticPrivate(new NativeClass(cx, WebGLRenderbufferImp::getMetaData()));
-    WebGLRenderingContextImp::setStaticPrivate(new NativeClass(cx, WebGLRenderingContextImp::getMetaData()));
-    WebGLShaderImp::setStaticPrivate(new NativeClass(cx, WebGLShaderImp::getMetaData()));
-    WebGLTextureImp::setStaticPrivate(new NativeClass(cx, WebGLTextureImp::getMetaData()));
-    WebGLUniformLocationImp::setStaticPrivate(new NativeClass(cx, WebGLUniformLocationImp::getMetaData()));
-
-    // ls
-    DOMImplementationLSImp::setStaticPrivate(new NativeClass(cx, DOMImplementationLSImp::getMetaData()));
-    LSInputImp::setStaticPrivate(new NativeClass(cx, LSInputImp::getMetaData()));
-    LSLoadEventImp::setStaticPrivate(new NativeClass(cx, LSLoadEventImp::getMetaData()));
-    LSOutputImp::setStaticPrivate(new NativeClass(cx, LSOutputImp::getMetaData()));
-    LSParserFilterImp::setStaticPrivate(new NativeClass(cx, LSParserFilterImp::getMetaData()));
-    LSParserImp::setStaticPrivate(new NativeClass(cx, LSParserImp::getMetaData()));
-    LSProgressEventImp::setStaticPrivate(new NativeClass(cx, LSProgressEventImp::getMetaData()));
-    LSResourceResolverImp::setStaticPrivate(new NativeClass(cx, LSResourceResolverImp::getMetaData()));
-    LSSerializerFilterImp::setStaticPrivate(new NativeClass(cx, LSSerializerFilterImp::getMetaData()));
-    LSSerializerImp::setStaticPrivate(new NativeClass(cx, LSSerializerImp::getMetaData()));
 }
 
 // An implementation of the Window's alert operation.

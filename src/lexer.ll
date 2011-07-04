@@ -146,6 +146,10 @@ deleter             {
                         stepLocation();
                         return DELETER;
                     }
+dictionary          {
+                        stepLocation();
+                        return DICTIONARY;
+                    }
 double              {
                         stepLocation();
                         return DOUBLE;

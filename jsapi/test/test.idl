@@ -1,8 +1,17 @@
 module test {
 
-[Constructor(DOMString type)]
+[Constructor(DOMString type, optional EventInit dict)]
 interface Event {
   attribute DOMString type;
+  readonly attribute DOMString color;
+};
+
+dictionary EventInit {
+  DOMString color;
+};
+
+dictionary CustomEventInit : EventInit {
+  any detail;
 };
 
 interface EventTarget {

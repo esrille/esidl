@@ -58,10 +58,13 @@ AM_CONDITIONAL(ENABLE_CPLUSPLUS, test "$enable_cplusplus" = "yes")
 
 AC_MSG_CHECKING([whether to generate JSAPI interfaces])
 AC_ARG_ENABLE(jsapi, AC_HELP_STRING([--enable-jsapi],
-                                    [enable JSAPI; environment variable GECKO_SDK needs to be set up first. [[default=no]]]), 
-              [], [enable_jsapi="no"])
+                                    [enable JSAPI; environment variable GECKO_SDK needs to be set up first. [[default=yes]]]), 
+              [], [enable_jsapi="yes"])
 AC_MSG_RESULT([$enable_jsapi])
 AM_CONDITIONAL(ENABLE_JSAPI, test "$enable_jsapi" = "yes")
+
+# check for SpiderMonkey 1.8.5
+AC_SEARCH_LIBS(JS_NewCompartmentAndGlobalObject, js mozjs185)
 
 AC_OUTPUT
 

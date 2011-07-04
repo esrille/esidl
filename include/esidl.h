@@ -1169,6 +1169,17 @@ public:
     void adjustMethodCount();
 };
 
+class Dictionary : public Interface
+{
+public:
+    Dictionary(std::string identifier, Node* extends = 0) :
+        Interface(identifier, extends)
+    {
+    }
+
+    virtual void accept(Visitor* visitor);
+};
+
 class Type : public Node
 {
 public:
@@ -1534,12 +1545,15 @@ class Attribute : public Member
     mutable std::string metaGetter;
     mutable std::string metaSetter;
 
+    Node* defualtValue;   // for dictionary
+
 public:
     Attribute(std::string identifier, Node* spec, bool readonly = false) :
         Member(identifier, spec, 0),
         readonly(readonly),
         getraises(0),
-        setraises(0)
+        setraises(0),
+        defualtValue(0)
     {
     }
 
@@ -1616,6 +1630,16 @@ public:
     const std::string& getPutForwards() const
     {
         return putForwards;
+    }
+
+    Node* getDefaultValue() const
+    {
+        return defualtValue;
+    }
+
+    void setDefaultValue(Node* value)
+    {
+        defualtValue = value;
     }
 
     virtual void accept(Visitor* visitor);
@@ -1878,6 +1902,11 @@ public:
         at(static_cast<const Node*>(node));
     }
 
+    virtual void at(const Dictionary* node)
+    {
+        at(static_cast<const Interface*>(node));
+    }
+
     virtual void at(const Type* node)
     {
         at(static_cast<const Node*>(node));
@@ -1996,6 +2025,13 @@ inline void Implements::accept(Visitor* visitor)
 }
 
 inline void Interface::accept(Visitor* visitor)
+{
+    Node* prev = setCurrent(this);
+    visitor->at(this);
+    setCurrent(prev);
+}
+
+inline void Dictionary::accept(Visitor* visitor)
 {
     Node* prev = setCurrent(this);
     visitor->at(this);

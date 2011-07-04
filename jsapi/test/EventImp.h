@@ -15,12 +15,14 @@
  */
 
 #include <org/w3c/dom/test/Event.h>
+#include <org/w3c/dom/test/EventInit.h>
 
 #include <iostream>
 
 class EventImp : public ObjectMixin<EventImp>
 {
     std::u16string type;
+    std::u16string color;
 public:
     // Event
     std::u16string getType() {
@@ -28,6 +30,9 @@ public:
     }
     void setType(std::u16string type) {
         this->type = type;
+    }
+    std::u16string getColor() {
+        return color;
     }
 
     // Object
@@ -38,6 +43,11 @@ public:
     EventImp(std::u16string type) :
         type(type)
     {
-        std::cout << __func__ << '(' << (char) (type[0]) << ')' << '\n';
+    }
+
+    EventImp(std::u16string type, org::w3c::dom::test::EventInit dict) :
+        type(type)
+    {
+        color = dict.getColor();
     }
 };

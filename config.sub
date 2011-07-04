@@ -775,9 +775,6 @@ case $basic_machine in
 		basic_machine=i370-ibm
 		os=-mvs
 		;;
-	nacl)
-		basic_machine=$basic_machine-unknown
-		;;
 	ncr3000)
 		basic_machine=i486-ncr
 		os=-sysv4

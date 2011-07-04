@@ -80,7 +80,6 @@ am__objects_1 = AnonXMLHttpRequest.$(OBJEXT) Attr.$(OBJEXT) \
 	CaretPosition.$(OBJEXT) CharacterData.$(OBJEXT) \
 	Comment.$(OBJEXT) Document.$(OBJEXT) \
 	DocumentFragment.$(OBJEXT) DocumentType.$(OBJEXT) \
-	DOMConfiguration.$(OBJEXT) DOMImplementation.$(OBJEXT) \
 	DOMSettableTokenList.$(OBJEXT) DOMStringList.$(OBJEXT) \
 	DOMStringMap.$(OBJEXT) DOMTokenList.$(OBJEXT) \
 	Element.$(OBJEXT) FormData.$(OBJEXT) Node.$(OBJEXT) \
@@ -166,31 +165,16 @@ am__objects_1 = AnonXMLHttpRequest.$(OBJEXT) Attr.$(OBJEXT) \
 	TextMetrics.$(OBJEXT) TimeRanges.$(OBJEXT) \
 	UndoManager.$(OBJEXT) UndoManagerEvent.$(OBJEXT) \
 	ValidityState.$(OBJEXT) Window.$(OBJEXT) \
-	DOMImplementationLS.$(OBJEXT) LSInput.$(OBJEXT) \
-	LSLoadEvent.$(OBJEXT) LSOutput.$(OBJEXT) LSParser.$(OBJEXT) \
-	LSParserFilter.$(OBJEXT) LSProgressEvent.$(OBJEXT) \
-	LSResourceResolver.$(OBJEXT) LSSerializer.$(OBJEXT) \
-	LSSerializerFilter.$(OBJEXT) DocumentRange.$(OBJEXT) \
-	Range.$(OBJEXT) LinkStyle.$(OBJEXT) MediaList.$(OBJEXT) \
-	StyleSheet.$(OBJEXT) DocumentTraversal.$(OBJEXT) \
-	NodeFilter.$(OBJEXT) NodeIterator.$(OBJEXT) \
-	TreeWalker.$(OBJEXT) ArrayBuffer.$(OBJEXT) \
-	ArrayBufferView.$(OBJEXT) DataView.$(OBJEXT) \
-	Float32Array.$(OBJEXT) Float64Array.$(OBJEXT) \
-	Int16Array.$(OBJEXT) Int32Array.$(OBJEXT) Int8Array.$(OBJEXT) \
-	Uint16Array.$(OBJEXT) Uint32Array.$(OBJEXT) \
-	Uint8Array.$(OBJEXT) CharacterDataEditVAL.$(OBJEXT) \
-	DocumentEditVAL.$(OBJEXT) ElementEditVAL.$(OBJEXT) \
-	NodeEditVAL.$(OBJEXT) ClientRect.$(OBJEXT) \
-	ClientRectList.$(OBJEXT) WebGLActiveInfo.$(OBJEXT) \
-	WebGLBuffer.$(OBJEXT) WebGLContextAttributes.$(OBJEXT) \
-	WebGLContextEvent.$(OBJEXT) WebGLFramebuffer.$(OBJEXT) \
-	WebGLObject.$(OBJEXT) WebGLProgram.$(OBJEXT) \
-	WebGLRenderbuffer.$(OBJEXT) WebGLRenderingContext.$(OBJEXT) \
-	WebGLShader.$(OBJEXT) WebGLTexture.$(OBJEXT) \
-	WebGLUniformLocation.$(OBJEXT) XPathEvaluator.$(OBJEXT) \
-	XPathExpression.$(OBJEXT) XPathNamespace.$(OBJEXT) \
-	XPathNSResolver.$(OBJEXT) XPathResult.$(OBJEXT)
+	DocumentRange.$(OBJEXT) Range.$(OBJEXT) LinkStyle.$(OBJEXT) \
+	MediaList.$(OBJEXT) StyleSheet.$(OBJEXT) \
+	DocumentTraversal.$(OBJEXT) NodeFilter.$(OBJEXT) \
+	NodeIterator.$(OBJEXT) TreeWalker.$(OBJEXT) \
+	ArrayBuffer.$(OBJEXT) ArrayBufferView.$(OBJEXT) \
+	DataView.$(OBJEXT) Float32Array.$(OBJEXT) \
+	Float64Array.$(OBJEXT) Int16Array.$(OBJEXT) \
+	Int32Array.$(OBJEXT) Int8Array.$(OBJEXT) Uint16Array.$(OBJEXT) \
+	Uint32Array.$(OBJEXT) Uint8Array.$(OBJEXT) \
+	ClientRect.$(OBJEXT) ClientRectList.$(OBJEXT)
 am__objects_2 =
 nodist_libesjsapi_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libesjsapi_a_OBJECTS = $(am_libesjsapi_a_OBJECTS) \
@@ -202,6 +186,8 @@ Reflect_test_LDADD = $(LDADD)
 Reflect_test_DEPENDENCIES = libesjsapi.a
 am_bridge_test_OBJECTS = bridge_test-bridge.test.$(OBJEXT)
 am__objects_3 = bridge_test-Event.$(OBJEXT) \
+	bridge_test-EventInit.$(OBJEXT) \
+	bridge_test-CustomEventInit.$(OBJEXT) \
 	bridge_test-EventListener.$(OBJEXT) \
 	bridge_test-EventTarget.$(OBJEXT)
 nodist_bridge_test_OBJECTS = $(am__objects_2) $(am__objects_3)
@@ -214,7 +200,6 @@ am__objects_4 = AnonXMLHttpRequestImp.$(OBJEXT) AttrImp.$(OBJEXT) \
 	CaretPositionImp.$(OBJEXT) CharacterDataImp.$(OBJEXT) \
 	CommentImp.$(OBJEXT) DocumentImp.$(OBJEXT) \
 	DocumentFragmentImp.$(OBJEXT) DocumentTypeImp.$(OBJEXT) \
-	DOMConfigurationImp.$(OBJEXT) DOMImplementationImp.$(OBJEXT) \
 	DOMSettableTokenListImp.$(OBJEXT) DOMStringListImp.$(OBJEXT) \
 	DOMStringMapImp.$(OBJEXT) DOMTokenListImp.$(OBJEXT) \
 	ElementImp.$(OBJEXT) FormDataImp.$(OBJEXT) NodeImp.$(OBJEXT) \
@@ -314,11 +299,6 @@ am__objects_4 = AnonXMLHttpRequestImp.$(OBJEXT) AttrImp.$(OBJEXT) \
 	TextMetricsImp.$(OBJEXT) TimeRangesImp.$(OBJEXT) \
 	UndoManagerImp.$(OBJEXT) UndoManagerEventImp.$(OBJEXT) \
 	ValidityStateImp.$(OBJEXT) WindowImp.$(OBJEXT) \
-	DOMImplementationLSImp.$(OBJEXT) LSInputImp.$(OBJEXT) \
-	LSLoadEventImp.$(OBJEXT) LSOutputImp.$(OBJEXT) \
-	LSParserImp.$(OBJEXT) LSParserFilterImp.$(OBJEXT) \
-	LSProgressEventImp.$(OBJEXT) LSResourceResolverImp.$(OBJEXT) \
-	LSSerializerImp.$(OBJEXT) LSSerializerFilterImp.$(OBJEXT) \
 	DocumentRangeImp.$(OBJEXT) RangeImp.$(OBJEXT) \
 	LinkStyleImp.$(OBJEXT) MediaListImp.$(OBJEXT) \
 	StyleSheetImp.$(OBJEXT) DocumentTraversalImp.$(OBJEXT) \
@@ -329,19 +309,7 @@ am__objects_4 = AnonXMLHttpRequestImp.$(OBJEXT) AttrImp.$(OBJEXT) \
 	Int16ArrayImp.$(OBJEXT) Int32ArrayImp.$(OBJEXT) \
 	Int8ArrayImp.$(OBJEXT) Uint16ArrayImp.$(OBJEXT) \
 	Uint32ArrayImp.$(OBJEXT) Uint8ArrayImp.$(OBJEXT) \
-	CharacterDataEditVALImp.$(OBJEXT) DocumentEditVALImp.$(OBJEXT) \
-	ElementEditVALImp.$(OBJEXT) NodeEditVALImp.$(OBJEXT) \
-	ClientRectImp.$(OBJEXT) ClientRectListImp.$(OBJEXT) \
-	WebGLActiveInfoImp.$(OBJEXT) WebGLBufferImp.$(OBJEXT) \
-	WebGLContextAttributesImp.$(OBJEXT) \
-	WebGLContextEventImp.$(OBJEXT) WebGLFramebufferImp.$(OBJEXT) \
-	WebGLObjectImp.$(OBJEXT) WebGLProgramImp.$(OBJEXT) \
-	WebGLRenderbufferImp.$(OBJEXT) \
-	WebGLRenderingContextImp.$(OBJEXT) WebGLShaderImp.$(OBJEXT) \
-	WebGLTextureImp.$(OBJEXT) WebGLUniformLocationImp.$(OBJEXT) \
-	XPathEvaluatorImp.$(OBJEXT) XPathExpressionImp.$(OBJEXT) \
-	XPathNamespaceImp.$(OBJEXT) XPathNSResolverImp.$(OBJEXT) \
-	XPathResultImp.$(OBJEXT)
+	ClientRectImp.$(OBJEXT) ClientRectListImp.$(OBJEXT)
 nodist_dom_test_OBJECTS = $(am__objects_4) $(am__objects_2)
 dom_test_OBJECTS = $(am_dom_test_OBJECTS) $(nodist_dom_test_OBJECTS)
 dom_test_LDADD = $(LDADD)
@@ -400,6 +368,7 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -426,6 +395,7 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
 NM = @NM@
 NMEDIT = @NMEDIT@
@@ -453,6 +423,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
@@ -515,9 +486,6 @@ idl_files = \
 	dom2ranges.idl \
 	dom2traversal.idl \
 	dom3events.idl \
-	dom3ls.idl \
-	dom3validation.idl \
-	dom3xpath.idl \
 	domcore.idl \
 	eventsource.idl \
 	file.idl \
@@ -527,8 +495,6 @@ idl_files = \
 	progress-events.idl \
 	selectors.idl \
 	typedarray.idl \
-	url.idl \
-	webgl.idl \
 	xhr2.idl
 
 generated_headers = \
@@ -540,9 +506,7 @@ generated_headers = \
 	org/w3c/dom/DocumentFragment.h \
 	org/w3c/dom/Document.h \
 	org/w3c/dom/DocumentType.h \
-	org/w3c/dom/DOMConfiguration.h \
 	org/w3c/dom/DOMException.h \
-	org/w3c/dom/DOMImplementation.h \
 	org/w3c/dom/DOMSettableTokenList.h \
 	org/w3c/dom/DOMStringList.h \
 	org/w3c/dom/DOMStringMap.h \
@@ -718,17 +682,6 @@ generated_headers = \
 	org/w3c/dom/html/UndoManager.h \
 	org/w3c/dom/html/ValidityState.h \
 	org/w3c/dom/html/Window.h \
-	org/w3c/dom/ls/DOMImplementationLS.h \
-	org/w3c/dom/ls/LSException.h \
-	org/w3c/dom/ls/LSInput.h \
-	org/w3c/dom/ls/LSLoadEvent.h \
-	org/w3c/dom/ls/LSOutput.h \
-	org/w3c/dom/ls/LSParserFilter.h \
-	org/w3c/dom/ls/LSParser.h \
-	org/w3c/dom/ls/LSProgressEvent.h \
-	org/w3c/dom/ls/LSResourceResolver.h \
-	org/w3c/dom/ls/LSSerializerFilter.h \
-	org/w3c/dom/ls/LSSerializer.h \
 	org/w3c/dom/ranges/DocumentRange.h \
 	org/w3c/dom/ranges/RangeException.h \
 	org/w3c/dom/ranges/Range.h \
@@ -750,31 +703,8 @@ generated_headers = \
 	org/w3c/dom/typedarray/Uint16Array.h \
 	org/w3c/dom/typedarray/Uint32Array.h \
 	org/w3c/dom/typedarray/Uint8Array.h \
-	org/w3c/dom/validation/CharacterDataEditVAL.h \
-	org/w3c/dom/validation/DocumentEditVAL.h \
-	org/w3c/dom/validation/ElementEditVAL.h \
-	org/w3c/dom/validation/ExceptionVAL.h \
-	org/w3c/dom/validation/NodeEditVAL.h \
 	org/w3c/dom/views/ClientRect.h \
-	org/w3c/dom/views/ClientRectList.h \
-	org/w3c/dom/webgl/WebGLActiveInfo.h \
-	org/w3c/dom/webgl/WebGLBuffer.h \
-	org/w3c/dom/webgl/WebGLContextAttributes.h \
-	org/w3c/dom/webgl/WebGLContextEvent.h \
-	org/w3c/dom/webgl/WebGLFramebuffer.h \
-	org/w3c/dom/webgl/WebGLObject.h \
-	org/w3c/dom/webgl/WebGLProgram.h \
-	org/w3c/dom/webgl/WebGLRenderbuffer.h \
-	org/w3c/dom/webgl/WebGLRenderingContext.h \
-	org/w3c/dom/webgl/WebGLShader.h \
-	org/w3c/dom/webgl/WebGLTexture.h \
-	org/w3c/dom/webgl/WebGLUniformLocation.h \
-	org/w3c/dom/xpath/XPathEvaluator.h \
-	org/w3c/dom/xpath/XPathException.h \
-	org/w3c/dom/xpath/XPathExpression.h \
-	org/w3c/dom/xpath/XPathNamespace.h \
-	org/w3c/dom/xpath/XPathNSResolver.h \
-	org/w3c/dom/xpath/XPathResult.h
+	org/w3c/dom/views/ClientRectList.h
 
 generated_sources = \
 	org/w3c/dom/AnonXMLHttpRequest.cpp \
@@ -785,8 +715,6 @@ generated_sources = \
 	org/w3c/dom/Document.cpp \
 	org/w3c/dom/DocumentFragment.cpp \
 	org/w3c/dom/DocumentType.cpp \
-	org/w3c/dom/DOMConfiguration.cpp \
-	org/w3c/dom/DOMImplementation.cpp \
 	org/w3c/dom/DOMSettableTokenList.cpp \
 	org/w3c/dom/DOMStringList.cpp \
 	org/w3c/dom/DOMStringMap.cpp \
@@ -960,16 +888,6 @@ generated_sources = \
 	org/w3c/dom/html/UndoManagerEvent.cpp \
 	org/w3c/dom/html/ValidityState.cpp \
 	org/w3c/dom/html/Window.cpp \
-	org/w3c/dom/ls/DOMImplementationLS.cpp \
-	org/w3c/dom/ls/LSInput.cpp \
-	org/w3c/dom/ls/LSLoadEvent.cpp \
-	org/w3c/dom/ls/LSOutput.cpp \
-	org/w3c/dom/ls/LSParser.cpp \
-	org/w3c/dom/ls/LSParserFilter.cpp \
-	org/w3c/dom/ls/LSProgressEvent.cpp \
-	org/w3c/dom/ls/LSResourceResolver.cpp \
-	org/w3c/dom/ls/LSSerializer.cpp \
-	org/w3c/dom/ls/LSSerializerFilter.cpp \
 	org/w3c/dom/ranges/DocumentRange.cpp \
 	org/w3c/dom/ranges/Range.cpp \
 	org/w3c/dom/stylesheets/LinkStyle.cpp \
@@ -990,29 +908,8 @@ generated_sources = \
 	org/w3c/dom/typedarray/Uint16Array.cpp \
 	org/w3c/dom/typedarray/Uint32Array.cpp \
 	org/w3c/dom/typedarray/Uint8Array.cpp \
-	org/w3c/dom/validation/CharacterDataEditVAL.cpp \
-	org/w3c/dom/validation/DocumentEditVAL.cpp \
-	org/w3c/dom/validation/ElementEditVAL.cpp \
-	org/w3c/dom/validation/NodeEditVAL.cpp \
 	org/w3c/dom/views/ClientRect.cpp \
-	org/w3c/dom/views/ClientRectList.cpp \
-	org/w3c/dom/webgl/WebGLActiveInfo.cpp \
-	org/w3c/dom/webgl/WebGLBuffer.cpp \
-	org/w3c/dom/webgl/WebGLContextAttributes.cpp \
-	org/w3c/dom/webgl/WebGLContextEvent.cpp \
-	org/w3c/dom/webgl/WebGLFramebuffer.cpp \
-	org/w3c/dom/webgl/WebGLObject.cpp \
-	org/w3c/dom/webgl/WebGLProgram.cpp \
-	org/w3c/dom/webgl/WebGLRenderbuffer.cpp \
-	org/w3c/dom/webgl/WebGLRenderingContext.cpp \
-	org/w3c/dom/webgl/WebGLShader.cpp \
-	org/w3c/dom/webgl/WebGLTexture.cpp \
-	org/w3c/dom/webgl/WebGLUniformLocation.cpp \
-	org/w3c/dom/xpath/XPathEvaluator.cpp \
-	org/w3c/dom/xpath/XPathExpression.cpp \
-	org/w3c/dom/xpath/XPathNamespace.cpp \
-	org/w3c/dom/xpath/XPathNSResolver.cpp \
-	org/w3c/dom/xpath/XPathResult.cpp
+	org/w3c/dom/views/ClientRectList.cpp
 
 BUILT_SOURCES = $(generated_sources) $(generated_headers) \
 	$(generated_imp_sources) $(generated_imp_headers) \
@@ -1022,13 +919,12 @@ lib_LIBRARIES = libesjsapi.a
 LDADD = libesjsapi.a
 AM_CPPFLAGS = \
 	-std=gnu++0x -Wall \
-	-I $(GECKO_SDK)/include \
 	-I $(srcdir)/include \
 	-I $(srcdir)/../cplusplus \
 	-DXP_UNIX -DHAVE_CONFIG_H
 
 AM_LDFLAGS = \
-	-L$(GECKO_SDK)/lib -ljs_static -lpthread
+	-lpthread
 
 nodist_libesjsapi_a_SOURCES = $(generated_sources) $(generated_headers)
 libesjsapi_a_SOURCES = \
@@ -1046,8 +942,6 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/DocumentFragmentImp.h \
 	org/w3c/dom/bootstrap/DocumentImp.h \
 	org/w3c/dom/bootstrap/DocumentTypeImp.h \
-	org/w3c/dom/bootstrap/DOMConfigurationImp.h \
-	org/w3c/dom/bootstrap/DOMImplementationImp.h \
 	org/w3c/dom/bootstrap/DOMSettableTokenListImp.h \
 	org/w3c/dom/bootstrap/DOMStringListImp.h \
 	org/w3c/dom/bootstrap/DOMStringMapImp.h \
@@ -1221,16 +1115,6 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/UndoManagerImp.h \
 	org/w3c/dom/bootstrap/ValidityStateImp.h \
 	org/w3c/dom/bootstrap/WindowImp.h \
-	org/w3c/dom/bootstrap/DOMImplementationLSImp.h \
-	org/w3c/dom/bootstrap/LSInputImp.h \
-	org/w3c/dom/bootstrap/LSLoadEventImp.h \
-	org/w3c/dom/bootstrap/LSOutputImp.h \
-	org/w3c/dom/bootstrap/LSParserFilterImp.h \
-	org/w3c/dom/bootstrap/LSParserImp.h \
-	org/w3c/dom/bootstrap/LSProgressEventImp.h \
-	org/w3c/dom/bootstrap/LSResourceResolverImp.h \
-	org/w3c/dom/bootstrap/LSSerializerFilterImp.h \
-	org/w3c/dom/bootstrap/LSSerializerImp.h \
 	org/w3c/dom/bootstrap/DocumentRangeImp.h \
 	org/w3c/dom/bootstrap/RangeImp.h \
 	org/w3c/dom/bootstrap/LinkStyleImp.h \
@@ -1251,29 +1135,8 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/Uint16ArrayImp.h \
 	org/w3c/dom/bootstrap/Uint32ArrayImp.h \
 	org/w3c/dom/bootstrap/Uint8ArrayImp.h \
-	org/w3c/dom/bootstrap/CharacterDataEditVALImp.h \
-	org/w3c/dom/bootstrap/DocumentEditVALImp.h \
-	org/w3c/dom/bootstrap/ElementEditVALImp.h \
-	org/w3c/dom/bootstrap/NodeEditVALImp.h \
 	org/w3c/dom/bootstrap/ClientRectImp.h \
-	org/w3c/dom/bootstrap/ClientRectListImp.h \
-	org/w3c/dom/bootstrap/WebGLActiveInfoImp.h \
-	org/w3c/dom/bootstrap/WebGLBufferImp.h \
-	org/w3c/dom/bootstrap/WebGLContextAttributesImp.h \
-	org/w3c/dom/bootstrap/WebGLContextEventImp.h \
-	org/w3c/dom/bootstrap/WebGLFramebufferImp.h \
-	org/w3c/dom/bootstrap/WebGLObjectImp.h \
-	org/w3c/dom/bootstrap/WebGLProgramImp.h \
-	org/w3c/dom/bootstrap/WebGLRenderbufferImp.h \
-	org/w3c/dom/bootstrap/WebGLRenderingContextImp.h \
-	org/w3c/dom/bootstrap/WebGLShaderImp.h \
-	org/w3c/dom/bootstrap/WebGLTextureImp.h \
-	org/w3c/dom/bootstrap/WebGLUniformLocationImp.h \
-	org/w3c/dom/bootstrap/XPathEvaluatorImp.h \
-	org/w3c/dom/bootstrap/XPathExpressionImp.h \
-	org/w3c/dom/bootstrap/XPathNamespaceImp.h \
-	org/w3c/dom/bootstrap/XPathNSResolverImp.h \
-	org/w3c/dom/bootstrap/XPathResultImp.h
+	org/w3c/dom/bootstrap/ClientRectListImp.h
 
 generated_imp_sources = \
 	org/w3c/dom/bootstrap/AnonXMLHttpRequestImp.cpp \
@@ -1284,8 +1147,6 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/DocumentImp.cpp \
 	org/w3c/dom/bootstrap/DocumentFragmentImp.cpp \
 	org/w3c/dom/bootstrap/DocumentTypeImp.cpp \
-	org/w3c/dom/bootstrap/DOMConfigurationImp.cpp \
-	org/w3c/dom/bootstrap/DOMImplementationImp.cpp \
 	org/w3c/dom/bootstrap/DOMSettableTokenListImp.cpp \
 	org/w3c/dom/bootstrap/DOMStringListImp.cpp \
 	org/w3c/dom/bootstrap/DOMStringMapImp.cpp \
@@ -1459,16 +1320,6 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/UndoManagerEventImp.cpp \
 	org/w3c/dom/bootstrap/ValidityStateImp.cpp \
 	org/w3c/dom/bootstrap/WindowImp.cpp \
-	org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp \
-	org/w3c/dom/bootstrap/LSInputImp.cpp \
-	org/w3c/dom/bootstrap/LSLoadEventImp.cpp \
-	org/w3c/dom/bootstrap/LSOutputImp.cpp \
-	org/w3c/dom/bootstrap/LSParserImp.cpp \
-	org/w3c/dom/bootstrap/LSParserFilterImp.cpp \
-	org/w3c/dom/bootstrap/LSProgressEventImp.cpp \
-	org/w3c/dom/bootstrap/LSResourceResolverImp.cpp \
-	org/w3c/dom/bootstrap/LSSerializerImp.cpp \
-	org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp \
 	org/w3c/dom/bootstrap/DocumentRangeImp.cpp \
 	org/w3c/dom/bootstrap/RangeImp.cpp \
 	org/w3c/dom/bootstrap/LinkStyleImp.cpp \
@@ -1489,37 +1340,20 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/Uint16ArrayImp.cpp \
 	org/w3c/dom/bootstrap/Uint32ArrayImp.cpp \
 	org/w3c/dom/bootstrap/Uint8ArrayImp.cpp \
-	org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp \
-	org/w3c/dom/bootstrap/DocumentEditVALImp.cpp \
-	org/w3c/dom/bootstrap/ElementEditVALImp.cpp \
-	org/w3c/dom/bootstrap/NodeEditVALImp.cpp \
 	org/w3c/dom/bootstrap/ClientRectImp.cpp \
-	org/w3c/dom/bootstrap/ClientRectListImp.cpp \
-	org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp \
-	org/w3c/dom/bootstrap/WebGLBufferImp.cpp \
-	org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp \
-	org/w3c/dom/bootstrap/WebGLContextEventImp.cpp \
-	org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp \
-	org/w3c/dom/bootstrap/WebGLObjectImp.cpp \
-	org/w3c/dom/bootstrap/WebGLProgramImp.cpp \
-	org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp \
-	org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp \
-	org/w3c/dom/bootstrap/WebGLShaderImp.cpp \
-	org/w3c/dom/bootstrap/WebGLTextureImp.cpp \
-	org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp \
-	org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp \
-	org/w3c/dom/bootstrap/XPathExpressionImp.cpp \
-	org/w3c/dom/bootstrap/XPathNamespaceImp.cpp \
-	org/w3c/dom/bootstrap/XPathNSResolverImp.cpp \
-	org/w3c/dom/bootstrap/XPathResultImp.cpp
+	org/w3c/dom/bootstrap/ClientRectListImp.cpp
 
 generated_test_headers = \
 	org/w3c/dom/test/Event.h \
+	org/w3c/dom/test/EventInit.h \
+	org/w3c/dom/test/CustomEventInit.h \
 	org/w3c/dom/test/EventListener.h \
 	org/w3c/dom/test/EventTarget.h
 
 generated_test_sources = \
 	org/w3c/dom/test/Event.cpp \
+	org/w3c/dom/test/EventInit.cpp \
+	org/w3c/dom/test/CustomEventInit.cpp \
 	org/w3c/dom/test/EventListener.cpp \
 	org/w3c/dom/test/EventTarget.cpp
 
@@ -1753,8 +1587,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CaretPosition.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CaretPositionImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CharacterData.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CharacterDataEditVAL.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CharacterDataEditVALImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CharacterDataImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ClientRect.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ClientRectImp.Po@am__quote@
@@ -1768,14 +1600,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CounterImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CustomEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CustomEventImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMConfiguration.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMConfigurationImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMImplementation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMImplementationCSS.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMImplementationCSSImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMImplementationImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMImplementationLS.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMImplementationLSImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMSettableTokenList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMSettableTokenListImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DOMStringList.Po@am__quote@
@@ -1791,8 +1617,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Document.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentCSS.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentCSSImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentEditVAL.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentEditVALImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentFragment.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentFragmentImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DocumentImp.Po@am__quote@
@@ -1807,8 +1631,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Element.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ElementCSSInlineStyle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ElementCSSInlineStyleImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ElementEditVAL.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ElementEditVALImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ElementImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Event.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventImp.Po@am__quote@
@@ -2006,24 +1828,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Int8ArrayImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/KeyboardEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/KeyboardEventImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSInput.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSInputImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSLoadEvent.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSLoadEventImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSOutput.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSOutputImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSParser.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSParserFilter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSParserFilterImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSParserImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSProgressEvent.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSProgressEventImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSResourceResolver.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSResourceResolverImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSSerializer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSSerializerFilter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSSerializerFilterImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LSSerializerImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LinkStyle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LinkStyleImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Location.Po@am__quote@
@@ -2047,8 +1851,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Navigator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NavigatorImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Node.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NodeEditVAL.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NodeEditVALImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NodeFilter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NodeFilterImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NodeImp.Po@am__quote@
@@ -2107,30 +1909,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UndoManagerImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ValidityState.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ValidityStateImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLActiveInfo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLActiveInfoImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLBuffer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLBufferImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLContextAttributes.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLContextAttributesImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLContextEvent.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLContextEventImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLFramebuffer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLFramebufferImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLObject.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLObjectImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLProgram.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLProgramImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLRenderbuffer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLRenderbufferImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLRenderingContext.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLRenderingContextImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLShader.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLShaderImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLTexture.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLTextureImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLUniformLocation.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WebGLUniformLocationImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WheelEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WheelEventImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Window.Po@am__quote@
@@ -2141,18 +1919,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XMLHttpRequestImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XMLHttpRequestUpload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XMLHttpRequestUploadImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathEvaluator.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathEvaluatorImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathExpression.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathExpressionImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathNSResolver.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathNSResolverImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathNamespace.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathNamespaceImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathResult.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XPathResultImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bridge.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bridge_test-CustomEventInit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bridge_test-Event.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bridge_test-EventInit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bridge_test-EventListener.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bridge_test-EventTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bridge_test-bridge.test.Po@am__quote@
@@ -2318,34 +2088,6 @@ DocumentType.obj: org/w3c/dom/DocumentType.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/DocumentType.cpp' object='DocumentType.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DocumentType.obj `if test -f 'org/w3c/dom/DocumentType.cpp'; then $(CYGPATH_W) 'org/w3c/dom/DocumentType.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/DocumentType.cpp'; fi`
-
-DOMConfiguration.o: org/w3c/dom/DOMConfiguration.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMConfiguration.o -MD -MP -MF $(DEPDIR)/DOMConfiguration.Tpo -c -o DOMConfiguration.o `test -f 'org/w3c/dom/DOMConfiguration.cpp' || echo '$(srcdir)/'`org/w3c/dom/DOMConfiguration.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMConfiguration.Tpo $(DEPDIR)/DOMConfiguration.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/DOMConfiguration.cpp' object='DOMConfiguration.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMConfiguration.o `test -f 'org/w3c/dom/DOMConfiguration.cpp' || echo '$(srcdir)/'`org/w3c/dom/DOMConfiguration.cpp
-
-DOMConfiguration.obj: org/w3c/dom/DOMConfiguration.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMConfiguration.obj -MD -MP -MF $(DEPDIR)/DOMConfiguration.Tpo -c -o DOMConfiguration.obj `if test -f 'org/w3c/dom/DOMConfiguration.cpp'; then $(CYGPATH_W) 'org/w3c/dom/DOMConfiguration.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/DOMConfiguration.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMConfiguration.Tpo $(DEPDIR)/DOMConfiguration.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/DOMConfiguration.cpp' object='DOMConfiguration.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMConfiguration.obj `if test -f 'org/w3c/dom/DOMConfiguration.cpp'; then $(CYGPATH_W) 'org/w3c/dom/DOMConfiguration.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/DOMConfiguration.cpp'; fi`
-
-DOMImplementation.o: org/w3c/dom/DOMImplementation.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementation.o -MD -MP -MF $(DEPDIR)/DOMImplementation.Tpo -c -o DOMImplementation.o `test -f 'org/w3c/dom/DOMImplementation.cpp' || echo '$(srcdir)/'`org/w3c/dom/DOMImplementation.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMImplementation.Tpo $(DEPDIR)/DOMImplementation.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/DOMImplementation.cpp' object='DOMImplementation.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMImplementation.o `test -f 'org/w3c/dom/DOMImplementation.cpp' || echo '$(srcdir)/'`org/w3c/dom/DOMImplementation.cpp
-
-DOMImplementation.obj: org/w3c/dom/DOMImplementation.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementation.obj -MD -MP -MF $(DEPDIR)/DOMImplementation.Tpo -c -o DOMImplementation.obj `if test -f 'org/w3c/dom/DOMImplementation.cpp'; then $(CYGPATH_W) 'org/w3c/dom/DOMImplementation.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/DOMImplementation.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMImplementation.Tpo $(DEPDIR)/DOMImplementation.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/DOMImplementation.cpp' object='DOMImplementation.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMImplementation.obj `if test -f 'org/w3c/dom/DOMImplementation.cpp'; then $(CYGPATH_W) 'org/w3c/dom/DOMImplementation.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/DOMImplementation.cpp'; fi`
 
 DOMSettableTokenList.o: org/w3c/dom/DOMSettableTokenList.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMSettableTokenList.o -MD -MP -MF $(DEPDIR)/DOMSettableTokenList.Tpo -c -o DOMSettableTokenList.o `test -f 'org/w3c/dom/DOMSettableTokenList.cpp' || echo '$(srcdir)/'`org/w3c/dom/DOMSettableTokenList.cpp
@@ -4769,146 +4511,6 @@ Window.obj: org/w3c/dom/html/Window.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Window.obj `if test -f 'org/w3c/dom/html/Window.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/Window.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/Window.cpp'; fi`
 
-DOMImplementationLS.o: org/w3c/dom/ls/DOMImplementationLS.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementationLS.o -MD -MP -MF $(DEPDIR)/DOMImplementationLS.Tpo -c -o DOMImplementationLS.o `test -f 'org/w3c/dom/ls/DOMImplementationLS.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/DOMImplementationLS.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMImplementationLS.Tpo $(DEPDIR)/DOMImplementationLS.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/DOMImplementationLS.cpp' object='DOMImplementationLS.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMImplementationLS.o `test -f 'org/w3c/dom/ls/DOMImplementationLS.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/DOMImplementationLS.cpp
-
-DOMImplementationLS.obj: org/w3c/dom/ls/DOMImplementationLS.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementationLS.obj -MD -MP -MF $(DEPDIR)/DOMImplementationLS.Tpo -c -o DOMImplementationLS.obj `if test -f 'org/w3c/dom/ls/DOMImplementationLS.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/DOMImplementationLS.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/DOMImplementationLS.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMImplementationLS.Tpo $(DEPDIR)/DOMImplementationLS.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/DOMImplementationLS.cpp' object='DOMImplementationLS.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMImplementationLS.obj `if test -f 'org/w3c/dom/ls/DOMImplementationLS.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/DOMImplementationLS.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/DOMImplementationLS.cpp'; fi`
-
-LSInput.o: org/w3c/dom/ls/LSInput.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSInput.o -MD -MP -MF $(DEPDIR)/LSInput.Tpo -c -o LSInput.o `test -f 'org/w3c/dom/ls/LSInput.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSInput.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSInput.Tpo $(DEPDIR)/LSInput.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSInput.cpp' object='LSInput.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSInput.o `test -f 'org/w3c/dom/ls/LSInput.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSInput.cpp
-
-LSInput.obj: org/w3c/dom/ls/LSInput.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSInput.obj -MD -MP -MF $(DEPDIR)/LSInput.Tpo -c -o LSInput.obj `if test -f 'org/w3c/dom/ls/LSInput.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSInput.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSInput.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSInput.Tpo $(DEPDIR)/LSInput.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSInput.cpp' object='LSInput.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSInput.obj `if test -f 'org/w3c/dom/ls/LSInput.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSInput.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSInput.cpp'; fi`
-
-LSLoadEvent.o: org/w3c/dom/ls/LSLoadEvent.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSLoadEvent.o -MD -MP -MF $(DEPDIR)/LSLoadEvent.Tpo -c -o LSLoadEvent.o `test -f 'org/w3c/dom/ls/LSLoadEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSLoadEvent.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSLoadEvent.Tpo $(DEPDIR)/LSLoadEvent.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSLoadEvent.cpp' object='LSLoadEvent.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSLoadEvent.o `test -f 'org/w3c/dom/ls/LSLoadEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSLoadEvent.cpp
-
-LSLoadEvent.obj: org/w3c/dom/ls/LSLoadEvent.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSLoadEvent.obj -MD -MP -MF $(DEPDIR)/LSLoadEvent.Tpo -c -o LSLoadEvent.obj `if test -f 'org/w3c/dom/ls/LSLoadEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSLoadEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSLoadEvent.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSLoadEvent.Tpo $(DEPDIR)/LSLoadEvent.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSLoadEvent.cpp' object='LSLoadEvent.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSLoadEvent.obj `if test -f 'org/w3c/dom/ls/LSLoadEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSLoadEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSLoadEvent.cpp'; fi`
-
-LSOutput.o: org/w3c/dom/ls/LSOutput.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSOutput.o -MD -MP -MF $(DEPDIR)/LSOutput.Tpo -c -o LSOutput.o `test -f 'org/w3c/dom/ls/LSOutput.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSOutput.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSOutput.Tpo $(DEPDIR)/LSOutput.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSOutput.cpp' object='LSOutput.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSOutput.o `test -f 'org/w3c/dom/ls/LSOutput.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSOutput.cpp
-
-LSOutput.obj: org/w3c/dom/ls/LSOutput.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSOutput.obj -MD -MP -MF $(DEPDIR)/LSOutput.Tpo -c -o LSOutput.obj `if test -f 'org/w3c/dom/ls/LSOutput.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSOutput.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSOutput.Tpo $(DEPDIR)/LSOutput.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSOutput.cpp' object='LSOutput.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSOutput.obj `if test -f 'org/w3c/dom/ls/LSOutput.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSOutput.cpp'; fi`
-
-LSParser.o: org/w3c/dom/ls/LSParser.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSParser.o -MD -MP -MF $(DEPDIR)/LSParser.Tpo -c -o LSParser.o `test -f 'org/w3c/dom/ls/LSParser.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSParser.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSParser.Tpo $(DEPDIR)/LSParser.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSParser.cpp' object='LSParser.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSParser.o `test -f 'org/w3c/dom/ls/LSParser.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSParser.cpp
-
-LSParser.obj: org/w3c/dom/ls/LSParser.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSParser.obj -MD -MP -MF $(DEPDIR)/LSParser.Tpo -c -o LSParser.obj `if test -f 'org/w3c/dom/ls/LSParser.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSParser.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSParser.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSParser.Tpo $(DEPDIR)/LSParser.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSParser.cpp' object='LSParser.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSParser.obj `if test -f 'org/w3c/dom/ls/LSParser.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSParser.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSParser.cpp'; fi`
-
-LSParserFilter.o: org/w3c/dom/ls/LSParserFilter.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSParserFilter.o -MD -MP -MF $(DEPDIR)/LSParserFilter.Tpo -c -o LSParserFilter.o `test -f 'org/w3c/dom/ls/LSParserFilter.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSParserFilter.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSParserFilter.Tpo $(DEPDIR)/LSParserFilter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSParserFilter.cpp' object='LSParserFilter.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSParserFilter.o `test -f 'org/w3c/dom/ls/LSParserFilter.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSParserFilter.cpp
-
-LSParserFilter.obj: org/w3c/dom/ls/LSParserFilter.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSParserFilter.obj -MD -MP -MF $(DEPDIR)/LSParserFilter.Tpo -c -o LSParserFilter.obj `if test -f 'org/w3c/dom/ls/LSParserFilter.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSParserFilter.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSParserFilter.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSParserFilter.Tpo $(DEPDIR)/LSParserFilter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSParserFilter.cpp' object='LSParserFilter.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSParserFilter.obj `if test -f 'org/w3c/dom/ls/LSParserFilter.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSParserFilter.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSParserFilter.cpp'; fi`
-
-LSProgressEvent.o: org/w3c/dom/ls/LSProgressEvent.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSProgressEvent.o -MD -MP -MF $(DEPDIR)/LSProgressEvent.Tpo -c -o LSProgressEvent.o `test -f 'org/w3c/dom/ls/LSProgressEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSProgressEvent.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSProgressEvent.Tpo $(DEPDIR)/LSProgressEvent.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSProgressEvent.cpp' object='LSProgressEvent.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSProgressEvent.o `test -f 'org/w3c/dom/ls/LSProgressEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSProgressEvent.cpp
-
-LSProgressEvent.obj: org/w3c/dom/ls/LSProgressEvent.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSProgressEvent.obj -MD -MP -MF $(DEPDIR)/LSProgressEvent.Tpo -c -o LSProgressEvent.obj `if test -f 'org/w3c/dom/ls/LSProgressEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSProgressEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSProgressEvent.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSProgressEvent.Tpo $(DEPDIR)/LSProgressEvent.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSProgressEvent.cpp' object='LSProgressEvent.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSProgressEvent.obj `if test -f 'org/w3c/dom/ls/LSProgressEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSProgressEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSProgressEvent.cpp'; fi`
-
-LSResourceResolver.o: org/w3c/dom/ls/LSResourceResolver.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSResourceResolver.o -MD -MP -MF $(DEPDIR)/LSResourceResolver.Tpo -c -o LSResourceResolver.o `test -f 'org/w3c/dom/ls/LSResourceResolver.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSResourceResolver.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSResourceResolver.Tpo $(DEPDIR)/LSResourceResolver.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSResourceResolver.cpp' object='LSResourceResolver.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSResourceResolver.o `test -f 'org/w3c/dom/ls/LSResourceResolver.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSResourceResolver.cpp
-
-LSResourceResolver.obj: org/w3c/dom/ls/LSResourceResolver.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSResourceResolver.obj -MD -MP -MF $(DEPDIR)/LSResourceResolver.Tpo -c -o LSResourceResolver.obj `if test -f 'org/w3c/dom/ls/LSResourceResolver.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSResourceResolver.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSResourceResolver.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSResourceResolver.Tpo $(DEPDIR)/LSResourceResolver.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSResourceResolver.cpp' object='LSResourceResolver.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSResourceResolver.obj `if test -f 'org/w3c/dom/ls/LSResourceResolver.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSResourceResolver.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSResourceResolver.cpp'; fi`
-
-LSSerializer.o: org/w3c/dom/ls/LSSerializer.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSSerializer.o -MD -MP -MF $(DEPDIR)/LSSerializer.Tpo -c -o LSSerializer.o `test -f 'org/w3c/dom/ls/LSSerializer.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSSerializer.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSSerializer.Tpo $(DEPDIR)/LSSerializer.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSSerializer.cpp' object='LSSerializer.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSSerializer.o `test -f 'org/w3c/dom/ls/LSSerializer.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSSerializer.cpp
-
-LSSerializer.obj: org/w3c/dom/ls/LSSerializer.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSSerializer.obj -MD -MP -MF $(DEPDIR)/LSSerializer.Tpo -c -o LSSerializer.obj `if test -f 'org/w3c/dom/ls/LSSerializer.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSSerializer.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSSerializer.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSSerializer.Tpo $(DEPDIR)/LSSerializer.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSSerializer.cpp' object='LSSerializer.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSSerializer.obj `if test -f 'org/w3c/dom/ls/LSSerializer.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSSerializer.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSSerializer.cpp'; fi`
-
-LSSerializerFilter.o: org/w3c/dom/ls/LSSerializerFilter.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSSerializerFilter.o -MD -MP -MF $(DEPDIR)/LSSerializerFilter.Tpo -c -o LSSerializerFilter.o `test -f 'org/w3c/dom/ls/LSSerializerFilter.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSSerializerFilter.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSSerializerFilter.Tpo $(DEPDIR)/LSSerializerFilter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSSerializerFilter.cpp' object='LSSerializerFilter.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSSerializerFilter.o `test -f 'org/w3c/dom/ls/LSSerializerFilter.cpp' || echo '$(srcdir)/'`org/w3c/dom/ls/LSSerializerFilter.cpp
-
-LSSerializerFilter.obj: org/w3c/dom/ls/LSSerializerFilter.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSSerializerFilter.obj -MD -MP -MF $(DEPDIR)/LSSerializerFilter.Tpo -c -o LSSerializerFilter.obj `if test -f 'org/w3c/dom/ls/LSSerializerFilter.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSSerializerFilter.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSSerializerFilter.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSSerializerFilter.Tpo $(DEPDIR)/LSSerializerFilter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/ls/LSSerializerFilter.cpp' object='LSSerializerFilter.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSSerializerFilter.obj `if test -f 'org/w3c/dom/ls/LSSerializerFilter.cpp'; then $(CYGPATH_W) 'org/w3c/dom/ls/LSSerializerFilter.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/ls/LSSerializerFilter.cpp'; fi`
-
 DocumentRange.o: org/w3c/dom/ranges/DocumentRange.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DocumentRange.o -MD -MP -MF $(DEPDIR)/DocumentRange.Tpo -c -o DocumentRange.o `test -f 'org/w3c/dom/ranges/DocumentRange.cpp' || echo '$(srcdir)/'`org/w3c/dom/ranges/DocumentRange.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DocumentRange.Tpo $(DEPDIR)/DocumentRange.Po
@@ -5189,62 +4791,6 @@ Uint8Array.obj: org/w3c/dom/typedarray/Uint8Array.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Uint8Array.obj `if test -f 'org/w3c/dom/typedarray/Uint8Array.cpp'; then $(CYGPATH_W) 'org/w3c/dom/typedarray/Uint8Array.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/typedarray/Uint8Array.cpp'; fi`
 
-CharacterDataEditVAL.o: org/w3c/dom/validation/CharacterDataEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CharacterDataEditVAL.o -MD -MP -MF $(DEPDIR)/CharacterDataEditVAL.Tpo -c -o CharacterDataEditVAL.o `test -f 'org/w3c/dom/validation/CharacterDataEditVAL.cpp' || echo '$(srcdir)/'`org/w3c/dom/validation/CharacterDataEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/CharacterDataEditVAL.Tpo $(DEPDIR)/CharacterDataEditVAL.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/validation/CharacterDataEditVAL.cpp' object='CharacterDataEditVAL.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CharacterDataEditVAL.o `test -f 'org/w3c/dom/validation/CharacterDataEditVAL.cpp' || echo '$(srcdir)/'`org/w3c/dom/validation/CharacterDataEditVAL.cpp
-
-CharacterDataEditVAL.obj: org/w3c/dom/validation/CharacterDataEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CharacterDataEditVAL.obj -MD -MP -MF $(DEPDIR)/CharacterDataEditVAL.Tpo -c -o CharacterDataEditVAL.obj `if test -f 'org/w3c/dom/validation/CharacterDataEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/CharacterDataEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/CharacterDataEditVAL.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/CharacterDataEditVAL.Tpo $(DEPDIR)/CharacterDataEditVAL.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/validation/CharacterDataEditVAL.cpp' object='CharacterDataEditVAL.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CharacterDataEditVAL.obj `if test -f 'org/w3c/dom/validation/CharacterDataEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/CharacterDataEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/CharacterDataEditVAL.cpp'; fi`
-
-DocumentEditVAL.o: org/w3c/dom/validation/DocumentEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DocumentEditVAL.o -MD -MP -MF $(DEPDIR)/DocumentEditVAL.Tpo -c -o DocumentEditVAL.o `test -f 'org/w3c/dom/validation/DocumentEditVAL.cpp' || echo '$(srcdir)/'`org/w3c/dom/validation/DocumentEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DocumentEditVAL.Tpo $(DEPDIR)/DocumentEditVAL.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/validation/DocumentEditVAL.cpp' object='DocumentEditVAL.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DocumentEditVAL.o `test -f 'org/w3c/dom/validation/DocumentEditVAL.cpp' || echo '$(srcdir)/'`org/w3c/dom/validation/DocumentEditVAL.cpp
-
-DocumentEditVAL.obj: org/w3c/dom/validation/DocumentEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DocumentEditVAL.obj -MD -MP -MF $(DEPDIR)/DocumentEditVAL.Tpo -c -o DocumentEditVAL.obj `if test -f 'org/w3c/dom/validation/DocumentEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/DocumentEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/DocumentEditVAL.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DocumentEditVAL.Tpo $(DEPDIR)/DocumentEditVAL.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/validation/DocumentEditVAL.cpp' object='DocumentEditVAL.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DocumentEditVAL.obj `if test -f 'org/w3c/dom/validation/DocumentEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/DocumentEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/DocumentEditVAL.cpp'; fi`
-
-ElementEditVAL.o: org/w3c/dom/validation/ElementEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ElementEditVAL.o -MD -MP -MF $(DEPDIR)/ElementEditVAL.Tpo -c -o ElementEditVAL.o `test -f 'org/w3c/dom/validation/ElementEditVAL.cpp' || echo '$(srcdir)/'`org/w3c/dom/validation/ElementEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ElementEditVAL.Tpo $(DEPDIR)/ElementEditVAL.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/validation/ElementEditVAL.cpp' object='ElementEditVAL.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ElementEditVAL.o `test -f 'org/w3c/dom/validation/ElementEditVAL.cpp' || echo '$(srcdir)/'`org/w3c/dom/validation/ElementEditVAL.cpp
-
-ElementEditVAL.obj: org/w3c/dom/validation/ElementEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ElementEditVAL.obj -MD -MP -MF $(DEPDIR)/ElementEditVAL.Tpo -c -o ElementEditVAL.obj `if test -f 'org/w3c/dom/validation/ElementEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/ElementEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/ElementEditVAL.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ElementEditVAL.Tpo $(DEPDIR)/ElementEditVAL.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/validation/ElementEditVAL.cpp' object='ElementEditVAL.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ElementEditVAL.obj `if test -f 'org/w3c/dom/validation/ElementEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/ElementEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/ElementEditVAL.cpp'; fi`
-
-NodeEditVAL.o: org/w3c/dom/validation/NodeEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT NodeEditVAL.o -MD -MP -MF $(DEPDIR)/NodeEditVAL.Tpo -c -o NodeEditVAL.o `test -f 'org/w3c/dom/validation/NodeEditVAL.cpp' || echo '$(srcdir)/'`org/w3c/dom/validation/NodeEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/NodeEditVAL.Tpo $(DEPDIR)/NodeEditVAL.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/validation/NodeEditVAL.cpp' object='NodeEditVAL.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o NodeEditVAL.o `test -f 'org/w3c/dom/validation/NodeEditVAL.cpp' || echo '$(srcdir)/'`org/w3c/dom/validation/NodeEditVAL.cpp
-
-NodeEditVAL.obj: org/w3c/dom/validation/NodeEditVAL.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT NodeEditVAL.obj -MD -MP -MF $(DEPDIR)/NodeEditVAL.Tpo -c -o NodeEditVAL.obj `if test -f 'org/w3c/dom/validation/NodeEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/NodeEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/NodeEditVAL.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/NodeEditVAL.Tpo $(DEPDIR)/NodeEditVAL.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/validation/NodeEditVAL.cpp' object='NodeEditVAL.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o NodeEditVAL.obj `if test -f 'org/w3c/dom/validation/NodeEditVAL.cpp'; then $(CYGPATH_W) 'org/w3c/dom/validation/NodeEditVAL.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/validation/NodeEditVAL.cpp'; fi`
-
 ClientRect.o: org/w3c/dom/views/ClientRect.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ClientRect.o -MD -MP -MF $(DEPDIR)/ClientRect.Tpo -c -o ClientRect.o `test -f 'org/w3c/dom/views/ClientRect.cpp' || echo '$(srcdir)/'`org/w3c/dom/views/ClientRect.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ClientRect.Tpo $(DEPDIR)/ClientRect.Po
@@ -5272,244 +4818,6 @@ ClientRectList.obj: org/w3c/dom/views/ClientRectList.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/views/ClientRectList.cpp' object='ClientRectList.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ClientRectList.obj `if test -f 'org/w3c/dom/views/ClientRectList.cpp'; then $(CYGPATH_W) 'org/w3c/dom/views/ClientRectList.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/views/ClientRectList.cpp'; fi`
-
-WebGLActiveInfo.o: org/w3c/dom/webgl/WebGLActiveInfo.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLActiveInfo.o -MD -MP -MF $(DEPDIR)/WebGLActiveInfo.Tpo -c -o WebGLActiveInfo.o `test -f 'org/w3c/dom/webgl/WebGLActiveInfo.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLActiveInfo.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLActiveInfo.Tpo $(DEPDIR)/WebGLActiveInfo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLActiveInfo.cpp' object='WebGLActiveInfo.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLActiveInfo.o `test -f 'org/w3c/dom/webgl/WebGLActiveInfo.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLActiveInfo.cpp
-
-WebGLActiveInfo.obj: org/w3c/dom/webgl/WebGLActiveInfo.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLActiveInfo.obj -MD -MP -MF $(DEPDIR)/WebGLActiveInfo.Tpo -c -o WebGLActiveInfo.obj `if test -f 'org/w3c/dom/webgl/WebGLActiveInfo.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLActiveInfo.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLActiveInfo.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLActiveInfo.Tpo $(DEPDIR)/WebGLActiveInfo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLActiveInfo.cpp' object='WebGLActiveInfo.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLActiveInfo.obj `if test -f 'org/w3c/dom/webgl/WebGLActiveInfo.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLActiveInfo.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLActiveInfo.cpp'; fi`
-
-WebGLBuffer.o: org/w3c/dom/webgl/WebGLBuffer.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLBuffer.o -MD -MP -MF $(DEPDIR)/WebGLBuffer.Tpo -c -o WebGLBuffer.o `test -f 'org/w3c/dom/webgl/WebGLBuffer.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLBuffer.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLBuffer.Tpo $(DEPDIR)/WebGLBuffer.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLBuffer.cpp' object='WebGLBuffer.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLBuffer.o `test -f 'org/w3c/dom/webgl/WebGLBuffer.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLBuffer.cpp
-
-WebGLBuffer.obj: org/w3c/dom/webgl/WebGLBuffer.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLBuffer.obj -MD -MP -MF $(DEPDIR)/WebGLBuffer.Tpo -c -o WebGLBuffer.obj `if test -f 'org/w3c/dom/webgl/WebGLBuffer.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLBuffer.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLBuffer.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLBuffer.Tpo $(DEPDIR)/WebGLBuffer.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLBuffer.cpp' object='WebGLBuffer.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLBuffer.obj `if test -f 'org/w3c/dom/webgl/WebGLBuffer.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLBuffer.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLBuffer.cpp'; fi`
-
-WebGLContextAttributes.o: org/w3c/dom/webgl/WebGLContextAttributes.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLContextAttributes.o -MD -MP -MF $(DEPDIR)/WebGLContextAttributes.Tpo -c -o WebGLContextAttributes.o `test -f 'org/w3c/dom/webgl/WebGLContextAttributes.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLContextAttributes.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLContextAttributes.Tpo $(DEPDIR)/WebGLContextAttributes.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLContextAttributes.cpp' object='WebGLContextAttributes.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLContextAttributes.o `test -f 'org/w3c/dom/webgl/WebGLContextAttributes.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLContextAttributes.cpp
-
-WebGLContextAttributes.obj: org/w3c/dom/webgl/WebGLContextAttributes.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLContextAttributes.obj -MD -MP -MF $(DEPDIR)/WebGLContextAttributes.Tpo -c -o WebGLContextAttributes.obj `if test -f 'org/w3c/dom/webgl/WebGLContextAttributes.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLContextAttributes.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLContextAttributes.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLContextAttributes.Tpo $(DEPDIR)/WebGLContextAttributes.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLContextAttributes.cpp' object='WebGLContextAttributes.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLContextAttributes.obj `if test -f 'org/w3c/dom/webgl/WebGLContextAttributes.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLContextAttributes.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLContextAttributes.cpp'; fi`
-
-WebGLContextEvent.o: org/w3c/dom/webgl/WebGLContextEvent.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLContextEvent.o -MD -MP -MF $(DEPDIR)/WebGLContextEvent.Tpo -c -o WebGLContextEvent.o `test -f 'org/w3c/dom/webgl/WebGLContextEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLContextEvent.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLContextEvent.Tpo $(DEPDIR)/WebGLContextEvent.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLContextEvent.cpp' object='WebGLContextEvent.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLContextEvent.o `test -f 'org/w3c/dom/webgl/WebGLContextEvent.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLContextEvent.cpp
-
-WebGLContextEvent.obj: org/w3c/dom/webgl/WebGLContextEvent.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLContextEvent.obj -MD -MP -MF $(DEPDIR)/WebGLContextEvent.Tpo -c -o WebGLContextEvent.obj `if test -f 'org/w3c/dom/webgl/WebGLContextEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLContextEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLContextEvent.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLContextEvent.Tpo $(DEPDIR)/WebGLContextEvent.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLContextEvent.cpp' object='WebGLContextEvent.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLContextEvent.obj `if test -f 'org/w3c/dom/webgl/WebGLContextEvent.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLContextEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLContextEvent.cpp'; fi`
-
-WebGLFramebuffer.o: org/w3c/dom/webgl/WebGLFramebuffer.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLFramebuffer.o -MD -MP -MF $(DEPDIR)/WebGLFramebuffer.Tpo -c -o WebGLFramebuffer.o `test -f 'org/w3c/dom/webgl/WebGLFramebuffer.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLFramebuffer.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLFramebuffer.Tpo $(DEPDIR)/WebGLFramebuffer.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLFramebuffer.cpp' object='WebGLFramebuffer.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLFramebuffer.o `test -f 'org/w3c/dom/webgl/WebGLFramebuffer.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLFramebuffer.cpp
-
-WebGLFramebuffer.obj: org/w3c/dom/webgl/WebGLFramebuffer.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLFramebuffer.obj -MD -MP -MF $(DEPDIR)/WebGLFramebuffer.Tpo -c -o WebGLFramebuffer.obj `if test -f 'org/w3c/dom/webgl/WebGLFramebuffer.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLFramebuffer.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLFramebuffer.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLFramebuffer.Tpo $(DEPDIR)/WebGLFramebuffer.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLFramebuffer.cpp' object='WebGLFramebuffer.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLFramebuffer.obj `if test -f 'org/w3c/dom/webgl/WebGLFramebuffer.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLFramebuffer.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLFramebuffer.cpp'; fi`
-
-WebGLObject.o: org/w3c/dom/webgl/WebGLObject.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLObject.o -MD -MP -MF $(DEPDIR)/WebGLObject.Tpo -c -o WebGLObject.o `test -f 'org/w3c/dom/webgl/WebGLObject.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLObject.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLObject.Tpo $(DEPDIR)/WebGLObject.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLObject.cpp' object='WebGLObject.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLObject.o `test -f 'org/w3c/dom/webgl/WebGLObject.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLObject.cpp
-
-WebGLObject.obj: org/w3c/dom/webgl/WebGLObject.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLObject.obj -MD -MP -MF $(DEPDIR)/WebGLObject.Tpo -c -o WebGLObject.obj `if test -f 'org/w3c/dom/webgl/WebGLObject.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLObject.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLObject.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLObject.Tpo $(DEPDIR)/WebGLObject.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLObject.cpp' object='WebGLObject.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLObject.obj `if test -f 'org/w3c/dom/webgl/WebGLObject.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLObject.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLObject.cpp'; fi`
-
-WebGLProgram.o: org/w3c/dom/webgl/WebGLProgram.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLProgram.o -MD -MP -MF $(DEPDIR)/WebGLProgram.Tpo -c -o WebGLProgram.o `test -f 'org/w3c/dom/webgl/WebGLProgram.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLProgram.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLProgram.Tpo $(DEPDIR)/WebGLProgram.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLProgram.cpp' object='WebGLProgram.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLProgram.o `test -f 'org/w3c/dom/webgl/WebGLProgram.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLProgram.cpp
-
-WebGLProgram.obj: org/w3c/dom/webgl/WebGLProgram.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLProgram.obj -MD -MP -MF $(DEPDIR)/WebGLProgram.Tpo -c -o WebGLProgram.obj `if test -f 'org/w3c/dom/webgl/WebGLProgram.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLProgram.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLProgram.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLProgram.Tpo $(DEPDIR)/WebGLProgram.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLProgram.cpp' object='WebGLProgram.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLProgram.obj `if test -f 'org/w3c/dom/webgl/WebGLProgram.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLProgram.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLProgram.cpp'; fi`
-
-WebGLRenderbuffer.o: org/w3c/dom/webgl/WebGLRenderbuffer.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLRenderbuffer.o -MD -MP -MF $(DEPDIR)/WebGLRenderbuffer.Tpo -c -o WebGLRenderbuffer.o `test -f 'org/w3c/dom/webgl/WebGLRenderbuffer.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLRenderbuffer.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLRenderbuffer.Tpo $(DEPDIR)/WebGLRenderbuffer.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLRenderbuffer.cpp' object='WebGLRenderbuffer.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLRenderbuffer.o `test -f 'org/w3c/dom/webgl/WebGLRenderbuffer.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLRenderbuffer.cpp
-
-WebGLRenderbuffer.obj: org/w3c/dom/webgl/WebGLRenderbuffer.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLRenderbuffer.obj -MD -MP -MF $(DEPDIR)/WebGLRenderbuffer.Tpo -c -o WebGLRenderbuffer.obj `if test -f 'org/w3c/dom/webgl/WebGLRenderbuffer.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLRenderbuffer.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLRenderbuffer.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLRenderbuffer.Tpo $(DEPDIR)/WebGLRenderbuffer.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLRenderbuffer.cpp' object='WebGLRenderbuffer.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLRenderbuffer.obj `if test -f 'org/w3c/dom/webgl/WebGLRenderbuffer.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLRenderbuffer.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLRenderbuffer.cpp'; fi`
-
-WebGLRenderingContext.o: org/w3c/dom/webgl/WebGLRenderingContext.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLRenderingContext.o -MD -MP -MF $(DEPDIR)/WebGLRenderingContext.Tpo -c -o WebGLRenderingContext.o `test -f 'org/w3c/dom/webgl/WebGLRenderingContext.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLRenderingContext.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLRenderingContext.Tpo $(DEPDIR)/WebGLRenderingContext.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLRenderingContext.cpp' object='WebGLRenderingContext.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLRenderingContext.o `test -f 'org/w3c/dom/webgl/WebGLRenderingContext.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLRenderingContext.cpp
-
-WebGLRenderingContext.obj: org/w3c/dom/webgl/WebGLRenderingContext.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLRenderingContext.obj -MD -MP -MF $(DEPDIR)/WebGLRenderingContext.Tpo -c -o WebGLRenderingContext.obj `if test -f 'org/w3c/dom/webgl/WebGLRenderingContext.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLRenderingContext.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLRenderingContext.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLRenderingContext.Tpo $(DEPDIR)/WebGLRenderingContext.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLRenderingContext.cpp' object='WebGLRenderingContext.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLRenderingContext.obj `if test -f 'org/w3c/dom/webgl/WebGLRenderingContext.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLRenderingContext.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLRenderingContext.cpp'; fi`
-
-WebGLShader.o: org/w3c/dom/webgl/WebGLShader.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLShader.o -MD -MP -MF $(DEPDIR)/WebGLShader.Tpo -c -o WebGLShader.o `test -f 'org/w3c/dom/webgl/WebGLShader.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLShader.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLShader.Tpo $(DEPDIR)/WebGLShader.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLShader.cpp' object='WebGLShader.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLShader.o `test -f 'org/w3c/dom/webgl/WebGLShader.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLShader.cpp
-
-WebGLShader.obj: org/w3c/dom/webgl/WebGLShader.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLShader.obj -MD -MP -MF $(DEPDIR)/WebGLShader.Tpo -c -o WebGLShader.obj `if test -f 'org/w3c/dom/webgl/WebGLShader.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLShader.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLShader.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLShader.Tpo $(DEPDIR)/WebGLShader.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLShader.cpp' object='WebGLShader.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLShader.obj `if test -f 'org/w3c/dom/webgl/WebGLShader.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLShader.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLShader.cpp'; fi`
-
-WebGLTexture.o: org/w3c/dom/webgl/WebGLTexture.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLTexture.o -MD -MP -MF $(DEPDIR)/WebGLTexture.Tpo -c -o WebGLTexture.o `test -f 'org/w3c/dom/webgl/WebGLTexture.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLTexture.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLTexture.Tpo $(DEPDIR)/WebGLTexture.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLTexture.cpp' object='WebGLTexture.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLTexture.o `test -f 'org/w3c/dom/webgl/WebGLTexture.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLTexture.cpp
-
-WebGLTexture.obj: org/w3c/dom/webgl/WebGLTexture.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLTexture.obj -MD -MP -MF $(DEPDIR)/WebGLTexture.Tpo -c -o WebGLTexture.obj `if test -f 'org/w3c/dom/webgl/WebGLTexture.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLTexture.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLTexture.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLTexture.Tpo $(DEPDIR)/WebGLTexture.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLTexture.cpp' object='WebGLTexture.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLTexture.obj `if test -f 'org/w3c/dom/webgl/WebGLTexture.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLTexture.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLTexture.cpp'; fi`
-
-WebGLUniformLocation.o: org/w3c/dom/webgl/WebGLUniformLocation.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLUniformLocation.o -MD -MP -MF $(DEPDIR)/WebGLUniformLocation.Tpo -c -o WebGLUniformLocation.o `test -f 'org/w3c/dom/webgl/WebGLUniformLocation.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLUniformLocation.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLUniformLocation.Tpo $(DEPDIR)/WebGLUniformLocation.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLUniformLocation.cpp' object='WebGLUniformLocation.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLUniformLocation.o `test -f 'org/w3c/dom/webgl/WebGLUniformLocation.cpp' || echo '$(srcdir)/'`org/w3c/dom/webgl/WebGLUniformLocation.cpp
-
-WebGLUniformLocation.obj: org/w3c/dom/webgl/WebGLUniformLocation.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLUniformLocation.obj -MD -MP -MF $(DEPDIR)/WebGLUniformLocation.Tpo -c -o WebGLUniformLocation.obj `if test -f 'org/w3c/dom/webgl/WebGLUniformLocation.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLUniformLocation.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLUniformLocation.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLUniformLocation.Tpo $(DEPDIR)/WebGLUniformLocation.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/webgl/WebGLUniformLocation.cpp' object='WebGLUniformLocation.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLUniformLocation.obj `if test -f 'org/w3c/dom/webgl/WebGLUniformLocation.cpp'; then $(CYGPATH_W) 'org/w3c/dom/webgl/WebGLUniformLocation.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/webgl/WebGLUniformLocation.cpp'; fi`
-
-XPathEvaluator.o: org/w3c/dom/xpath/XPathEvaluator.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathEvaluator.o -MD -MP -MF $(DEPDIR)/XPathEvaluator.Tpo -c -o XPathEvaluator.o `test -f 'org/w3c/dom/xpath/XPathEvaluator.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathEvaluator.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathEvaluator.Tpo $(DEPDIR)/XPathEvaluator.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathEvaluator.cpp' object='XPathEvaluator.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathEvaluator.o `test -f 'org/w3c/dom/xpath/XPathEvaluator.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathEvaluator.cpp
-
-XPathEvaluator.obj: org/w3c/dom/xpath/XPathEvaluator.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathEvaluator.obj -MD -MP -MF $(DEPDIR)/XPathEvaluator.Tpo -c -o XPathEvaluator.obj `if test -f 'org/w3c/dom/xpath/XPathEvaluator.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathEvaluator.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathEvaluator.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathEvaluator.Tpo $(DEPDIR)/XPathEvaluator.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathEvaluator.cpp' object='XPathEvaluator.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathEvaluator.obj `if test -f 'org/w3c/dom/xpath/XPathEvaluator.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathEvaluator.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathEvaluator.cpp'; fi`
-
-XPathExpression.o: org/w3c/dom/xpath/XPathExpression.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathExpression.o -MD -MP -MF $(DEPDIR)/XPathExpression.Tpo -c -o XPathExpression.o `test -f 'org/w3c/dom/xpath/XPathExpression.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathExpression.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathExpression.Tpo $(DEPDIR)/XPathExpression.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathExpression.cpp' object='XPathExpression.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathExpression.o `test -f 'org/w3c/dom/xpath/XPathExpression.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathExpression.cpp
-
-XPathExpression.obj: org/w3c/dom/xpath/XPathExpression.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathExpression.obj -MD -MP -MF $(DEPDIR)/XPathExpression.Tpo -c -o XPathExpression.obj `if test -f 'org/w3c/dom/xpath/XPathExpression.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathExpression.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathExpression.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathExpression.Tpo $(DEPDIR)/XPathExpression.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathExpression.cpp' object='XPathExpression.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathExpression.obj `if test -f 'org/w3c/dom/xpath/XPathExpression.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathExpression.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathExpression.cpp'; fi`
-
-XPathNamespace.o: org/w3c/dom/xpath/XPathNamespace.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathNamespace.o -MD -MP -MF $(DEPDIR)/XPathNamespace.Tpo -c -o XPathNamespace.o `test -f 'org/w3c/dom/xpath/XPathNamespace.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathNamespace.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathNamespace.Tpo $(DEPDIR)/XPathNamespace.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathNamespace.cpp' object='XPathNamespace.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathNamespace.o `test -f 'org/w3c/dom/xpath/XPathNamespace.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathNamespace.cpp
-
-XPathNamespace.obj: org/w3c/dom/xpath/XPathNamespace.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathNamespace.obj -MD -MP -MF $(DEPDIR)/XPathNamespace.Tpo -c -o XPathNamespace.obj `if test -f 'org/w3c/dom/xpath/XPathNamespace.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathNamespace.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathNamespace.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathNamespace.Tpo $(DEPDIR)/XPathNamespace.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathNamespace.cpp' object='XPathNamespace.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathNamespace.obj `if test -f 'org/w3c/dom/xpath/XPathNamespace.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathNamespace.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathNamespace.cpp'; fi`
-
-XPathNSResolver.o: org/w3c/dom/xpath/XPathNSResolver.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathNSResolver.o -MD -MP -MF $(DEPDIR)/XPathNSResolver.Tpo -c -o XPathNSResolver.o `test -f 'org/w3c/dom/xpath/XPathNSResolver.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathNSResolver.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathNSResolver.Tpo $(DEPDIR)/XPathNSResolver.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathNSResolver.cpp' object='XPathNSResolver.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathNSResolver.o `test -f 'org/w3c/dom/xpath/XPathNSResolver.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathNSResolver.cpp
-
-XPathNSResolver.obj: org/w3c/dom/xpath/XPathNSResolver.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathNSResolver.obj -MD -MP -MF $(DEPDIR)/XPathNSResolver.Tpo -c -o XPathNSResolver.obj `if test -f 'org/w3c/dom/xpath/XPathNSResolver.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathNSResolver.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathNSResolver.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathNSResolver.Tpo $(DEPDIR)/XPathNSResolver.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathNSResolver.cpp' object='XPathNSResolver.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathNSResolver.obj `if test -f 'org/w3c/dom/xpath/XPathNSResolver.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathNSResolver.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathNSResolver.cpp'; fi`
-
-XPathResult.o: org/w3c/dom/xpath/XPathResult.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathResult.o -MD -MP -MF $(DEPDIR)/XPathResult.Tpo -c -o XPathResult.o `test -f 'org/w3c/dom/xpath/XPathResult.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathResult.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathResult.Tpo $(DEPDIR)/XPathResult.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathResult.cpp' object='XPathResult.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathResult.o `test -f 'org/w3c/dom/xpath/XPathResult.cpp' || echo '$(srcdir)/'`org/w3c/dom/xpath/XPathResult.cpp
-
-XPathResult.obj: org/w3c/dom/xpath/XPathResult.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathResult.obj -MD -MP -MF $(DEPDIR)/XPathResult.Tpo -c -o XPathResult.obj `if test -f 'org/w3c/dom/xpath/XPathResult.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathResult.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathResult.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathResult.Tpo $(DEPDIR)/XPathResult.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/xpath/XPathResult.cpp' object='XPathResult.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathResult.obj `if test -f 'org/w3c/dom/xpath/XPathResult.cpp'; then $(CYGPATH_W) 'org/w3c/dom/xpath/XPathResult.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/xpath/XPathResult.cpp'; fi`
 
 Reflect.test.o: test/Reflect.test.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Reflect.test.o -MD -MP -MF $(DEPDIR)/Reflect.test.Tpo -c -o Reflect.test.o `test -f 'test/Reflect.test.cpp' || echo '$(srcdir)/'`test/Reflect.test.cpp
@@ -5552,6 +4860,34 @@ bridge_test-Event.obj: org/w3c/dom/test/Event.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/test/Event.cpp' object='bridge_test-Event.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o bridge_test-Event.obj `if test -f 'org/w3c/dom/test/Event.cpp'; then $(CYGPATH_W) 'org/w3c/dom/test/Event.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/test/Event.cpp'; fi`
+
+bridge_test-EventInit.o: org/w3c/dom/test/EventInit.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT bridge_test-EventInit.o -MD -MP -MF $(DEPDIR)/bridge_test-EventInit.Tpo -c -o bridge_test-EventInit.o `test -f 'org/w3c/dom/test/EventInit.cpp' || echo '$(srcdir)/'`org/w3c/dom/test/EventInit.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/bridge_test-EventInit.Tpo $(DEPDIR)/bridge_test-EventInit.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/test/EventInit.cpp' object='bridge_test-EventInit.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o bridge_test-EventInit.o `test -f 'org/w3c/dom/test/EventInit.cpp' || echo '$(srcdir)/'`org/w3c/dom/test/EventInit.cpp
+
+bridge_test-EventInit.obj: org/w3c/dom/test/EventInit.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT bridge_test-EventInit.obj -MD -MP -MF $(DEPDIR)/bridge_test-EventInit.Tpo -c -o bridge_test-EventInit.obj `if test -f 'org/w3c/dom/test/EventInit.cpp'; then $(CYGPATH_W) 'org/w3c/dom/test/EventInit.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/test/EventInit.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/bridge_test-EventInit.Tpo $(DEPDIR)/bridge_test-EventInit.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/test/EventInit.cpp' object='bridge_test-EventInit.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o bridge_test-EventInit.obj `if test -f 'org/w3c/dom/test/EventInit.cpp'; then $(CYGPATH_W) 'org/w3c/dom/test/EventInit.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/test/EventInit.cpp'; fi`
+
+bridge_test-CustomEventInit.o: org/w3c/dom/test/CustomEventInit.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT bridge_test-CustomEventInit.o -MD -MP -MF $(DEPDIR)/bridge_test-CustomEventInit.Tpo -c -o bridge_test-CustomEventInit.o `test -f 'org/w3c/dom/test/CustomEventInit.cpp' || echo '$(srcdir)/'`org/w3c/dom/test/CustomEventInit.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/bridge_test-CustomEventInit.Tpo $(DEPDIR)/bridge_test-CustomEventInit.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/test/CustomEventInit.cpp' object='bridge_test-CustomEventInit.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o bridge_test-CustomEventInit.o `test -f 'org/w3c/dom/test/CustomEventInit.cpp' || echo '$(srcdir)/'`org/w3c/dom/test/CustomEventInit.cpp
+
+bridge_test-CustomEventInit.obj: org/w3c/dom/test/CustomEventInit.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT bridge_test-CustomEventInit.obj -MD -MP -MF $(DEPDIR)/bridge_test-CustomEventInit.Tpo -c -o bridge_test-CustomEventInit.obj `if test -f 'org/w3c/dom/test/CustomEventInit.cpp'; then $(CYGPATH_W) 'org/w3c/dom/test/CustomEventInit.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/test/CustomEventInit.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/bridge_test-CustomEventInit.Tpo $(DEPDIR)/bridge_test-CustomEventInit.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/test/CustomEventInit.cpp' object='bridge_test-CustomEventInit.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o bridge_test-CustomEventInit.obj `if test -f 'org/w3c/dom/test/CustomEventInit.cpp'; then $(CYGPATH_W) 'org/w3c/dom/test/CustomEventInit.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/test/CustomEventInit.cpp'; fi`
 
 bridge_test-EventListener.o: org/w3c/dom/test/EventListener.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bridge_test_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT bridge_test-EventListener.o -MD -MP -MF $(DEPDIR)/bridge_test-EventListener.Tpo -c -o bridge_test-EventListener.o `test -f 'org/w3c/dom/test/EventListener.cpp' || echo '$(srcdir)/'`org/w3c/dom/test/EventListener.cpp
@@ -5706,34 +5042,6 @@ DocumentTypeImp.obj: org/w3c/dom/bootstrap/DocumentTypeImp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DocumentTypeImp.cpp' object='DocumentTypeImp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DocumentTypeImp.obj `if test -f 'org/w3c/dom/bootstrap/DocumentTypeImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DocumentTypeImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DocumentTypeImp.cpp'; fi`
-
-DOMConfigurationImp.o: org/w3c/dom/bootstrap/DOMConfigurationImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMConfigurationImp.o -MD -MP -MF $(DEPDIR)/DOMConfigurationImp.Tpo -c -o DOMConfigurationImp.o `test -f 'org/w3c/dom/bootstrap/DOMConfigurationImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DOMConfigurationImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMConfigurationImp.Tpo $(DEPDIR)/DOMConfigurationImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DOMConfigurationImp.cpp' object='DOMConfigurationImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMConfigurationImp.o `test -f 'org/w3c/dom/bootstrap/DOMConfigurationImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DOMConfigurationImp.cpp
-
-DOMConfigurationImp.obj: org/w3c/dom/bootstrap/DOMConfigurationImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMConfigurationImp.obj -MD -MP -MF $(DEPDIR)/DOMConfigurationImp.Tpo -c -o DOMConfigurationImp.obj `if test -f 'org/w3c/dom/bootstrap/DOMConfigurationImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DOMConfigurationImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DOMConfigurationImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMConfigurationImp.Tpo $(DEPDIR)/DOMConfigurationImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DOMConfigurationImp.cpp' object='DOMConfigurationImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMConfigurationImp.obj `if test -f 'org/w3c/dom/bootstrap/DOMConfigurationImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DOMConfigurationImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DOMConfigurationImp.cpp'; fi`
-
-DOMImplementationImp.o: org/w3c/dom/bootstrap/DOMImplementationImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementationImp.o -MD -MP -MF $(DEPDIR)/DOMImplementationImp.Tpo -c -o DOMImplementationImp.o `test -f 'org/w3c/dom/bootstrap/DOMImplementationImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DOMImplementationImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMImplementationImp.Tpo $(DEPDIR)/DOMImplementationImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DOMImplementationImp.cpp' object='DOMImplementationImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMImplementationImp.o `test -f 'org/w3c/dom/bootstrap/DOMImplementationImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DOMImplementationImp.cpp
-
-DOMImplementationImp.obj: org/w3c/dom/bootstrap/DOMImplementationImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementationImp.obj -MD -MP -MF $(DEPDIR)/DOMImplementationImp.Tpo -c -o DOMImplementationImp.obj `if test -f 'org/w3c/dom/bootstrap/DOMImplementationImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DOMImplementationImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DOMImplementationImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMImplementationImp.Tpo $(DEPDIR)/DOMImplementationImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DOMImplementationImp.cpp' object='DOMImplementationImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMImplementationImp.obj `if test -f 'org/w3c/dom/bootstrap/DOMImplementationImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DOMImplementationImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DOMImplementationImp.cpp'; fi`
 
 DOMSettableTokenListImp.o: org/w3c/dom/bootstrap/DOMSettableTokenListImp.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMSettableTokenListImp.o -MD -MP -MF $(DEPDIR)/DOMSettableTokenListImp.Tpo -c -o DOMSettableTokenListImp.o `test -f 'org/w3c/dom/bootstrap/DOMSettableTokenListImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DOMSettableTokenListImp.cpp
@@ -8157,146 +7465,6 @@ WindowImp.obj: org/w3c/dom/bootstrap/WindowImp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WindowImp.obj `if test -f 'org/w3c/dom/bootstrap/WindowImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WindowImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WindowImp.cpp'; fi`
 
-DOMImplementationLSImp.o: org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementationLSImp.o -MD -MP -MF $(DEPDIR)/DOMImplementationLSImp.Tpo -c -o DOMImplementationLSImp.o `test -f 'org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMImplementationLSImp.Tpo $(DEPDIR)/DOMImplementationLSImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp' object='DOMImplementationLSImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMImplementationLSImp.o `test -f 'org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp
-
-DOMImplementationLSImp.obj: org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DOMImplementationLSImp.obj -MD -MP -MF $(DEPDIR)/DOMImplementationLSImp.Tpo -c -o DOMImplementationLSImp.obj `if test -f 'org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DOMImplementationLSImp.Tpo $(DEPDIR)/DOMImplementationLSImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp' object='DOMImplementationLSImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DOMImplementationLSImp.obj `if test -f 'org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp'; fi`
-
-LSInputImp.o: org/w3c/dom/bootstrap/LSInputImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSInputImp.o -MD -MP -MF $(DEPDIR)/LSInputImp.Tpo -c -o LSInputImp.o `test -f 'org/w3c/dom/bootstrap/LSInputImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSInputImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSInputImp.Tpo $(DEPDIR)/LSInputImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSInputImp.cpp' object='LSInputImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSInputImp.o `test -f 'org/w3c/dom/bootstrap/LSInputImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSInputImp.cpp
-
-LSInputImp.obj: org/w3c/dom/bootstrap/LSInputImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSInputImp.obj -MD -MP -MF $(DEPDIR)/LSInputImp.Tpo -c -o LSInputImp.obj `if test -f 'org/w3c/dom/bootstrap/LSInputImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSInputImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSInputImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSInputImp.Tpo $(DEPDIR)/LSInputImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSInputImp.cpp' object='LSInputImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSInputImp.obj `if test -f 'org/w3c/dom/bootstrap/LSInputImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSInputImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSInputImp.cpp'; fi`
-
-LSLoadEventImp.o: org/w3c/dom/bootstrap/LSLoadEventImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSLoadEventImp.o -MD -MP -MF $(DEPDIR)/LSLoadEventImp.Tpo -c -o LSLoadEventImp.o `test -f 'org/w3c/dom/bootstrap/LSLoadEventImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSLoadEventImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSLoadEventImp.Tpo $(DEPDIR)/LSLoadEventImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSLoadEventImp.cpp' object='LSLoadEventImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSLoadEventImp.o `test -f 'org/w3c/dom/bootstrap/LSLoadEventImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSLoadEventImp.cpp
-
-LSLoadEventImp.obj: org/w3c/dom/bootstrap/LSLoadEventImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSLoadEventImp.obj -MD -MP -MF $(DEPDIR)/LSLoadEventImp.Tpo -c -o LSLoadEventImp.obj `if test -f 'org/w3c/dom/bootstrap/LSLoadEventImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSLoadEventImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSLoadEventImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSLoadEventImp.Tpo $(DEPDIR)/LSLoadEventImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSLoadEventImp.cpp' object='LSLoadEventImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSLoadEventImp.obj `if test -f 'org/w3c/dom/bootstrap/LSLoadEventImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSLoadEventImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSLoadEventImp.cpp'; fi`
-
-LSOutputImp.o: org/w3c/dom/bootstrap/LSOutputImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSOutputImp.o -MD -MP -MF $(DEPDIR)/LSOutputImp.Tpo -c -o LSOutputImp.o `test -f 'org/w3c/dom/bootstrap/LSOutputImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSOutputImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSOutputImp.Tpo $(DEPDIR)/LSOutputImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSOutputImp.cpp' object='LSOutputImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSOutputImp.o `test -f 'org/w3c/dom/bootstrap/LSOutputImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSOutputImp.cpp
-
-LSOutputImp.obj: org/w3c/dom/bootstrap/LSOutputImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSOutputImp.obj -MD -MP -MF $(DEPDIR)/LSOutputImp.Tpo -c -o LSOutputImp.obj `if test -f 'org/w3c/dom/bootstrap/LSOutputImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSOutputImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSOutputImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSOutputImp.Tpo $(DEPDIR)/LSOutputImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSOutputImp.cpp' object='LSOutputImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSOutputImp.obj `if test -f 'org/w3c/dom/bootstrap/LSOutputImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSOutputImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSOutputImp.cpp'; fi`
-
-LSParserImp.o: org/w3c/dom/bootstrap/LSParserImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSParserImp.o -MD -MP -MF $(DEPDIR)/LSParserImp.Tpo -c -o LSParserImp.o `test -f 'org/w3c/dom/bootstrap/LSParserImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSParserImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSParserImp.Tpo $(DEPDIR)/LSParserImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSParserImp.cpp' object='LSParserImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSParserImp.o `test -f 'org/w3c/dom/bootstrap/LSParserImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSParserImp.cpp
-
-LSParserImp.obj: org/w3c/dom/bootstrap/LSParserImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSParserImp.obj -MD -MP -MF $(DEPDIR)/LSParserImp.Tpo -c -o LSParserImp.obj `if test -f 'org/w3c/dom/bootstrap/LSParserImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSParserImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSParserImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSParserImp.Tpo $(DEPDIR)/LSParserImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSParserImp.cpp' object='LSParserImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSParserImp.obj `if test -f 'org/w3c/dom/bootstrap/LSParserImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSParserImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSParserImp.cpp'; fi`
-
-LSParserFilterImp.o: org/w3c/dom/bootstrap/LSParserFilterImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSParserFilterImp.o -MD -MP -MF $(DEPDIR)/LSParserFilterImp.Tpo -c -o LSParserFilterImp.o `test -f 'org/w3c/dom/bootstrap/LSParserFilterImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSParserFilterImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSParserFilterImp.Tpo $(DEPDIR)/LSParserFilterImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSParserFilterImp.cpp' object='LSParserFilterImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSParserFilterImp.o `test -f 'org/w3c/dom/bootstrap/LSParserFilterImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSParserFilterImp.cpp
-
-LSParserFilterImp.obj: org/w3c/dom/bootstrap/LSParserFilterImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSParserFilterImp.obj -MD -MP -MF $(DEPDIR)/LSParserFilterImp.Tpo -c -o LSParserFilterImp.obj `if test -f 'org/w3c/dom/bootstrap/LSParserFilterImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSParserFilterImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSParserFilterImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSParserFilterImp.Tpo $(DEPDIR)/LSParserFilterImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSParserFilterImp.cpp' object='LSParserFilterImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSParserFilterImp.obj `if test -f 'org/w3c/dom/bootstrap/LSParserFilterImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSParserFilterImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSParserFilterImp.cpp'; fi`
-
-LSProgressEventImp.o: org/w3c/dom/bootstrap/LSProgressEventImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSProgressEventImp.o -MD -MP -MF $(DEPDIR)/LSProgressEventImp.Tpo -c -o LSProgressEventImp.o `test -f 'org/w3c/dom/bootstrap/LSProgressEventImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSProgressEventImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSProgressEventImp.Tpo $(DEPDIR)/LSProgressEventImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSProgressEventImp.cpp' object='LSProgressEventImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSProgressEventImp.o `test -f 'org/w3c/dom/bootstrap/LSProgressEventImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSProgressEventImp.cpp
-
-LSProgressEventImp.obj: org/w3c/dom/bootstrap/LSProgressEventImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSProgressEventImp.obj -MD -MP -MF $(DEPDIR)/LSProgressEventImp.Tpo -c -o LSProgressEventImp.obj `if test -f 'org/w3c/dom/bootstrap/LSProgressEventImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSProgressEventImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSProgressEventImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSProgressEventImp.Tpo $(DEPDIR)/LSProgressEventImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSProgressEventImp.cpp' object='LSProgressEventImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSProgressEventImp.obj `if test -f 'org/w3c/dom/bootstrap/LSProgressEventImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSProgressEventImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSProgressEventImp.cpp'; fi`
-
-LSResourceResolverImp.o: org/w3c/dom/bootstrap/LSResourceResolverImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSResourceResolverImp.o -MD -MP -MF $(DEPDIR)/LSResourceResolverImp.Tpo -c -o LSResourceResolverImp.o `test -f 'org/w3c/dom/bootstrap/LSResourceResolverImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSResourceResolverImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSResourceResolverImp.Tpo $(DEPDIR)/LSResourceResolverImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSResourceResolverImp.cpp' object='LSResourceResolverImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSResourceResolverImp.o `test -f 'org/w3c/dom/bootstrap/LSResourceResolverImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSResourceResolverImp.cpp
-
-LSResourceResolverImp.obj: org/w3c/dom/bootstrap/LSResourceResolverImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSResourceResolverImp.obj -MD -MP -MF $(DEPDIR)/LSResourceResolverImp.Tpo -c -o LSResourceResolverImp.obj `if test -f 'org/w3c/dom/bootstrap/LSResourceResolverImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSResourceResolverImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSResourceResolverImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSResourceResolverImp.Tpo $(DEPDIR)/LSResourceResolverImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSResourceResolverImp.cpp' object='LSResourceResolverImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSResourceResolverImp.obj `if test -f 'org/w3c/dom/bootstrap/LSResourceResolverImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSResourceResolverImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSResourceResolverImp.cpp'; fi`
-
-LSSerializerImp.o: org/w3c/dom/bootstrap/LSSerializerImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSSerializerImp.o -MD -MP -MF $(DEPDIR)/LSSerializerImp.Tpo -c -o LSSerializerImp.o `test -f 'org/w3c/dom/bootstrap/LSSerializerImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSSerializerImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSSerializerImp.Tpo $(DEPDIR)/LSSerializerImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSSerializerImp.cpp' object='LSSerializerImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSSerializerImp.o `test -f 'org/w3c/dom/bootstrap/LSSerializerImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSSerializerImp.cpp
-
-LSSerializerImp.obj: org/w3c/dom/bootstrap/LSSerializerImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSSerializerImp.obj -MD -MP -MF $(DEPDIR)/LSSerializerImp.Tpo -c -o LSSerializerImp.obj `if test -f 'org/w3c/dom/bootstrap/LSSerializerImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSSerializerImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSSerializerImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSSerializerImp.Tpo $(DEPDIR)/LSSerializerImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSSerializerImp.cpp' object='LSSerializerImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSSerializerImp.obj `if test -f 'org/w3c/dom/bootstrap/LSSerializerImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSSerializerImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSSerializerImp.cpp'; fi`
-
-LSSerializerFilterImp.o: org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSSerializerFilterImp.o -MD -MP -MF $(DEPDIR)/LSSerializerFilterImp.Tpo -c -o LSSerializerFilterImp.o `test -f 'org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSSerializerFilterImp.Tpo $(DEPDIR)/LSSerializerFilterImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp' object='LSSerializerFilterImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSSerializerFilterImp.o `test -f 'org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp
-
-LSSerializerFilterImp.obj: org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LSSerializerFilterImp.obj -MD -MP -MF $(DEPDIR)/LSSerializerFilterImp.Tpo -c -o LSSerializerFilterImp.obj `if test -f 'org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LSSerializerFilterImp.Tpo $(DEPDIR)/LSSerializerFilterImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp' object='LSSerializerFilterImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LSSerializerFilterImp.obj `if test -f 'org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp'; fi`
-
 DocumentRangeImp.o: org/w3c/dom/bootstrap/DocumentRangeImp.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DocumentRangeImp.o -MD -MP -MF $(DEPDIR)/DocumentRangeImp.Tpo -c -o DocumentRangeImp.o `test -f 'org/w3c/dom/bootstrap/DocumentRangeImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DocumentRangeImp.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DocumentRangeImp.Tpo $(DEPDIR)/DocumentRangeImp.Po
@@ -8577,62 +7745,6 @@ Uint8ArrayImp.obj: org/w3c/dom/bootstrap/Uint8ArrayImp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Uint8ArrayImp.obj `if test -f 'org/w3c/dom/bootstrap/Uint8ArrayImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/Uint8ArrayImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/Uint8ArrayImp.cpp'; fi`
 
-CharacterDataEditVALImp.o: org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CharacterDataEditVALImp.o -MD -MP -MF $(DEPDIR)/CharacterDataEditVALImp.Tpo -c -o CharacterDataEditVALImp.o `test -f 'org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/CharacterDataEditVALImp.Tpo $(DEPDIR)/CharacterDataEditVALImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp' object='CharacterDataEditVALImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CharacterDataEditVALImp.o `test -f 'org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp
-
-CharacterDataEditVALImp.obj: org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CharacterDataEditVALImp.obj -MD -MP -MF $(DEPDIR)/CharacterDataEditVALImp.Tpo -c -o CharacterDataEditVALImp.obj `if test -f 'org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/CharacterDataEditVALImp.Tpo $(DEPDIR)/CharacterDataEditVALImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp' object='CharacterDataEditVALImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CharacterDataEditVALImp.obj `if test -f 'org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp'; fi`
-
-DocumentEditVALImp.o: org/w3c/dom/bootstrap/DocumentEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DocumentEditVALImp.o -MD -MP -MF $(DEPDIR)/DocumentEditVALImp.Tpo -c -o DocumentEditVALImp.o `test -f 'org/w3c/dom/bootstrap/DocumentEditVALImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DocumentEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DocumentEditVALImp.Tpo $(DEPDIR)/DocumentEditVALImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DocumentEditVALImp.cpp' object='DocumentEditVALImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DocumentEditVALImp.o `test -f 'org/w3c/dom/bootstrap/DocumentEditVALImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/DocumentEditVALImp.cpp
-
-DocumentEditVALImp.obj: org/w3c/dom/bootstrap/DocumentEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DocumentEditVALImp.obj -MD -MP -MF $(DEPDIR)/DocumentEditVALImp.Tpo -c -o DocumentEditVALImp.obj `if test -f 'org/w3c/dom/bootstrap/DocumentEditVALImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DocumentEditVALImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DocumentEditVALImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DocumentEditVALImp.Tpo $(DEPDIR)/DocumentEditVALImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/DocumentEditVALImp.cpp' object='DocumentEditVALImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DocumentEditVALImp.obj `if test -f 'org/w3c/dom/bootstrap/DocumentEditVALImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/DocumentEditVALImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/DocumentEditVALImp.cpp'; fi`
-
-ElementEditVALImp.o: org/w3c/dom/bootstrap/ElementEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ElementEditVALImp.o -MD -MP -MF $(DEPDIR)/ElementEditVALImp.Tpo -c -o ElementEditVALImp.o `test -f 'org/w3c/dom/bootstrap/ElementEditVALImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/ElementEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ElementEditVALImp.Tpo $(DEPDIR)/ElementEditVALImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/ElementEditVALImp.cpp' object='ElementEditVALImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ElementEditVALImp.o `test -f 'org/w3c/dom/bootstrap/ElementEditVALImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/ElementEditVALImp.cpp
-
-ElementEditVALImp.obj: org/w3c/dom/bootstrap/ElementEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ElementEditVALImp.obj -MD -MP -MF $(DEPDIR)/ElementEditVALImp.Tpo -c -o ElementEditVALImp.obj `if test -f 'org/w3c/dom/bootstrap/ElementEditVALImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/ElementEditVALImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/ElementEditVALImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ElementEditVALImp.Tpo $(DEPDIR)/ElementEditVALImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/ElementEditVALImp.cpp' object='ElementEditVALImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ElementEditVALImp.obj `if test -f 'org/w3c/dom/bootstrap/ElementEditVALImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/ElementEditVALImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/ElementEditVALImp.cpp'; fi`
-
-NodeEditVALImp.o: org/w3c/dom/bootstrap/NodeEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT NodeEditVALImp.o -MD -MP -MF $(DEPDIR)/NodeEditVALImp.Tpo -c -o NodeEditVALImp.o `test -f 'org/w3c/dom/bootstrap/NodeEditVALImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/NodeEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/NodeEditVALImp.Tpo $(DEPDIR)/NodeEditVALImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/NodeEditVALImp.cpp' object='NodeEditVALImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o NodeEditVALImp.o `test -f 'org/w3c/dom/bootstrap/NodeEditVALImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/NodeEditVALImp.cpp
-
-NodeEditVALImp.obj: org/w3c/dom/bootstrap/NodeEditVALImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT NodeEditVALImp.obj -MD -MP -MF $(DEPDIR)/NodeEditVALImp.Tpo -c -o NodeEditVALImp.obj `if test -f 'org/w3c/dom/bootstrap/NodeEditVALImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/NodeEditVALImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/NodeEditVALImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/NodeEditVALImp.Tpo $(DEPDIR)/NodeEditVALImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/NodeEditVALImp.cpp' object='NodeEditVALImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o NodeEditVALImp.obj `if test -f 'org/w3c/dom/bootstrap/NodeEditVALImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/NodeEditVALImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/NodeEditVALImp.cpp'; fi`
-
 ClientRectImp.o: org/w3c/dom/bootstrap/ClientRectImp.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ClientRectImp.o -MD -MP -MF $(DEPDIR)/ClientRectImp.Tpo -c -o ClientRectImp.o `test -f 'org/w3c/dom/bootstrap/ClientRectImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/ClientRectImp.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ClientRectImp.Tpo $(DEPDIR)/ClientRectImp.Po
@@ -8660,244 +7772,6 @@ ClientRectListImp.obj: org/w3c/dom/bootstrap/ClientRectListImp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/ClientRectListImp.cpp' object='ClientRectListImp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ClientRectListImp.obj `if test -f 'org/w3c/dom/bootstrap/ClientRectListImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/ClientRectListImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/ClientRectListImp.cpp'; fi`
-
-WebGLActiveInfoImp.o: org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLActiveInfoImp.o -MD -MP -MF $(DEPDIR)/WebGLActiveInfoImp.Tpo -c -o WebGLActiveInfoImp.o `test -f 'org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLActiveInfoImp.Tpo $(DEPDIR)/WebGLActiveInfoImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp' object='WebGLActiveInfoImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLActiveInfoImp.o `test -f 'org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp
-
-WebGLActiveInfoImp.obj: org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLActiveInfoImp.obj -MD -MP -MF $(DEPDIR)/WebGLActiveInfoImp.Tpo -c -o WebGLActiveInfoImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLActiveInfoImp.Tpo $(DEPDIR)/WebGLActiveInfoImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp' object='WebGLActiveInfoImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLActiveInfoImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp'; fi`
-
-WebGLBufferImp.o: org/w3c/dom/bootstrap/WebGLBufferImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLBufferImp.o -MD -MP -MF $(DEPDIR)/WebGLBufferImp.Tpo -c -o WebGLBufferImp.o `test -f 'org/w3c/dom/bootstrap/WebGLBufferImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLBufferImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLBufferImp.Tpo $(DEPDIR)/WebGLBufferImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLBufferImp.cpp' object='WebGLBufferImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLBufferImp.o `test -f 'org/w3c/dom/bootstrap/WebGLBufferImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLBufferImp.cpp
-
-WebGLBufferImp.obj: org/w3c/dom/bootstrap/WebGLBufferImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLBufferImp.obj -MD -MP -MF $(DEPDIR)/WebGLBufferImp.Tpo -c -o WebGLBufferImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLBufferImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLBufferImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLBufferImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLBufferImp.Tpo $(DEPDIR)/WebGLBufferImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLBufferImp.cpp' object='WebGLBufferImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLBufferImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLBufferImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLBufferImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLBufferImp.cpp'; fi`
-
-WebGLContextAttributesImp.o: org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLContextAttributesImp.o -MD -MP -MF $(DEPDIR)/WebGLContextAttributesImp.Tpo -c -o WebGLContextAttributesImp.o `test -f 'org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLContextAttributesImp.Tpo $(DEPDIR)/WebGLContextAttributesImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp' object='WebGLContextAttributesImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLContextAttributesImp.o `test -f 'org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp
-
-WebGLContextAttributesImp.obj: org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLContextAttributesImp.obj -MD -MP -MF $(DEPDIR)/WebGLContextAttributesImp.Tpo -c -o WebGLContextAttributesImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLContextAttributesImp.Tpo $(DEPDIR)/WebGLContextAttributesImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp' object='WebGLContextAttributesImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLContextAttributesImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp'; fi`
-
-WebGLContextEventImp.o: org/w3c/dom/bootstrap/WebGLContextEventImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLContextEventImp.o -MD -MP -MF $(DEPDIR)/WebGLContextEventImp.Tpo -c -o WebGLContextEventImp.o `test -f 'org/w3c/dom/bootstrap/WebGLContextEventImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLContextEventImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLContextEventImp.Tpo $(DEPDIR)/WebGLContextEventImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLContextEventImp.cpp' object='WebGLContextEventImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLContextEventImp.o `test -f 'org/w3c/dom/bootstrap/WebGLContextEventImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLContextEventImp.cpp
-
-WebGLContextEventImp.obj: org/w3c/dom/bootstrap/WebGLContextEventImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLContextEventImp.obj -MD -MP -MF $(DEPDIR)/WebGLContextEventImp.Tpo -c -o WebGLContextEventImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLContextEventImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLContextEventImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLContextEventImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLContextEventImp.Tpo $(DEPDIR)/WebGLContextEventImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLContextEventImp.cpp' object='WebGLContextEventImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLContextEventImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLContextEventImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLContextEventImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLContextEventImp.cpp'; fi`
-
-WebGLFramebufferImp.o: org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLFramebufferImp.o -MD -MP -MF $(DEPDIR)/WebGLFramebufferImp.Tpo -c -o WebGLFramebufferImp.o `test -f 'org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLFramebufferImp.Tpo $(DEPDIR)/WebGLFramebufferImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp' object='WebGLFramebufferImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLFramebufferImp.o `test -f 'org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp
-
-WebGLFramebufferImp.obj: org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLFramebufferImp.obj -MD -MP -MF $(DEPDIR)/WebGLFramebufferImp.Tpo -c -o WebGLFramebufferImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLFramebufferImp.Tpo $(DEPDIR)/WebGLFramebufferImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp' object='WebGLFramebufferImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLFramebufferImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp'; fi`
-
-WebGLObjectImp.o: org/w3c/dom/bootstrap/WebGLObjectImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLObjectImp.o -MD -MP -MF $(DEPDIR)/WebGLObjectImp.Tpo -c -o WebGLObjectImp.o `test -f 'org/w3c/dom/bootstrap/WebGLObjectImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLObjectImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLObjectImp.Tpo $(DEPDIR)/WebGLObjectImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLObjectImp.cpp' object='WebGLObjectImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLObjectImp.o `test -f 'org/w3c/dom/bootstrap/WebGLObjectImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLObjectImp.cpp
-
-WebGLObjectImp.obj: org/w3c/dom/bootstrap/WebGLObjectImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLObjectImp.obj -MD -MP -MF $(DEPDIR)/WebGLObjectImp.Tpo -c -o WebGLObjectImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLObjectImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLObjectImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLObjectImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLObjectImp.Tpo $(DEPDIR)/WebGLObjectImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLObjectImp.cpp' object='WebGLObjectImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLObjectImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLObjectImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLObjectImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLObjectImp.cpp'; fi`
-
-WebGLProgramImp.o: org/w3c/dom/bootstrap/WebGLProgramImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLProgramImp.o -MD -MP -MF $(DEPDIR)/WebGLProgramImp.Tpo -c -o WebGLProgramImp.o `test -f 'org/w3c/dom/bootstrap/WebGLProgramImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLProgramImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLProgramImp.Tpo $(DEPDIR)/WebGLProgramImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLProgramImp.cpp' object='WebGLProgramImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLProgramImp.o `test -f 'org/w3c/dom/bootstrap/WebGLProgramImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLProgramImp.cpp
-
-WebGLProgramImp.obj: org/w3c/dom/bootstrap/WebGLProgramImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLProgramImp.obj -MD -MP -MF $(DEPDIR)/WebGLProgramImp.Tpo -c -o WebGLProgramImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLProgramImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLProgramImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLProgramImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLProgramImp.Tpo $(DEPDIR)/WebGLProgramImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLProgramImp.cpp' object='WebGLProgramImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLProgramImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLProgramImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLProgramImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLProgramImp.cpp'; fi`
-
-WebGLRenderbufferImp.o: org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLRenderbufferImp.o -MD -MP -MF $(DEPDIR)/WebGLRenderbufferImp.Tpo -c -o WebGLRenderbufferImp.o `test -f 'org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLRenderbufferImp.Tpo $(DEPDIR)/WebGLRenderbufferImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp' object='WebGLRenderbufferImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLRenderbufferImp.o `test -f 'org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp
-
-WebGLRenderbufferImp.obj: org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLRenderbufferImp.obj -MD -MP -MF $(DEPDIR)/WebGLRenderbufferImp.Tpo -c -o WebGLRenderbufferImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLRenderbufferImp.Tpo $(DEPDIR)/WebGLRenderbufferImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp' object='WebGLRenderbufferImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLRenderbufferImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp'; fi`
-
-WebGLRenderingContextImp.o: org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLRenderingContextImp.o -MD -MP -MF $(DEPDIR)/WebGLRenderingContextImp.Tpo -c -o WebGLRenderingContextImp.o `test -f 'org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLRenderingContextImp.Tpo $(DEPDIR)/WebGLRenderingContextImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp' object='WebGLRenderingContextImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLRenderingContextImp.o `test -f 'org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp
-
-WebGLRenderingContextImp.obj: org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLRenderingContextImp.obj -MD -MP -MF $(DEPDIR)/WebGLRenderingContextImp.Tpo -c -o WebGLRenderingContextImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLRenderingContextImp.Tpo $(DEPDIR)/WebGLRenderingContextImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp' object='WebGLRenderingContextImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLRenderingContextImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp'; fi`
-
-WebGLShaderImp.o: org/w3c/dom/bootstrap/WebGLShaderImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLShaderImp.o -MD -MP -MF $(DEPDIR)/WebGLShaderImp.Tpo -c -o WebGLShaderImp.o `test -f 'org/w3c/dom/bootstrap/WebGLShaderImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLShaderImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLShaderImp.Tpo $(DEPDIR)/WebGLShaderImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLShaderImp.cpp' object='WebGLShaderImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLShaderImp.o `test -f 'org/w3c/dom/bootstrap/WebGLShaderImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLShaderImp.cpp
-
-WebGLShaderImp.obj: org/w3c/dom/bootstrap/WebGLShaderImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLShaderImp.obj -MD -MP -MF $(DEPDIR)/WebGLShaderImp.Tpo -c -o WebGLShaderImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLShaderImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLShaderImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLShaderImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLShaderImp.Tpo $(DEPDIR)/WebGLShaderImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLShaderImp.cpp' object='WebGLShaderImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLShaderImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLShaderImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLShaderImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLShaderImp.cpp'; fi`
-
-WebGLTextureImp.o: org/w3c/dom/bootstrap/WebGLTextureImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLTextureImp.o -MD -MP -MF $(DEPDIR)/WebGLTextureImp.Tpo -c -o WebGLTextureImp.o `test -f 'org/w3c/dom/bootstrap/WebGLTextureImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLTextureImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLTextureImp.Tpo $(DEPDIR)/WebGLTextureImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLTextureImp.cpp' object='WebGLTextureImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLTextureImp.o `test -f 'org/w3c/dom/bootstrap/WebGLTextureImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLTextureImp.cpp
-
-WebGLTextureImp.obj: org/w3c/dom/bootstrap/WebGLTextureImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLTextureImp.obj -MD -MP -MF $(DEPDIR)/WebGLTextureImp.Tpo -c -o WebGLTextureImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLTextureImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLTextureImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLTextureImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLTextureImp.Tpo $(DEPDIR)/WebGLTextureImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLTextureImp.cpp' object='WebGLTextureImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLTextureImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLTextureImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLTextureImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLTextureImp.cpp'; fi`
-
-WebGLUniformLocationImp.o: org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLUniformLocationImp.o -MD -MP -MF $(DEPDIR)/WebGLUniformLocationImp.Tpo -c -o WebGLUniformLocationImp.o `test -f 'org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLUniformLocationImp.Tpo $(DEPDIR)/WebGLUniformLocationImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp' object='WebGLUniformLocationImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLUniformLocationImp.o `test -f 'org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp
-
-WebGLUniformLocationImp.obj: org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT WebGLUniformLocationImp.obj -MD -MP -MF $(DEPDIR)/WebGLUniformLocationImp.Tpo -c -o WebGLUniformLocationImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/WebGLUniformLocationImp.Tpo $(DEPDIR)/WebGLUniformLocationImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp' object='WebGLUniformLocationImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WebGLUniformLocationImp.obj `if test -f 'org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp'; fi`
-
-XPathEvaluatorImp.o: org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathEvaluatorImp.o -MD -MP -MF $(DEPDIR)/XPathEvaluatorImp.Tpo -c -o XPathEvaluatorImp.o `test -f 'org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathEvaluatorImp.Tpo $(DEPDIR)/XPathEvaluatorImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp' object='XPathEvaluatorImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathEvaluatorImp.o `test -f 'org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp
-
-XPathEvaluatorImp.obj: org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathEvaluatorImp.obj -MD -MP -MF $(DEPDIR)/XPathEvaluatorImp.Tpo -c -o XPathEvaluatorImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathEvaluatorImp.Tpo $(DEPDIR)/XPathEvaluatorImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp' object='XPathEvaluatorImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathEvaluatorImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp'; fi`
-
-XPathExpressionImp.o: org/w3c/dom/bootstrap/XPathExpressionImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathExpressionImp.o -MD -MP -MF $(DEPDIR)/XPathExpressionImp.Tpo -c -o XPathExpressionImp.o `test -f 'org/w3c/dom/bootstrap/XPathExpressionImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathExpressionImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathExpressionImp.Tpo $(DEPDIR)/XPathExpressionImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathExpressionImp.cpp' object='XPathExpressionImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathExpressionImp.o `test -f 'org/w3c/dom/bootstrap/XPathExpressionImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathExpressionImp.cpp
-
-XPathExpressionImp.obj: org/w3c/dom/bootstrap/XPathExpressionImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathExpressionImp.obj -MD -MP -MF $(DEPDIR)/XPathExpressionImp.Tpo -c -o XPathExpressionImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathExpressionImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathExpressionImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathExpressionImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathExpressionImp.Tpo $(DEPDIR)/XPathExpressionImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathExpressionImp.cpp' object='XPathExpressionImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathExpressionImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathExpressionImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathExpressionImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathExpressionImp.cpp'; fi`
-
-XPathNamespaceImp.o: org/w3c/dom/bootstrap/XPathNamespaceImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathNamespaceImp.o -MD -MP -MF $(DEPDIR)/XPathNamespaceImp.Tpo -c -o XPathNamespaceImp.o `test -f 'org/w3c/dom/bootstrap/XPathNamespaceImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathNamespaceImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathNamespaceImp.Tpo $(DEPDIR)/XPathNamespaceImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathNamespaceImp.cpp' object='XPathNamespaceImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathNamespaceImp.o `test -f 'org/w3c/dom/bootstrap/XPathNamespaceImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathNamespaceImp.cpp
-
-XPathNamespaceImp.obj: org/w3c/dom/bootstrap/XPathNamespaceImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathNamespaceImp.obj -MD -MP -MF $(DEPDIR)/XPathNamespaceImp.Tpo -c -o XPathNamespaceImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathNamespaceImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathNamespaceImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathNamespaceImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathNamespaceImp.Tpo $(DEPDIR)/XPathNamespaceImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathNamespaceImp.cpp' object='XPathNamespaceImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathNamespaceImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathNamespaceImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathNamespaceImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathNamespaceImp.cpp'; fi`
-
-XPathNSResolverImp.o: org/w3c/dom/bootstrap/XPathNSResolverImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathNSResolverImp.o -MD -MP -MF $(DEPDIR)/XPathNSResolverImp.Tpo -c -o XPathNSResolverImp.o `test -f 'org/w3c/dom/bootstrap/XPathNSResolverImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathNSResolverImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathNSResolverImp.Tpo $(DEPDIR)/XPathNSResolverImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathNSResolverImp.cpp' object='XPathNSResolverImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathNSResolverImp.o `test -f 'org/w3c/dom/bootstrap/XPathNSResolverImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathNSResolverImp.cpp
-
-XPathNSResolverImp.obj: org/w3c/dom/bootstrap/XPathNSResolverImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathNSResolverImp.obj -MD -MP -MF $(DEPDIR)/XPathNSResolverImp.Tpo -c -o XPathNSResolverImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathNSResolverImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathNSResolverImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathNSResolverImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathNSResolverImp.Tpo $(DEPDIR)/XPathNSResolverImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathNSResolverImp.cpp' object='XPathNSResolverImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathNSResolverImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathNSResolverImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathNSResolverImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathNSResolverImp.cpp'; fi`
-
-XPathResultImp.o: org/w3c/dom/bootstrap/XPathResultImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathResultImp.o -MD -MP -MF $(DEPDIR)/XPathResultImp.Tpo -c -o XPathResultImp.o `test -f 'org/w3c/dom/bootstrap/XPathResultImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathResultImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathResultImp.Tpo $(DEPDIR)/XPathResultImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathResultImp.cpp' object='XPathResultImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathResultImp.o `test -f 'org/w3c/dom/bootstrap/XPathResultImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/XPathResultImp.cpp
-
-XPathResultImp.obj: org/w3c/dom/bootstrap/XPathResultImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XPathResultImp.obj -MD -MP -MF $(DEPDIR)/XPathResultImp.Tpo -c -o XPathResultImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathResultImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathResultImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathResultImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XPathResultImp.Tpo $(DEPDIR)/XPathResultImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/XPathResultImp.cpp' object='XPathResultImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XPathResultImp.obj `if test -f 'org/w3c/dom/bootstrap/XPathResultImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/XPathResultImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/XPathResultImp.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

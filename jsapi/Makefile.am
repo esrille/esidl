@@ -12,9 +12,6 @@ idl_files = \
 	dom2ranges.idl \
 	dom2traversal.idl \
 	dom3events.idl \
-	dom3ls.idl \
-	dom3validation.idl \
-	dom3xpath.idl \
 	domcore.idl \
 	eventsource.idl \
 	file.idl \
@@ -24,8 +21,6 @@ idl_files = \
 	progress-events.idl \
 	selectors.idl \
 	typedarray.idl \
-	url.idl \
-	webgl.idl \
 	xhr2.idl
 
 generated_headers = \
@@ -37,9 +32,7 @@ generated_headers = \
 	org/w3c/dom/DocumentFragment.h \
 	org/w3c/dom/Document.h \
 	org/w3c/dom/DocumentType.h \
-	org/w3c/dom/DOMConfiguration.h \
 	org/w3c/dom/DOMException.h \
-	org/w3c/dom/DOMImplementation.h \
 	org/w3c/dom/DOMSettableTokenList.h \
 	org/w3c/dom/DOMStringList.h \
 	org/w3c/dom/DOMStringMap.h \
@@ -215,17 +208,6 @@ generated_headers = \
 	org/w3c/dom/html/UndoManager.h \
 	org/w3c/dom/html/ValidityState.h \
 	org/w3c/dom/html/Window.h \
-	org/w3c/dom/ls/DOMImplementationLS.h \
-	org/w3c/dom/ls/LSException.h \
-	org/w3c/dom/ls/LSInput.h \
-	org/w3c/dom/ls/LSLoadEvent.h \
-	org/w3c/dom/ls/LSOutput.h \
-	org/w3c/dom/ls/LSParserFilter.h \
-	org/w3c/dom/ls/LSParser.h \
-	org/w3c/dom/ls/LSProgressEvent.h \
-	org/w3c/dom/ls/LSResourceResolver.h \
-	org/w3c/dom/ls/LSSerializerFilter.h \
-	org/w3c/dom/ls/LSSerializer.h \
 	org/w3c/dom/ranges/DocumentRange.h \
 	org/w3c/dom/ranges/RangeException.h \
 	org/w3c/dom/ranges/Range.h \
@@ -247,31 +229,8 @@ generated_headers = \
 	org/w3c/dom/typedarray/Uint16Array.h \
 	org/w3c/dom/typedarray/Uint32Array.h \
 	org/w3c/dom/typedarray/Uint8Array.h \
-	org/w3c/dom/validation/CharacterDataEditVAL.h \
-	org/w3c/dom/validation/DocumentEditVAL.h \
-	org/w3c/dom/validation/ElementEditVAL.h \
-	org/w3c/dom/validation/ExceptionVAL.h \
-	org/w3c/dom/validation/NodeEditVAL.h \
 	org/w3c/dom/views/ClientRect.h \
-	org/w3c/dom/views/ClientRectList.h \
-	org/w3c/dom/webgl/WebGLActiveInfo.h \
-	org/w3c/dom/webgl/WebGLBuffer.h \
-	org/w3c/dom/webgl/WebGLContextAttributes.h \
-	org/w3c/dom/webgl/WebGLContextEvent.h \
-	org/w3c/dom/webgl/WebGLFramebuffer.h \
-	org/w3c/dom/webgl/WebGLObject.h \
-	org/w3c/dom/webgl/WebGLProgram.h \
-	org/w3c/dom/webgl/WebGLRenderbuffer.h \
-	org/w3c/dom/webgl/WebGLRenderingContext.h \
-	org/w3c/dom/webgl/WebGLShader.h \
-	org/w3c/dom/webgl/WebGLTexture.h \
-	org/w3c/dom/webgl/WebGLUniformLocation.h \
-	org/w3c/dom/xpath/XPathEvaluator.h \
-	org/w3c/dom/xpath/XPathException.h \
-	org/w3c/dom/xpath/XPathExpression.h \
-	org/w3c/dom/xpath/XPathNamespace.h \
-	org/w3c/dom/xpath/XPathNSResolver.h \
-	org/w3c/dom/xpath/XPathResult.h
+	org/w3c/dom/views/ClientRectList.h
 
 generated_sources = \
 	org/w3c/dom/AnonXMLHttpRequest.cpp \
@@ -282,8 +241,6 @@ generated_sources = \
 	org/w3c/dom/Document.cpp \
 	org/w3c/dom/DocumentFragment.cpp \
 	org/w3c/dom/DocumentType.cpp \
-	org/w3c/dom/DOMConfiguration.cpp \
-	org/w3c/dom/DOMImplementation.cpp \
 	org/w3c/dom/DOMSettableTokenList.cpp \
 	org/w3c/dom/DOMStringList.cpp \
 	org/w3c/dom/DOMStringMap.cpp \
@@ -457,16 +414,6 @@ generated_sources = \
 	org/w3c/dom/html/UndoManagerEvent.cpp \
 	org/w3c/dom/html/ValidityState.cpp \
 	org/w3c/dom/html/Window.cpp \
-	org/w3c/dom/ls/DOMImplementationLS.cpp \
-	org/w3c/dom/ls/LSInput.cpp \
-	org/w3c/dom/ls/LSLoadEvent.cpp \
-	org/w3c/dom/ls/LSOutput.cpp \
-	org/w3c/dom/ls/LSParser.cpp \
-	org/w3c/dom/ls/LSParserFilter.cpp \
-	org/w3c/dom/ls/LSProgressEvent.cpp \
-	org/w3c/dom/ls/LSResourceResolver.cpp \
-	org/w3c/dom/ls/LSSerializer.cpp \
-	org/w3c/dom/ls/LSSerializerFilter.cpp \
 	org/w3c/dom/ranges/DocumentRange.cpp \
 	org/w3c/dom/ranges/Range.cpp \
 	org/w3c/dom/stylesheets/LinkStyle.cpp \
@@ -487,29 +434,8 @@ generated_sources = \
 	org/w3c/dom/typedarray/Uint16Array.cpp \
 	org/w3c/dom/typedarray/Uint32Array.cpp \
 	org/w3c/dom/typedarray/Uint8Array.cpp \
-	org/w3c/dom/validation/CharacterDataEditVAL.cpp \
-	org/w3c/dom/validation/DocumentEditVAL.cpp \
-	org/w3c/dom/validation/ElementEditVAL.cpp \
-	org/w3c/dom/validation/NodeEditVAL.cpp \
 	org/w3c/dom/views/ClientRect.cpp \
-	org/w3c/dom/views/ClientRectList.cpp \
-	org/w3c/dom/webgl/WebGLActiveInfo.cpp \
-	org/w3c/dom/webgl/WebGLBuffer.cpp \
-	org/w3c/dom/webgl/WebGLContextAttributes.cpp \
-	org/w3c/dom/webgl/WebGLContextEvent.cpp \
-	org/w3c/dom/webgl/WebGLFramebuffer.cpp \
-	org/w3c/dom/webgl/WebGLObject.cpp \
-	org/w3c/dom/webgl/WebGLProgram.cpp \
-	org/w3c/dom/webgl/WebGLRenderbuffer.cpp \
-	org/w3c/dom/webgl/WebGLRenderingContext.cpp \
-	org/w3c/dom/webgl/WebGLShader.cpp \
-	org/w3c/dom/webgl/WebGLTexture.cpp \
-	org/w3c/dom/webgl/WebGLUniformLocation.cpp \
-	org/w3c/dom/xpath/XPathEvaluator.cpp \
-	org/w3c/dom/xpath/XPathExpression.cpp \
-	org/w3c/dom/xpath/XPathNamespace.cpp \
-	org/w3c/dom/xpath/XPathNSResolver.cpp \
-	org/w3c/dom/xpath/XPathResult.cpp
+	org/w3c/dom/views/ClientRectList.cpp
 
 BUILT_SOURCES = $(generated_sources) $(generated_headers)
 
@@ -526,13 +452,12 @@ LDADD = libesjsapi.a
 
 AM_CPPFLAGS = \
 	-std=gnu++0x -Wall \
-	-I $(GECKO_SDK)/include \
 	-I $(srcdir)/include \
 	-I $(srcdir)/../cplusplus \
 	-DXP_UNIX -DHAVE_CONFIG_H
 
 AM_LDFLAGS = \
-	-L$(GECKO_SDK)/lib -ljs_static -lpthread
+	-lpthread
 
 org/w3c/dom/Node.cpp : $(idl_files) 
 	$(esidl) -messenger-src -string std::u16string -object Object -fno-multipleinheritance $^
@@ -556,8 +481,6 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/DocumentFragmentImp.h \
 	org/w3c/dom/bootstrap/DocumentImp.h \
 	org/w3c/dom/bootstrap/DocumentTypeImp.h \
-	org/w3c/dom/bootstrap/DOMConfigurationImp.h \
-	org/w3c/dom/bootstrap/DOMImplementationImp.h \
 	org/w3c/dom/bootstrap/DOMSettableTokenListImp.h \
 	org/w3c/dom/bootstrap/DOMStringListImp.h \
 	org/w3c/dom/bootstrap/DOMStringMapImp.h \
@@ -731,16 +654,6 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/UndoManagerImp.h \
 	org/w3c/dom/bootstrap/ValidityStateImp.h \
 	org/w3c/dom/bootstrap/WindowImp.h \
-	org/w3c/dom/bootstrap/DOMImplementationLSImp.h \
-	org/w3c/dom/bootstrap/LSInputImp.h \
-	org/w3c/dom/bootstrap/LSLoadEventImp.h \
-	org/w3c/dom/bootstrap/LSOutputImp.h \
-	org/w3c/dom/bootstrap/LSParserFilterImp.h \
-	org/w3c/dom/bootstrap/LSParserImp.h \
-	org/w3c/dom/bootstrap/LSProgressEventImp.h \
-	org/w3c/dom/bootstrap/LSResourceResolverImp.h \
-	org/w3c/dom/bootstrap/LSSerializerFilterImp.h \
-	org/w3c/dom/bootstrap/LSSerializerImp.h \
 	org/w3c/dom/bootstrap/DocumentRangeImp.h \
 	org/w3c/dom/bootstrap/RangeImp.h \
 	org/w3c/dom/bootstrap/LinkStyleImp.h \
@@ -761,29 +674,8 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/Uint16ArrayImp.h \
 	org/w3c/dom/bootstrap/Uint32ArrayImp.h \
 	org/w3c/dom/bootstrap/Uint8ArrayImp.h \
-	org/w3c/dom/bootstrap/CharacterDataEditVALImp.h \
-	org/w3c/dom/bootstrap/DocumentEditVALImp.h \
-	org/w3c/dom/bootstrap/ElementEditVALImp.h \
-	org/w3c/dom/bootstrap/NodeEditVALImp.h \
 	org/w3c/dom/bootstrap/ClientRectImp.h \
-	org/w3c/dom/bootstrap/ClientRectListImp.h \
-	org/w3c/dom/bootstrap/WebGLActiveInfoImp.h \
-	org/w3c/dom/bootstrap/WebGLBufferImp.h \
-	org/w3c/dom/bootstrap/WebGLContextAttributesImp.h \
-	org/w3c/dom/bootstrap/WebGLContextEventImp.h \
-	org/w3c/dom/bootstrap/WebGLFramebufferImp.h \
-	org/w3c/dom/bootstrap/WebGLObjectImp.h \
-	org/w3c/dom/bootstrap/WebGLProgramImp.h \
-	org/w3c/dom/bootstrap/WebGLRenderbufferImp.h \
-	org/w3c/dom/bootstrap/WebGLRenderingContextImp.h \
-	org/w3c/dom/bootstrap/WebGLShaderImp.h \
-	org/w3c/dom/bootstrap/WebGLTextureImp.h \
-	org/w3c/dom/bootstrap/WebGLUniformLocationImp.h \
-	org/w3c/dom/bootstrap/XPathEvaluatorImp.h \
-	org/w3c/dom/bootstrap/XPathExpressionImp.h \
-	org/w3c/dom/bootstrap/XPathNamespaceImp.h \
-	org/w3c/dom/bootstrap/XPathNSResolverImp.h \
-	org/w3c/dom/bootstrap/XPathResultImp.h
+	org/w3c/dom/bootstrap/ClientRectListImp.h
 
 generated_imp_sources = \
 	org/w3c/dom/bootstrap/AnonXMLHttpRequestImp.cpp \
@@ -794,8 +686,6 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/DocumentImp.cpp \
 	org/w3c/dom/bootstrap/DocumentFragmentImp.cpp \
 	org/w3c/dom/bootstrap/DocumentTypeImp.cpp \
-	org/w3c/dom/bootstrap/DOMConfigurationImp.cpp \
-	org/w3c/dom/bootstrap/DOMImplementationImp.cpp \
 	org/w3c/dom/bootstrap/DOMSettableTokenListImp.cpp \
 	org/w3c/dom/bootstrap/DOMStringListImp.cpp \
 	org/w3c/dom/bootstrap/DOMStringMapImp.cpp \
@@ -969,16 +859,6 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/UndoManagerEventImp.cpp \
 	org/w3c/dom/bootstrap/ValidityStateImp.cpp \
 	org/w3c/dom/bootstrap/WindowImp.cpp \
-	org/w3c/dom/bootstrap/DOMImplementationLSImp.cpp \
-	org/w3c/dom/bootstrap/LSInputImp.cpp \
-	org/w3c/dom/bootstrap/LSLoadEventImp.cpp \
-	org/w3c/dom/bootstrap/LSOutputImp.cpp \
-	org/w3c/dom/bootstrap/LSParserImp.cpp \
-	org/w3c/dom/bootstrap/LSParserFilterImp.cpp \
-	org/w3c/dom/bootstrap/LSProgressEventImp.cpp \
-	org/w3c/dom/bootstrap/LSResourceResolverImp.cpp \
-	org/w3c/dom/bootstrap/LSSerializerImp.cpp \
-	org/w3c/dom/bootstrap/LSSerializerFilterImp.cpp \
 	org/w3c/dom/bootstrap/DocumentRangeImp.cpp \
 	org/w3c/dom/bootstrap/RangeImp.cpp \
 	org/w3c/dom/bootstrap/LinkStyleImp.cpp \
@@ -999,29 +879,8 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/Uint16ArrayImp.cpp \
 	org/w3c/dom/bootstrap/Uint32ArrayImp.cpp \
 	org/w3c/dom/bootstrap/Uint8ArrayImp.cpp \
-	org/w3c/dom/bootstrap/CharacterDataEditVALImp.cpp \
-	org/w3c/dom/bootstrap/DocumentEditVALImp.cpp \
-	org/w3c/dom/bootstrap/ElementEditVALImp.cpp \
-	org/w3c/dom/bootstrap/NodeEditVALImp.cpp \
 	org/w3c/dom/bootstrap/ClientRectImp.cpp \
-	org/w3c/dom/bootstrap/ClientRectListImp.cpp \
-	org/w3c/dom/bootstrap/WebGLActiveInfoImp.cpp \
-	org/w3c/dom/bootstrap/WebGLBufferImp.cpp \
-	org/w3c/dom/bootstrap/WebGLContextAttributesImp.cpp \
-	org/w3c/dom/bootstrap/WebGLContextEventImp.cpp \
-	org/w3c/dom/bootstrap/WebGLFramebufferImp.cpp \
-	org/w3c/dom/bootstrap/WebGLObjectImp.cpp \
-	org/w3c/dom/bootstrap/WebGLProgramImp.cpp \
-	org/w3c/dom/bootstrap/WebGLRenderbufferImp.cpp \
-	org/w3c/dom/bootstrap/WebGLRenderingContextImp.cpp \
-	org/w3c/dom/bootstrap/WebGLShaderImp.cpp \
-	org/w3c/dom/bootstrap/WebGLTextureImp.cpp \
-	org/w3c/dom/bootstrap/WebGLUniformLocationImp.cpp \
-	org/w3c/dom/bootstrap/XPathEvaluatorImp.cpp \
-	org/w3c/dom/bootstrap/XPathExpressionImp.cpp \
-	org/w3c/dom/bootstrap/XPathNamespaceImp.cpp \
-	org/w3c/dom/bootstrap/XPathNSResolverImp.cpp \
-	org/w3c/dom/bootstrap/XPathResultImp.cpp
+	org/w3c/dom/bootstrap/ClientRectListImp.cpp
 
 org/w3c/dom/bootstrap/NodeImp.h : $(idl_files)
 	$(esidl) -messenger-imp -string std::u16string -object Object -fno-multipleinheritance $^
@@ -1042,6 +901,8 @@ bin_PROGRAMS : libesjsapi.a
 
 generated_test_headers = \
 	org/w3c/dom/test/Event.h \
+	org/w3c/dom/test/EventInit.h \
+	org/w3c/dom/test/CustomEventInit.h \
 	org/w3c/dom/test/EventListener.h \
 	org/w3c/dom/test/EventTarget.h
 
@@ -1049,6 +910,8 @@ $(generated_test_headers) : org/w3c/dom/test/Event.h
 
 generated_test_sources = \
 	org/w3c/dom/test/Event.cpp \
+	org/w3c/dom/test/EventInit.cpp \
+	org/w3c/dom/test/CustomEventInit.cpp \
 	org/w3c/dom/test/EventListener.cpp \
 	org/w3c/dom/test/EventTarget.cpp
 
