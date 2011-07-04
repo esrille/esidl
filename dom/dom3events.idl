@@ -286,7 +286,7 @@ interface MutationEvent : Event {
   const unsigned short      ADDITION                       = 2;
   const unsigned short      REMOVAL                        = 3;
 
-  readonly attribute Node            relatedNode;
+  readonly attribute DOMObject       relatedNode;  // Note Attr is not a Node in DOM Core
   readonly attribute DOMString       prevValue;
   readonly attribute DOMString       newValue;
   readonly attribute DOMString       attrName;
@@ -294,7 +294,7 @@ interface MutationEvent : Event {
   void               initMutationEvent(in DOMString typeArg, 
                                        in boolean canBubbleArg, 
                                        in boolean cancelableArg, 
-                                       in Node relatedNodeArg, 
+                                       in DOMObject relatedNodeArg, 
                                        in DOMString prevValueArg, 
                                        in DOMString newValueArg, 
                                        in DOMString attrNameArg, 

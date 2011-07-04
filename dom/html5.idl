@@ -992,7 +992,7 @@ interface Window : EventTarget {
   [Replaceable] readonly attribute WindowProxy opener;
   readonly attribute WindowProxy parent;
   readonly attribute Element frameElement;
-  WindowProxy open(in optional DOMString url, in optional DOMString target, in optional DOMString features, in optional DOMString replace);
+  WindowProxy open(in optional DOMString url, in optional DOMString target, in optional DOMString features, in optional boolean replace);
   getter WindowProxy (in unsigned long index);
   getter any (in DOMString name);
   setter void (in DOMString name, in any value);  // for [ReplaceableNamedProperties]

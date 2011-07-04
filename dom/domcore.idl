@@ -70,12 +70,12 @@ interface Event {
   readonly attribute boolean isTrusted;
   readonly attribute DOMTimeStamp timeStamp;
 
-  void initEvent(DOMString type, optional boolean bubbles, optional boolean cancelable);
+  void initEvent(DOMString type, boolean bubbles, boolean cancelable);
 };
 
 interface CustomEvent : Event {
   readonly attribute object detail;
-  void initCustomEvent(DOMString type, optional boolean bubbles, optional boolean cancelable, optional object detail);
+  void initCustomEvent(DOMString type, boolean bubbles, boolean cancelable, object detail);
 };
 
 interface EventTarget {
