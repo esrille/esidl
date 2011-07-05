@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +15,13 @@
  * limitations under the License.
  */
 
-#ifndef ES_SEQUENCE_INCLUDED
-#define ES_SEQUENCE_INCLUDED
+#ifndef ES_SEQUENCE_H
+#define ES_SEQUENCE_H
 
 #include <initializer_list>
 #include <new>
 
-class Any;
+#include <any.h>
 
 // The sequence type for Web IDL
 // TODO: This implementation is not multi-thread safe.
@@ -222,7 +223,12 @@ public:
         return rep->getLength();
     }
 
-    Sequence(const Any& any);
+    Sequence(const Any& any)
+    {
+        const Sequence& value = any.as<Sequence<T> >();
+        ++value.rep->count;
+        rep = value.rep;
+    }
 };
 
-#endif  // ES_SEQUENCE_INCLUDED
+#endif  // ES_SEQUENCE_H

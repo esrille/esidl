@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +19,8 @@
 #define ES_NULLABLE_H_INCLUDED
 
 #include <string>
+#include <typeinfo>
+#include <type_traits>
 
 class Any;
 class Object;
@@ -27,8 +30,6 @@ class Nullable
 {
     T    value_;
     bool hasValue_;
-
-    Nullable(Object* object);
 
     template <typename U>
     Nullable(const Nullable<U>&);
@@ -65,19 +66,34 @@ public:
     {
     }
 
-    Nullable(const char* str) :
-        value_(std::string(str)),
-        hasValue_(true)
-    {
-    }
-
-    Nullable(const char16_t* str) :
-        value_(std::u16string(str)),
-        hasValue_(true)
-    {
-    }
+    template<typename U>
+    Nullable(U* str);
 
     Nullable(const Any& any);
 };
+
+template<>
+template<>
+inline Nullable<std::string>::Nullable(const char* str)
+{
+    if (!str) 
+        hasValue_ = false;
+    else {
+        hasValue_ = true;
+        value_ = str;
+    }
+}
+
+template<>
+template<>
+inline Nullable<std::u16string>::Nullable(const char16_t* str)
+{
+    if (!str)
+        hasValue_ = false;
+    else {
+        hasValue_ = true;
+        value_ = str;
+    }
+}
 
 #endif  // ES_NULLABLE_H_INCLUDED
