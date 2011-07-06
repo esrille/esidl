@@ -87,11 +87,11 @@ int main(int argc, const char* argv[])
         return EXIT_FAILURE;
 
     // Register classes
-    EventImp::setStaticPrivate(new NativeClass(jscontext, test::Event::getMetaData(), test::Event::getConstructor));
-    EventTargetImp::setStaticPrivate(new NativeClass(jscontext, test::EventTarget::getMetaData()));
-    EventListenerImp::setStaticPrivate(new NativeClass(jscontext, test::EventListener::getMetaData()));
-    DOMStringMapImp::setStaticPrivate(new NativeClass(jscontext, test::DOMStringMap::getMetaData()));
-    HTMLCollectionImp::setStaticPrivate(new NativeClass(jscontext, test::HTMLCollection::getMetaData()));
+    EventImp::setStaticPrivate(new NativeClass(jscontext, global, test::Event::getMetaData(), test::Event::getConstructor));
+    EventTargetImp::setStaticPrivate(new NativeClass(jscontext, global, test::EventTarget::getMetaData()));
+    EventListenerImp::setStaticPrivate(new NativeClass(jscontext, global, test::EventListener::getMetaData()));
+    DOMStringMapImp::setStaticPrivate(new NativeClass(jscontext, global, test::DOMStringMap::getMetaData()));
+    HTMLCollectionImp::setStaticPrivate(new NativeClass(jscontext, global, test::HTMLCollection::getMetaData()));
 
     // Create an instance of EventTarget for test
     org::w3c::dom::test::EventTarget target = new EventTargetImp;
