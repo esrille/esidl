@@ -120,7 +120,7 @@ int yylex();
 %type <node>        Definition
 %type <node>        Module
 %type <node>        Interface
-%type <node>        InterfaceInheritance
+%type <node>        Inheritance
 %type <node>        InterfaceMember
 %type <node>        Dictionary
 %type <node>        DictionaryMember
@@ -153,20 +153,15 @@ int yylex();
 %type <nodeList>    ExtendedAttributeList
 %type <nodeList>    ExtendedAttributes
 %type <node>        Type
-%type <node>        NullableType
-%type <attr>        Nullable
-%type <node>        FloatType
+%type <node>        AttributeType
+%type <node>        ConstType
+%type <node>        PrimitiveOrStringType
 %type <node>        UnsignedIntegerType
 %type <node>        IntegerType
 %type <attr>        OptionalLong
-%type <node>        BooleanType
-%type <node>        OctetType
-%type <node>        AnyType
-%type <node>        DateType
-%type <node>        SequenceType
-%type <node>        StringType
+%type <node>        TypeSuffix
+%type <attr>        Null
 %type <node>        ReturnType
-%type <node>        ConstType
 %type <node>        ScopedNameList
 %type <node>        ScopedName
 %type <node>        AbsoluteScopedName
@@ -192,9 +187,6 @@ int yylex();
 %type <node>        PrimaryExpr
 %type <name>        UnaryOperator
 %type <node>        Preprocessor
-%type <node>        Array
-%type <node>        BracketsList
-%type <node>        Brackets
 %type <node>        positive_int_const
 %type <name>        JavaDoc
 
@@ -273,7 +265,7 @@ InterfaceDcl :
     ;
 
 Interface :
-    INTERFACE IDENTIFIER InterfaceInheritance
+    INTERFACE IDENTIFIER Inheritance
         {
             Node* extends = $3;
             if (!extends)
@@ -317,7 +309,7 @@ Interface :
         }
     ;
 
-InterfaceInheritance :
+Inheritance :
     /* empty */
         {
             $$ = 0;
@@ -353,7 +345,7 @@ InterfaceMember :
     ;
 
 Dictionary :
-    DICTIONARY IDENTIFIER InterfaceInheritance
+    DICTIONARY IDENTIFIER Inheritance
         {
             Node* extends = $3;
             if (!extends)
@@ -942,95 +934,99 @@ ExtendedAttribute :
     ;
 
 Type :
-    NullableType Array
+    AttributeType
+    | SEQUENCE '<' Type '>' Null
         {
-            if ($2)
-            {
-                static_cast<ArrayType*>($2)->setSpec($1);
-                $$ = $2;
-                $$->setParent(getCurrent());
-            }
-            else
-            {
-                $$ = $1;
-            }
+            $$ = new SequenceType($3);
+            $$->setAttr($$->getAttr() | $5);
+            $$->setParent(getCurrent());
+            $$->setLocation(&@1, &@4);
         }
-    | ScopedName Array /* Note in esidl, "object" is treated as a ScopedName. */
+    | SEQUENCE '<' Type ',' positive_int_const '>' Null   /* esidl extension */
         {
-            if ($2)
-            {
-                static_cast<ArrayType*>($2)->setSpec($1);
-                $$ = $2;
-                $$->setParent(getCurrent());
-            }
-            else
-            {
-                $$ = $1;
-            }
-        }
-    | AnyType Array
-        {
-            if ($2)
-            {
-                static_cast<ArrayType*>($2)->setSpec($1);
-                $$ = $2;
-                $$->setParent(getCurrent());
-            }
-            else
-            {
-                $$ = $1;
-            }
-        }
-    | DateType Array
-        {
-            if ($2)
-            {
-                static_cast<ArrayType*>($2)->setSpec($1);
-                $$ = $2;
-                $$->setParent(getCurrent());
-            }
-            else
-            {
-                $$ = $1;
-            }
+            $$ = new SequenceType($3, $5);
+            $$->setAttr($$->getAttr() | $7);
+            $$->setParent(getCurrent());
+            $$->setLocation(&@1, &@6);
         }
     ;
 
-NullableType :
-    UnsignedIntegerType Nullable
+AttributeType :
+    PrimitiveOrStringType Null TypeSuffix
         {
             $1->setAttr($1->getAttr() | $2);
-            $$ = $1;
+            if ($3)
+            {
+                static_cast<ArrayType*>($3)->setSpec($1);
+                $$ = $3;
+                $$->setParent(getCurrent());
+            }
+            else
+            {
+                $$ = $1;
+            }
         }
-    | BooleanType Nullable
+    | ScopedName Null TypeSuffix /* in esidl, "object" is treatetd as one of ScopedNames. */
         {
             $1->setAttr($1->getAttr() | $2);
-            $$ = $1;
+            if ($3)
+            {
+                static_cast<ArrayType*>($3)->setSpec($1);
+                $$ = $3;
+                $$->setParent(getCurrent());
+            }
+            else
+            {
+                $$ = $1;
+            }
         }
-    | OctetType Nullable
+    | DATE Null TypeSuffix
         {
-            $1->setAttr($1->getAttr() | $2);
-            $$ = $1;
+            $$ = new Type("Date");
+            $$->setAttr($$->getAttr() | $2);
+            if ($3)
+            {
+                static_cast<ArrayType*>($3)->setSpec($$);
+                $$ = $3;
+                $$->setParent(getCurrent());
+            }
+            $$->setLocation(&@1);
         }
-    | FloatType Nullable
+    | ANY TypeSuffix
         {
-            $1->setAttr($1->getAttr() | $2);
-            $$ = $1;
+            $$ = new Type("any");
+            if ($2)
+            {
+                static_cast<ArrayType*>($2)->setSpec($$);
+                $$ = $2;
+                $$->setParent(getCurrent());
+            }
+            $$->setLocation(&@1);
         }
-    | StringType Nullable
-        {
-            $1->setAttr($1->getAttr() | $2);
-            $$ = $1;
-        }
-    | SequenceType Nullable
+    ;
+
+ConstType :
+    PrimitiveOrStringType Null
         {
             $1->setAttr($1->getAttr() | $2);
             $$ = $1;
         }
     ;
 
-FloatType :
-    FLOAT
+PrimitiveOrStringType :
+    UnsignedIntegerType  /* in esidl, "byte" is treated as one of IntegerTypes */
+    | BOOLEAN
+        {
+            $$ = new Type("boolean");
+            $$->setLocation(&@1);
+        }
+    | "byte"
+    | OCTET
+        {
+            $$ = new Type("octet");
+            $$->setLocation(&@1);
+        }
+    | FLOAT
         {
             $$ = new Type("float");
             $$->setLocation(&@1);
@@ -1038,6 +1034,11 @@ FloatType :
     | DOUBLE
         {
             $$ = new Type("double");
+            $$->setLocation(&@1);
+        }
+    | STRING
+        {
+            $$ = new Type("string");
             $$->setLocation(&@1);
         }
     ;
@@ -1081,62 +1082,28 @@ OptionalLong :
         }
     ;
 
-BooleanType :
-    BOOLEAN
+TypeSuffix :
+    /* empty */
         {
-            $$ = new Type("boolean");
-            $$->setLocation(&@1);
+            $$ = 0;
+        }
+    | '[' ']' Null TypeSuffix
+        {
+            ArrayType* array = new ArrayType;
+            array->setSpec($4);
+            $$ = array;
+            $$->setAttr($$->getAttr() | $3);
+        }
+    | '[' positive_int_const ']' Null TypeSuffix  /* Note positive_int_const is an esidl extension. */
+        {
+            ArrayType* array = new ArrayType($2);
+            array->setSpec($5);
+            $$ = array;
+            $$->setAttr($$->getAttr() | $4);
         }
     ;
 
-OctetType :
-    OCTET
-        {
-            $$ = new Type("octet");
-            $$->setLocation(&@1);
-        }
-    ;
-
-AnyType :
-    ANY
-        {
-            $$ = new Type("any");
-            $$->setLocation(&@1);
-        }
-    ;
-
-DateType :
-    DATE
-        {
-            $$ = new Type("Date");
-            $$->setLocation(&@1);
-        }
-    ;
-
-SequenceType :
-    SEQUENCE '<' Type ',' positive_int_const '>'
-        {
-            $$ = new SequenceType($3, $5);
-            $$->setParent(getCurrent());
-            $$->setLocation(&@1, &@6);
-        }
-    | SEQUENCE '<' Type '>'
-        {
-            $$ = new SequenceType($3);
-            $$->setParent(getCurrent());
-            $$->setLocation(&@1, &@4);
-        }
-    ;
-
-StringType :
-    STRING
-        {
-            $$ = new Type("string");
-            $$->setLocation(&@1);
-        }
-    ;
-
-Nullable :
+Null :
     /* empty */
         {
             $$ = 0;
@@ -1147,36 +1114,6 @@ Nullable :
         }
     ;
 
-Array :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | BracketsList
-        {
-        }
-    ;
-
-BracketsList :
-    Brackets
-    | Brackets BracketsList
-        {
-            static_cast<ArrayType*>($1)->setSpec($2);
-            $$ = $1;
-        }
-    ;
-
-Brackets :
-    '[' ']'
-        {
-            $$ = new ArrayType;
-        }
-    | '[' positive_int_const ']'  /* Note positive_int_const is an esidl extension. */
-        {
-            $$ = new ArrayType($2);
-        }
-    ;
-
 ReturnType :
     Type
     | VOID
@@ -1184,15 +1121,6 @@ ReturnType :
             $$ = new Type("void");
             $$->setLocation(&@1);
         }
-    ;
-
-/* ConstType will be added in the future spec. */
-ConstType :
-    UnsignedIntegerType
-    | BooleanType
-    | FloatType
-    | ScopedName
-    | OctetType
     ;
 
 ScopedNameList :
