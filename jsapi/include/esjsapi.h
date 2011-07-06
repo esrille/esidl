@@ -41,7 +41,7 @@ class NativeClass
 
     NativeClass* proto;
     int protoRank;
-    char name[32];
+    char name[48];
     JSClass jsclass;
     std::unique_ptr<uint32_t[]> hashTable;
 

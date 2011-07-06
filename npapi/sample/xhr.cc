@@ -38,7 +38,7 @@ void XHRInstance::initialize()
     html::HTMLFormElement form = interface_cast<html::HTMLFormElement>(document.getElement("form"));
     if (!form)
         return;
-    html::HTMLButtonElement button = interface_cast<html::HTMLButtonElement>(form.namedItem("button"));
+    html::HTMLButtonElement button = interface_cast<html::HTMLButtonElement>(form.getElement("button"));
     if (!button)
         return;
     button.addEventListener("click", loadHandler, true);
@@ -69,7 +69,7 @@ void XHRInstance::display(events::Event evt)
     html::HTMLFormElement form = interface_cast<html::HTMLFormElement>(document.getElement("form"));
     if (!form)
         return;
-    html::HTMLInputElement result = interface_cast<html::HTMLInputElement>(form.namedItem("result"));
+    html::HTMLInputElement result = interface_cast<html::HTMLInputElement>(form.getElement("result"));
     if (result)
         result.setValue(xhr.getResponseText());
 }
