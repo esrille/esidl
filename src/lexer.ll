@@ -223,6 +223,11 @@ optional            {
                         stepLocation();
                         return OPTIONAL;
                     }
+partial              {
+                        stepLocation();
+                        return PARTIAL;
+                    }
+
 raises              {
                         stepLocation();
                         return RAISES;

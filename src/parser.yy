@@ -91,6 +91,7 @@ int yylex();
 %token OCTET
 %token OMITTABLE
 %token OPTIONAL
+%token PARTIAL
 %token RAISES
 %token READONLY
 %token SETRAISES
@@ -118,8 +119,10 @@ int yylex();
 %token <name>       JAVADOC
 
 %type <node>        Definition
+%type <node>        NormalDefinition
 %type <node>        Module
 %type <node>        Interface
+%type <node>        PartialInterface
 %type <node>        Inheritance
 %type <node>        InterfaceMember
 %type <node>        Dictionary
@@ -199,18 +202,26 @@ Definitions :
             setJavadoc($1);
             free($1);
         }
-    ExtendedAttributeList Definition
+    Definition
         {
-            if ($4)
-            {
-                $4->setExtendedAttributes($3);
-            }
             setJavadoc(0);
         }
     Definitions
     ;
 
 Definition :
+    ExtendedAttributeList NormalDefinition
+        {
+            if ($2)
+            {
+                $2->setExtendedAttributes($1);
+            }
+            $$ = $2;
+        }
+    | PartialInterface
+    ;
+
+NormalDefinition :
     Module
     | InterfaceDcl
     | Dictionary
@@ -296,6 +307,31 @@ Interface :
             getCurrent()->add(node);
             setCurrent(node);
             free($2);
+        }
+    '{' InterfaceMembers '}' ';'
+        {
+            getCurrent()->setLocation(&@1, &@8);
+            $$ = getCurrent();
+            setCurrent(getCurrent()->getParent());
+            if (Node::getFlatNamespace() && getCurrent() == getSpecification())
+            {
+                setCurrent(dynamic_cast<Module*>(getSpecification()->search(Node::getFlatNamespace())));
+            }
+        }
+    ;
+
+PartialInterface :
+    PARTIAL INTERFACE IDENTIFIER
+        {
+            Interface* node = new Interface($3);
+            if (Node::getFlatNamespace())
+            {
+                setCurrent(getSpecification());
+            }
+            getCurrent()->add(node);
+            setCurrent(node);
+            node->setAttr(node->getAttr() | Interface::Supplemental);
+            free($3);
         }
     '{' InterfaceMembers '}' ';'
         {
@@ -1020,7 +1056,6 @@ PrimitiveOrStringType :
             $$ = new Type("boolean");
             $$->setLocation(&@1);
         }
-    | "byte"
     | OCTET
         {
             $$ = new Type("octet");
