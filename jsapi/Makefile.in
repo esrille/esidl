@@ -118,12 +118,11 @@ am__objects_1 = AnonXMLHttpRequest.$(OBJEXT) Attr.$(OBJEXT) \
 	FileReaderSync.$(OBJEXT) ApplicationCache.$(OBJEXT) \
 	AudioTrack.$(OBJEXT) AudioTrackList.$(OBJEXT) \
 	BarProp.$(OBJEXT) BeforeUnloadEvent.$(OBJEXT) \
-	BlobCallback.$(OBJEXT) BooleanCallback.$(OBJEXT) \
-	CanvasGradient.$(OBJEXT) CanvasPattern.$(OBJEXT) \
-	CanvasPixelArray.$(OBJEXT) CanvasRenderingContext2D.$(OBJEXT) \
-	DataTransfer.$(OBJEXT) DataTransferItem.$(OBJEXT) \
-	DataTransferItemList.$(OBJEXT) DragEvent.$(OBJEXT) \
-	External.$(OBJEXT) Function.$(OBJEXT) \
+	BlobCallback.$(OBJEXT) CanvasGradient.$(OBJEXT) \
+	CanvasPattern.$(OBJEXT) CanvasPixelArray.$(OBJEXT) \
+	CanvasRenderingContext2D.$(OBJEXT) DataTransfer.$(OBJEXT) \
+	DataTransferItem.$(OBJEXT) DataTransferItemList.$(OBJEXT) \
+	DragEvent.$(OBJEXT) External.$(OBJEXT) Function.$(OBJEXT) \
 	FunctionStringCallback.$(OBJEXT) HTMLAllCollection.$(OBJEXT) \
 	HTMLAnchorElement.$(OBJEXT) HTMLAppletElement.$(OBJEXT) \
 	HTMLAreaElement.$(OBJEXT) HTMLAudioElement.$(OBJEXT) \
@@ -168,6 +167,7 @@ am__objects_1 = AnonXMLHttpRequest.$(OBJEXT) Attr.$(OBJEXT) \
 	HTMLVideoElement.$(OBJEXT) HashChangeEvent.$(OBJEXT) \
 	History.$(OBJEXT) ImageData.$(OBJEXT) Location.$(OBJEXT) \
 	MediaController.$(OBJEXT) MediaError.$(OBJEXT) \
+	MediaQueryList.$(OBJEXT) MediaQueryListListener.$(OBJEXT) \
 	MediaStreamRecorder.$(OBJEXT) MessageChannel.$(OBJEXT) \
 	MessageEvent.$(OBJEXT) MessagePort.$(OBJEXT) \
 	MutableTextTrack.$(OBJEXT) Navigator.$(OBJEXT) \
@@ -176,13 +176,12 @@ am__objects_1 = AnonXMLHttpRequest.$(OBJEXT) Attr.$(OBJEXT) \
 	PageTransitionEvent.$(OBJEXT) PopStateEvent.$(OBJEXT) \
 	PropertyNodeList.$(OBJEXT) RadioNodeList.$(OBJEXT) \
 	Screen.$(OBJEXT) SignalingCallback.$(OBJEXT) \
-	StreamTrack.$(OBJEXT) StyleMedia.$(OBJEXT) \
-	TextMetrics.$(OBJEXT) TextTrack.$(OBJEXT) \
-	TextTrackCue.$(OBJEXT) TextTrackCueList.$(OBJEXT) \
-	TimeRanges.$(OBJEXT) Transferable.$(OBJEXT) \
-	UndoManager.$(OBJEXT) UndoManagerEvent.$(OBJEXT) \
-	ValidityState.$(OBJEXT) VideoTrack.$(OBJEXT) \
-	VideoTrackList.$(OBJEXT) Window.$(OBJEXT) \
+	StreamTrack.$(OBJEXT) TextMetrics.$(OBJEXT) \
+	TextTrack.$(OBJEXT) TextTrackCue.$(OBJEXT) \
+	TextTrackCueList.$(OBJEXT) TimeRanges.$(OBJEXT) \
+	Transferable.$(OBJEXT) UndoManager.$(OBJEXT) \
+	UndoManagerEvent.$(OBJEXT) ValidityState.$(OBJEXT) \
+	VideoTrack.$(OBJEXT) VideoTrackList.$(OBJEXT) Window.$(OBJEXT) \
 	WindowModal.$(OBJEXT) DocumentRange.$(OBJEXT) Range.$(OBJEXT) \
 	LinkStyle.$(OBJEXT) MediaList.$(OBJEXT) StyleSheet.$(OBJEXT) \
 	DocumentTraversal.$(OBJEXT) NodeFilter.$(OBJEXT) \
@@ -220,8 +219,7 @@ am__objects_4 = AnonXMLHttpRequestImp.$(OBJEXT) \
 	AudioTrackImp.$(OBJEXT) AudioTrackListImp.$(OBJEXT) \
 	BarPropImp.$(OBJEXT) BeforeUnloadEventImp.$(OBJEXT) \
 	BlobCallbackImp.$(OBJEXT) BlobImp.$(OBJEXT) \
-	BooleanCallbackImp.$(OBJEXT) CSS2PropertiesImp.$(OBJEXT) \
-	CSSCharsetRuleImp.$(OBJEXT) \
+	CSS2PropertiesImp.$(OBJEXT) CSSCharsetRuleImp.$(OBJEXT) \
 	CSSColorComponentValueImp.$(OBJEXT) \
 	CSSComponentValueImp.$(OBJEXT) CSSFontFaceRuleImp.$(OBJEXT) \
 	CSSIdentifierComponentValueImp.$(OBJEXT) \
@@ -320,11 +318,13 @@ am__objects_4 = AnonXMLHttpRequestImp.$(OBJEXT) \
 	Int8ArrayImp.$(OBJEXT) KeyboardEventImp.$(OBJEXT) \
 	LinkStyleImp.$(OBJEXT) LocationImp.$(OBJEXT) \
 	MediaControllerImp.$(OBJEXT) MediaErrorImp.$(OBJEXT) \
-	MediaListImp.$(OBJEXT) MediaStreamRecorderImp.$(OBJEXT) \
-	MessageChannelImp.$(OBJEXT) MessageEventImp.$(OBJEXT) \
-	MessagePortImp.$(OBJEXT) MouseEventImp.$(OBJEXT) \
-	MutableTextTrackImp.$(OBJEXT) MutationEventImp.$(OBJEXT) \
-	MutationNameEventImp.$(OBJEXT) NavigatorImp.$(OBJEXT) \
+	MediaListImp.$(OBJEXT) MediaQueryListImp.$(OBJEXT) \
+	MediaQueryListListenerImp.$(OBJEXT) \
+	MediaStreamRecorderImp.$(OBJEXT) MessageChannelImp.$(OBJEXT) \
+	MessageEventImp.$(OBJEXT) MessagePortImp.$(OBJEXT) \
+	MouseEventImp.$(OBJEXT) MutableTextTrackImp.$(OBJEXT) \
+	MutationEventImp.$(OBJEXT) MutationNameEventImp.$(OBJEXT) \
+	NavigatorImp.$(OBJEXT) \
 	NavigatorUserMediaErrorCallbackImp.$(OBJEXT) \
 	NavigatorUserMediaErrorImp.$(OBJEXT) NodeFilterImp.$(OBJEXT) \
 	NodeImp.$(OBJEXT) NodeIteratorImp.$(OBJEXT) \
@@ -334,18 +334,17 @@ am__objects_4 = AnonXMLHttpRequestImp.$(OBJEXT) \
 	RGBColorImp.$(OBJEXT) RadioNodeListImp.$(OBJEXT) \
 	RangeImp.$(OBJEXT) RectImp.$(OBJEXT) ScreenImp.$(OBJEXT) \
 	SignalingCallbackImp.$(OBJEXT) StreamTrackImp.$(OBJEXT) \
-	StyleMediaImp.$(OBJEXT) StyleSheetImp.$(OBJEXT) \
-	TextEventImp.$(OBJEXT) TextImp.$(OBJEXT) \
-	TextMetricsImp.$(OBJEXT) TextTrackCueImp.$(OBJEXT) \
-	TextTrackCueListImp.$(OBJEXT) TextTrackImp.$(OBJEXT) \
-	TimeRangesImp.$(OBJEXT) TransferableImp.$(OBJEXT) \
-	TreeWalkerImp.$(OBJEXT) UIEventImp.$(OBJEXT) \
-	Uint16ArrayImp.$(OBJEXT) Uint32ArrayImp.$(OBJEXT) \
-	Uint8ArrayImp.$(OBJEXT) UndoManagerEventImp.$(OBJEXT) \
-	UndoManagerImp.$(OBJEXT) ValidityStateImp.$(OBJEXT) \
-	VideoTrackImp.$(OBJEXT) VideoTrackListImp.$(OBJEXT) \
-	WheelEventImp.$(OBJEXT) WindowImp.$(OBJEXT) \
-	WindowModalImp.$(OBJEXT) \
+	StyleSheetImp.$(OBJEXT) TextEventImp.$(OBJEXT) \
+	TextImp.$(OBJEXT) TextMetricsImp.$(OBJEXT) \
+	TextTrackCueImp.$(OBJEXT) TextTrackCueListImp.$(OBJEXT) \
+	TextTrackImp.$(OBJEXT) TimeRangesImp.$(OBJEXT) \
+	TransferableImp.$(OBJEXT) TreeWalkerImp.$(OBJEXT) \
+	UIEventImp.$(OBJEXT) Uint16ArrayImp.$(OBJEXT) \
+	Uint32ArrayImp.$(OBJEXT) Uint8ArrayImp.$(OBJEXT) \
+	UndoManagerEventImp.$(OBJEXT) UndoManagerImp.$(OBJEXT) \
+	ValidityStateImp.$(OBJEXT) VideoTrackImp.$(OBJEXT) \
+	VideoTrackListImp.$(OBJEXT) WheelEventImp.$(OBJEXT) \
+	WindowImp.$(OBJEXT) WindowModalImp.$(OBJEXT) \
 	XMLHttpRequestEventTargetImp.$(OBJEXT) \
 	XMLHttpRequestImp.$(OBJEXT) XMLHttpRequestUploadImp.$(OBJEXT)
 nodist_dom_test_OBJECTS = $(am__objects_4) $(am__objects_2)
@@ -622,7 +621,6 @@ generated_headers = \
 	org/w3c/dom/html/BarProp.h \
 	org/w3c/dom/html/BeforeUnloadEvent.h \
 	org/w3c/dom/html/BlobCallback.h \
-	org/w3c/dom/html/BooleanCallback.h \
 	org/w3c/dom/html/CanvasGradient.h \
 	org/w3c/dom/html/CanvasPattern.h \
 	org/w3c/dom/html/CanvasPixelArray.h \
@@ -719,6 +717,8 @@ generated_headers = \
 	org/w3c/dom/html/Location.h \
 	org/w3c/dom/html/MediaController.h \
 	org/w3c/dom/html/MediaError.h \
+	org/w3c/dom/html/MediaQueryList.h \
+	org/w3c/dom/html/MediaQueryListListener.h \
 	org/w3c/dom/html/MediaStream.h \
 	org/w3c/dom/html/MediaStreamRecorder.h \
 	org/w3c/dom/html/MessageChannel.h \
@@ -738,7 +738,6 @@ generated_headers = \
 	org/w3c/dom/html/SignalingCallback.h \
 	org/w3c/dom/html/StreamEvent.h \
 	org/w3c/dom/html/StreamTrack.h \
-	org/w3c/dom/html/StyleMedia.h \
 	org/w3c/dom/html/TextMetrics.h \
 	org/w3c/dom/html/TextTrack.h \
 	org/w3c/dom/html/TextTrackCue.h \
@@ -863,7 +862,6 @@ generated_sources = \
 	org/w3c/dom/html/BarProp.cpp \
 	org/w3c/dom/html/BeforeUnloadEvent.cpp \
 	org/w3c/dom/html/BlobCallback.cpp \
-	org/w3c/dom/html/BooleanCallback.cpp \
 	org/w3c/dom/html/CanvasGradient.cpp \
 	org/w3c/dom/html/CanvasPattern.cpp \
 	org/w3c/dom/html/CanvasPixelArray.cpp \
@@ -959,6 +957,8 @@ generated_sources = \
 	org/w3c/dom/html/Location.cpp \
 	org/w3c/dom/html/MediaController.cpp \
 	org/w3c/dom/html/MediaError.cpp \
+	org/w3c/dom/html/MediaQueryList.cpp \
+	org/w3c/dom/html/MediaQueryListListener.cpp \
 	org/w3c/dom/html/MediaStreamRecorder.cpp \
 	org/w3c/dom/html/MessageChannel.cpp \
 	org/w3c/dom/html/MessageEvent.cpp \
@@ -974,7 +974,6 @@ generated_sources = \
 	org/w3c/dom/html/Screen.cpp \
 	org/w3c/dom/html/SignalingCallback.cpp \
 	org/w3c/dom/html/StreamTrack.cpp \
-	org/w3c/dom/html/StyleMedia.cpp \
 	org/w3c/dom/html/TextMetrics.cpp \
 	org/w3c/dom/html/TextTrack.cpp \
 	org/w3c/dom/html/TextTrackCue.cpp \
@@ -1052,7 +1051,6 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/BeforeUnloadEventImp.h \
 	org/w3c/dom/bootstrap/BlobCallbackImp.h \
 	org/w3c/dom/bootstrap/BlobImp.h \
-	org/w3c/dom/bootstrap/BooleanCallbackImp.h \
 	org/w3c/dom/bootstrap/CSS2PropertiesImp.h \
 	org/w3c/dom/bootstrap/CSSCharsetRuleImp.h \
 	org/w3c/dom/bootstrap/CSSColorComponentValueImp.h \
@@ -1222,6 +1220,8 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/MediaControllerImp.h \
 	org/w3c/dom/bootstrap/MediaErrorImp.h \
 	org/w3c/dom/bootstrap/MediaListImp.h \
+	org/w3c/dom/bootstrap/MediaQueryListImp.h \
+	org/w3c/dom/bootstrap/MediaQueryListListenerImp.h \
 	org/w3c/dom/bootstrap/MediaStreamImp.h \
 	org/w3c/dom/bootstrap/MediaStreamRecorderImp.h \
 	org/w3c/dom/bootstrap/MessageChannelImp.h \
@@ -1253,7 +1253,6 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/SignalingCallbackImp.h \
 	org/w3c/dom/bootstrap/StreamEventImp.h \
 	org/w3c/dom/bootstrap/StreamTrackImp.h \
-	org/w3c/dom/bootstrap/StyleMediaImp.h \
 	org/w3c/dom/bootstrap/StyleSheetImp.h \
 	org/w3c/dom/bootstrap/TextEventImp.h \
 	org/w3c/dom/bootstrap/TextImp.h \
@@ -1292,7 +1291,6 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/BeforeUnloadEventImp.cpp \
 	org/w3c/dom/bootstrap/BlobCallbackImp.cpp \
 	org/w3c/dom/bootstrap/BlobImp.cpp \
-	org/w3c/dom/bootstrap/BooleanCallbackImp.cpp \
 	org/w3c/dom/bootstrap/CSS2PropertiesImp.cpp \
 	org/w3c/dom/bootstrap/CSSCharsetRuleImp.cpp \
 	org/w3c/dom/bootstrap/CSSColorComponentValueImp.cpp \
@@ -1461,6 +1459,8 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/MediaControllerImp.cpp \
 	org/w3c/dom/bootstrap/MediaErrorImp.cpp \
 	org/w3c/dom/bootstrap/MediaListImp.cpp \
+	org/w3c/dom/bootstrap/MediaQueryListImp.cpp \
+	org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp \
 	org/w3c/dom/bootstrap/MediaStreamRecorderImp.cpp \
 	org/w3c/dom/bootstrap/MessageChannelImp.cpp \
 	org/w3c/dom/bootstrap/MessageEventImp.cpp \
@@ -1488,7 +1488,6 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/ScreenImp.cpp \
 	org/w3c/dom/bootstrap/SignalingCallbackImp.cpp \
 	org/w3c/dom/bootstrap/StreamTrackImp.cpp \
-	org/w3c/dom/bootstrap/StyleMediaImp.cpp \
 	org/w3c/dom/bootstrap/StyleSheetImp.cpp \
 	org/w3c/dom/bootstrap/TextEventImp.cpp \
 	org/w3c/dom/bootstrap/TextImp.cpp \
@@ -1706,8 +1705,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BlobCallback.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BlobCallbackImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BlobImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BooleanCallback.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BooleanCallbackImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CSS2Properties.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CSS2PropertiesImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CSSCharsetRule.Po@am__quote@
@@ -2044,6 +2041,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaErrorImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaListImp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaQueryList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaQueryListImp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaQueryListListener.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaQueryListListenerImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaStreamRecorder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaStreamRecorderImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MessageChannel.Po@am__quote@
@@ -2099,8 +2100,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SignalingCallbackImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StreamTrack.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StreamTrackImp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StyleMedia.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StyleMediaImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StyleSheet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/StyleSheetImp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Text.Po@am__quote@
@@ -3412,20 +3411,6 @@ BlobCallback.obj: org/w3c/dom/html/BlobCallback.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/BlobCallback.cpp' object='BlobCallback.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BlobCallback.obj `if test -f 'org/w3c/dom/html/BlobCallback.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/BlobCallback.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/BlobCallback.cpp'; fi`
-
-BooleanCallback.o: org/w3c/dom/html/BooleanCallback.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BooleanCallback.o -MD -MP -MF $(DEPDIR)/BooleanCallback.Tpo -c -o BooleanCallback.o `test -f 'org/w3c/dom/html/BooleanCallback.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/BooleanCallback.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BooleanCallback.Tpo $(DEPDIR)/BooleanCallback.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/BooleanCallback.cpp' object='BooleanCallback.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BooleanCallback.o `test -f 'org/w3c/dom/html/BooleanCallback.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/BooleanCallback.cpp
-
-BooleanCallback.obj: org/w3c/dom/html/BooleanCallback.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BooleanCallback.obj -MD -MP -MF $(DEPDIR)/BooleanCallback.Tpo -c -o BooleanCallback.obj `if test -f 'org/w3c/dom/html/BooleanCallback.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/BooleanCallback.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/BooleanCallback.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BooleanCallback.Tpo $(DEPDIR)/BooleanCallback.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/BooleanCallback.cpp' object='BooleanCallback.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BooleanCallback.obj `if test -f 'org/w3c/dom/html/BooleanCallback.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/BooleanCallback.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/BooleanCallback.cpp'; fi`
 
 CanvasGradient.o: org/w3c/dom/html/CanvasGradient.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CanvasGradient.o -MD -MP -MF $(DEPDIR)/CanvasGradient.Tpo -c -o CanvasGradient.o `test -f 'org/w3c/dom/html/CanvasGradient.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/CanvasGradient.cpp
@@ -4757,6 +4742,34 @@ MediaError.obj: org/w3c/dom/html/MediaError.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaError.obj `if test -f 'org/w3c/dom/html/MediaError.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/MediaError.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/MediaError.cpp'; fi`
 
+MediaQueryList.o: org/w3c/dom/html/MediaQueryList.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaQueryList.o -MD -MP -MF $(DEPDIR)/MediaQueryList.Tpo -c -o MediaQueryList.o `test -f 'org/w3c/dom/html/MediaQueryList.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/MediaQueryList.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaQueryList.Tpo $(DEPDIR)/MediaQueryList.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/MediaQueryList.cpp' object='MediaQueryList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaQueryList.o `test -f 'org/w3c/dom/html/MediaQueryList.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/MediaQueryList.cpp
+
+MediaQueryList.obj: org/w3c/dom/html/MediaQueryList.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaQueryList.obj -MD -MP -MF $(DEPDIR)/MediaQueryList.Tpo -c -o MediaQueryList.obj `if test -f 'org/w3c/dom/html/MediaQueryList.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/MediaQueryList.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/MediaQueryList.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaQueryList.Tpo $(DEPDIR)/MediaQueryList.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/MediaQueryList.cpp' object='MediaQueryList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaQueryList.obj `if test -f 'org/w3c/dom/html/MediaQueryList.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/MediaQueryList.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/MediaQueryList.cpp'; fi`
+
+MediaQueryListListener.o: org/w3c/dom/html/MediaQueryListListener.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaQueryListListener.o -MD -MP -MF $(DEPDIR)/MediaQueryListListener.Tpo -c -o MediaQueryListListener.o `test -f 'org/w3c/dom/html/MediaQueryListListener.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/MediaQueryListListener.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaQueryListListener.Tpo $(DEPDIR)/MediaQueryListListener.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/MediaQueryListListener.cpp' object='MediaQueryListListener.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaQueryListListener.o `test -f 'org/w3c/dom/html/MediaQueryListListener.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/MediaQueryListListener.cpp
+
+MediaQueryListListener.obj: org/w3c/dom/html/MediaQueryListListener.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaQueryListListener.obj -MD -MP -MF $(DEPDIR)/MediaQueryListListener.Tpo -c -o MediaQueryListListener.obj `if test -f 'org/w3c/dom/html/MediaQueryListListener.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/MediaQueryListListener.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/MediaQueryListListener.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaQueryListListener.Tpo $(DEPDIR)/MediaQueryListListener.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/MediaQueryListListener.cpp' object='MediaQueryListListener.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaQueryListListener.obj `if test -f 'org/w3c/dom/html/MediaQueryListListener.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/MediaQueryListListener.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/MediaQueryListListener.cpp'; fi`
+
 MediaStreamRecorder.o: org/w3c/dom/html/MediaStreamRecorder.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaStreamRecorder.o -MD -MP -MF $(DEPDIR)/MediaStreamRecorder.Tpo -c -o MediaStreamRecorder.o `test -f 'org/w3c/dom/html/MediaStreamRecorder.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/MediaStreamRecorder.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaStreamRecorder.Tpo $(DEPDIR)/MediaStreamRecorder.Po
@@ -4966,20 +4979,6 @@ StreamTrack.obj: org/w3c/dom/html/StreamTrack.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/StreamTrack.cpp' object='StreamTrack.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o StreamTrack.obj `if test -f 'org/w3c/dom/html/StreamTrack.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/StreamTrack.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/StreamTrack.cpp'; fi`
-
-StyleMedia.o: org/w3c/dom/html/StyleMedia.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT StyleMedia.o -MD -MP -MF $(DEPDIR)/StyleMedia.Tpo -c -o StyleMedia.o `test -f 'org/w3c/dom/html/StyleMedia.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/StyleMedia.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/StyleMedia.Tpo $(DEPDIR)/StyleMedia.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/StyleMedia.cpp' object='StyleMedia.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o StyleMedia.o `test -f 'org/w3c/dom/html/StyleMedia.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/StyleMedia.cpp
-
-StyleMedia.obj: org/w3c/dom/html/StyleMedia.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT StyleMedia.obj -MD -MP -MF $(DEPDIR)/StyleMedia.Tpo -c -o StyleMedia.obj `if test -f 'org/w3c/dom/html/StyleMedia.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/StyleMedia.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/StyleMedia.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/StyleMedia.Tpo $(DEPDIR)/StyleMedia.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/html/StyleMedia.cpp' object='StyleMedia.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o StyleMedia.obj `if test -f 'org/w3c/dom/html/StyleMedia.cpp'; then $(CYGPATH_W) 'org/w3c/dom/html/StyleMedia.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/html/StyleMedia.cpp'; fi`
 
 TextMetrics.o: org/w3c/dom/html/TextMetrics.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TextMetrics.o -MD -MP -MF $(DEPDIR)/TextMetrics.Tpo -c -o TextMetrics.o `test -f 'org/w3c/dom/html/TextMetrics.cpp' || echo '$(srcdir)/'`org/w3c/dom/html/TextMetrics.cpp
@@ -5736,20 +5735,6 @@ BlobImp.obj: org/w3c/dom/bootstrap/BlobImp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/BlobImp.cpp' object='BlobImp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BlobImp.obj `if test -f 'org/w3c/dom/bootstrap/BlobImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/BlobImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/BlobImp.cpp'; fi`
-
-BooleanCallbackImp.o: org/w3c/dom/bootstrap/BooleanCallbackImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BooleanCallbackImp.o -MD -MP -MF $(DEPDIR)/BooleanCallbackImp.Tpo -c -o BooleanCallbackImp.o `test -f 'org/w3c/dom/bootstrap/BooleanCallbackImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/BooleanCallbackImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BooleanCallbackImp.Tpo $(DEPDIR)/BooleanCallbackImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/BooleanCallbackImp.cpp' object='BooleanCallbackImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BooleanCallbackImp.o `test -f 'org/w3c/dom/bootstrap/BooleanCallbackImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/BooleanCallbackImp.cpp
-
-BooleanCallbackImp.obj: org/w3c/dom/bootstrap/BooleanCallbackImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BooleanCallbackImp.obj -MD -MP -MF $(DEPDIR)/BooleanCallbackImp.Tpo -c -o BooleanCallbackImp.obj `if test -f 'org/w3c/dom/bootstrap/BooleanCallbackImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/BooleanCallbackImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/BooleanCallbackImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BooleanCallbackImp.Tpo $(DEPDIR)/BooleanCallbackImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/BooleanCallbackImp.cpp' object='BooleanCallbackImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BooleanCallbackImp.obj `if test -f 'org/w3c/dom/bootstrap/BooleanCallbackImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/BooleanCallbackImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/BooleanCallbackImp.cpp'; fi`
 
 CSS2PropertiesImp.o: org/w3c/dom/bootstrap/CSS2PropertiesImp.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CSS2PropertiesImp.o -MD -MP -MF $(DEPDIR)/CSS2PropertiesImp.Tpo -c -o CSS2PropertiesImp.o `test -f 'org/w3c/dom/bootstrap/CSS2PropertiesImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/CSS2PropertiesImp.cpp
@@ -8103,6 +8088,34 @@ MediaListImp.obj: org/w3c/dom/bootstrap/MediaListImp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaListImp.obj `if test -f 'org/w3c/dom/bootstrap/MediaListImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/MediaListImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/MediaListImp.cpp'; fi`
 
+MediaQueryListImp.o: org/w3c/dom/bootstrap/MediaQueryListImp.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaQueryListImp.o -MD -MP -MF $(DEPDIR)/MediaQueryListImp.Tpo -c -o MediaQueryListImp.o `test -f 'org/w3c/dom/bootstrap/MediaQueryListImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/MediaQueryListImp.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaQueryListImp.Tpo $(DEPDIR)/MediaQueryListImp.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/MediaQueryListImp.cpp' object='MediaQueryListImp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaQueryListImp.o `test -f 'org/w3c/dom/bootstrap/MediaQueryListImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/MediaQueryListImp.cpp
+
+MediaQueryListImp.obj: org/w3c/dom/bootstrap/MediaQueryListImp.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaQueryListImp.obj -MD -MP -MF $(DEPDIR)/MediaQueryListImp.Tpo -c -o MediaQueryListImp.obj `if test -f 'org/w3c/dom/bootstrap/MediaQueryListImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/MediaQueryListImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/MediaQueryListImp.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaQueryListImp.Tpo $(DEPDIR)/MediaQueryListImp.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/MediaQueryListImp.cpp' object='MediaQueryListImp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaQueryListImp.obj `if test -f 'org/w3c/dom/bootstrap/MediaQueryListImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/MediaQueryListImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/MediaQueryListImp.cpp'; fi`
+
+MediaQueryListListenerImp.o: org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaQueryListListenerImp.o -MD -MP -MF $(DEPDIR)/MediaQueryListListenerImp.Tpo -c -o MediaQueryListListenerImp.o `test -f 'org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaQueryListListenerImp.Tpo $(DEPDIR)/MediaQueryListListenerImp.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp' object='MediaQueryListListenerImp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaQueryListListenerImp.o `test -f 'org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp
+
+MediaQueryListListenerImp.obj: org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaQueryListListenerImp.obj -MD -MP -MF $(DEPDIR)/MediaQueryListListenerImp.Tpo -c -o MediaQueryListListenerImp.obj `if test -f 'org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaQueryListListenerImp.Tpo $(DEPDIR)/MediaQueryListListenerImp.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp' object='MediaQueryListListenerImp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MediaQueryListListenerImp.obj `if test -f 'org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp'; fi`
+
 MediaStreamRecorderImp.o: org/w3c/dom/bootstrap/MediaStreamRecorderImp.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MediaStreamRecorderImp.o -MD -MP -MF $(DEPDIR)/MediaStreamRecorderImp.Tpo -c -o MediaStreamRecorderImp.o `test -f 'org/w3c/dom/bootstrap/MediaStreamRecorderImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/MediaStreamRecorderImp.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MediaStreamRecorderImp.Tpo $(DEPDIR)/MediaStreamRecorderImp.Po
@@ -8480,20 +8493,6 @@ StreamTrackImp.obj: org/w3c/dom/bootstrap/StreamTrackImp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/StreamTrackImp.cpp' object='StreamTrackImp.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o StreamTrackImp.obj `if test -f 'org/w3c/dom/bootstrap/StreamTrackImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/StreamTrackImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/StreamTrackImp.cpp'; fi`
-
-StyleMediaImp.o: org/w3c/dom/bootstrap/StyleMediaImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT StyleMediaImp.o -MD -MP -MF $(DEPDIR)/StyleMediaImp.Tpo -c -o StyleMediaImp.o `test -f 'org/w3c/dom/bootstrap/StyleMediaImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/StyleMediaImp.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/StyleMediaImp.Tpo $(DEPDIR)/StyleMediaImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/StyleMediaImp.cpp' object='StyleMediaImp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o StyleMediaImp.o `test -f 'org/w3c/dom/bootstrap/StyleMediaImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/StyleMediaImp.cpp
-
-StyleMediaImp.obj: org/w3c/dom/bootstrap/StyleMediaImp.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT StyleMediaImp.obj -MD -MP -MF $(DEPDIR)/StyleMediaImp.Tpo -c -o StyleMediaImp.obj `if test -f 'org/w3c/dom/bootstrap/StyleMediaImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/StyleMediaImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/StyleMediaImp.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/StyleMediaImp.Tpo $(DEPDIR)/StyleMediaImp.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='org/w3c/dom/bootstrap/StyleMediaImp.cpp' object='StyleMediaImp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o StyleMediaImp.obj `if test -f 'org/w3c/dom/bootstrap/StyleMediaImp.cpp'; then $(CYGPATH_W) 'org/w3c/dom/bootstrap/StyleMediaImp.cpp'; else $(CYGPATH_W) '$(srcdir)/org/w3c/dom/bootstrap/StyleMediaImp.cpp'; fi`
 
 StyleSheetImp.o: org/w3c/dom/bootstrap/StyleSheetImp.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT StyleSheetImp.o -MD -MP -MF $(DEPDIR)/StyleSheetImp.Tpo -c -o StyleSheetImp.o `test -f 'org/w3c/dom/bootstrap/StyleSheetImp.cpp' || echo '$(srcdir)/'`org/w3c/dom/bootstrap/StyleSheetImp.cpp
@@ -9089,22 +9088,22 @@ $(generated_headers) : org/w3c/dom/Node.h
 org/w3c/dom/Node.h : $(idl_files)
 	$(esidl) -messenger -string std::u16string -object Object -fno-multipleinheritance $^
 
-org/w3c/dom/Node.cpp : $(idl_files) 
+org/w3c/dom/Node.cpp : $(idl_files)
 	$(esidl) -messenger-src -string std::u16string -object Object -fno-multipleinheritance $^
 
 $(generated_sources) : org/w3c/dom/Node.cpp
 
 # Interfaces with compile time problems
-#	org/w3c/dom/bootstrap/LocalMediaStreamImp.cpp 
-#	org/w3c/dom/bootstrap/MediaStreamImp.cpp 
-#	org/w3c/dom/bootstrap/NavigatorUserMediaSuccessCallbackImp.cpp 
-#	org/w3c/dom/bootstrap/PeerConnectionImp.cpp 
-#	org/w3c/dom/bootstrap/StreamEventImp.cpp 
+#	org/w3c/dom/bootstrap/LocalMediaStreamImp.cpp
+#	org/w3c/dom/bootstrap/MediaStreamImp.cpp
+#	org/w3c/dom/bootstrap/NavigatorUserMediaSuccessCallbackImp.cpp
+#	org/w3c/dom/bootstrap/PeerConnectionImp.cpp
+#	org/w3c/dom/bootstrap/StreamEventImp.cpp
 
 org/w3c/dom/bootstrap/NodeImp.h : $(idl_files)
 	$(esidl) -messenger-imp -string std::u16string -object Object -fno-multipleinheritance $^
 
-org/w3c/dom/bootstrap/NodeImp.cpp : $(idl_files) 
+org/w3c/dom/bootstrap/NodeImp.cpp : $(idl_files)
 	$(esidl) -messenger-imp-src -string std::u16string -object Object -fno-multipleinheritance $^
 
 $(generated_imp_headers) : org/w3c/dom/bootstrap/NodeImp.h

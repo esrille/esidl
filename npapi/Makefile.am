@@ -105,7 +105,6 @@ generated_headers = \
 	org/w3c/dom/html/ApplicationCache.h \
 	org/w3c/dom/html/BarProp.h \
 	org/w3c/dom/html/BeforeUnloadEvent.h \
-	org/w3c/dom/html/BooleanCallback.h \
 	org/w3c/dom/html/CanvasGradient.h \
 	org/w3c/dom/html/CanvasPattern.h \
 	org/w3c/dom/html/CanvasPixelArray.h \
@@ -195,6 +194,8 @@ generated_headers = \
 	org/w3c/dom/html/ImageData.h \
 	org/w3c/dom/html/Location.h \
 	org/w3c/dom/html/MediaError.h \
+	org/w3c/dom/html/MediaQueryList.h \
+	org/w3c/dom/html/MediaQueryListListener.h \
 	org/w3c/dom/html/MessageChannel.h \
 	org/w3c/dom/html/MessageEvent.h \
 	org/w3c/dom/html/MessagePort.h \
@@ -204,7 +205,6 @@ generated_headers = \
 	org/w3c/dom/html/PropertyNodeList.h \
 	org/w3c/dom/html/RadioNodeList.h \
 	org/w3c/dom/html/Screen.h \
-	org/w3c/dom/html/StyleMedia.h \
 	org/w3c/dom/html/TextMetrics.h \
 	org/w3c/dom/html/TimeRanges.h \
 	org/w3c/dom/html/UndoManagerEvent.h \
@@ -310,7 +310,6 @@ generated_sources = \
 	org/w3c/dom/html/ApplicationCache.cpp \
 	org/w3c/dom/html/BarProp.cpp \
 	org/w3c/dom/html/BeforeUnloadEvent.cpp \
-	org/w3c/dom/html/BooleanCallback.cpp \
 	org/w3c/dom/html/CanvasGradient.cpp \
 	org/w3c/dom/html/CanvasPattern.cpp \
 	org/w3c/dom/html/CanvasPixelArray.cpp \
@@ -400,6 +399,8 @@ generated_sources = \
 	org/w3c/dom/html/ImageData.cpp \
 	org/w3c/dom/html/Location.cpp \
 	org/w3c/dom/html/MediaError.cpp \
+	org/w3c/dom/html/MediaQueryList.cpp \
+	org/w3c/dom/html/MediaQueryListListener.cpp \
 	org/w3c/dom/html/MessageChannel.cpp \
 	org/w3c/dom/html/MessageEvent.cpp \
 	org/w3c/dom/html/MessagePort.cpp \
@@ -409,7 +410,6 @@ generated_sources = \
 	org/w3c/dom/html/PropertyNodeList.cpp \
 	org/w3c/dom/html/RadioNodeList.cpp \
 	org/w3c/dom/html/Screen.cpp \
-	org/w3c/dom/html/StyleMedia.cpp \
 	org/w3c/dom/html/TextMetrics.cpp \
 	org/w3c/dom/html/TimeRanges.cpp \
 	org/w3c/dom/html/UndoManager.cpp \

@@ -31,7 +31,6 @@
 #include <org/w3c/dom/bootstrap/BeforeUnloadEventImp.h>
 #include <org/w3c/dom/bootstrap/BlobCallbackImp.h>
 #include <org/w3c/dom/bootstrap/BlobImp.h>
-#include <org/w3c/dom/bootstrap/BooleanCallbackImp.h>
 #include <org/w3c/dom/bootstrap/CSS2PropertiesImp.h>
 #include <org/w3c/dom/bootstrap/CSSCharsetRuleImp.h>
 #include <org/w3c/dom/bootstrap/CSSColorComponentValueImp.h>
@@ -201,6 +200,8 @@
 #include <org/w3c/dom/bootstrap/MediaControllerImp.h>
 #include <org/w3c/dom/bootstrap/MediaErrorImp.h>
 #include <org/w3c/dom/bootstrap/MediaListImp.h>
+#include <org/w3c/dom/bootstrap/MediaQueryListImp.h>
+#include <org/w3c/dom/bootstrap/MediaQueryListListenerImp.h>
 // #include <org/w3c/dom/bootstrap/MediaStreamImp.h>
 #include <org/w3c/dom/bootstrap/MediaStreamRecorderImp.h>
 #include <org/w3c/dom/bootstrap/MessageChannelImp.h>
@@ -232,7 +233,6 @@
 #include <org/w3c/dom/bootstrap/SignalingCallbackImp.h>
 // #include <org/w3c/dom/bootstrap/StreamEventImp.h>
 #include <org/w3c/dom/bootstrap/StreamTrackImp.h>
-#include <org/w3c/dom/bootstrap/StyleMediaImp.h>
 #include <org/w3c/dom/bootstrap/StyleSheetImp.h>
 #include <org/w3c/dom/bootstrap/TextEventImp.h>
 #include <org/w3c/dom/bootstrap/TextImp.h>
@@ -308,7 +308,6 @@ void registerClasses(JSContext* cx, JSObject* global)
     BeforeUnloadEventImp::setStaticPrivate(new NativeClass(cx, global, BeforeUnloadEventImp::getMetaData()));
     BlobCallbackImp::setStaticPrivate(new NativeClass(cx, global, BlobCallbackImp::getMetaData()));
     BlobImp::setStaticPrivate(new NativeClass(cx, global, BlobImp::getMetaData()));
-    BooleanCallbackImp::setStaticPrivate(new NativeClass(cx, global, BooleanCallbackImp::getMetaData()));
     CSS2PropertiesImp::setStaticPrivate(new NativeClass(cx, global, CSS2PropertiesImp::getMetaData()));
     CSSCharsetRuleImp::setStaticPrivate(new NativeClass(cx, global, CSSCharsetRuleImp::getMetaData()));
     CSSColorComponentValueImp::setStaticPrivate(new NativeClass(cx, global, CSSColorComponentValueImp::getMetaData()));
@@ -468,6 +467,8 @@ void registerClasses(JSContext* cx, JSObject* global)
     MediaControllerImp::setStaticPrivate(new NativeClass(cx, global, MediaControllerImp::getMetaData()));
     MediaErrorImp::setStaticPrivate(new NativeClass(cx, global, MediaErrorImp::getMetaData()));
     MediaListImp::setStaticPrivate(new NativeClass(cx, global, MediaListImp::getMetaData()));
+    MediaQueryListImp::setStaticPrivate(new NativeClass(cx, global, MediaQueryListImp::getMetaData()));
+    MediaQueryListListenerImp::setStaticPrivate(new NativeClass(cx, global, MediaQueryListListenerImp::getMetaData()));
     // MediaStreamImp::setStaticPrivate(new NativeClass(cx, global, MediaStreamImp::getMetaData()));
     MediaStreamRecorderImp::setStaticPrivate(new NativeClass(cx, global, MediaStreamRecorderImp::getMetaData()));
     MessageChannelImp::setStaticPrivate(new NativeClass(cx, global, MessageChannelImp::getMetaData()));
@@ -497,7 +498,6 @@ void registerClasses(JSContext* cx, JSObject* global)
     SignalingCallbackImp::setStaticPrivate(new NativeClass(cx, global, SignalingCallbackImp::getMetaData()));
     // StreamEventImp::setStaticPrivate(new NativeClass(cx, global, StreamEventImp::getMetaData()));
     StreamTrackImp::setStaticPrivate(new NativeClass(cx, global, StreamTrackImp::getMetaData()));
-    StyleMediaImp::setStaticPrivate(new NativeClass(cx, global, StyleMediaImp::getMetaData()));
     TextEventImp::setStaticPrivate(new NativeClass(cx, global, TextEventImp::getMetaData()));
     TextImp::setStaticPrivate(new NativeClass(cx, global, TextImp::getMetaData()));
     TextMetricsImp::setStaticPrivate(new NativeClass(cx, global, TextMetricsImp::getMetaData()));

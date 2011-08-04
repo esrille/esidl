@@ -110,7 +110,6 @@ generated_headers = \
 	org/w3c/dom/html/BarProp.h \
 	org/w3c/dom/html/BeforeUnloadEvent.h \
 	org/w3c/dom/html/BlobCallback.h \
-	org/w3c/dom/html/BooleanCallback.h \
 	org/w3c/dom/html/CanvasGradient.h \
 	org/w3c/dom/html/CanvasPattern.h \
 	org/w3c/dom/html/CanvasPixelArray.h \
@@ -207,6 +206,8 @@ generated_headers = \
 	org/w3c/dom/html/Location.h \
 	org/w3c/dom/html/MediaController.h \
 	org/w3c/dom/html/MediaError.h \
+	org/w3c/dom/html/MediaQueryList.h \
+	org/w3c/dom/html/MediaQueryListListener.h \
 	org/w3c/dom/html/MediaStream.h \
 	org/w3c/dom/html/MediaStreamRecorder.h \
 	org/w3c/dom/html/MessageChannel.h \
@@ -226,7 +227,6 @@ generated_headers = \
 	org/w3c/dom/html/SignalingCallback.h \
 	org/w3c/dom/html/StreamEvent.h \
 	org/w3c/dom/html/StreamTrack.h \
-	org/w3c/dom/html/StyleMedia.h \
 	org/w3c/dom/html/TextMetrics.h \
 	org/w3c/dom/html/TextTrack.h \
 	org/w3c/dom/html/TextTrackCue.h \
@@ -351,7 +351,6 @@ generated_sources = \
 	org/w3c/dom/html/BarProp.cpp \
 	org/w3c/dom/html/BeforeUnloadEvent.cpp \
 	org/w3c/dom/html/BlobCallback.cpp \
-	org/w3c/dom/html/BooleanCallback.cpp \
 	org/w3c/dom/html/CanvasGradient.cpp \
 	org/w3c/dom/html/CanvasPattern.cpp \
 	org/w3c/dom/html/CanvasPixelArray.cpp \
@@ -447,6 +446,8 @@ generated_sources = \
 	org/w3c/dom/html/Location.cpp \
 	org/w3c/dom/html/MediaController.cpp \
 	org/w3c/dom/html/MediaError.cpp \
+	org/w3c/dom/html/MediaQueryList.cpp \
+	org/w3c/dom/html/MediaQueryListListener.cpp \
 	org/w3c/dom/html/MediaStreamRecorder.cpp \
 	org/w3c/dom/html/MessageChannel.cpp \
 	org/w3c/dom/html/MessageEvent.cpp \
@@ -462,7 +463,6 @@ generated_sources = \
 	org/w3c/dom/html/Screen.cpp \
 	org/w3c/dom/html/SignalingCallback.cpp \
 	org/w3c/dom/html/StreamTrack.cpp \
-	org/w3c/dom/html/StyleMedia.cpp \
 	org/w3c/dom/html/TextMetrics.cpp \
 	org/w3c/dom/html/TextTrack.cpp \
 	org/w3c/dom/html/TextTrackCue.cpp \
@@ -528,7 +528,7 @@ AM_CPPFLAGS = \
 AM_LDFLAGS = \
 	-lpthread
 
-org/w3c/dom/Node.cpp : $(idl_files) 
+org/w3c/dom/Node.cpp : $(idl_files)
 	$(esidl) -messenger-src -string std::u16string -object Object -fno-multipleinheritance $^
 
 $(generated_sources) : org/w3c/dom/Node.cpp
@@ -553,7 +553,6 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/BeforeUnloadEventImp.h \
 	org/w3c/dom/bootstrap/BlobCallbackImp.h \
 	org/w3c/dom/bootstrap/BlobImp.h \
-	org/w3c/dom/bootstrap/BooleanCallbackImp.h \
 	org/w3c/dom/bootstrap/CSS2PropertiesImp.h \
 	org/w3c/dom/bootstrap/CSSCharsetRuleImp.h \
 	org/w3c/dom/bootstrap/CSSColorComponentValueImp.h \
@@ -723,6 +722,8 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/MediaControllerImp.h \
 	org/w3c/dom/bootstrap/MediaErrorImp.h \
 	org/w3c/dom/bootstrap/MediaListImp.h \
+	org/w3c/dom/bootstrap/MediaQueryListImp.h \
+	org/w3c/dom/bootstrap/MediaQueryListListenerImp.h \
 	org/w3c/dom/bootstrap/MediaStreamImp.h \
 	org/w3c/dom/bootstrap/MediaStreamRecorderImp.h \
 	org/w3c/dom/bootstrap/MessageChannelImp.h \
@@ -754,7 +755,6 @@ generated_imp_headers = \
 	org/w3c/dom/bootstrap/SignalingCallbackImp.h \
 	org/w3c/dom/bootstrap/StreamEventImp.h \
 	org/w3c/dom/bootstrap/StreamTrackImp.h \
-	org/w3c/dom/bootstrap/StyleMediaImp.h \
 	org/w3c/dom/bootstrap/StyleSheetImp.h \
 	org/w3c/dom/bootstrap/TextEventImp.h \
 	org/w3c/dom/bootstrap/TextImp.h \
@@ -793,7 +793,6 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/BeforeUnloadEventImp.cpp \
 	org/w3c/dom/bootstrap/BlobCallbackImp.cpp \
 	org/w3c/dom/bootstrap/BlobImp.cpp \
-	org/w3c/dom/bootstrap/BooleanCallbackImp.cpp \
 	org/w3c/dom/bootstrap/CSS2PropertiesImp.cpp \
 	org/w3c/dom/bootstrap/CSSCharsetRuleImp.cpp \
 	org/w3c/dom/bootstrap/CSSColorComponentValueImp.cpp \
@@ -962,6 +961,8 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/MediaControllerImp.cpp \
 	org/w3c/dom/bootstrap/MediaErrorImp.cpp \
 	org/w3c/dom/bootstrap/MediaListImp.cpp \
+	org/w3c/dom/bootstrap/MediaQueryListImp.cpp \
+	org/w3c/dom/bootstrap/MediaQueryListListenerImp.cpp \
 	org/w3c/dom/bootstrap/MediaStreamRecorderImp.cpp \
 	org/w3c/dom/bootstrap/MessageChannelImp.cpp \
 	org/w3c/dom/bootstrap/MessageEventImp.cpp \
@@ -989,7 +990,6 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/ScreenImp.cpp \
 	org/w3c/dom/bootstrap/SignalingCallbackImp.cpp \
 	org/w3c/dom/bootstrap/StreamTrackImp.cpp \
-	org/w3c/dom/bootstrap/StyleMediaImp.cpp \
 	org/w3c/dom/bootstrap/StyleSheetImp.cpp \
 	org/w3c/dom/bootstrap/TextEventImp.cpp \
 	org/w3c/dom/bootstrap/TextImp.cpp \
@@ -1017,16 +1017,16 @@ generated_imp_sources = \
 	org/w3c/dom/bootstrap/XMLHttpRequestUploadImp.cpp
 
 # Interfaces with compile time problems
-#	org/w3c/dom/bootstrap/LocalMediaStreamImp.cpp 
-#	org/w3c/dom/bootstrap/MediaStreamImp.cpp 
-#	org/w3c/dom/bootstrap/NavigatorUserMediaSuccessCallbackImp.cpp 
-#	org/w3c/dom/bootstrap/PeerConnectionImp.cpp 
-#	org/w3c/dom/bootstrap/StreamEventImp.cpp 
+#	org/w3c/dom/bootstrap/LocalMediaStreamImp.cpp
+#	org/w3c/dom/bootstrap/MediaStreamImp.cpp
+#	org/w3c/dom/bootstrap/NavigatorUserMediaSuccessCallbackImp.cpp
+#	org/w3c/dom/bootstrap/PeerConnectionImp.cpp
+#	org/w3c/dom/bootstrap/StreamEventImp.cpp
 
 org/w3c/dom/bootstrap/NodeImp.h : $(idl_files)
 	$(esidl) -messenger-imp -string std::u16string -object Object -fno-multipleinheritance $^
 
-org/w3c/dom/bootstrap/NodeImp.cpp : $(idl_files) 
+org/w3c/dom/bootstrap/NodeImp.cpp : $(idl_files)
 	$(esidl) -messenger-imp-src -string std::u16string -object Object -fno-multipleinheritance $^
 
 $(generated_imp_headers) : org/w3c/dom/bootstrap/NodeImp.h
