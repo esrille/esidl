@@ -57,10 +57,21 @@ inline uint32_t uc_one_at_a_time(const char16_t* key, size_t len)
     return hash;
 }
 
+Object* convert(JSContext* cx, JSObject* obj)
+{
+    JSClass* cls = JS_GET_CLASS(cx, obj);
+    if (cls && NativeClass::isNativeClass(cls))
+        return static_cast<ObjectImp*>(JS_GetPrivate(cx, obj));
+    // obj is a JavaScript object. Create a proxy for obj.
+    return new(std::nothrow) ProxyObject(obj);
+}
+
 Any convert(JSContext* cx, jsval& v)
 {
-    if (JSVAL_IS_NULL(v))
+    if (JSVAL_IS_VOID(v))
         return Any();
+    if (JSVAL_IS_NULL(v))
+        return Any(static_cast<Object*>(0));
     if (JSVAL_IS_INT(v))
         return JSVAL_TO_INT(v);
     if (JSVAL_IS_DOUBLE(v))
@@ -73,23 +84,29 @@ Any convert(JSContext* cx, jsval& v)
         const jschar* b = JS_GetStringCharsAndLength(cx, s, &l);
         return std::u16string(reinterpret_cast<const char16_t*>(b), l);
     }
-    if (JSVAL_IS_OBJECT(v)) {
-        JSObject* obj = JSVAL_TO_OBJECT(v);
-        JSClass* cls = JS_GET_CLASS(cx, obj);
-        if (cls && NativeClass::isNativeClass(cls))
-            return static_cast<ObjectImp*>(JS_GetPrivate(cx, obj));
-        else {
-            // obj is a JavaScript object. Create a proxy for obj.
-            return new(std::nothrow) ProxyObject(obj);
-        }
-    }
+    if (JSVAL_IS_OBJECT(v))
+        return convert(cx, JSVAL_TO_OBJECT(v));
     return Any();
+}
+
+JSObject* convert(JSContext* cx, Object* obj)
+{
+    JSObject* jsobj = 0;
+    if (obj) {
+        if (ProxyObject* p = dynamic_cast<ProxyObject*>(obj->self()))
+            jsobj = p->getJSObject();
+        else if (ObjectImp* imp = dynamic_cast<ObjectImp*>(obj->self()))
+            jsobj = static_cast<NativeClass*>(imp->getStaticPrivate())->createJSObject(cx, imp);
+    }
+    return jsobj;
 }
 
 jsval convert(JSContext* cx, Any& v)
 {
     switch (v.getType()) {
-    case Any::Empty:
+    case Any::Undefined:
+        return JSVAL_VOID;
+    case Any::Null:
         return JSVAL_NULL;
     case Any::Bool:
         return BOOLEAN_TO_JSVAL(static_cast<bool>(v));
@@ -110,17 +127,8 @@ jsval convert(JSContext* cx, Any& v)
         JSString* j = JS_NewUCStringCopyN(cx, reinterpret_cast<const jschar*>(s.c_str()), s.length());
         return STRING_TO_JSVAL(j);
     }
-    if (v.isObject()) {
-        Object* obj = v.toObject();
-        JSObject* jsobj = 0;
-        if (obj) {
-            if (ProxyObject* p = dynamic_cast<ProxyObject*>(obj->self()))
-                jsobj = p->getJSObject();
-            else if (ObjectImp* imp = dynamic_cast<ObjectImp*>(obj->self()))
-                jsobj = static_cast<NativeClass*>(imp->getStaticPrivate())->createJSObject(cx, imp);
-        }
-        return OBJECT_TO_JSVAL(jsobj);
-    }
+    if (v.isObject())
+        return OBJECT_TO_JSVAL(convert(cx, v.toObject()));
     return JSVAL_VOID;
 }
 
@@ -640,4 +648,36 @@ Any ProxyObject::message_(uint32_t selector, const char* id, int argc, Any* argv
         break;
     }
     return Any();
+}
+
+Any callFunction(Object thisObject, Object functionObject, int argc, Any* argv)
+{
+    assert(0 <= argc);
+    if (!thisObject || !functionObject)
+        return Any();
+    JSObject* funcObj = convert(jscontext, functionObject.self());
+    jsval oval = OBJECT_TO_JSVAL(funcObj);
+    jsval fval;
+    if (!JS_ConvertValue(jscontext, oval, JSTYPE_FUNCTION, &fval))
+        return Any();
+
+    JSObject* thisObj = convert(jscontext, thisObject.self());
+
+    jsval arguments[0 < argc ? argc : 1];
+    for (int i = 0; i < argc; ++i)
+        arguments[i] = convert(jscontext, argv[i]);
+
+    jsval result;
+    if (!JS_CallFunctionValue(jscontext, thisObj, fval, argc, arguments, &result))
+        return Any();
+    return convert(jscontext, result);
+}
+
+Object* compileFunction(const std::u16string& body)
+{
+    static const char* argname = "event";
+    JSFunction* fun = JS_CompileUCFunction(jscontext, 0, 0, 1, &argname, reinterpret_cast<const jschar*>(body.c_str()), body.length(), 0, 0);
+    if (!fun)
+        return 0;
+    return convert(jscontext, JS_GetFunctionObject(fun));
 }

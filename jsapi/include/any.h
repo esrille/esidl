@@ -40,6 +40,7 @@ class Any
         uint64_t u64;
         float    f32;
         double   f64;
+        char     s128[16];  // TODO: This is for Object on x86_64.
     };
 
     // The virtual table for non-primitive types
@@ -66,7 +67,8 @@ class Any
 
 public:
     enum {
-        Empty,
+        Undefined,
+        Null,
         Bool,
         Int32,
         Uint32,
@@ -82,6 +84,12 @@ private:
     VirtualTable* vtable;
     Heap heap;
 
+#ifdef HAVE_NULLPTR
+    void initialize(std::nullptr_t value) {
+        type = Null;
+    }
+#endif
+
     template<typename T>
     void initialize(T const& value, typename std::enable_if<!std::is_base_of<Object, T>::value>::type* =0) {
         vtable = &TypeErasure<T>::vtable;
@@ -92,22 +100,30 @@ private:
 
     template<typename T>
     void initialize(T const& value, typename std::enable_if<std::is_base_of<Object, T>::value>::type* =0) {
-        vtable = &TypeErasure<Object>::vtable;
-        new(&heap) Object(value.self());
-        type = Dynamic;
+        if (!value)
+            type = Null;
+        else {
+            vtable = &TypeErasure<Object>::vtable;
+            new(&heap) Object(value.self());
+            type = Dynamic;
+        }
     }
 
     template<typename T>
     void initialize(T* value, typename std::enable_if<std::is_base_of<Object, T>::value>::type* =0) {
-        vtable = &TypeErasure<Object>::vtable;
-        new(&heap) Object(value);
-        type = Dynamic;
+        if (!value)
+            type = Null;
+        else {
+            vtable = &TypeErasure<Object>::vtable;
+            new(&heap) Object(value);
+            type = Dynamic;
+        }
     }
 
     template <typename T>
     void initialize(const Nullable<T> nullable) {
         if (!nullable.hasValue())
-            type = Empty;
+            type = Null;
         else
             initialize(nullable.value());
     }
@@ -166,6 +182,24 @@ private:
         heap.f64 = value;
         type = Float64;
     }
+    void initialize(const char* x) {
+        if (x)
+            initialize(std::string(x));
+        else
+            type = Null;
+    }
+    void initialize(char* x) {
+        initialize(const_cast<const char*>(x));
+    }
+    void initialize(const char16_t* x) {
+        if (x)
+            initialize(std::u16string(x));
+        else
+            type = Null;
+    }
+    void initialize(char16_t* x) {
+        initialize(const_cast<const char16_t*>(x));
+    }
 
     template<typename T>
     T cast(typename std::enable_if<std::is_arithmetic<T>::value>::type* = 0) const {
@@ -192,7 +226,7 @@ private:
     const T cast(typename std::enable_if<std::is_base_of<Object, T>::value>::type* = 0) const {
         if (isObject())
             return toObject();
-        if (type == Empty)
+        if (type == Null)
             return 0;
         throw std::bad_cast();
     }
@@ -206,7 +240,8 @@ private:
 
 public:
     Any() :
-        type(Empty) {
+        type(Undefined)
+    {
     }
 
     Any(const Any& value) {
@@ -216,14 +251,6 @@ public:
     template <typename T>
     Any(const T& x) {
         initialize(x);
-    }
-
-    Any(const char* x) {
-        initialize(std::string(x));
-    }
-
-    Any(const char16_t* x) {
-        initialize(std::u16string(x));
     }
 
     ~Any() {
@@ -246,14 +273,6 @@ public:
             vtable->destruct(&heap);
         initialize(x);
         return *this;
-    }
-
-    Any& operator=(const char* x) {
-        return operator=(std::string(x));
-    }
-
-    Any& operator=(const char16_t* x) {
-        return operator=(std::u16string(x));
     }
 
     template<typename T>
@@ -290,8 +309,11 @@ public:
     bool isString() const;
     std::u16string toString() const;
 
-    bool hasValue() const {
-        return type != Empty;
+    bool isUndefined() const {
+        return type == Undefined;
+    }
+    bool isNull() const {
+        return type == Null;
     }
 
     unsigned getType() const {
@@ -310,11 +332,9 @@ Any::VirtualTable Any::TypeErasure<T>::vtable = {
 template <typename T>
 Nullable<T>::Nullable(const Any& any)
 {
-    hasValue_ = any.hasValue();
+    hasValue_ = !any.isNull();
     if (hasValue_)
-    {
         value_ = any.as<T>();
-    }
 }
 
 #endif // ESNPAPI_ANY_H_INCLUDED

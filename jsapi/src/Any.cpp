@@ -262,6 +262,8 @@ std::u16string Any::toString() const
 double Any::toNumber() const
 {
     switch (type) {
+    case Undefined:
+        return NAN;
     case Bool:
     case Int32:
         return heap.i32;
