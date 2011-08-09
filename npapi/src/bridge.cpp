@@ -140,7 +140,7 @@ void convertToVariant(NPP npp, const std::string& value, NPVariant* variant, boo
     }
     if (!result)
     {
-        STRINGN_TO_NPVARIANT(value.c_str(), value.length(), *variant);
+        STRINGN_TO_NPVARIANT(value.c_str(), static_cast<uint32_t>(value.length()), *variant);
         return;
     }
     void* buffer = NPN_MemAlloc(value.length());
@@ -150,7 +150,7 @@ void convertToVariant(NPP npp, const std::string& value, NPVariant* variant, boo
         return;
     }
     memmove(buffer, value.c_str(), value.length());
-    STRINGN_TO_NPVARIANT(static_cast<NPUTF8*>(buffer), value.length(), *variant);
+    STRINGN_TO_NPVARIANT(static_cast<NPUTF8*>(buffer), static_cast<uint32_t>(value.length()), *variant);
 }
 
 void convertToVariant(NPP npp, Object* value, NPVariant* variant, bool result)
@@ -256,14 +256,13 @@ void convertToVariant(NPP npp, const Any& any, NPVariant* variant, bool result)
         if (any.isString())
         {
             std::string value = any.toString();
-printf("%s '%s'\n", __func__, value.c_str());
             if (value.length() == 0)
             {
                 STRINGN_TO_NPVARIANT(0, 0, *variant);
             }
             else if (!result)
             {
-                STRINGN_TO_NPVARIANT(value.c_str(), value.length(), *variant);
+                STRINGN_TO_NPVARIANT(value.c_str(), static_cast<uint32_t>(value.length()), *variant);
             }
             else {
                 void* buffer = NPN_MemAlloc(value.length());
@@ -274,7 +273,7 @@ printf("%s '%s'\n", __func__, value.c_str());
                 else
                 {
                     memmove(buffer, value.c_str(), value.length());
-                    STRINGN_TO_NPVARIANT(static_cast<NPUTF8*>(buffer), value.length(), *variant);
+                    STRINGN_TO_NPVARIANT(static_cast<NPUTF8*>(buffer), static_cast<uint32_t>(value.length()), *variant);
                 }
             }
         }
