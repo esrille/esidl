@@ -1,7 +1,5 @@
 /*
  * Copyright 2011 Esrille Inc.
- * Copyright 2008-2010 Google Inc.
- * Copyright 2006, 2007 Nintendo Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef ESNPAPI_OBJECT_H_INCLUDED
-#define ESNPAPI_OBJECT_H_INCLUDED
+#ifndef ES_OBJECT_H
+#define ES_OBJECT_H
 
 #include <any.h>
 #include <nullable.h>
 #include <sequence.h>
 #include <Variadic.h>
+
+#include <type_traits>
 
 #include <assert.h>
 #include <cstring>
@@ -65,8 +65,7 @@ public:
     virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {
         if (object && object != this)
             return object->message_(selector, id, argc, argv);
-        printf("Warning: %s: forwarding a message '%s' to self(%p->%p)", __func__, id, this, object);
-        assert(0);
+        assert(!object);    // forwarding a message to self
         return Any();
     }
     bool operator!() const {
@@ -160,6 +159,16 @@ public:
     virtual void* getStaticPrivate() const = 0;
 };
 
+inline void intrusive_ptr_add_ref(ObjectImp* imp)
+{
+    imp->retain_();
+}
+
+inline void intrusive_ptr_release(ObjectImp* imp)
+{
+    imp->release_();
+}
+
 template <typename T, typename B = ObjectImp>
 class ObjectMixin : public B
 {
@@ -195,9 +204,17 @@ public:
         static_assert(std::is_base_of<ObjectImp, T>::value, "not ObjectImp");
         T::retain_();
     }
+
+    template<class... As>
+    Retained(As&&... as) :
+        T(std::forward<As>(as)...)
+    {
+        static_assert(std::is_base_of<ObjectImp, T>::value, "not ObjectImp");
+        T::retain_();
+    }
 };
 
 template <typename T, typename B>
 void* ObjectMixin<T, B>::staticPrivate = 0;
 
-#endif  // ESNPAPI_OBJECT_H_INCLUDED
+#endif  // ES_OBJECT_H
