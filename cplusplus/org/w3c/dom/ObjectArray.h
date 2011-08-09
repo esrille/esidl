@@ -18,7 +18,7 @@
 #ifndef ORG_W3C_DOM_OBJECTARRAY_INCLUDED
 #define ORG_W3C_DOM_OBJECTARRAY_INCLUDED
 
-#include <object.h>
+#include <Object.h>
 
 namespace org
 {

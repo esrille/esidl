@@ -18,7 +18,7 @@
 
 #include <iostream>
 
-#include <object.h>
+#include <Object.h>
 
 const char* nodeData =
             "I21::org::w3c::dom::Node"

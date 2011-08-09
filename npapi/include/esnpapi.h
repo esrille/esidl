@@ -35,8 +35,8 @@ using std::strlen;  // for STRINGZ_TO_NPVARIANT
 #include "npapi/npruntime.h"
 #endif
 
-#include "object.h"
-#include "any.h"
+#include "Object.h"
+#include "Any.h"
 
 #include <org/w3c/dom/html/Window.h>
 
