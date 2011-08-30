@@ -29,10 +29,12 @@ class MessengerDispatch : public Messenger
 
     void writeSelectorZero(Node* stringifier)
     {
-        writeln("if (argumentCount == IS_KIND_OF_)");
-        indent();
-            writeln("return getPrefixedName() == id || !std::strcmp(getPrefixedName(), id);");
-        unindent();
+        writeln("if (argumentCount == IS_KIND_OF_) {");
+            writeln("if (getPrefixedName() == id || !std::strcmp(getPrefixedName(), id)) {");
+                writeln("return true;");
+            writeln("}");
+            writeln("break;");
+        writeln("}");
         if (!stringifier)
         {
             return;
@@ -194,26 +196,27 @@ public:
 
             writeln("default:");
             indent();
-                if (node->getExtends())
-                {
-                    NodeList::iterator i = node->getExtends()->begin();
-                    if ((*i)->isBaseObject())
-                    {
-                        writeln("return Any();");  // TODO:  should raise an exception?
-                    }
-                    else
-                    {
-                        writetab();
-                        write("return ");
-                        (*i)->accept(this);
-                        write("::dispatch(self, selector, id, argumentCount, arguments);\n");
-                    }
-                }
-                else
+                writeln("break;");
+            writeln("}");
+            if (node->getExtends())
+            {
+                NodeList::iterator i = node->getExtends()->begin();
+                if ((*i)->isBaseObject())
                 {
                     writeln("return Any();");  // TODO:  should raise an exception?
                 }
-            writeln("}");
+                else
+                {
+                    writetab();
+                    write("return ");
+                    (*i)->accept(this);
+                    write("::dispatch(self, selector, id, argumentCount, arguments);\n");
+                }
+            }
+            else
+            {
+                writeln("return Any();");  // TODO:  should raise an exception?
+            }
         }
         writeln("}");
 
