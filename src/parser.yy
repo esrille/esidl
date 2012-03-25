@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Esrille Inc.
+ * Copyright 2011, 2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -22,7 +22,7 @@
  *
  * W3C,
  * Web IDL,
- * W3C Editor’s Draft 30 June 2011.
+ * W3C Editor’s Draft 22 March 2012.
  * http://dev.w3.org/2006/webapi/WebIDL/
  */
 
@@ -67,6 +67,7 @@ int yylex();
 %token ATTRIBUTE
 %token BOOLEAN
 %token BYTE
+%token CALLBACK
 %token CALLER
 %token CONST
 %token CREATOR
@@ -74,8 +75,9 @@ int yylex();
 %token DELETER
 %token DICTIONARY
 %token DOUBLE
-%token EOL
 %token ELLIPSIS
+%token ENUM
+%token EOL
 %token EXCEPTION
 %token FALSE
 %token FLOAT
@@ -83,14 +85,19 @@ int yylex();
 %token GETTER
 %token IMPLEMENTS
 %token IN
+%token INFINITY
+%token INHERIT
 %token INTERFACE
 %token LONG
 %token MODULE
+%token NAN
 %token NATIVE
+%token NULL_LITERAL
 %token OBJECT
 %token OCTET
 %token OMITTABLE
 %token OPTIONAL
+%token OR
 %token PARTIAL
 %token RAISES
 %token READONLY
@@ -103,6 +110,7 @@ int yylex();
 %token STRINGIFIER
 %token TRUE
 %token TYPEDEF
+%token UNRESTRICTED
 %token UNSIGNED
 %token VOID
 
@@ -119,7 +127,6 @@ int yylex();
 %token <name>       JAVADOC
 
 %type <node>        Definition
-%type <node>        NormalDefinition
 %type <node>        Module
 %type <node>        Interface
 %type <node>        PartialInterface
@@ -127,6 +134,7 @@ int yylex();
 %type <node>        InterfaceMember
 %type <node>        Dictionary
 %type <node>        DictionaryMember
+%type <node>        Default
 %type <node>        DefaultValue
 %type <node>        Exception
 %type <node>        Typedef
@@ -135,9 +143,11 @@ int yylex();
 %type <node>        ConstExpr
 %type <node>        Literal
 %type <node>        BooleanLiteral
+%type <node>        FloatLiteral
 %type <node>        AttributeOrOperation
 %type <node>        StringifierAttributeOrOperation
 %type <node>        Attribute
+%type <attr>        Inherit
 %type <attr>        ReadOnly
 %type <node>        GetRaises
 %type <node>        SetRaises
@@ -149,16 +159,24 @@ int yylex();
 %type <name>        OptionalIdentifier
 %type <node>        Raises
 %type <node>        ExceptionList
-%type <attr>        Optional
+%type <node>        OptionalOrRequiredArgument
+%type <name>        ArgumentName
 %type <attr>        Ellipsis
 %type <node>        ExceptionMember
 %type <node>        ExceptionField
 %type <nodeList>    ExtendedAttributeList
 %type <nodeList>    ExtendedAttributes
+%type <name>        ArgumentNameKeyword
 %type <node>        Type
-%type <node>        AttributeType
+%type <node>        SingleType
+%type <node>        UnionType
+%type <node>        UnionMemberType
+%type <node>        UnionMemberTypes
+%type <node>        NonAnyType
 %type <node>        ConstType
-%type <node>        PrimitiveOrStringType
+%type <node>        PrimitiveType
+%type <node>        UnrestrictedFloatType
+%type <node>        FloatType
 %type <node>        UnsignedIntegerType
 %type <node>        IntegerType
 %type <attr>        OptionalLong
@@ -202,33 +220,27 @@ Definitions :
             setJavadoc($1);
             free($1);
         }
-    Definition
+    ExtendedAttributeList Definition
         {
+            if ($4)
+            {
+                $4->setExtendedAttributes($3);
+            }
             setJavadoc(0);
         }
     Definitions
     ;
 
 Definition :
-    ExtendedAttributeList NormalDefinition
-        {
-            if ($2)
-            {
-                $2->setExtendedAttributes($1);
-            }
-            $$ = $2;
-        }
+    Module          /* backward compatibility */
+    | CallbackOrInterface
     | PartialInterface
-    ;
-
-NormalDefinition :
-    Module
-    | InterfaceDcl
     | Dictionary
     | Exception
+    | Enum
     | Typedef
     | ImplementsStatement
-    | Preprocessor
+    | Preprocessor  /* esidl extension */
     ;
 
 Module :
@@ -270,9 +282,20 @@ Module :
         }
     ;
 
+/* TODO: Support 'callback' */
+CallbackOrInterface :
+    CALLBACK CallbackRestOrInterface
+    | InterfaceDcl
+    ;
+
+CallbackRestOrInterface :
+    CallbackRest
+    | InterfaceDcl
+    ;
+
 InterfaceDcl :
     Interface
-    | ForwardDcl
+    | ForwardDcl    /* esidl extension */
     ;
 
 Interface :
@@ -342,17 +365,6 @@ PartialInterface :
             {
                 setCurrent(dynamic_cast<Module*>(getSpecification()->search(Node::getFlatNamespace())));
             }
-        }
-    ;
-
-Inheritance :
-    /* empty */
-        {
-            $$ = 0;
-        }
-    | ':' ScopedNameList
-        {
-            $$ = $2;
         }
     ;
 
@@ -434,7 +446,7 @@ DictionaryMembers :
     ;
 
 DictionaryMember :
-    Type IDENTIFIER DefaultValue ';'
+    Type IDENTIFIER Default ';'
         {
             Attribute* attr = new Attribute($2, $1);
             if ($3)
@@ -447,19 +459,36 @@ DictionaryMember :
 
     ;
 
-DefaultValue :
+Default:
     /* empty */
         {
             $$ = 0;
         }
-    | '=' ConstExpr
+    | '=' DefaultValue
         {
             $$ = $2;
         }
     ;
 
+DefaultValue :
+    /* empty */         /* TODO: Do we need an empty here? */
+        {
+            $$ = 0;
+        }
+    | ConstExpr
+        {
+            $$ = $1;
+        }
+    | STRING_LITERAL
+        {
+            $$ = new Literal($1);   /* TODO: Verify this still works */
+            free($1);
+        }
+    ;
+
+/* TODO: Support 'Inheritance'. */
 Exception :
-    EXCEPTION IDENTIFIER
+    EXCEPTION IDENTIFIER Inheritance
         {
             ExceptDcl* exc = new ExceptDcl($2);
             getCurrent()->add(exc);
@@ -491,6 +520,35 @@ ExceptionMembers :
     ExceptionMembers
     ;
 
+Inheritance :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | ':' ScopedNameList
+        {
+            $$ = $2;
+        }
+    ;
+
+/* TODO: Support 'Enum'. */
+Enum :
+    ENUM IDENTIFIER '{' EnumValueList '}' ';'
+    ;
+
+EnumValueList :
+    STRING_LITERAL EnumValues
+    ;
+
+EnumValues:
+    /* empty */
+    | ',' STRING_LITERAL EnumValues
+    ;
+
+CallbackRest :
+    IDENTIFIER '=' ReturnType '(' ArgumentList ')' ';'
+    ;
+
 Typedef :
     TYPEDEF Type IDENTIFIER ';'
         {
@@ -504,7 +562,7 @@ Typedef :
             }
             $$ = m;
         }
-    | NATIVE IDENTIFIER ';'  /* Note 'native' is not supported in Web IDL */
+    | NATIVE IDENTIFIER ';'  /* esidl extension */
         {
             NativeType* nativeType = new NativeType($2);
             getCurrent()->add(nativeType);
@@ -637,12 +695,12 @@ Literal :
             $$ = new Literal($1);
             free($1);
         }
-    | FLOATING_PT_LITERAL
-        {
-            $$ = new Literal($1);
-            free($1);
-        }
     | BooleanLiteral
+    | FloatLiteral
+    | NULL_LITERAL
+        {
+            $$ = new Literal("null");
+        }
     ;
 
 BooleanLiteral :
@@ -653,6 +711,22 @@ BooleanLiteral :
     | FALSE
         {
             $$ = new Literal("false");
+        }
+    ;
+
+FloatLiteral :
+    FLOATING_PT_LITERAL
+        {
+            $$ = new Literal($1);
+            free($1);
+        }
+    | INFINITY
+        {
+            $$ = new Literal("Infinity");
+        }
+    | NAN
+        {
+            $$ = new Literal("NaN");
         }
     ;
 
@@ -682,14 +756,26 @@ StringifierAttributeOrOperation :
         }
     ;
 
+/* TODO: Support 'Inherit' */
 Attribute :
-    ReadOnly ATTRIBUTE Type IDENTIFIER GetRaises SetRaises ';'
+    Inherit ReadOnly ATTRIBUTE Type IDENTIFIER GetRaises SetRaises /* backward compatibility */ ';'
         {
-            Attribute* attr = new Attribute($4, $3, $1);
-            attr->setGetRaises($5);
-            attr->setSetRaises($6);
+            Attribute* attr = new Attribute($5, $4, $2);
+            attr->setGetRaises($6);
+            attr->setSetRaises($7);
             getCurrent()->add(attr);
             $$ = attr;
+        }
+    ;
+
+Inherit :
+    /* empty */
+        {
+            $$ = false;
+        }
+    | INHERIT
+        {
+            $$ = true;
         }
     ;
 
@@ -704,7 +790,7 @@ ReadOnly :
         }
     ;
 
-GetRaises :
+GetRaises :     /* backward compatibility */
     /* empty */
         {
             $$ = 0;
@@ -715,7 +801,7 @@ GetRaises :
         }
     ;
 
-SetRaises :
+SetRaises :     /* backward compatibility */
     /* empty */
         {
             $$ = 0;
@@ -829,7 +915,7 @@ OptionalIdentifier :
     | IDENTIFIER
     ;
 
-Raises :
+Raises :    /* backward compatibility */
     /* empty */
         {
             $$ = 0;
@@ -858,29 +944,39 @@ Arguments :
     ;
 
 Argument :
-    ExtendedAttributeList In Optional Type Ellipsis IDENTIFIER
+    ExtendedAttributeList In OptionalOrRequiredArgument
         {
-            ParamDcl* param = new ParamDcl($6, $4, ParamDcl::AttrIn | $3 | $5);
-            param->setExtendedAttributes($1);
-            getCurrent()->add(param);
-            free($6);
+            if ($3)
+                $3->setExtendedAttributes($1);
         }
     ;
 
-In :
+In :    /* backward compatibility */
     /* empty */
     | IN
     ;
 
-Optional :
-    /* empty */
+OptionalOrRequiredArgument:
+    OPTIONAL Type ArgumentName Default
         {
-            $$ = 0;
+            ParamDcl* param = new ParamDcl($3, $2, ParamDcl::Optional | ParamDcl::AttrIn);
+            getCurrent()->add(param);
+            /* TODO: process Default */
+            free($3);
+            $$ = param;
         }
-    | OPTIONAL
+    | Type Ellipsis ArgumentName
         {
-            $$ = ParamDcl::Optional;
+            ParamDcl* param = new ParamDcl($3, $1, ParamDcl::AttrIn | $2);
+            getCurrent()->add(param);
+            free($3);
+            $$ = param;
         }
+    ;
+
+ArgumentName:
+    ArgumentNameKeyword
+    | IDENTIFIER
     ;
 
 Ellipsis :
@@ -969,8 +1065,175 @@ ExtendedAttribute :
         }
     ;
 
+ArgumentNameKeyword:
+    ATTRIBUTE
+        {
+            $$ = strdup("attribute");
+        }
+    | CALLBACK
+        {
+            $$ = strdup("callback");
+        }
+    | CONST
+        {
+            $$ = strdup("const");
+        }
+    | CREATOR
+        {
+            $$ = strdup("creator");
+        }
+    | DELETER
+        {
+            $$ = strdup("deleter");
+        }
+    | DICTIONARY
+        {
+            $$ = strdup("dictionary");
+        }
+    | ENUM
+        {
+            $$ = strdup("enum");
+        }
+    | EXCEPTION
+        {
+            $$ = strdup("exception");
+        }
+    | GETTER
+        {
+            $$ = strdup("getter");
+        }
+    | IMPLEMENTS
+        {
+            $$ = strdup("implements");
+        }
+    | INHERIT
+        {
+            $$ = strdup("inherit");
+        }
+    | INTERFACE
+        {
+            $$ = strdup("interface");
+        }
+    | CALLER
+        {
+            $$ = strdup("legacycaller");
+        }
+    | PARTIAL
+        {
+            $$ = strdup("partial");
+        }
+    | SETTER
+        {
+            $$ = strdup("setter");
+        }
+    | STATIC
+        {
+            $$ = strdup("static");
+        }
+    | STRINGIFIER
+        {
+            $$ = strdup("stringifier");
+        }
+    | TYPEDEF
+        {
+            $$ = strdup("typedef");
+        }
+    | UNRESTRICTED
+        {
+            $$ = strdup("unrestricted");
+        }
+    ;
+
 Type :
-    AttributeType
+    SingleType
+    | UnionType Null TypeSuffix
+        {
+            $1->setAttr($1->getAttr() | $2);
+            if ($3)
+            {
+                static_cast<ArrayType*>($3)->setSpec($1);
+                $$ = $3;
+                $$->setParent(getCurrent());
+            }
+            else
+            {
+                $$ = $1;
+            }
+        }
+    ;
+
+SingleType :
+    NonAnyType
+    | ANY TypeSuffix
+        {
+            $$ = new Type("any");
+            if ($2)
+            {
+                static_cast<ArrayType*>($2)->setSpec($$);
+                $$ = $2;
+                $$->setParent(getCurrent());
+            }
+            $$->setLocation(&@1);
+        }
+    ;
+
+/* TODO: Support 'UnionType' */
+UnionType :
+    '(' UnionMemberType OR UnionMemberType UnionMemberTypes ')'
+    ;
+
+UnionMemberType :
+    NonAnyType
+    | UnionType Null TypeSuffix
+    | ANY '[' ']' Null TypeSuffix
+    ;
+
+UnionMemberTypes :
+    /* empty */
+    | OR UnionMemberType UnionMemberTypes
+    ;
+
+NonAnyType  :
+    PrimitiveType Null TypeSuffix
+        {
+            $1->setAttr($1->getAttr() | $2);
+            if ($3)
+            {
+                static_cast<ArrayType*>($3)->setSpec($1);
+                $$ = $3;
+                $$->setParent(getCurrent());
+            }
+            else
+            {
+                $$ = $1;
+            }
+        }
+    | STRING Null TypeSuffix
+        {
+            $$ = new Type("string");
+            $$->setAttr($$->getAttr() | $2);
+            if ($3)
+            {
+                static_cast<ArrayType*>($3)->setSpec($$);
+                $$ = $3;
+                $$->setParent(getCurrent());
+            }
+            $$->setLocation(&@1);
+        }
+    | ScopedName Null TypeSuffix     /* in esidl, "object" is treatetd as one of ScopedNames. */
+        {
+            $1->setAttr($1->getAttr() | $2);
+            if ($3)
+            {
+                static_cast<ArrayType*>($3)->setSpec($1);
+                $$ = $3;
+                $$->setParent(getCurrent());
+            }
+            else
+            {
+                $$ = $1;
+            }
+        }
     | SEQUENCE '<' Type '>' Null
         {
             $$ = new SequenceType($3);
@@ -985,52 +1248,9 @@ Type :
             $$->setParent(getCurrent());
             $$->setLocation(&@1, &@6);
         }
-    ;
-
-AttributeType :
-    PrimitiveOrStringType Null TypeSuffix
-        {
-            $1->setAttr($1->getAttr() | $2);
-            if ($3)
-            {
-                static_cast<ArrayType*>($3)->setSpec($1);
-                $$ = $3;
-                $$->setParent(getCurrent());
-            }
-            else
-            {
-                $$ = $1;
-            }
-        }
-    | ScopedName Null TypeSuffix /* in esidl, "object" is treatetd as one of ScopedNames. */
-        {
-            $1->setAttr($1->getAttr() | $2);
-            if ($3)
-            {
-                static_cast<ArrayType*>($3)->setSpec($1);
-                $$ = $3;
-                $$->setParent(getCurrent());
-            }
-            else
-            {
-                $$ = $1;
-            }
-        }
-    | DATE Null TypeSuffix
+    | DATE TypeSuffix
         {
             $$ = new Type("Date");
-            $$->setAttr($$->getAttr() | $2);
-            if ($3)
-            {
-                static_cast<ArrayType*>($3)->setSpec($$);
-                $$ = $3;
-                $$->setParent(getCurrent());
-            }
-            $$->setLocation(&@1);
-        }
-    | ANY TypeSuffix
-        {
-            $$ = new Type("any");
             if ($2)
             {
                 static_cast<ArrayType*>($2)->setSpec($$);
@@ -1042,18 +1262,29 @@ AttributeType :
     ;
 
 ConstType :
-    PrimitiveOrStringType Null
+    PrimitiveType Null
+        {
+            $1->setAttr($1->getAttr() | $2);
+            $$ = $1;
+        }
+    | ScopedName Null   /* esidl extension */
         {
             $1->setAttr($1->getAttr() | $2);
             $$ = $1;
         }
     ;
 
-PrimitiveOrStringType :
-    UnsignedIntegerType  /* in esidl, "byte" is treated as one of IntegerTypes */
+PrimitiveType :
+    UnsignedIntegerType
+    | UnrestrictedFloatType
     | BOOLEAN
         {
             $$ = new Type("boolean");
+            $$->setLocation(&@1);
+        }
+    | BYTE
+        {
+            $$ = new Type("byte");
             $$->setLocation(&@1);
         }
     | OCTET
@@ -1061,7 +1292,21 @@ PrimitiveOrStringType :
             $$ = new Type("octet");
             $$->setLocation(&@1);
         }
-    | FLOAT
+    ;
+
+UnrestrictedFloatType:
+    UNRESTRICTED FloatType
+        {
+            /* Support 'unrestricted'. */
+            $2->getName() = "unrestricted " + $2->getName();
+            $$ = $2;
+            $$->setLocation(&@1, &@2);
+        }
+    | FloatType
+    ;
+
+FloatType :
+    FLOAT
         {
             $$ = new Type("float");
             $$->setLocation(&@1);
@@ -1069,11 +1314,6 @@ PrimitiveOrStringType :
     | DOUBLE
         {
             $$ = new Type("double");
-            $$->setLocation(&@1);
-        }
-    | STRING
-        {
-            $$ = new Type("string");
             $$->setLocation(&@1);
         }
     ;
@@ -1089,12 +1329,7 @@ UnsignedIntegerType :
     ;
 
 IntegerType :
-    BYTE
-        {
-            $$ = new Type("byte");
-            $$->setLocation(&@1);
-        }
-    | SHORT
+    SHORT
         {
             $$ = new Type("short");
             $$->setLocation(&@1);

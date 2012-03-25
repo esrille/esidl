@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Esrille Inc.
+ * Copyright 2011, 2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -22,7 +22,7 @@
  *
  * W3C,
  * Web IDL,
- * W3C Working Draft 19 December 2008.
+ * W3C Editor’s Draft 22 March 2012.
  * http://www.w3.org/TR/WebIDL/
  *
  * Common Object Request Broker Architecture: Core Specification,
@@ -130,9 +130,9 @@ boolean             {
                         stepLocation();
                         return BOOLEAN;
                     }
-caller              {
+callback            {
                         stepLocation();
-                        return CALLER;
+                        return CALLBACK;
                     }
 const               {
                         stepLocation();
@@ -162,6 +162,10 @@ DOMString           {
                         stepLocation();
                         return STRING;
                     }
+enum                {
+                        stepLocation();
+                        return ENUM;
+                    }
 exception           {
                         stepLocation();
                         return EXCEPTION;
@@ -190,9 +194,21 @@ in                  {
                         stepLocation();
                         return IN;
                     }
+Infinity            {
+                        stepLocation();
+                        return INFINITY;
+                    }
+inherit            {
+                        stepLocation();
+                        return INHERIT;
+                    }
 interface           {
                         stepLocation();
                         return INTERFACE;
+                    }
+legacycaller        {
+                        stepLocation();
+                        return CALLER;
                     }
 long                {
                         stepLocation();
@@ -202,9 +218,17 @@ module              {
                         stepLocation();
                         return MODULE;
                     }
+NaN                 {
+                        stepLocation();
+                        return NAN;
+                    }
 native              {
                         stepLocation();
                         return NATIVE;
+                    }
+null                {
+                        stepLocation();
+                        return NULL_LITERAL;
                     }
 object              {
                         stepLocation();
@@ -222,6 +246,10 @@ omittable           {
 optional            {
                         stepLocation();
                         return OPTIONAL;
+                    }
+or                  {
+                        stepLocation();
+                        return OR;
                     }
 partial              {
                         stepLocation();
@@ -271,6 +299,10 @@ true                {
 typedef             {
                         stepLocation();
                         return TYPEDEF;
+                    }
+unrestricted        {
+                        stepLocation();
+                        return UNRESTRICTED;
                     }
 unsigned            {
                         stepLocation();
