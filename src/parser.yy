@@ -128,6 +128,8 @@ int yylex();
 
 %type <node>        Definition
 %type <node>        Module
+%type <node>        CallbackOrInterface
+%type <node>        CallbackRestOrInterface
 %type <node>        Interface
 %type <node>        PartialInterface
 %type <node>        Inheritance
@@ -137,6 +139,7 @@ int yylex();
 %type <node>        Default
 %type <node>        DefaultValue
 %type <node>        Exception
+%type <node>        CallbackRest
 %type <node>        Typedef
 %type <node>        ImplementsStatement
 %type <node>        Const
@@ -282,9 +285,22 @@ Module :
         }
     ;
 
-/* TODO: Support 'callback' */
 CallbackOrInterface :
     CALLBACK CallbackRestOrInterface
+        {
+            if ($2)
+            {
+                if (Interface* node = dynamic_cast<Interface*>($2)) {
+                    node->setAttr(node->getAttr() | Interface::Callback);
+                    $$ = $2;
+                } else if (OpDcl* op = dynamic_cast<OpDcl*>($2)) {
+                    Node* node = op->getParent();
+                    node->setAttr(node->getAttr() | Interface::CallbackIsFunctionOnly);
+                    $$ = node;
+                }
+            }
+
+        }
     | InterfaceDcl
     ;
 
@@ -546,7 +562,35 @@ EnumValues:
     ;
 
 CallbackRest :
-    IDENTIFIER '=' ReturnType '(' ArgumentList ')' ';'
+    IDENTIFIER '=' ReturnType
+        {
+            ScopedName* name = new ScopedName(Node::getBaseObjectName());
+            Node* extends = new Node();
+            extends->add(name);
+
+            Interface* node = new Interface($1, extends);
+            if (Node::getFlatNamespace())
+            {
+                setCurrent(getSpecification());
+            }
+            getCurrent()->add(node);
+            setCurrent(node);
+
+            OpDcl* op = new OpDcl("call", $3);  // TODO: Deal with unnamed operation.
+            node->add(op);
+            setCurrent(op);
+        }
+    '(' ArgumentList ')' ';'
+        {
+            $$ = getCurrent();
+            setCurrent(getCurrent()->getParent()->getParent());
+            if (Node::getFlatNamespace() && getCurrent() == getSpecification())
+            {
+                setCurrent(dynamic_cast<Module*>(getSpecification()->search(Node::getFlatNamespace())));
+            }
+
+            free($1);
+        }
     ;
 
 Typedef :
