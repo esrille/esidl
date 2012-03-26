@@ -52,8 +52,8 @@ interface DOMStringMap {
 
 interface HTMLCollection {
   readonly attribute unsigned long length;
-  caller getter object item(in unsigned long index);
-  caller getter object namedItem(in DOMString name);
+  legacycaller getter object item(in unsigned long index);
+  legacycaller getter object namedItem(in DOMString name);
 };
 
 };

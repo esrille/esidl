@@ -20,8 +20,8 @@ interface ByteArray {
 
 interface UnsignedByteArray {
   attribute unsigned long length;
-  unsigned byte getElement(unsigned long index);
-  void setElement(unsigned long index, unsigned byte value);
+  octet getElement(unsigned long index);
+  void setElement(unsigned long index, octet value);
 };
 
 interface ShortArray {
