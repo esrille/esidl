@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, 2011 Esrille Inc.
+ * Copyright 2010-2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -426,7 +426,10 @@ public:
             {
                 write("return ");
             }
-            write("self->%s(", getEscapedName(node->getName()).c_str());
+            if (!node->getName().empty())
+                write("self->%s(", getEscapedName(node->getName()).c_str());
+            else
+                write("(*self)(", getEscapedName(node->getName()).c_str());
             writeParameters(node);
             write(");\n");
             if (spec->isVoid(interface))

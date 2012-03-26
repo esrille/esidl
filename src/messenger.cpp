@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, 2011 Esrille Inc.
+ * Copyright 2010-2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -1331,14 +1331,14 @@ public:
 
         // getter
         Messenger::getter(node);
-        write(" __attribute__((weak));\n");
+        write(";\n");
 
         if (!node->isReadonly() || node->isPutForwards() || node->isReplaceable())
         {
             // setter
             writetab();
             Messenger::setter(node);
-            write(" __attribute__((weak));\n");
+            write(";\n");
         }
     }
 
@@ -1346,7 +1346,7 @@ public:
     {
         writetab();
         Messenger::at(node);
-        write(" __attribute__((weak));\n");
+        write(";\n");
     }
 };
 

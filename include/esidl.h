@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, 2011 Esrille Inc.
+ * Copyright 2010-2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -139,6 +139,7 @@ public:
     static const uint32_t Variadic =                 0x00000200;
     static const uint32_t Nullable =                 0x00000400;
     static const uint32_t Static =                   0x00000800;
+    static const uint32_t SpecialMask = IndexMask | Caller | Stringifier;
     // [Callback]
     static const uint32_t CallbackMask =             0x00003000;
     static const uint32_t Callback =                 0x00003000;
@@ -1702,8 +1703,8 @@ class OpDcl : public Member
     mutable std::vector<std::string> metaOps;
 
 public:
-    OpDcl(std::string identifier, Node* spec) :
-        Member(identifier, spec, 0),
+    OpDcl(std::string identifier, Node* spec, uint32_t attr = 0) :
+        Member(identifier, spec, attr),
         raises(0),
         paramCount(0),
         methodCount(1)
@@ -1711,7 +1712,7 @@ public:
         children = new NodeList;
         if (identifier == "")
         {
-            attr |= UnnamedProperty;
+            this->attr |= UnnamedProperty;
         }
     }
 

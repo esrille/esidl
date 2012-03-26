@@ -39,9 +39,7 @@ interface EventTarget {
   void overloaded(HTMLCollection collection);
 };
 
-[Callback] interface EventListener {
-  void handleEvent(Event event);
-};
+callback EventListener = void (Event event);
 
 interface DOMStringMap {
   getter DOMString (in DOMString name);

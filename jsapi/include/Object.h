@@ -26,6 +26,7 @@
 
 #include <assert.h>
 #include <cstring>
+#include <string>
 
 class Object
 {

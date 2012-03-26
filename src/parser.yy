@@ -576,7 +576,7 @@ CallbackRest :
             getCurrent()->add(node);
             setCurrent(node);
 
-            OpDcl* op = new OpDcl("call", $3);  // TODO: Deal with unnamed operation.
+            OpDcl* op = new OpDcl("", $3, OpDcl::Caller);
             node->add(op);
             setCurrent(op);
         }

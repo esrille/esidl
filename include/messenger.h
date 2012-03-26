@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, 2011 Esrille Inc.
+ * Copyright 2010-2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -411,8 +411,22 @@ public:
 
     virtual void at(const OpDcl* node, const std::string& className = "")
     {
+        if ((node->getAttr() & OpDcl::SpecialMask) == OpDcl::Caller)
+        {
+            Node* spec = node->getSpec();
+            spec->accept(this);
+            write(" ");
+            if (!className.empty())
+                write("%s::", className.c_str());
+            write("operator() (");
+            writeParameters(node);
+            write(")");
+            if (node->getName().empty())
+                return;
+        }
+
         if (constructorMode)
-            {
+        {
             if (!className.empty())
                 write("%s::", className.c_str());
             write("%s(", getEscapedName(node->getParent()->getParent()->getName()).c_str());
