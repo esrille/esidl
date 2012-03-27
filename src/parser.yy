@@ -22,7 +22,7 @@
  *
  * W3C,
  * Web IDL,
- * W3C Editor’s Draft 22 March 2012.
+ * W3C Candidate Recommendation 19 April 2012.
  * http://dev.w3.org/2006/webapi/WebIDL/
  */
 
@@ -487,11 +487,7 @@ Default:
     ;
 
 DefaultValue :
-    /* empty */         /* TODO: Do we need an empty here? */
-        {
-            $$ = 0;
-        }
-    | ConstExpr
+    ConstExpr
         {
             $$ = $1;
         }
@@ -1311,7 +1307,7 @@ ConstType :
             $1->setAttr($1->getAttr() | $2);
             $$ = $1;
         }
-    | ScopedName Null   /* esidl extension */
+    | ScopedName Null
         {
             $1->setAttr($1->getAttr() | $2);
             $$ = $1;
