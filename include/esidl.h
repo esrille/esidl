@@ -43,8 +43,10 @@ class Node;
     class ExceptDcl;
     class Implements;
     class Interface;
+        class Dictionary;
     class Type;
-    class NativeType;
+        class NativeType;
+        class Enum;
     class SequenceType;
     class VariadicType;
     class ArrayType;
@@ -537,7 +539,7 @@ public:
         return compare("double", scope) == 0;
     }
 
-    virtual Module* isModule(const Node* scope)
+    virtual Module* isModule(const Node* scope) const
     {
         return 0;
     }
@@ -547,22 +549,27 @@ public:
         return 0;
     }
 
-    virtual SequenceType* isSequence(const Node* scope)
+    virtual SequenceType* isSequence(const Node* scope) const
     {
         return 0;
     }
 
-    virtual ArrayType* isArray(const Node* scope)
+    virtual ArrayType* isArray(const Node* scope) const
     {
         return 0;
     }
 
-    virtual StructType* isStruct(const Node* scope)
+    virtual StructType* isStruct(const Node* scope) const
     {
         return 0;
     }
 
-    virtual NativeType* isNative(const Node* scope)
+    virtual NativeType* isNative(const Node* scope) const
+    {
+        return 0;
+    }
+
+    virtual Enum* isEnum(const Node* scope) const
     {
         return 0;
     }
@@ -752,7 +759,7 @@ public:
         return node->isInterface(node->getParent());
     }
 
-    virtual SequenceType* isSequence(const Node* scope)
+    virtual SequenceType* isSequence(const Node* scope) const
     {
         Node* node = search(scope);
         if (!node)
@@ -762,7 +769,7 @@ public:
         return node->isSequence(node->getParent());
     }
 
-    virtual ArrayType* isArray(const Node* scope)
+    virtual ArrayType* isArray(const Node* scope) const
     {
         Node* node = search(scope);
         if (!node)
@@ -772,7 +779,7 @@ public:
         return node->isArray(node->getParent());
     }
 
-    virtual StructType* isStruct(const Node* scope)
+    virtual StructType* isStruct(const Node* scope) const
     {
         Node* node = search(scope);
         if (!node)
@@ -782,7 +789,7 @@ public:
         return node->isStruct(node->getParent());
     }
 
-    virtual NativeType* isNative(const Node* scope)
+    virtual NativeType* isNative(const Node* scope) const
     {
         Node* node = search(scope);
         if (!node)
@@ -792,7 +799,17 @@ public:
         return node->isNative(node->getParent());
     }
 
-    virtual Module* isModule(const Node* scope)
+    virtual Enum* isEnum(const Node* scope) const
+    {
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
+        return node->isEnum(node->getParent());
+    }
+
+    virtual Module* isModule(const Node* scope) const
     {
         Node* node = search(scope);
         if (!node)
@@ -901,9 +918,9 @@ public:
         return defaultPrefix + body;
     }
 
-    virtual Module* isModule(const Node* scope)
+    virtual Module* isModule(const Node* scope) const
     {
-        return this;
+        return const_cast<Module*>(this);
     }
 
     virtual void accept(Visitor* visitor);
@@ -928,9 +945,9 @@ public:
         return memberCount;
     }
 
-    virtual StructType* isStruct(const Node* scope)
+    virtual StructType* isStruct(const Node* scope) const
     {
-        return this;
+        return const_cast<StructType*>(this);
     }
 
     virtual void accept(Visitor* visitor);
@@ -1200,9 +1217,25 @@ public:
     {
     }
 
-    virtual NativeType* isNative(const Node* scope)
+    virtual NativeType* isNative(const Node* scope) const
     {
-        return this;
+        return const_cast<NativeType*>(this);
+    }
+
+    virtual void accept(Visitor* visitor);
+};
+
+class Enum : public Type
+{
+public:
+    Enum(std::string identifier) :
+        Type(identifier)
+    {
+    }
+
+    virtual Enum* isEnum(const Node* scope) const
+    {
+        return const_cast<Enum*>(this);
     }
 
     virtual void accept(Visitor* visitor);
@@ -1247,9 +1280,9 @@ public:
 
     unsigned getLength(const Node* scope);
 
-    virtual SequenceType* isSequence(const Node* scope)
+    virtual SequenceType* isSequence(const Node* scope) const
     {
-        return this;
+        return const_cast<SequenceType*>(this);
     }
 
     virtual void accept(Visitor* visitor);
@@ -1334,9 +1367,9 @@ public:
         return true;
     }
 
-    virtual ArrayType* isArray(const Node* scope)
+    virtual ArrayType* isArray(const Node* scope) const
     {
-        return this;
+        return const_cast<ArrayType*>(this);
     }
 
     virtual void accept(Visitor* visitor);
@@ -1483,7 +1516,7 @@ public:
         return spec->isInterface(scope);
     }
 
-    virtual SequenceType* isSequence(const Node* scope)
+    virtual SequenceType* isSequence(const Node* scope) const
     {
         if (!type)
         {
@@ -1492,7 +1525,7 @@ public:
         return spec->isSequence(scope);
     }
 
-    virtual ArrayType* isArray(const Node* scope)
+    virtual ArrayType* isArray(const Node* scope) const
     {
         if (!type)
         {
@@ -1501,7 +1534,7 @@ public:
         return spec->isArray(scope);
     }
 
-    virtual StructType* isStruct(const Node* scope)
+    virtual StructType* isStruct(const Node* scope) const
     {
         if (!type)
         {
@@ -1510,7 +1543,7 @@ public:
         return spec->isStruct(scope);
     }
 
-    virtual NativeType* isNative(const Node* scope)
+    virtual NativeType* isNative(const Node* scope) const
     {
         if (!type)
         {
@@ -1519,7 +1552,16 @@ public:
         return spec->isNative(scope);
     }
 
-    virtual Module* isModule(const Node* scope)
+    virtual Enum* isEnum(const Node* scope) const
+    {
+        if (!type)
+        {
+            return 0;
+        }
+        return spec->isEnum(scope);
+    }
+
+    virtual Module* isModule(const Node* scope) const
     {
         if (!type)
         {
@@ -1918,6 +1960,11 @@ public:
         at(static_cast<const Type*>(node));
     }
 
+    virtual void at(const Enum* node)
+    {
+        at(static_cast<const Type*>(node));
+    }
+
     virtual void at(const SequenceType* node)
     {
         at(static_cast<const Node*>(node));
@@ -2045,6 +2092,11 @@ inline void Type::accept(Visitor* visitor)
 }
 
 inline void NativeType::accept(Visitor* visitor)
+{
+    visitor->at(this);
+}
+
+inline void Enum::accept(Visitor* visitor)
 {
     visitor->at(this);
 }

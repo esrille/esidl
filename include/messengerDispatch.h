@@ -62,6 +62,10 @@ public:
         currentNode = 0;
     }
 
+    virtual void at(const Enum* node)
+    {
+    }
+
     virtual void at(const Member* node)
     {
     }
@@ -292,7 +296,7 @@ public:
                 {
                     write("arguments[0]");
                 }
-                else if (spec->isString(node->getParent()))
+                else if (spec->isString(node->getParent()) || spec->isEnum(node->getParent()))
                 {
                     write("arguments[0].toString()");
                 }
@@ -403,7 +407,7 @@ public:
                             write("::hasInstance(arguments[%u].toObject())", n);
                         }
                     }
-                    else if (param->getSpec()->isString(node->getParent()))
+                    else if (param->getSpec()->isString(node->getParent()) || param->getSpec()->isEnum(node->getParent()))
                     {
                         write("arguments[%u].isString()", n);
                     }
@@ -453,7 +457,7 @@ public:
         {
             write("arguments[%u]", getParamCount() - 1);
         }
-        else if (spec->isString(node->getParent()))
+        else if (spec->isString(node->getParent()) || spec->isEnum(node->getParent()))
         {
             write("arguments[%u].toString()", getParamCount() - 1);
         }

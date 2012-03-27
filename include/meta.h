@@ -71,7 +71,7 @@ protected:
             {
                 continue;
             }
-            if ((*i)->isNative(node->getParent()))
+            if ((*i)->isNative(node->getParent()) || (*i)->isEnum(node->getParent()))
             {
                 continue;
             }
@@ -85,6 +85,7 @@ protected:
     {
         if (element->isSequence(interface) ||
             element->isNative(interface) ||
+            element->isEnum(interface) ||
             element->isTypedef(interface))
         {
             return;
@@ -243,6 +244,11 @@ public:
             node->report("Unsupported type name: %s.", node->getName().c_str());
             exit(EXIT_FAILURE);
         }
+    }
+
+    virtual void at(const Enum* node)
+    {
+        output << Reflect::kString;
     }
 
     virtual void at(const SequenceType* node)

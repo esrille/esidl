@@ -307,6 +307,10 @@ public:
         write("\"");
     }
 
+    virtual void at(const Enum* node)
+    {
+    }
+
     virtual void at(const Member* node)
     {
         assert(node->isTypedef(node->getParent()));

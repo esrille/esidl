@@ -132,13 +132,16 @@ int yylex();
 %type <node>        CallbackRestOrInterface
 %type <node>        Interface
 %type <node>        PartialInterface
-%type <node>        Inheritance
 %type <node>        InterfaceMember
 %type <node>        Dictionary
 %type <node>        DictionaryMember
 %type <node>        Default
 %type <node>        DefaultValue
 %type <node>        Exception
+%type <node>        Inheritance
+%type <node>        Enum
+%type <node>        EnumValueList
+%type <node>        EnumValues
 %type <node>        CallbackRest
 %type <node>        Typedef
 %type <node>        ImplementsStatement
@@ -543,18 +546,50 @@ Inheritance :
         }
     ;
 
-/* TODO: Support 'Enum'. */
 Enum :
-    ENUM IDENTIFIER '{' EnumValueList '}' ';'
+    ENUM IDENTIFIER
+        {
+            Enum* node = new Enum($2);
+            if (Node::getFlatNamespace())
+            {
+                setCurrent(getSpecification());
+            }
+            getCurrent()->add(node);
+            setCurrent(node);
+            free($2);
+        }
+    '{' EnumValueList '}' ';'
+        {
+            getCurrent()->setLocation(&@1, &@7);
+            $$ = getCurrent();
+            setCurrent(getCurrent()->getParent());
+            if (Node::getFlatNamespace() && getCurrent() == getSpecification())
+            {
+                setCurrent(dynamic_cast<Module*>(getSpecification()->search(Node::getFlatNamespace())));
+            }
+        }
     ;
 
 EnumValueList :
     STRING_LITERAL EnumValues
+        {
+            Literal* literal = new Literal($1);
+            getCurrent()->addFront(literal);
+            $$ = literal;
+        }
     ;
 
-EnumValues:
+EnumValues :
     /* empty */
+        {
+            $$ = 0;
+        }
     | ',' STRING_LITERAL EnumValues
+        {
+            Literal* literal = new Literal($2);
+            getCurrent()->add(literal);
+            $$ = literal;
+        }
     ;
 
 CallbackRest :

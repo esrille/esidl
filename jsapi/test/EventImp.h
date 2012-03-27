@@ -23,6 +23,7 @@ class EventImp : public ObjectMixin<EventImp>
 {
     std::u16string type;
     std::u16string color;
+    std::u16string meal;
 public:
     // Event
     std::u16string getType() {
@@ -34,6 +35,12 @@ public:
     std::u16string getColor() {
         return color;
     }
+    org::w3c::dom::test::MealType getMeal() {
+        return meal;
+    }
+    void setMeal(org::w3c::dom::test::MealType type) {
+        // TODO: implement me!
+    }
 
     // Object
     virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {
@@ -41,12 +48,14 @@ public:
     }
 
     EventImp(std::u16string type) :
-        type(type)
+        type(type),
+        meal(u"rice")
     {
     }
 
     EventImp(std::u16string type, org::w3c::dom::test::EventInit dict) :
-        type(type)
+        type(type),
+        meal(u"rice")
     {
         color = dict.getColor();
     }

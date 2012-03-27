@@ -51,7 +51,7 @@ class MessengerInvoke : public Messenger
                 write("*this = getConstructor().message_(");
             post = ").toObject()";
         }
-        else if (spec->isString(node))
+        else if (spec->isString(node) || spec->isEnum(node))
         {
             write("return message_(");
             post = ").toString()";
@@ -78,6 +78,10 @@ public:
         currentNode = 0;
     }
 
+    virtual void at(const Enum* node)
+    {
+    }
+
     virtual void at(const Member* node)
     {
     }
@@ -94,7 +98,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            prefixedModuleName = currentNode->getPrefixedModuleName();
+            targetModuleName = prefixedModuleName = currentNode->getPrefixedModuleName();
             className = node->getName();
             if (constructorMode && (node->getAttr() & Interface::Constructor))
             {

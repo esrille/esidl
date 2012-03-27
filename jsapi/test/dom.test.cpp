@@ -520,26 +520,6 @@ void registerClasses(JSContext* cx, JSObject* global)
     XMLHttpRequestUploadImp::setStaticPrivate(new NativeClass(cx, global, XMLHttpRequestUploadImp::getMetaData()));
 }
 
-// An implementation of the Window's alert operation.
-void WindowImp::alert(std::u16string message)
-{
-    for (auto i = message.begin(); i != message.end(); ++i) {
-        if (*i < 128)
-            std::cerr << static_cast<char>(*i);
-    }
-}
-
-// An implementation of the Window's window attribute.
-html::Window WindowImp::getWindow()
-{
-    return this;
-}
-
-const char* script =
-    "for (prop in Node.prototype)"
-    "    window.alert(prop + '\\n');"
-    "alert('Hello, world.\\n');";
-
 int main(int argc, const char* argv[])
 {
     JSRuntime* rt = JS_NewRuntime(8L * 1024L * 1024L);
@@ -578,11 +558,6 @@ int main(int argc, const char* argv[])
     window = new WindowImp;
     static_cast<WindowImp*>(window.self())->setPrivate(global);
     JS_SetPrivate(jscontext, global, window.self());
-
-    jsval rval;
-    const char* filename = "";
-    int lineno = 0;
-    JSBool ok = JS_EvaluateScript(jscontext, global, script, strlen(script), filename, lineno, &rval);
 
     JS_DestroyContext(jscontext);
     JS_DestroyRuntime(rt);

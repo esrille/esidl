@@ -1,9 +1,12 @@
 module test {
 
+enum MealType { "rice", "noodles", "other" };
+
 [Constructor(DOMString type, optional EventInit dict)]
 interface Event {
   attribute DOMString type;
   readonly attribute DOMString color;
+  attribute MealType meal;
 };
 
 dictionary EventInit {

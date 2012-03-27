@@ -171,7 +171,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            prefixedModuleName = currentNode->getPrefixedModuleName();
+            targetModuleName = prefixedModuleName = currentNode->getPrefixedModuleName();
         }
 
         writetab();
@@ -194,7 +194,7 @@ public:
         if (!currentNode)
         {
             currentNode = node->getParent();
-            prefixedModuleName = currentNode->getPrefixedModuleName();
+            targetModuleName = prefixedModuleName = currentNode->getPrefixedModuleName();
         }
         assert(!(node->getAttr() & Interface::Supplemental) && !node->isLeaf());
 
@@ -368,6 +368,14 @@ public:
     virtual void at(const Literal* node)
     {
         write("%s", node->getName().c_str());
+    }
+
+    virtual void at(const Enum* node)
+    {
+        write("typedef ");
+        writetab();
+        write(stringTypeName.c_str());
+        write(" %s;\n", getEscapedName(node->getName()).c_str());
     }
 
     virtual void at(const Member* node)
@@ -750,8 +758,8 @@ class MessengerImport : public Visitor, public Formatter
     const Node* currentNode;
     bool printed;
     std::set<const Node*> importSet;
-    std::list<Member*> typedefList;
-    std::set<Member*> typedefSet;
+    std::list<Node*> typedefList;
+    std::set<Node*> typedefSet;
     bool importObjectArray;
 
     MessengerNameSpace* ns;
@@ -806,6 +814,17 @@ public:
             }
             currentNode = saved;
         }
+        else if (Enum* type = node->isEnum(currentNode))
+        {
+            // The order of the definitions needs to be preserved.
+            currentNode = type->getParent();
+            if (typedefSet.find(type) == typedefSet.end())
+            {
+                typedefSet.insert(type);
+                typedefList.push_back(type);
+            }
+            currentNode = saved;
+        }
     }
 
     virtual void at(const SequenceType* node)
@@ -818,6 +837,10 @@ public:
     {
         importObjectArray = true;
         node->getSpec()->accept(this);
+    }
+
+    virtual void at(const Enum* node)
+    {
     }
 
     virtual void at(const Member* node)
@@ -914,7 +937,7 @@ public:
             }
         }
 
-        for (std::list<Member*>::iterator i = typedefList.begin();
+        for (std::list<Node*>::iterator i = typedefList.begin();
              i != typedefList.end();
              ++i)
         {
@@ -922,7 +945,10 @@ public:
             {
                 size_t pos = ns->enter((*i)->getPrefixedName());
                 MessengerInterface messengerInterface(this, stringTypeName, objectTypeName, useExceptions);
-                messengerInterface.at(*i);
+                if (Member* type = dynamic_cast<Member*>(*i))
+                    messengerInterface.at(type);
+                else if (Enum* type = dynamic_cast<Enum*>(*i))
+                    messengerInterface.at(type);
                 newline = true;
             }
         }
@@ -958,6 +984,10 @@ public:
         Messenger(file, stringTypeName, objectTypeName, useExceptions, indent)
     {
         currentNode = 0;
+    }
+
+    virtual void at(const Enum* node)
+    {
     }
 
     virtual void at(const Member* node)
@@ -1321,6 +1351,10 @@ public:
         writeln("};");
     }
 
+    virtual void at(const Enum* node)
+    {
+    }
+
     virtual void at(const Member* node)
     {
     }
@@ -1502,6 +1536,10 @@ public:
     {
         currentNode = 0;
         targetModuleName = "::org::w3c::dom::bootstrap";
+    }
+
+    virtual void at(const Enum* node)
+    {
     }
 
     virtual void at(const Member* node)

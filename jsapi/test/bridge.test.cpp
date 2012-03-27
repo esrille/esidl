@@ -41,7 +41,7 @@ void reportError(JSContext* cx, const char* message, JSErrorReport* report)
 }
 
 const char* script =
-    "var l = function(e) { r += e.type + ' ' + e.color + '\\ndone!\\n' };"
+    "var l = function(e) { r += e.type + ' ' + e.color + ' ' + e.meal + '\\ndone!\\n' };"
     "var r = new String('');"
     "for(prop in target.__proto__)"
     "    r += prop + '\\n';"

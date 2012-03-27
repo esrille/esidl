@@ -173,7 +173,10 @@ public:
         {
             currentNode = resolved->getParent();
         }
-        if (!dynamic_cast<Interface*>(resolved) && !dynamic_cast<ExceptDcl*>(resolved) && !resolved->isTypedef(resolved->getParent()))
+        if (!dynamic_cast<Interface*>(resolved) &&
+            !dynamic_cast<ExceptDcl*>(resolved) &&
+            !resolved->isTypedef(resolved->getParent()) &&
+            !resolved->isEnum(resolved->getParent()))
         {
             resolved->accept(this);
         }
