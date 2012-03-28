@@ -40,7 +40,7 @@ class Node;
     class ScopedName;
     class Module;
     class StructType;
-    class ExceptDcl;
+        class ExceptDcl;
     class Implements;
     class Interface;
         class Dictionary;
@@ -928,17 +928,24 @@ public:
 
 class StructType : public Node
 {
+    Node* extends;
     int memberCount;
 
 public:
-    StructType(std::string identifier) :
+    StructType(std::string identifier, Node* extends = 0) :
         Node(identifier),
+        extends(extends),
         memberCount(0)
     {
         javadoc = ::getJavadoc();
     }
 
     virtual void add(Node* node);
+
+    Node* getExtends() const
+    {
+        return extends;
+    }
 
     int getMemberCount() const
     {
@@ -956,8 +963,8 @@ public:
 class ExceptDcl : public StructType
 {
 public:
-    ExceptDcl(std::string identifier) :
-        StructType(identifier)
+    ExceptDcl(std::string identifier, Node* extends = 0) :
+        StructType(identifier, extends)
     {
         javadoc = ::getJavadoc();
     }

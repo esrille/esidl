@@ -180,9 +180,20 @@ public:
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
-        write("struct %s {\n", getEscapedName(node->getName()).c_str());
-            writeln("%s(unsigned short code) : code(code) {", getEscapedName(node->getName()).c_str());
-            writeln("}");
+        write("struct %s", getEscapedName(node->getName()).c_str());
+        if (node->getExtends())
+        {
+            const char* separator = " : public ";
+            for (NodeList::iterator i = node->getExtends()->begin();
+                 i != node->getExtends()->end();
+                 ++i)
+            {
+                write(separator);
+                separator = ", public ";
+                (*i)->accept(this);
+            }
+        }
+        write(" {\n");
             printChildren(node);
         writeln("};");
     }
@@ -206,7 +217,6 @@ public:
         }
 
         write("class %s", getEscapedName(getClassName(node)).c_str());
-
         if (node->getExtends())
         {
             const char* separator = " : public ";

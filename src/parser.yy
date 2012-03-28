@@ -501,11 +501,10 @@ DefaultValue :
         }
     ;
 
-/* TODO: Support 'Inheritance'. */
 Exception :
     EXCEPTION IDENTIFIER Inheritance
         {
-            ExceptDcl* exc = new ExceptDcl($2);
+            ExceptDcl* exc = new ExceptDcl($2, $3);
             getCurrent()->add(exc);
             setCurrent(exc);
             free($2);
