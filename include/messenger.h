@@ -488,6 +488,11 @@ public:
     {
     }
 
+    virtual void at(const UnionType* node)
+    {
+        write("Any");
+    }
+
     virtual void at(const NativeType* node)
     {
         if (node->getName() == "void_pointer")

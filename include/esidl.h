@@ -41,6 +41,7 @@ class Node;
     class Module;
     class StructType;
         class ExceptDcl;
+    class UnionType;
     class Implements;
     class Interface;
         class Dictionary;
@@ -564,6 +565,11 @@ public:
         return 0;
     }
 
+    virtual UnionType* isUnion(const Node* scope) const
+    {
+        return 0;
+    }
+
     virtual NativeType* isNative(const Node* scope) const
     {
         return 0;
@@ -789,6 +795,16 @@ public:
         return node->isStruct(node->getParent());
     }
 
+    virtual UnionType* isUnion(const Node* scope) const
+    {
+        Node* node = search(scope);
+        if (!node)
+        {
+            return 0;
+        }
+        return node->isUnion(node->getParent());
+    }
+
     virtual NativeType* isNative(const Node* scope) const
     {
         Node* node = search(scope);
@@ -967,6 +983,22 @@ public:
         StructType(identifier, extends)
     {
         javadoc = ::getJavadoc();
+    }
+
+    virtual void accept(Visitor* visitor);
+};
+
+class UnionType : public Node
+{
+public:
+    UnionType ()
+    {
+        javadoc = ::getJavadoc();
+    }
+
+    virtual UnionType* isUnion(const Node* scope) const
+    {
+        return const_cast<UnionType*>(this);
     }
 
     virtual void accept(Visitor* visitor);
@@ -1550,6 +1582,15 @@ public:
         return spec->isStruct(scope);
     }
 
+    virtual UnionType* isUnion(const Node* scope) const
+    {
+        if (!type)
+        {
+            return 0;
+        }
+        return spec->isUnion(scope);
+    }
+
     virtual NativeType* isNative(const Node* scope) const
     {
         if (!type)
@@ -1943,6 +1984,11 @@ public:
         at(static_cast<const StructType*>(node));
     }
 
+    virtual void at(const UnionType* node)
+    {
+        at(static_cast<const Node*>(node));
+    }
+
     virtual void at(const Implements* node)
     {
     }
@@ -2072,6 +2118,11 @@ inline void ExceptDcl::accept(Visitor* visitor)
     Node* prev = setCurrent(this);
     visitor->at(this);
     setCurrent(prev);
+}
+
+inline void UnionType::accept(Visitor* visitor)
+{
+    visitor->at(this);
 }
 
 inline void Implements::accept(Visitor* visitor)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Esrille Inc.
+ * Copyright 2011, 2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -244,6 +244,12 @@ public:
             node->report("Unsupported type name: %s.", node->getName().c_str());
             exit(EXIT_FAILURE);
         }
+    }
+
+    virtual void at(const UnionType* node)
+    {
+        // TODO: Maybe we should treat union separately.
+        output << Reflect::kAny;
     }
 
     virtual void at(const Enum* node)

@@ -1251,20 +1251,64 @@ SingleType :
         }
     ;
 
-/* TODO: Support 'UnionType' */
 UnionType :
-    '(' UnionMemberType OR UnionMemberType UnionMemberTypes ')'
+    '(' UnionMemberType OR UnionMemberType
+        {
+            UnionType* u = new UnionType();
+            u->setParent(getCurrent());
+            setCurrent(u);
+            u->add($2);
+            u->add($4);
+        }
+    UnionMemberTypes ')'
+        {
+            $$ = getCurrent();
+            setCurrent(getCurrent()->getParent());
+            $$->setLocation(&@1, &@7);
+        }
     ;
 
 UnionMemberType :
     NonAnyType
     | UnionType Null TypeSuffix
+        {
+            $1->setAttr($1->getAttr() | $2);
+            if ($3)
+            {
+                static_cast<ArrayType*>($3)->setSpec($1);
+                $$ = $3;
+                $$->setParent(getCurrent());
+            }
+            else
+            {
+                $$ = $1;
+            }
+        }
     | ANY '[' ']' Null TypeSuffix
+        {
+            ArrayType* array = new ArrayType;
+            array->setAttr(array->getAttr() | $4);
+            array->setSpec(new Type("any"));
+            if ($5)
+            {
+                static_cast<ArrayType*>($5)->setSpec(array);
+                $$ = $5;
+            }
+            else
+            {
+                $$ = array;
+            }
+            $$->setParent(getCurrent());
+        }
     ;
 
 UnionMemberTypes :
     /* empty */
     | OR UnionMemberType UnionMemberTypes
+        {
+            getCurrent()->add($2);
+            $$ = $2;
+        }
     ;
 
 NonAnyType  :
@@ -1320,7 +1364,7 @@ NonAnyType  :
             $$ = new SequenceType($3, $5);
             $$->setAttr($$->getAttr() | $7);
             $$->setParent(getCurrent());
-            $$->setLocation(&@1, &@6);
+            $$->setLocation(&@1, &@7);
         }
     | DATE TypeSuffix
         {
