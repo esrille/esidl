@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Esrille Inc.
+ * Copyright 2011, 2012 Esrille Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <esjsapi.h>
+#include <esv8api.h>
 
 #include <assert.h>
 
@@ -28,26 +28,13 @@
 
 using namespace org::w3c::dom;
 
-static JSClass globalClass = {
-    "global", JSCLASS_GLOBAL_FLAGS | JSCLASS_HAS_PRIVATE,
-    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
-    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
-    JSCLASS_NO_OPTIONAL_MEMBERS
-};
-
-void reportError(JSContext* cx, const char* message, JSErrorReport* report)
-{
-    std::cerr << (report->filename ? report->filename : "<no filename>") << report->lineno << message;
-}
-
 const char* script =
-    "var l = function(e) { r += e.type + ' ' + e.color + ' ' + e.meal + '\\ndone!\\n' };"
     "var r = new String('');"
+    "var l = function(e) { r += e.type + ' ' + e.color + ' ' + e.meal + '\\ndone!\\n' };"
     "for(prop in target.__proto__)"
     "    r += prop + '\\n';"
     "r += 'EventTarget.TEXT_NODE = ' + EventTarget.TEXT_NODE + '\\n';"
-    "target.addEventListener('t', l);"
-    "var e = Event('type', { color: 'blue'});"
+    "var e = new Event('type', { color: 'blue'});"
     "e.type = 'TYPE';"
     "target.dispatchEvent(e);"
     "var m = target.dataset;"
@@ -55,63 +42,65 @@ const char* script =
     "m.x = 'hello';"
     "r += m.x + '\\n';"
     "delete m.x;"
-    "delete e;"
+    "e = 0;"    // ~EventImp() should be called later.
     "var c = target.collection;"
+    "var i = c.item(3);"
     "var i = c[3];"
     "var i = c(3);"
-    "var i = c.item(3);"
+    "var i = c('color');"
     "r += target + '\\n';"
     "target.overloaded(target.collection);"
     "target.overloaded(target.dataset);"
     "c.namedItem(target);"
     "c.namedItem(Function);"
-    "r;";
+    "r += c.length;"
+    "gc();"
+    "r;"
+;
 
-int main(int argc, const char* argv[])
+void testV8Bridge()
 {
-    JSRuntime* rt = JS_NewRuntime(8L * 1024L * 1024L);
-    if (!rt)
-        return EXIT_FAILURE;
+    v8::HandleScope handleScope;
 
-    jscontext = JS_NewContext(rt, 8192);
-    if (!jscontext)
-        return EXIT_FAILURE;
-    JS_SetOptions(jscontext, JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
-    JS_SetVersion(jscontext, JSVERSION_LATEST);
-    JS_SetErrorReporter(jscontext, reportError);
-
-    JSObject* global = JS_NewCompartmentAndGlobalObject(jscontext, &globalClass, NULL);
-    if (!global)
-        return EXIT_FAILURE;
-    if (!JS_InitStandardClasses(jscontext, global))
-        return EXIT_FAILURE;
+    v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
 
     // Register classes
-    EventImp::setStaticPrivate(new NativeClass(jscontext, global, test::Event::getMetaData(), test::Event::getConstructor));
-    EventTargetImp::setStaticPrivate(new NativeClass(jscontext, global, test::EventTarget::getMetaData()));
-    EventListenerImp::setStaticPrivate(new NativeClass(jscontext, global, test::EventListener::getMetaData()));
-    DOMStringMapImp::setStaticPrivate(new NativeClass(jscontext, global, test::DOMStringMap::getMetaData()));
-    HTMLCollectionImp::setStaticPrivate(new NativeClass(jscontext, global, test::HTMLCollection::getMetaData()));
+    EventImp::setStaticPrivate(new NativeClass(global, test::Event::getMetaData(), test::Event::getConstructor));
+    EventTargetImp::setStaticPrivate(new NativeClass(global, test::EventTarget::getMetaData()));
+    EventListenerImp::setStaticPrivate(new NativeClass(global, test::EventListener::getMetaData()));
+    DOMStringMapImp::setStaticPrivate(new NativeClass(global, test::DOMStringMap::getMetaData()));
+    HTMLCollectionImp::setStaticPrivate(new NativeClass(global, test::HTMLCollection::getMetaData()));
+
+    const char* extensionNames[] = {
+        "v8/gc",
+    };
+    v8::ExtensionConfiguration extensions(1, extensionNames);
+    v8::Persistent<v8::Context> context = v8::Context::New(&extensions, global);
+
+    v8::Context::Scope contextScope(context);
 
     // Create an instance of EventTarget for test
     org::w3c::dom::test::EventTarget target = new EventTargetImp;
     ObjectImp* imp = dynamic_cast<ObjectImp*>(target.self());
-    JSObject* jstarget = static_cast<NativeClass*>(imp->getStaticPrivate())->createJSObject(jscontext, imp);
-    JS_DefineProperty(jscontext, JS_GetGlobalObject(jscontext), "target", OBJECT_TO_JSVAL(jstarget),
-                      0, 0,
-                      JSPROP_ENUMERATE);
+    v8::Handle<v8::Object> jstarget = static_cast<NativeClass*>(imp->getStaticPrivate())->createJSObject(imp);
+    context->Global()->Set(v8::String::New("target"), jstarget);
 
-    jsval rval;
-    const char* filename = "";
-    int lineno = 0;
-    JSBool ok = JS_EvaluateScript(jscontext, global, script, strlen(script), filename, lineno, &rval);
-    JSString* str = JS_ValueToString(jscontext, rval);
-    std::cout << JS_EncodeString(jscontext, str);
+    org::w3c::dom::test::EventListener listener = compileFunction(context, u"r += e.type + ' ' + e.color + ' :-) ' + e.meal + '\\ndone!\\n'");
+    target.addEventListener(u"t", listener);
 
-    JS_DestroyContext(jscontext);
-    JS_DestroyRuntime(rt);
-    JS_ShutDown();
-    return 0;
+    v8::Handle<v8::String> source = v8::String::New(script);
+    v8::Handle<v8::Script> script = v8::Script::Compile(source);
+    v8::Handle<v8::Value> result = script->Run();
+
+    context.Dispose();
+
+    v8::String::AsciiValue ascii(result);
+    std::cout << *ascii << '\n';
+}
+
+int main(int argc, const char* argv[])
+{
+    testV8Bridge();
 }
 
 namespace org {

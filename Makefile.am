@@ -22,8 +22,14 @@ else
 JSAPIDIR =
 endif
 
-SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR)
-DIST_SUBDIRS = testsuite java cplusplus npapi jsapi
+if ENABLE_V8API
+V8APIDIR = v8api
+else
+V8APIDIR =
+endif
+
+SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR) $(V8APIDIR)
+DIST_SUBDIRS = testsuite java cplusplus npapi jsapi v8api
 
 if !NACL
 

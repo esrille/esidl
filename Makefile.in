@@ -294,8 +294,10 @@ top_srcdir = @top_srcdir@
 @ENABLE_NPAPI_TRUE@NPAPIDIR = npapi
 @ENABLE_JSAPI_FALSE@JSAPIDIR = 
 @ENABLE_JSAPI_TRUE@JSAPIDIR = jsapi
-SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR)
-DIST_SUBDIRS = testsuite java cplusplus npapi jsapi
+@ENABLE_V8API_FALSE@V8APIDIR = 
+@ENABLE_V8API_TRUE@V8APIDIR = v8api
+SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR) $(V8APIDIR)
+DIST_SUBDIRS = testsuite java cplusplus npapi jsapi v8api
 @NACL_FALSE@BUILT_SOURCES = lexer.cc parser.cc parser.h
 @NACL_FALSE@esidl_SOURCES = \
 @NACL_FALSE@	include/messenger.h \

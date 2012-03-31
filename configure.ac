@@ -10,7 +10,7 @@ AC_PROG_CC
 AM_PROG_AS
 AC_PROG_LEX
 AM_PROG_LIBTOOL
-AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile java/Makefile cplusplus/Makefile npapi/Makefile npapi/sample/Makefile jsapi/Makefile)
+AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile java/Makefile cplusplus/Makefile npapi/Makefile npapi/sample/Makefile jsapi/Makefile v8api/Makefile)
 
 AC_DEFINE(SVN_REVISION, "svnversion", [SVN Revision])
 
@@ -58,13 +58,20 @@ AM_CONDITIONAL(ENABLE_CPLUSPLUS, test "$enable_cplusplus" = "yes")
 
 AC_MSG_CHECKING([whether to generate JSAPI interfaces])
 AC_ARG_ENABLE(jsapi, AC_HELP_STRING([--enable-jsapi],
-                                    [enable JSAPI; environment variable GECKO_SDK needs to be set up first. [[default=yes]]]), 
+                                    [enable JSAPI bridge [[default=yes]]]), 
               [], [enable_jsapi="yes"])
 AC_MSG_RESULT([$enable_jsapi])
 AM_CONDITIONAL(ENABLE_JSAPI, test "$enable_jsapi" = "yes")
 
 # check for SpiderMonkey 1.8.5
 AC_SEARCH_LIBS(JS_NewCompartmentAndGlobalObject, js mozjs185)
+
+AC_MSG_CHECKING([whether to generate V8 API interfaces])
+AC_ARG_ENABLE(v8api, AC_HELP_STRING([--enable-v8api],
+                                    [enable V8 API bridge [[default=yes]]]), 
+              [], [enable_v8api="yes"])
+AC_MSG_RESULT([$enable_v8api])
+AM_CONDITIONAL(ENABLE_V8API, test "$enable_v8api" = "yes")
 
 AC_OUTPUT
 

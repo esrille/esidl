@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Esrille Inc.
+ * Copyright 2011, 2012 Esrille Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef ESJSAPI_H_INCLUDED
-#define ESJSAPI_H_INCLUDED
+#ifndef ESV8API_H_INCLUDED
+#define ESV8API_H_INCLUDED
 
-#include <js/jsapi.h>
+#include <v8.h>
 
-#include <memory>
+#include <map>
 
 #include "Object.h"
 #include "Reflect.h"
@@ -28,64 +28,25 @@ class ObjectImp;
 
 class NativeClass
 {
-    static const size_t MAX_METHOD_COUNT = 256;
-    static const size_t MAX_CONSTRUCTOR_COUNT = 64;
-    static const size_t MAX_RANK = 16;
-
-    static JSNative operations[MAX_METHOD_COUNT];
-    static JSNative constructors[MAX_CONSTRUCTOR_COUNT];
-    static JSPropertyOp getters[MAX_RANK];
-    static JSStrictPropertyOp setters[MAX_RANK];
-    static Object (*constructorGetters[MAX_CONSTRUCTOR_COUNT])();
-    static int constructorCount;
-
-    NativeClass* proto;
-    int protoRank;
-    char name[48];
-    JSClass jsclass;
-    std::unique_ptr<uint32_t[]> hashTable;
-
-    char* storeName(char* heap, const Reflect::Property& prop)
-    {
-        std::string name = prop.getName();
-        strcpy(heap, name.c_str());
-        return heap + name.length() + 1;
-    }
-
+    const char* metaData;
+    v8::Persistent<v8::FunctionTemplate> classTemplate;
 public:
-    NativeClass(JSContext* cx, JSObject* global, const char* metadata, Object (*getConstructor)() = 0);
+    NativeClass(v8::Handle<v8::ObjectTemplate> global, const char* metadata, Object (*getConstructor)() = 0);
+    ~NativeClass();
 
-    JSObject* createInstance(JSContext* cx, Object* other);
+    v8::Handle<v8::Object> createJSObject(ObjectImp* self);
 
-    uint32_t getHash(int n) const {
-        uint32_t* table = hashTable.get();
-        return table ? table[n] : 0;
-    }
+    static v8::Handle<v8::Value> constructor(const v8::Arguments& args);
+    static void finalize(v8::Persistent<v8::Value> object, void* parameter);
 
-    JSClass* getJSClass() {
-        return &jsclass;
-    }
-
-    JSObject* createJSObject(JSContext* cx, ObjectImp* self);
-
-    static bool isNativeClass(JSClass* jsclass);
-
-    template <int N>
-    static JSBool constructor(JSContext* cx, uintN argc, jsval* vp);
-
-    template <int R>
-    static JSBool getter(JSContext* cx, JSObject* obj, jsid id, jsval* vp);
-    template <int R>
-    static JSBool setter(JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp);
-
-    static uint32_t getHash(JSContext* cx, jsval* vp, int n);
+private:
+    static std::map<std::string, v8::Handle<v8::FunctionTemplate>> interfaceMap;
+    static std::map<ObjectImp*, v8::Persistent<v8::Object>> wrapperMap;
 };
-
-extern JSContext* jscontext;
 
 class ProxyObject : public Object
 {
-    JSObject* jsobject;
+    v8::Persistent<v8::Object> jsobject;
     unsigned int count;
 protected:
     virtual unsigned int retain_() {
@@ -101,24 +62,26 @@ protected:
         return count;
     };
 public:
-    ProxyObject(JSObject* obj) :
+    ProxyObject(v8::Handle<v8::Object> obj) :
         Object(this),
-        jsobject(obj),
-        count(0)
+        jsobject(v8::Persistent<v8::Object>::New(obj)),
+        count(1)
     {
-        JS_AddObjectRoot(jscontext, &jsobject);
     }
     ~ProxyObject()
     {
-        JS_RemoveObjectRoot(jscontext, &jsobject);
+        jsobject.Dispose();
+        jsobject.Clear();
     }
-    JSObject* getJSObject() const {
+    v8::Persistent<v8::Object>& getJSObject() {
         return jsobject;
     }
     virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv);
 };
 
-Any callFunction(Object thisObject, Object functionObject, int argc, Any* argv);
-Object* compileFunction(const std::u16string& body);
+Object* compileFunction(v8::Handle<v8::Context> context, const std::u16string& body);
 
-#endif  // ESJSAPI_H_INCLUDED
+Any callFunction(Object thisObject, Object functionObject, int argc, Any* argv);
+Any callFunction(v8::Handle<v8::Object> thisObject, v8::Handle<v8::Function> functionObject, int argc, Any* argv);
+
+#endif  // ESV8API_H_INCLUDED

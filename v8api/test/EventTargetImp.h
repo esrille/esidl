@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <esjsapi.h>
+#include <esv8api.h>
 
 #include <org/w3c/dom/test/EventTarget.h>
 #include <org/w3c/dom/test/Event.h>
@@ -27,8 +27,8 @@
 class EventTargetImp : public ObjectMixin<EventTargetImp>
 {
     org::w3c::dom::test::EventListener listener;
-    DOMStringMapImp stringMap;
-    HTMLCollectionImp collection;
+    Retained<DOMStringMapImp> stringMap;
+    Retained<HTMLCollectionImp> collection;
 public:
     // EventTarget
     void addEventListener(std::u16string type, org::w3c::dom::test::EventListener listener) {

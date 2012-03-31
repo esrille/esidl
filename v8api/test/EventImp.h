@@ -59,4 +59,9 @@ public:
     {
         color = dict.getColor();
     }
+
+    ~EventImp()
+    {
+        std::cout << "~EventImp()\n";
+    }
 };

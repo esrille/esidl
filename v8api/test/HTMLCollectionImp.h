@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Esrille Inc.
+ * Copyright 2011, 2012 Esrille Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 #ifndef HTMLCOLLECTION_IMP_H
 #define HTMLCOLLECTION_IMP_H
 
-#include <esjsapi.h>
+#include <esv8api.h>
 
 #include <org/w3c/dom/test/HTMLCollection.h>
 
@@ -27,7 +27,7 @@ public:
     // HTMLCollection
     unsigned int getLength()
     {
-        return 0;
+        return 3;
     }
     Object item(unsigned int index)
     {
