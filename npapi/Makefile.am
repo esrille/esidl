@@ -471,7 +471,6 @@ nodist_libesnpapi_a_SOURCES = $(generated_sources) $(generated_headers)
 
 libesnpapi_a_SOURCES = \
 	include/esnpapi.h \
-	include/object.h \
 	include/npapi/npapi.h \
 	include/npapi/npruntime.h \
 	include/npapi/nptypes.h \

@@ -537,7 +537,6 @@ nodist_libesjsapi_a_SOURCES = $(generated_sources) $(generated_headers)
 
 libesjsapi_a_SOURCES = \
 	include/esjsapi.h \
-	include/object.h \
 	src/bridge.cpp \
 	src/Any.cpp
 

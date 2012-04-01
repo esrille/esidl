@@ -21,7 +21,6 @@ nodist_libesv8api_a_SOURCES = $(generated_sources) $(generated_headers)
 
 libesv8api_a_SOURCES = \
 	include/esv8api.h \
-	include/object.h \
 	src/bridge.cpp \
 	src/Any.cpp
 
