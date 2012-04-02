@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include <esv8api.h>
+#include "esv8api.h"
 
 #include <assert.h>
 
 #include <iostream>
 
-std::map<std::string, v8::Handle<v8::FunctionTemplate>> NativeClass::interfaceMap;
+std::map<std::string, v8::Persistent<v8::FunctionTemplate>> NativeClass::interfaceMap;
 std::map<ObjectImp*, v8::Persistent<v8::Object>> NativeClass::wrapperMap;
 
 namespace {
@@ -71,7 +71,7 @@ Object* convertObject(v8::Handle<v8::Object> obj)
 
 Any convert(v8::Handle<v8::Value> v)
 {
-    if (v->IsUndefined())
+    if (v.IsEmpty() || v->IsUndefined())
         return Any();
     if (v->IsNull())
         return Any(static_cast<Object*>(0));
@@ -202,14 +202,12 @@ v8::Handle<v8::Value> namedPropertyGetter(v8::Local<v8::String> property, const 
     v8::Local<v8::Object> self = info.This();
     auto wrap = v8::Local<v8::External>::Cast(self->GetInternalField(0));
     ObjectImp* imp = static_cast<ObjectImp*>(wrap->Value());
-    Any result = imp->message_(hash, 0, Object::HAS_OPERATION_, 0);
-    if (static_cast<bool>(result)) {
-        v8::Local<v8::Value> value = self->GetRealNamedProperty(property);
-        if (!value.IsEmpty())
-            return value;
-    }
+    // TODO: Check [NamedPropertiesObject]
+    v8::Local<v8::Value> realProperty = self->GetRealNamedProperty(property);
+    if (!realProperty.IsEmpty())
+        return realProperty;
     Any argument(convert(property));
-    result = imp->message_(0, 0, Object::SPECIAL_GETTER_, &argument);
+    Any result = imp->message_(0, 0, Object::SPECIAL_GETTER_, &argument);
     return convert(result);
 }
 
@@ -377,6 +375,7 @@ NativeClass::NativeClass(v8::Handle<v8::ObjectTemplate> global, const char* meta
     classTemplate = v8::Persistent<v8::FunctionTemplate>::New(v8::FunctionTemplate::New(meta.hasConstructor() ? constructor : 0, v8::External::New(reinterpret_cast<void*>(getConstructor))));
     classTemplate->SetClassName(v8::String::New(identifier.c_str(), identifier.length()));
     global->Set(v8::String::New(identifier.c_str(), identifier.length()), classTemplate);
+    interfaceMap[identifier] = classTemplate;
 
     // Inheritance
     std::string parentName = Reflect::getIdentifier(meta.getExtends());

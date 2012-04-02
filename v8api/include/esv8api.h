@@ -40,7 +40,7 @@ public:
     static void finalize(v8::Persistent<v8::Value> object, void* parameter);
 
 private:
-    static std::map<std::string, v8::Handle<v8::FunctionTemplate>> interfaceMap;
+    static std::map<std::string, v8::Persistent<v8::FunctionTemplate>> interfaceMap;
     static std::map<ObjectImp*, v8::Persistent<v8::Object>> wrapperMap;
 };
 
