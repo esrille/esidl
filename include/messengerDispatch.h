@@ -132,6 +132,8 @@ public:
                     }
                     if (OpDcl* op = dynamic_cast<OpDcl*>(*j))
                     {
+                        if (op->getAttr() & OpDcl::Static)
+                            continue;
                         if (!(op->getAttr() & OpDcl::UnnamedProperty))
                             operations.insert(std::pair<uint32_t, OpDcl*>(op->getHash(), op));
                         if (op->getAttr() & (OpDcl::UnnamedProperty | OpDcl::Omittable | OpDcl::Caller))

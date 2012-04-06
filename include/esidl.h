@@ -1038,6 +1038,7 @@ private:
     Node* extends;
     int constCount;
     int methodCount;
+    int staticMethodCount;
     mutable int interfaceCount;  // total number of non-supplemental interfaces this interface will implement excluding Object.
     Interface* constructor;
     std::list<const Interface*> supplementalList;
@@ -1050,6 +1051,7 @@ public:
         extends(extends),
         constCount(0),
         methodCount(0),
+        staticMethodCount(0),
         interfaceCount(0),
         constructor(0)
     {
@@ -1123,14 +1125,25 @@ public:
         return methodCount;
     }
 
-    int getInterfaceCount() const;
-    void getInterfaceList(std::list<const Interface*>* list) const;
-
     int addMethodCount(int count)
     {
         methodCount += count;
         return methodCount;
     }
+
+    int getStaticMethodCount() const
+    {
+        return staticMethodCount;
+    }
+
+    int addStaticMethodCount(int count)
+    {
+        staticMethodCount += count;
+        return staticMethodCount;
+    }
+
+    int getInterfaceCount() const;
+    void getInterfaceList(std::list<const Interface*>* list) const;
 
     int getSuperCount() const
     {

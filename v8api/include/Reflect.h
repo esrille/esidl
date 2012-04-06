@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Esrille Inc.
+ * Copyright 2011, 2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2006, 2007 Nintendo Co., Ltd.
  *
@@ -49,6 +49,7 @@
  *    f: caller
  *    t: stringifier
  *    o: omittable
+ *    i: static
  *
  *  type ->
  *    b: boolean
@@ -82,6 +83,7 @@ public:
     static const char kCaller = 'f';
     static const char kStringifier = 't';
     static const char kOmittable = 'o';
+    static const char kStatic = 'i';
 
     static const char kBoolean = 'b';
     static const char kByte = 'g';
@@ -304,6 +306,11 @@ public:
         bool isOmittable() const
         {
             return hasSpecial(kOmittable);
+        }
+
+        bool isStatic() const
+        {
+            return hasSpecial(kStatic);
         }
 
         bool hasConstructor() const

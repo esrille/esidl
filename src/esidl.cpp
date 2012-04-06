@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Esrille Inc.
+ * Copyright 2011, 2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -350,7 +350,10 @@ void OpDcl::adjustMethodCount()
     } while (optionalStage <= optionalCount);
     Interface* interface = dynamic_cast<Interface*>(getParent());
     assert(interface);
-    interface->addMethodCount(methodCount - 1);
+    if (getAttr() & Static)
+        interface->addStaticMethodCount(methodCount - 1);
+    else
+        interface->addMethodCount(methodCount - 1);
 
     if (hasCovariantReturnType())
     {
@@ -1003,7 +1006,10 @@ std::string getScopedName(std::string moduleName, std::string absoluteName)
 void Interface::processExtendedAttributes(OpDcl* op)
 {
     attr |= (op->getAttr() & IndexMask);
-    ++methodCount;
+    if (op->getAttr() & Static)
+        ++staticMethodCount;
+    else
+        ++methodCount;
 }
 
 void Interface::processExtendedAttributes(Attribute* attr)

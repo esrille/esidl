@@ -341,7 +341,7 @@ public:
         MessengerDispatch dispatch(this, stringTypeName, objectTypeName, useExceptions);
         dispatch.at(node);
 
-        if (constructor)
+        if (constructor || 0 < node->getStaticMethodCount())
         {
             writeln("");
             writeln("static Object getConstructor();");
@@ -453,6 +453,8 @@ public:
             write("%s\n", node->getJavadoc().c_str());
             writetab();
         }
+        if (node->getAttr() & OpDcl::Static)
+            write("static ");
         Messenger::at(node);
         write(";\n");
     }
@@ -1389,6 +1391,8 @@ public:
     virtual void at(const OpDcl* node)
     {
         writetab();
+        if (node->getAttr() & OpDcl::Static)
+            write("static ");
         Messenger::at(node);
         write(";\n");
     }

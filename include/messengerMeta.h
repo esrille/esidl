@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, 2011 Esrille Inc.
+ * Copyright 2010-2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -48,6 +48,7 @@
  *    f: caller
  *    t: stringifier
  *    o: omittable
+ *    i: static
  */
 
 // Generate the string-encoded interface information for reflection
@@ -96,6 +97,10 @@ class MessengerMeta : public Messenger
         if (node->getAttr() & Node::Omittable)
         {
             write("o");
+        }
+        if (node->getAttr() & Node::Static)
+        {
+            write("i");
         }
     }
 

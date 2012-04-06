@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, 2011 Esrille Inc.
+ * Copyright 2010-2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -33,34 +33,35 @@ class MessengerInvoke : public Messenger
     const char* writeInvoke(const Node* node, Node* spec)
     {
         const char* post = ")";
+        const char* target = (node->getAttr() & Node::Static) ? "getConstructor()." : "";
 
         writetab();
         if (spec->isVoid(node))
         {
-            write("message_(");
+            write("%smessage_(", target);
         }
         else if (spec->isAny(node) || spec->isSequence(node) || (spec->getAttr() & Node::Nullable))
         {
-            write("return message_(");
+            write("return %smessage_(", target);
         }
         else if (spec->isInterface(node) || spec->isArray(node))
         {
             if (!constructorMode)
-                write("return message_(");
+                write("return %smessage_(", target);
             else
                 write("*this = getConstructor().message_(");
             post = ").toObject()";
         }
         else if (spec->isString(node) || spec->isEnum(node))
         {
-            write("return message_(");
+            write("return %smessage_(", target);
             post = ").toString()";
         }
         else
         {
             write("return static_cast<");
             spec->accept(this);
-            write(">(message_(");
+            write(">(%smessage_(", target);
             post = "))";
         }
         if (constructorMode || (node->getAttr() & Node::UnnamedProperty))

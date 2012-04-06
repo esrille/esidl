@@ -7,6 +7,8 @@ interface Event {
   attribute DOMString type;
   readonly attribute DOMString color;
   attribute MealType meal;
+
+  static void staticOperation();
 };
 
 dictionary EventInit {

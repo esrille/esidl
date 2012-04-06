@@ -54,6 +54,7 @@ const char* script =
     "c.namedItem(target);"
     "c.namedItem(Function);"
     "r += c.length;"
+    "Event.staticOperation();"
     "gc();"
     "r;"
 ;
@@ -114,18 +115,25 @@ class Constructor : public Object
 public:
     // Object
     virtual Any message_(uint32_t selector, const char* id, int argc, Any* argv) {
-        EventImp* evt = 0;
-        switch (argc) {
-        case 1:
-            evt = new(std::nothrow) EventImp(argv[0].toString());
+        switch (selector) {
+        case 0x674a34b6:
+            if (argc == 0) {
+                EventImp::staticOperation();
+                return Any();
+            }
+            if (argc == HAS_PROPERTY_)
+                return true;
             break;
-        case 2:
-            evt = new(std::nothrow) EventImp(argv[0].toString(), argv[1].toObject());
+        case 0:
+            if (argc == 1)
+                return new(std::nothrow) EventImp(argv[0].toString());
+            if (argc == 2)
+                return new(std::nothrow) EventImp(argv[0].toString(), argv[1].toObject());
             break;
         default:
             break;
         }
-        return evt ;
+        return Any();
     }
     Constructor() :
         Object(this) {
