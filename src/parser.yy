@@ -1400,11 +1400,6 @@ PrimitiveType :
             $$ = new Type("boolean");
             $$->setLocation(&@1);
         }
-    | BYTE
-        {
-            $$ = new Type("byte");
-            $$->setLocation(&@1);
-        }
     | OCTET
         {
             $$ = new Type("octet");
@@ -1447,7 +1442,12 @@ UnsignedIntegerType :
     ;
 
 IntegerType :
-    SHORT
+    BYTE
+        {
+            $$ = new Type("byte");
+            $$->setLocation(&@1);
+        }
+    | SHORT
         {
             $$ = new Type("short");
             $$->setLocation(&@1);
