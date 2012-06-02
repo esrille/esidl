@@ -1,0 +1,41 @@
+Summary: A Web IDL compiler
+Name: esidl
+Version: @VERSION@
+Release: 1%{?dist}
+License: Apache License, Version 2.0
+Group: Development/Tools
+URL: http://code.google.com/p/es-operating-system/
+Source0: esidl-%{version}.tar.gz
+Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires: bison flex
+
+%description
+Esidl is a Web IDL compiler which generates C++ header and source
+files from the interface definitions written in Web IDL. Web IDL
+is an interface definition language being developed at W3C and
+used for the HTML and other specifications published from W3C.
+
+%prep
+%setup -q
+
+%build
+%configure \
+	--disable-java --disable-npapi --disable-jsapi --disable-v8api --disable-cplusplus
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+%makeinstall
+
+%post
+
+%postun
+
+%files
+%defattr(-,root,root,-)
+%doc README LICENSE ChangeLog
+%{_bindir}/esidl
+
+%clean
+rm -rf $RPM_BUILD_ROOT

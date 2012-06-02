@@ -9,7 +9,18 @@ AC_PROG_CC
 AM_PROG_AS
 AC_PROG_LEX
 AM_PROG_LIBTOOL
-AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile java/Makefile cplusplus/Makefile npapi/Makefile npapi/sample/Makefile jsapi/Makefile v8api/Makefile)
+AC_CONFIG_FILES([
+  esidl.spec
+  Makefile
+  testsuite/Makefile
+  testsuite/runtime/Makefile
+  java/Makefile
+  cplusplus/Makefile 
+  npapi/Makefile
+  npapi/sample/Makefile
+  jsapi/Makefile 
+  v8api/Makefile
+])
 
 case ${target} in
   i[[34567]]86-*-*)

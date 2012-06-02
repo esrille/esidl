@@ -88,6 +88,8 @@ AM_CPPFLAGS = \
 	-iquote $(srcdir)/src
 
 EXTRA_DIST = \
+	esidl.spec.in \
+	esidl.spec \
 	LICENSE \
 	dom/COPYRIGHT.html \
 	dom/2dcontext.idl \
@@ -132,4 +134,3 @@ EXTRA_DIST = \
 	dom/workers.idl \
 	dom/xhr2.idl \
 	setup.pepper
-

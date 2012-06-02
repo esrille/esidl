@@ -38,9 +38,10 @@ target_triplet = @target@
 @NACL_FALSE@bin_PROGRAMS = esidl$(EXEEXT)
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(top_srcdir)/configure ChangeLog \
-	config.guess config.sub depcomp install-sh lexer.cc ltmain.sh \
-	missing parser.cc parser.h ylwrap
+	$(srcdir)/Makefile.in $(srcdir)/esidl.spec.in \
+	$(top_srcdir)/configure ChangeLog config.guess config.sub \
+	depcomp install-sh lexer.cc ltmain.sh missing parser.cc \
+	parser.h ylwrap
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -48,7 +49,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = esidl.spec
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
@@ -343,6 +344,8 @@ AM_CPPFLAGS = \
 	-iquote $(srcdir)/src
 
 EXTRA_DIST = \
+	esidl.spec.in \
+	esidl.spec \
 	LICENSE \
 	dom/COPYRIGHT.html \
 	dom/2dcontext.idl \
@@ -427,6 +430,8 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
+esidl.spec: $(top_builddir)/config.status $(srcdir)/esidl.spec.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
