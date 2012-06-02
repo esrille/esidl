@@ -38,14 +38,11 @@ BUILT_SOURCES = lexer.cc parser.cc parser.h
 bin_PROGRAMS = esidl
 
 esidl_SOURCES = \
-	include/messenger.h \
-	include/messengerDispatch.h \
-	include/messengerInvoke.h \
-	include/messengerMeta.h \
 	include/cplusplus.h\
 	include/cplusplusCall.h \
 	include/cplusplusInvoke.h \
 	include/cplusplusMeta.h \
+	include/cplusplusSrc.h \
 	include/cplusplusTemplate.h \
 	include/cxx.h \
 	include/esidl.h \
@@ -54,6 +51,10 @@ esidl_SOURCES = \
 	include/forward.h \
 	include/info.h \
 	include/java.h \
+	include/messenger.h \
+	include/messengerDispatch.h \
+	include/messengerInvoke.h \
+	include/messengerMeta.h \
 	include/meta.h \
 	include/reflect.h \
 	include/sheet.h \

@@ -1,9 +1,8 @@
 dnl Process this file with autoconf to produce a configure script
-define([svnversion], esyscmd([sh -c "svnversion -n | tr -d [:alpha:]"]))dnl
-AC_INIT([esidl], [0.1.5.svnversion])
+AC_INIT([esidl], [0.1.5])
 AC_CONFIG_AUX_DIR(.)
 AC_CANONICAL_TARGET
-AM_INIT_AUTOMAKE([no-define])
+AM_INIT_AUTOMAKE([foreign no-define])
 AC_PROG_YACC
 AC_PROG_CXX
 AC_PROG_CC
@@ -11,8 +10,6 @@ AM_PROG_AS
 AC_PROG_LEX
 AM_PROG_LIBTOOL
 AC_CONFIG_FILES(Makefile testsuite/Makefile testsuite/runtime/Makefile java/Makefile cplusplus/Makefile npapi/Makefile npapi/sample/Makefile jsapi/Makefile v8api/Makefile)
-
-AC_DEFINE(SVN_REVISION, "svnversion", [SVN Revision])
 
 case ${target} in
   i[[34567]]86-*-*)
@@ -74,4 +71,3 @@ AC_MSG_RESULT([$enable_v8api])
 AM_CONDITIONAL(ENABLE_V8API, test "$enable_v8api" = "yes")
 
 AC_OUTPUT
-

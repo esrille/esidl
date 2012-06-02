@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, 2011 Esrille Inc.
+ * Copyright 2010-2012 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -236,7 +236,7 @@ int main(int argc, char* argv[])
 
     if (version)
     {
-        printf("%s (r%s)\n", argv[0], SVN_REVISION);
+        printf("%s version %s\n", PACKAGE_NAME, PACKAGE_VERSION);
         return 0;
     }
 
