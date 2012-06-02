@@ -1,0 +1,3589 @@
+2012-06-02 05:59  Shiki.Okasaka@gmail.com
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure, configure.ac,
+	  cplusplus/Makefile.in, java/Makefile.in, jsapi/Makefile.in,
+	  ltmain.sh, npapi/Makefile.in, npapi/sample/Makefile.in,
+	  src/cplusplus.cpp, src/cxx.cpp, src/driver.cpp, src/java.cpp,
+	  src/messenger.cpp, src/skeleton.cpp, src/template.cpp,
+	  testsuite/Makefile.in, testsuite/runtime/Makefile.in,
+	  v8api/Makefile.in: (esidl) : Display the package version rather
+	  than the SVN revision number.
+
+2012-04-27 01:24  Shiki.Okasaka@gmail.com
+
+	* configure, src/parser.yy: (esidl) : Allow 'unsigned byte' type.
+
+2012-04-06 09:47  Shiki.Okasaka@gmail.com
+
+	* include/esidl.h, include/messengerDispatch.h,
+	  include/messengerInvoke.h, include/messengerMeta.h,
+	  jsapi/include/Reflect.h, jsapi/include/esjsapi.h,
+	  jsapi/src/bridge.cpp, jsapi/test/EventImp.h,
+	  jsapi/test/bridge.test.cpp, jsapi/test/test.idl, src/esidl.cpp,
+	  src/messenger.cpp, v8api/include/Reflect.h,
+	  v8api/include/esv8api.h, v8api/src/bridge.cpp,
+	  v8api/test/EventImp.h, v8api/test/bridge.test.cpp,
+	  v8api/test/test.idl: (esidl) : Adding support for the Web IDL
+	  static operations (so far for the C++11 binding and JSAPI and V8
+	  bridges).
+
+2012-04-02 04:54  Shiki.Okasaka@gmail.com
+
+	* v8api/include/esv8api.h, v8api/src/bridge.cpp: (NativeClass) :
+	  Fix bugs.
+
+2012-04-01 04:35  Shiki.Okasaka@gmail.com
+
+	* configure, jsapi/Makefile.am, jsapi/Makefile.in,
+	  npapi/Makefile.am, npapi/Makefile.in, v8api/Makefile.am,
+	  v8api/Makefile.in: (Makefile.am) : Clean up.
+
+2012-03-31 09:57  Shiki.Okasaka@gmail.com
+
+	* Makefile.am, Makefile.in, configure, configure.ac,
+	  v8api/Makefile.am, v8api/Makefile.in, v8api/include/esv8api.h,
+	  v8api/src/bridge.cpp, v8api/test/DOMStringMapImp.h,
+	  v8api/test/EventImp.h, v8api/test/EventTargetImp.h,
+	  v8api/test/HTMLCollectionImp.h, v8api/test/bridge.test.cpp:
+	  (v8api) : Initial check in of the V8 API bridge for the C++11
+	  binding.
+
+2012-03-31 05:23  Shiki.Okasaka@gmail.com
+
+	* v8api/include/esjsapi.h, v8api/include/esv8api.h: Rename.
+
+2012-03-31 05:14  Shiki.Okasaka@gmail.com
+
+	* v8api: Copy from jsapi.
+
+2012-03-29 06:39  Shiki.Okasaka@gmail.com
+
+	* include/esidl.h, include/messenger.h, include/meta.h,
+	  src/parser.yy: (esidl) : Support the Web IDL union type and map
+	  it to Any in the C++11 binding.
+
+2012-03-28 06:15  Shiki.Okasaka@gmail.com
+
+	* include/esidl.h, src/messenger.cpp, src/parser.yy: (Exception) :
+	  Tentatively support inheritance with C++11 binding. We'll revisit
+	  this and probably process exceptions like objects.
+
+2012-03-27 10:00  Shiki.Okasaka@gmail.com
+
+	* include/esidl.h, include/messenger.h,
+	  include/messengerDispatch.h, include/messengerInvoke.h,
+	  include/messengerMeta.h, include/meta.h, jsapi/test/EventImp.h,
+	  jsapi/test/bridge.test.cpp, jsapi/test/dom.test.cpp,
+	  jsapi/test/test.idl, src/messenger.cpp, src/parser.yy: (esidl) :
+	  Support Web IDL enumerations (only for C++11 binding and JSAPI
+	  bridge).
+
+2012-03-27 06:15  Shiki.Okasaka@gmail.com
+
+	* src/parser.yy: (Definitions) : Switching over to W3C Candidate
+	  Recommendation 19 April 2012.
+
+2012-03-26 13:51  Shiki.Okasaka@gmail.com
+
+	* include/esidl.h, include/messenger.h,
+	  include/messengerDispatch.h, jsapi/include/Object.h,
+	  jsapi/test/EventListenerImp.h, jsapi/test/EventTargetImp.h,
+	  jsapi/test/test.idl, src/messenger.cpp, src/parser.yy: (esidl) :
+	  Map a Web IDL callback function to a functor in the C++11
+	  binding.
+
+2012-03-26 05:24  Shiki.Okasaka@gmail.com
+
+	* src/parser.yy: (CallbackOrInterface, CallbackRest) :　Support
+	  callback functions.
+
+2012-03-26 04:59  Shiki.Okasaka@gmail.com
+
+	* dom/arrays.idl, dom/domcore.idl, dom/html5.idl,
+	  dom/typedarray.idl, jsapi/test/test.idl: (dom) : Switching over
+	  to W3C Editor’s Draft 22 March 2012.
+
+2012-03-25 09:41  Shiki.Okasaka@gmail.com
+
+	* configure, src/lexer.ll, src/parser.yy, testsuite/101.idl:
+	  (Definitions) : Switching over to W3C Editor’s Draft 22 March
+	  2012.
+
+2011-08-30 09:06  Shiki.Okasaka@gmail.com
+
+	* include/messengerDispatch.h: (MessengerDispatch) : Return true
+	  for the IS_KIND_OF_ message sent with the base interface name.
+
+2011-08-09 09:19  Shiki.Okasaka
+
+	* npapi/src/bridge.cpp: Fix x86_64 build issues.
+
+2011-08-09 07:23  Shiki.Okasaka@gmail.com
+
+	* cplusplus/Any.h, cplusplus/Makefile.am, cplusplus/Makefile.in,
+	  cplusplus/any.h, cplusplus/org/w3c/dom/ObjectArray.h,
+	  cplusplus/sequence.h, jsapi/config.h, jsapi/include/Any.h,
+	  jsapi/include/Object.h, jsapi/include/Reflect.h,
+	  jsapi/include/any.h, jsapi/include/esjsapi.h,
+	  jsapi/include/object.h, jsapi/src/Any.cpp,
+	  jsapi/test/Reflect.test.cpp, npapi/config.h,
+	  npapi/include/Object.h, npapi/include/esnpapi.h,
+	  npapi/include/object.h, npapi/sample/npp_md5sum.cpp,
+	  npapi/sample/npp_paint.cpp, npapi/sample/npp_test.cpp,
+	  npapi/sample/npp_xhr.cpp, npapi/src/Any.cpp: Sync up filenames
+	  with those used www.
+
+2011-08-09 07:00  Shiki.Okasaka@gmail.com
+
+	* jsapi/include/object.h: (Object) : Merge changes in www.
+
+2011-08-09 06:53  Shiki.Okasaka@gmail.com
+
+	* jsapi/include/any.h, jsapi/include/esjsapi.h, jsapi/src/Any.cpp,
+	  jsapi/src/bridge.cpp: (Any) : Merge changes in www.
+
+2011-08-05 04:12  Shiki.Okasaka@gmail.com
+
+	* configure: (Makefile.am) : Update for building on Fedora 15.
+
+2011-08-04 08:50  Shiki.Okasaka@gmail.com
+
+	* dom/cssomview.idl, jsapi/Makefile.am, jsapi/Makefile.in,
+	  jsapi/test/dom.test.cpp, npapi/Makefile.am, npapi/Makefile.in:
+	  (CSSOM View) : Update to W3C Working Draft 4 August 2011.
+
+2011-08-04 08:48  Shiki.Okasaka@gmail.com
+
+	* src/lexer.ll, src/parser.yy: (PartialInterface) : Support partial
+	  interface definitions.
+
+2011-07-06 11:14  Shiki.Okasaka
+
+	* jsapi/include/esjsapi.h, jsapi/src/bridge.cpp,
+	  jsapi/test/bridge.test.cpp, jsapi/test/dom.test.cpp:
+	  (NativeClass::NativeClass) : It takes the global object as an
+	  argument to work with multiple globals.
+
+2011-07-06 10:44  Shiki.Okasaka
+
+	* dom/domcore.idl, dom/file.idl, dom/html5.idl, java/Makefile.am,
+	  java/Makefile.in, jsapi/Makefile.am, jsapi/Makefile.in,
+	  jsapi/include/esjsapi.h, jsapi/test/dom.test.cpp,
+	  npapi/Makefile.am, npapi/Makefile.in, npapi/sample/xhr.cc:
+	  (domcore, html5) : Update to newer editions.
+
+2011-07-06 10:38  Shiki.Okasaka
+
+	* src/parser.yy: (AttributeType) : Follow Web IDL WD 4 July 2011;
+	  null is now not a value for interface types, object and array
+	  types.
+
+2011-07-05 11:10  Shiki.Okasaka
+
+	* cplusplus/nullable.h, cplusplus/sequence.h: (Nullable) : Refine
+	  constructors from a character string pointer.
+
+2011-07-04 13:54  Shiki.Okasaka
+
+	* dom/dom3events.idl, dom/domcore.idl, dom/html5.idl: Sync up with
+	  www/idl
+
+2011-07-04 09:16  Shiki.Okasaka
+
+	* Makefile.in, aclocal.m4, config.sub, configure, configure.ac,
+	  cplusplus/Makefile.in, include/esidl.h, java/Makefile.in,
+	  jsapi/Makefile.am, jsapi/Makefile.in, jsapi/test/EventImp.h,
+	  jsapi/test/bridge.test.cpp, jsapi/test/dom.test.cpp,
+	  jsapi/test/test.idl, ltmain.sh, npapi/Makefile.in,
+	  npapi/sample/Makefile.in, src/lexer.ll, src/parser.yy,
+	  testsuite/Makefile.in, testsuite/runtime/Makefile.in:
+	  (Dictionary) : esidl can now parse Web IDL dictionaries. In C++0x
+	  binding, dictionaries are currently mapped to Objects for
+	  simplicity to connect to JSAPI. Support for default values,
+	  dictionary constructors will be added later.
+
+2011-06-29 07:07  Shiki.Okasaka
+
+	* jsapi/src/bridge.cpp, jsapi/test/EventImp.h,
+	  jsapi/test/bridge.test.cpp, jsapi/test/test.idl:
+	  (NativeClass::NativeClass) : Set JSPROP_SHARED flag to properties
+	  to make setter/getter always active.
+
+2011-06-29 07:05  Shiki.Okasaka
+
+	* dom/dom3events.idl: Update to W3C Working Draft 31 May 2011.
+
+2011-06-16 06:19  Shiki.Okasaka
+
+	* jsapi/test/Reflect.test.cpp, src/messenger.cpp:
+	  (MessengerStaticData) : New.
+
+2011-04-30 09:45  Shiki.Okasaka
+
+	* jsapi/include/Reflect.h, jsapi/include/esjsapi.h,
+	  jsapi/src/bridge.cpp, jsapi/test/dom.test.cpp: (NativeClass) :
+	  Fix bugs.
+
+2011-04-24 10:28  Shiki.Okasaka
+
+	* include/messengerDispatch.h, jsapi/include/object.h,
+	  jsapi/src/Any.cpp, jsapi/src/bridge.cpp,
+	  jsapi/test/bridge.test.cpp, npapi/include/object.h,
+	  npapi/src/Any.cpp: (Any::toString) : Support object conversion to
+	  a string using the Object::STRINGIFY_ message.
+
+2011-04-23 11:24  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, config.guess, configure, configure.ac,
+	  cplusplus/org/w3c/dom/ObjectArray.h, depcomp, dom/dom2css.idl,
+	  dom/dom3events.idl, dom/html5.idl, include/esidl.h,
+	  include/messenger.h, include/messengerDispatch.h,
+	  include/messengerInvoke.h, include/messengerMeta.h, install-sh,
+	  java/Makefile.am, java/Makefile.in, jsapi, jsapi/Makefile.am,
+	  jsapi/Makefile.in, jsapi/config.h, jsapi/include,
+	  jsapi/include/Reflect.h, jsapi/include/any.h,
+	  jsapi/include/esjsapi.h, jsapi/include/object.h, jsapi/src,
+	  jsapi/src/Any.cpp, jsapi/src/bridge.cpp, jsapi/test,
+	  jsapi/test/DOMStringMapImp.h, jsapi/test/EventImp.h,
+	  jsapi/test/EventListenerImp.h, jsapi/test/EventTargetImp.h,
+	  jsapi/test/HTMLCollectionImp.h, jsapi/test/Reflect.test.cpp,
+	  jsapi/test/bridge.test.cpp, jsapi/test/dom.test.cpp,
+	  jsapi/test/test.idl, missing, npapi/Makefile.am,
+	  npapi/Makefile.in, npapi/include/object.h, npapi/src/invoke.cpp,
+	  src/driver.cpp, src/esidl.cpp, src/messenger.cpp, ylwrap: (jsapi)
+	  : New. Web IDL C++ binding to JavaScript bridge over JSAPI. To
+	  build, use --enable-jsapi option with configure; environment
+	  variable GECKO_SDK needs to be set up first.
+
+2011-04-22 05:12  Shiki.Okasaka
+
+	* cplusplus/any.h: (isPrimitive) : New.
+
+2011-04-22 05:11  Shiki.Okasaka
+
+	* cplusplus/nullable.h: (Nullable(const char16_t*)) : New.
+
+2011-04-22 05:09  Shiki.Okasaka
+
+	* cplusplus/sequence.h: (Rep()) : Do not link to new T[]
+	  unnecessarily.
+
+2011-04-22 04:57  Shiki.Okasaka
+
+	* dom/xhr2.idl: (XMLHttpRequest) : Update to Editor's Draft 4 March
+	  2011.
+
+2011-04-22 04:56  Shiki.Okasaka
+
+	* dom/file.idl: (FileList) : Update to Draft 18 April 2011.
+
+2011-03-16 12:47  Shiki.Okasaka
+
+	* include/meta.h: (Meta) : Revert not to output the prefixed name;
+	  esjs doesn't support it yet.
+
+2011-03-16 12:45  Shiki.Okasaka
+
+	* dom/postmsg.idl: Fix a typo.
+
+2011-03-14 06:05  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, cplusplus/Variadic.h, cplusplus/any.h,
+	  cplusplus/org/w3c/dom.h, cplusplus/org/w3c/dom/ObjectArray.h,
+	  cplusplus/org/w3c/dom/ObjectMap.h, include/esidl.h,
+	  include/messenger.h, include/messengerDispatch.h,
+	  include/messengerInvoke.h, include/meta.h, java/Makefile.am,
+	  java/Makefile.in, npapi/Makefile.am, npapi/Makefile.in,
+	  npapi/include/esnpapi.h, npapi/include/object.h,
+	  npapi/include/proxyImpl.h, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, npapi/sample/md5sum.cc,
+	  npapi/sample/md5sum.h, npapi/sample/npp_md5sum.cpp,
+	  npapi/sample/npp_paint.cpp, npapi/sample/npp_test.cpp,
+	  npapi/sample/npp_xhr.cpp, npapi/sample/paint.cc,
+	  npapi/sample/paint.h, npapi/sample/test.cpp, npapi/sample/test.h,
+	  npapi/sample/xhr.cc, npapi/sample/xhr.h, npapi/src/Any.cpp,
+	  npapi/src/bridge.cpp, npapi/src/constructors.cpp,
+	  npapi/src/invoke.cpp, npapi/src/metadata.cpp,
+	  npapi/src/metadataFile.cpp, npapi/src/metadataGeolocation.cpp,
+	  npapi/src/metadataHtml.cpp, npapi/src/metadataHtmlA_G.cpp,
+	  npapi/src/metadataHtmlH_N.cpp, npapi/src/metadataHtmlO_U.cpp,
+	  npapi/src/metadataHtmlV_Z.cpp, npapi/src/metadataIndexedDB.cpp,
+	  npapi/src/metadataSvg.cpp, npapi/src/metadataSvgA_E.cpp,
+	  npapi/src/metadataSvgF_G.cpp, npapi/src/metadataSvgH_N.cpp,
+	  npapi/src/metadataSvgO_U.cpp, npapi/src/metadataSvgV_Z.cpp,
+	  npapi/src/metadataWebDatabase.cpp, npapi/src/metadataWebGL.cpp,
+	  npapi/src/metadataWorkers.cpp, npapi/src/proxy.cpp,
+	  npapi/src/stub.cpp, src/driver.cpp, src/esidl.cpp,
+	  src/messenger.cpp: (esidl) : Support new C++ Web IDL binding
+	  based on message-oriented, duck typing.
+
+2011-03-14 05:47  Shiki.Okasaka
+
+	* dom/cssom.idl, dom/dom2css.idl, dom/dom3events.idl,
+	  dom/dom3ls.idl, dom/dom3validation.idl, dom/domcore.idl,
+	  dom/eventsource.idl, dom/file.idl, dom/html5.idl,
+	  dom/postmsg.idl, dom/typedarray.idl, dom/url.idl, dom/webgl.idl,
+	  dom/xhr2.idl: Switch over to newer editions and incorporate
+	  latest discussions.
+
+2011-03-14 05:37  Shiki.Okasaka
+
+	* include/cplusplus.h: (at(const ArrayType*) : Refine not to use
+	  the literal directly.
+
+2011-02-10 12:39  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, npapi/sample/paint.cc,
+	  src/cplusplus.cpp, src/esidl.cpp: (CPlusPlus) : Generate typedef
+	  statements only for sequences and arrays.
+
+2011-02-10 07:30  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp, src/lexer.ll, src/parser.yy:
+	  (Definitions) : Update grammar to Web IDL Editor’s Draft 1
+	  February 2011, and remove right recursions.
+
+2011-02-10 07:27  Shiki.Okasaka
+
+	* cplusplus/org/w3c/dom.h, dom/indexeddb.idl, npapi/Makefile.am,
+	  npapi/Makefile.in, npapi/src/metadataIndexedDB.cpp: (IDB) :
+	  Update to draft 10 February 2011.
+
+2011-01-23 08:15  Shiki.Okasaka
+
+	* Makefile.in, aclocal.m4, configure, cplusplus/Makefile.in,
+	  include/cplusplus.h, include/esidl.h, java/Makefile.in,
+	  ltmain.sh, npapi/Makefile.in, npapi/sample/Makefile.in,
+	  src/cplusplus.cpp, src/driver.cpp, src/esidl.cpp,
+	  testsuite/Makefile.in, testsuite/runtime/Makefile.in: (esidl) :
+	  Support -fno-multipleinheritance option. This work is still in
+	  progress.
+
+2010-12-08 10:13  Shiki.Okasaka
+
+	* src/parser.yy: (Type) : Set parent for array types in case of
+	  typedef.
+
+2010-11-26 12:57  Shiki.Okasaka
+
+	* include/cplusplus.h: at(const ArrayType*) : Fix a bug.
+
+2010-11-24 10:59  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h: (writeDecltype) : Fix a bug.
+
+2010-09-05 03:55  Shiki.Okasaka
+
+	* dom/dom3core.idl: (DocumentType) : publicId and systemId are not
+	  nullable.
+
+2010-08-30 17:02  Shiki.Okasaka
+
+	* src/cplusplus.cpp: (CPlusPlusInterface) : Generate a constructor
+	  for each exception structure.
+
+2010-08-28 15:06  Shiki.Okasaka
+
+	* Makefile.in, aclocal.m4, configure, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, include/cplusplusCall.h,
+	  include/cplusplusSrc.h, include/cplusplusTemplate.h,
+	  include/esidl.h, java/Makefile.in, npapi/Makefile.am,
+	  npapi/Makefile.in, npapi/config.h, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, src/cplusplus.cpp, src/driver.cpp,
+	  testsuite/Makefile.in, testsuite/runtime/Makefile.in: (esidl) :
+	  Add a new command line option '-cplusplus-src' to generate call
+	  methods in .cpp files.
+
+2010-08-23 15:27  Shiki.Okasaka
+
+	* src/cplusplus.cpp: (printCPlusPlus) : Generate include statements
+	  for header files required by template functions.
+
+2010-08-22 15:43  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusCall.h,
+	  include/cplusplusInvoke.h, include/cplusplusMeta.h,
+	  include/cplusplusTemplate.h, include/formatter.h,
+	  src/cplusplus.cpp: (CPlusPlus) : Support -fexceptions, -object,
+	  and -string command line options.
+
+2010-08-22 05:43  Shiki.Okasaka
+
+	* cplusplus/org/w3c/dom.h, dom/2dcontext.idl, dom/cssom.idl,
+	  dom/cssomview.idl, dom/dom3events.idl, dom/html5.idl,
+	  dom/microdata.idl, dom/postmsg.idl, dom/xhr2.idl,
+	  npapi/src/metadataHtml.cpp: (dom) : Update IDL definitions.
+
+2010-05-18 02:08  Shiki.Okasaka
+
+	* configure, src/java.cpp: (USE_ABSTRACT) : Make static
+	  createInstance() method generation optional.
+
+2010-05-18 01:53  Shiki.Okasaka
+
+	* setup.pepper: (chrome) : Add the --enable-webgl flag.
+
+2010-05-17 16:10  Shiki.Okasaka
+
+	* dom/svg.idl: (SVG) : Merge some changes in Second Edition.
+
+2010-05-17 16:09  Shiki.Okasaka
+
+	* dom/html5.idl: (Window) : Merge changes in Draft Standard - 17
+	  May 2010.
+
+2010-05-17 16:07  Shiki.Okasaka
+
+	* npapi/src/metadataWebDatabase.cpp:
+	  (initializeWebDatabaseMetaData) : Register 'VoidCallback' as
+	  'SQLVoidCallback' for WebKit.
+
+2010-05-17 14:49  Shiki.Okasaka
+
+	* cplusplus/org/w3c/dom.h, dom/webgl.idl,
+	  npapi/src/metadataWebGL.cpp: (WebGL) : Update to Working Draft 12
+	  May 2010.
+
+2010-05-17 14:47  Shiki.Okasaka
+
+	* dom/webnotifications.idl: Update to Editor's Draft 22 April 2010.
+
+2010-05-17 14:46  Shiki.Okasaka
+
+	* src/cplusplus.cpp: (CPlusPlusImport) : Check scope names of
+	  constant types.
+
+2010-05-17 10:28  Shiki.Okasaka
+
+	* npapi/src/metadataGeolocation.cpp, npapi/src/metadataHtml.cpp:
+	  (initializeMetaData) : Add two more WebKit workaround names.
+
+2010-05-17 08:05  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, cplusplus/org/w3c/dom.h,
+	  dom/elementtraversal.idl, java/Makefile.am, java/Makefile.in,
+	  npapi/src/metadata.cpp: (ElementTraversal) : New.
+
+2010-05-17 07:29  Shiki.Okasaka
+
+	* dom/dom3core.idl: (DOMException) : Add new exeption codes from
+	  HTML5.
+
+2010-05-17 07:03  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, dom/selectors.idl, java/Makefile.am,
+	  java/Makefile.in: (NodeSelector) : New.
+
+2010-05-14 05:07  Shiki.Okasaka
+
+	* README: Update.
+
+2010-05-13 11:40  Shiki.Okasaka
+
+	* configure: (Makefile.in) : Update.
+
+2010-05-13 11:27  Shiki.Okasaka
+
+	* setup.pepper: (setup.pepper) : Switch over to use Chrome 5 beta 3
+	  (5.0.375) or later with Native Client SDK
+	  (http://code.google.com/p/nativeclient-sdk/).
+
+2010-05-13 10:32  Shiki.Okasaka
+
+	* npapi/sample/Makefile.am, npapi/sample/Makefile.in:
+	  (dist_html_DATA, nodist_html_DATA) : New.
+
+2010-05-11 10:03  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, include/sheet.h, src/driver.cpp:
+	  (Sheet) : New.
+
+2010-05-11 04:22  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/driver.cpp,
+	  src/esidl.cpp, src/java.cpp: (Node::ctorScope) : Make Constructor
+	  class name configurable to restore Cxx mode.
+
+2010-05-11 04:20  Shiki.Okasaka
+
+	* include/cxx.h: (Cxx) : Support Date type.
+
+2010-05-03 06:47  Shiki.Okasaka
+
+	* npapi/sample/md5sum.html, npapi/sample/md5sum.nacl.html,
+	  npapi/sample/paint.html, npapi/sample/paint.js.html,
+	  npapi/sample/paint.nacl.html, npapi/sample/test.html,
+	  npapi/sample/test.nacl.html, npapi/sample/xhr.html,
+	  npapi/sample/xhr.js.html, npapi/sample/xhr.nacl.html: Clean up.
+
+2010-05-02 23:42  Shiki.Okasaka
+
+	* include/cplusplusCall.h, src/cplusplus.cpp: (CPlusPlus) : Fix for
+	  processing Object.idl
+
+2010-05-02 23:20  Shiki.Okasaka
+
+	* src/cplusplus.cpp, src/esidl.cpp: (CPlusPlusVisitor) : Fix to
+	  include <type_traits> where only required.
+
+2010-05-02 18:20  Shiki.Okasaka
+
+	* npapi/src/metadataHtmlO_U.cpp: (initializeHtmlMetaDataO_U) :
+	  Clean up.
+
+2010-05-02 18:16  Shiki.Okasaka
+
+	* configure, npapi/src/metadataHtmlO_U.cpp:
+	  (initializeHtmlMetaData) : Register HTMLPropertiesCollection.
+	  Note that a full clean build is required.
+
+2010-05-02 18:14  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusTemplate.h,
+	  include/esidl.h, src/cplusplus.cpp, src/esidl.cpp,
+	  src/template.cpp: (esidl) : Support the operation overriding with
+	  a covariant return type.
+
+2010-05-01 16:05  Shiki.Okasaka
+
+	* npapi/sample/test.nacl.html: (testObject) : Clean up.
+
+2010-05-01 15:56  Shiki.Okasaka
+
+	* npapi/include/object.h, npapi/sample/test.h,
+	  npapi/sample/test.html, npapi/sample/test.idl,
+	  npapi/sample/test.nacl.html, npapi/src/bridge.cpp,
+	  npapi/src/metadata.cpp, npapi/src/proxy.cpp: (createProxy) :
+	  Support 'Object' interface.
+
+2010-05-01 13:55  Shiki.Okasaka
+
+	* npapi/sample/test.cpp, npapi/sample/test.html,
+	  npapi/sample/test.nacl.html, npapi/src/proxy.cpp:
+	  (ProxyControl::createProxy) : Bind the unknown function to a
+	  Function object.
+
+2010-05-01 13:05  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cplusplus.cpp,
+	  src/driver.cpp, src/esidl.cpp: (CPlusPlus) : Remove
+	  getPackageName().
+
+2010-05-01 13:04  Shiki.Okasaka
+
+	* cplusplus/Makefile.am, cplusplus/Makefile.in: (clean-local) :
+	  Remove com.
+
+2010-04-30 08:01  Shiki.Okasaka
+
+	* cplusplus/any.h, cplusplus/testsuite/sequence.cpp,
+	  npapi/src/bridge.cpp: (convertToVariant) : Support sequences of
+	  any and nullable.
+
+2010-04-30 06:45  Shiki.Okasaka
+
+	* npapi/sample/test.html, npapi/sample/test.nacl.html,
+	  npapi/src/stub.cpp: (StubObject::invoke) : Refine.
+
+2010-04-30 05:38  Shiki.Okasaka
+
+	* npapi/src/stub.cpp: (StubObject) : Remove processResult and use
+	  convertToVariant directly.
+
+2010-04-30 05:35  Shiki.Okasaka
+
+	* npapi/sample/Makefile.am, npapi/sample/Makefile.in:
+	  (BUILT_SOURCES) : Add com/rsa/MD5.h and org/w3c/dom/Test.h
+
+2010-04-29 18:41  Shiki.Okasaka
+
+	* npapi/sample/test.nacl.html: Sync up with NPAPI test.
+
+2010-04-29 18:34  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/test.h,
+	  npapi/sample/test.html, npapi/sample/test.idl,
+	  npapi/sample/test.nacl.html, npapi/src/invoke.cpp,
+	  npapi/src/stub.cpp: (StubObject) : Support variadic operations.
+
+2010-04-29 18:18  Shiki.Okasaka
+
+	* cplusplus/sequence.h: (Sequence) : Remove support for
+	  ObjectArray.
+
+2010-04-29 18:17  Shiki.Okasaka
+
+	* cplusplus/any.h: (Any) : Fix bugs around sequenceValue.
+
+2010-04-29 13:56  Shiki.Okasaka
+
+	* npapi/sample/Makefile.am, npapi/sample/Makefile.in,
+	  npapi/sample/test.cpp, npapi/sample/test.h,
+	  npapi/sample/test.html, npapi/sample/test.idl,
+	  npapi/sample/test.nacl.html: (test.idl) : New.
+
+2010-04-29 12:31  Shiki.Okasaka
+
+	* cplusplus/any.h: (Any) : Add assign() for Nullable.
+
+2010-04-29 11:59  Shiki.Okasaka
+
+	* npapi/src/bridge.cpp: (convertToAny) : Check inner-type of a
+	  sequence value and null of a nullable type value.
+
+2010-04-29 10:39  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/src/bridge.cpp,
+	  npapi/src/invoke.cpp, npapi/src/stub.cpp: (convertToVariant) :
+	  Take a new argument to duplicate string values upon return to the
+	  browser.
+
+2010-04-29 09:51  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, configure, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, dom/md5.idl, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, npapi/sample/md5.idl: (md5.idl) : Move
+	  from dom/ to npapi/sample/.
+
+2010-04-28 04:37  Shiki.Okasaka
+
+	* npapi/src/stub.cpp: (StubObject::getProperty) : Support getting
+	  constant values.
+
+2010-04-28 04:19  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/src/bridge.cpp: (toNumber) :
+	  Support conversion from NPObject.
+
+2010-04-27 10:10  Shiki.Okasaka
+
+	* npapi/src/bridge.cpp: (toNumber) : Replace with the esjs
+	  implementation to support ECMAScript grammar.
+
+2010-04-26 11:24  Shiki.Okasaka
+
+	* configure, dom/dom3core.idl, dom/html5.idl, include/cplusplus.h,
+	  include/java.h, include/meta.h, include/reflect.h,
+	  npapi/sample/test.cpp, npapi/src/bridge.cpp, src/lexer.ll,
+	  src/parser.yy: (esidl) : Support 'Date' type. Typedef DOMUserData
+	  as Date to support Chrome.
+
+2010-04-25 13:55  Shiki.Okasaka
+
+	* configure, npapi/src/stub.cpp: (StubObject) : Support toString()
+	  method.
+
+2010-04-23 08:36  Shiki.Okasaka
+
+	* configure, configure.ac, cplusplus/org/w3c/dom.h,
+	  src/cplusplus.cpp, src/cxx.cpp, src/driver.cpp, src/java.cpp,
+	  src/skeleton.cpp, src/template.cpp: (esidl) : Include the svn
+	  revision number in the package name and generated files.
+
+2010-04-22 15:15  Shiki.Okasaka
+
+	* npapi/sample/xhr.js.html: Clean up.
+
+2010-04-22 13:08  Shiki.Okasaka
+
+	* npapi/src/metadata.cpp, npapi/src/metadataHtml.cpp:
+	  (initializeMetaData) : Register more metadata entries for WebKit.
+
+2010-04-22 10:42  Shiki.Okasaka
+
+	* npapi/sample/test.cpp, npapi/src/metadataHtml.cpp:
+	  (initializeHtmlMetaData) : Register BarInfo as BarProp for
+	  WebKit.
+
+2010-04-22 09:21  Shiki.Okasaka
+
+	* npapi/sample/paint.cc: Clean up.
+
+2010-04-21 10:01  Shiki.Okasaka
+
+	* npapi/sample/paint.cc: (select) : Fix to get the right mouse
+	  cursor position in tools.
+
+2010-04-21 09:55  Shiki.Okasaka
+
+	* npapi/sample/paint.cc, npapi/sample/paint.js.html: (paint.html) :
+	  Fix to get the right mouse cursor position.
+
+2010-04-21 09:52  Shiki.Okasaka
+
+	* npapi/src/bridge.cpp: (convertToAny) : Fix bugs.
+
+2010-04-21 06:52  Shiki.Okasaka
+
+	* cplusplus/any.h, npapi/src/bridge.cpp, npapi/src/invoke.cpp:
+	  (convertToVariant) : Support the sequence of basic types.
+
+2010-04-21 04:25  Shiki.Okasaka
+
+	* npapi/sample/npp_test.cpp, npapi/sample/test.cpp,
+	  npapi/src/bridge.cpp: (test.html) : Add a test for passing a
+	  sequence object to the browser.
+
+2010-04-21 03:46  Shiki.Okasaka
+
+	* npapi/sample/Makefile.am, npapi/sample/Makefile.in,
+	  npapi/sample/npp_sample.cpp, npapi/sample/npp_test.cpp,
+	  npapi/sample/sample.cpp, npapi/sample/sample.h,
+	  npapi/sample/sample.html, npapi/sample/sample.nacl.html,
+	  npapi/sample/sample.xml, npapi/sample/test.cpp,
+	  npapi/sample/test.h, npapi/sample/test.html,
+	  npapi/sample/test.nacl.html, npapi/sample/test.xml: (test.html) :
+	  Rename from sample.html
+
+2010-04-20 13:04  Shiki.Okasaka
+
+	* npapi/sample/sample.cpp, npapi/sample/sample.nacl.html,
+	  npapi/src/bridge.cpp: (convertToAny) : Support sequence type;
+	  still work in progress.
+
+2010-04-20 10:14  Shiki.Okasaka
+
+	* include/reflect.h, npapi/src/invoke.cpp: (invoke) : Support
+	  variadic nullable type arguments.
+
+2010-04-20 08:36  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/src/bridge.cpp: (convertToAny,
+	  convertToVariant) : Support byte type.
+
+2010-04-20 06:03  Shiki.Okasaka
+
+	* cplusplus/any.h, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, npapi/sample/blue.css,
+	  npapi/sample/green.css, npapi/sample/red.css,
+	  npapi/sample/sample.cpp, npapi/sample/sample.html,
+	  npapi/src/bridge.cpp: (sample.html) : Add a test for getting a
+	  sequence object from the browser; still work in progress.
+
+2010-04-19 04:11  Shiki.Okasaka
+
+	* cplusplus/Makefile.am, cplusplus/Makefile.in,
+	  cplusplus/org/w3c/dom.h, dom/cssom.idl, dom/dom2css.idl,
+	  java/Makefile.am, java/Makefile.in, npapi/src/metadata.cpp:
+	  (CSSOM) : Switch over from dom2stylesheets.
+
+2010-04-19 03:13  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, dom/cssom.idl: (cssom.idl) : New.
+
+2010-04-18 11:48  Shiki.Okasaka
+
+	* cplusplus/sequence.h, npapi/Makefile.am, npapi/Makefile.in,
+	  npapi/sample/Makefile.am, npapi/sample/Makefile.in,
+	  npapi/sample/sample.cpp, npapi/src/bridge.cpp:
+	  (Sequence(std::initializer_list<T> list)) : New for gcc 4.4
+
+2010-04-18 08:47  Shiki.Okasaka
+
+	* npapi/sample/npp_sample.cpp, npapi/sample/sample.cpp,
+	  npapi/src/bridge.cpp: (sample.nacl.html) : Test Console
+	  interface; NaCl only for now.
+
+2010-04-18 08:24  Shiki.Okasaka
+
+	* include/cplusplus.h: (CPlusPlus) : Generate the default argument
+	  for the final argument in a variadic operation.
+
+2010-04-17 20:02  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusCall.h,
+	  include/cplusplusInvoke.h, include/cplusplusTemplate.h,
+	  include/esidl.h, npapi/sample/sample.cpp, src/cplusplus.cpp,
+	  src/esidl.cpp: (CPlusPlus) : Internally use prefixed names
+	  instead of qualified names to handle non-DOM APIs correctly.
+
+2010-04-17 05:42  Shiki.Okasaka
+
+	* npapi/src/stub.cpp: (StubObject) : Add one more TODO.
+
+2010-04-17 05:29  Shiki.Okasaka
+
+	* cplusplus/any.h, npapi/sample/sample.cpp: (Nullable) : Test
+	  getting a nullable value through the proxy.
+
+2010-04-16 05:48  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, cplusplus/org/w3c/dom.h,
+	  dom/dom3events.idl, java/Makefile.am, java/Makefile.in,
+	  npapi/src/metadata.cpp: (DOM Events) : Switch over to Level 3
+	  Events to support more event types.
+
+2010-04-16 05:08  Shiki.Okasaka
+
+	* dom/dom3events.idl: (dom3events.idl) : New; scraped from W3C
+	  Editor's Draft 15 April 2010.
+
+2010-04-15 17:43  Shiki.Okasaka
+
+	* cplusplus/org/w3c/dom.h, dom/dom3core.idl, dom/xhr2.idl,
+	  npapi/src/metadata.cpp: (XMLHttpRequest Level 2) : Update to
+	  Editor's Draft 19 February 2010.
+
+2010-04-15 16:38  Shiki.Okasaka
+
+	* dom/dom2traversal.idl: (traversal) : Remove a redundant interface
+	  forward declaration.
+
+2010-04-15 08:37  Shiki.Okasaka
+
+	* cplusplus/org/w3c/dom.h, dom/indexeddb.idl,
+	  npapi/src/metadataIndexedDB.cpp: (Indexed Database) : Update to
+	  Editor's Draft 15 April 2010.
+
+2010-04-14 06:47  Shiki.Okasaka
+
+	* include/esidl.h, include/reflect.h, npapi/src/bridge.cpp:
+	  (Reflect) : Remove kNullIsNull which is no longer needed in Web
+	  IDL.
+
+2010-04-13 17:13  Shiki.Okasaka
+
+	* npapi/sample/md5sum.cc: Clean up.
+
+2010-04-13 17:11  Shiki.Okasaka
+
+	* npapi/sample/md5sum.html, npapi/sample/md5sum.nacl.html: (button)
+	  : Revise the button name.
+
+2010-04-13 16:59  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, dom/md5.idl, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, npapi/sample/md5sum.cc,
+	  npapi/sample/md5sum.h, npapi/sample/md5sum.html,
+	  npapi/sample/md5sum.nacl.html, npapi/sample/npp_md5sum.cpp:
+	  (md5sum.html) : Expose C++ MD5 context class implementation to
+	  JavaScript.
+
+2010-04-13 16:55  Shiki.Okasaka
+
+	* npapi/sample/xhr.js.html: Clean up.
+
+2010-04-13 16:53  Shiki.Okasaka
+
+	* npapi/src/stub.cpp: (StubObject) : Support construct.
+
+2010-04-13 16:51  Shiki.Okasaka
+
+	* include/cplusplusMeta.h, include/meta.h, include/reflect.h:
+	  (CPlusPlusMeta) : Generate symbol numbers in symbolTable in
+	  addition to metadata offsets.
+
+2010-04-13 13:35  Shiki.Okasaka
+
+	* npapi/sample/xhr.html, npapi/sample/xhr.nacl.html: (body) : Clean
+	  up.
+
+2010-04-13 13:15  Shiki.Okasaka
+
+	* dom/html5.idl: (Window) : add setter for
+	  [ReplaceableNamedProperties].
+
+2010-04-13 13:03  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp: (Interface) : Process
+	  [ReplaceableNamedProperties].
+
+2010-04-13 12:17  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, dom/2dcontext.idl, dom/html5.idl,
+	  dom/microdata.idl, dom/postmsg.idl, java/Makefile.am,
+	  java/Makefile.in: (html5) : Split microdata, 2dcontext, and
+	  postmsg into their own IDL files.
+
+2010-04-13 08:18  Shiki.Okasaka
+
+	* npapi/src/proxy.cpp: Clean up.
+
+2010-04-13 08:18  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/sample.cpp,
+	  npapi/sample/sample.h, npapi/src/proxy.cpp: (~ProxyControl) :
+	  Invalidate remaining proxy objects.
+
+2010-04-13 07:54  Shiki.Okasaka
+
+	* npapi/sample/npp_paint.cpp, npapi/sample/npp_sample.cpp,
+	  npapi/sample/npp_xhr.cpp: (NPP_GetValue) : Fix misc. bugs.
+
+2010-04-13 07:22  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/sample.cpp,
+	  npapi/src/proxy.cpp: (ProxyControl) : support explicit object
+	  release() overriding GC.
+
+2010-04-13 05:21  Shiki.Okasaka
+
+	* npapi/src/proxy.cpp: (~ProxyObject) : Fix a typo.
+
+2010-04-13 05:20  Shiki.Okasaka
+
+	* npapi/src/proxy.cpp: (~ProxyObject) : Add a TODO item.
+
+2010-04-13 04:47  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/src/bridge.cpp,
+	  npapi/src/proxy.cpp: (convertToObject, createProxy) : Try to
+	  handle an unknown type object of the suggested type if specified.
+
+2010-04-13 03:51  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/src/bridge.cpp,
+	  npapi/src/invoke.cpp, npapi/src/stub.cpp: (StubObject,
+	  processResult) : Use convertToAny() with the type hint.
+
+2010-04-11 06:58  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/include/object.h,
+	  npapi/sample/paint.cc, npapi/sample/paint.h,
+	  npapi/sample/sample.cpp, npapi/sample/sample.h,
+	  npapi/sample/xhr.cc, npapi/sample/xhr.h, npapi/src/stub.cpp:
+	  (StubControl) : Manage one StubObject for each Object.
+
+2010-04-10 09:28  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/npp_paint.cpp,
+	  npapi/src/bridge.cpp, npapi/src/invoke.cpp, npapi/src/proxy.cpp,
+	  npapi/src/stub.cpp: (StubControl) : New.
+
+2010-04-10 04:23  Shiki.Okasaka
+
+	* npapi/src/invoke.cpp: (processResult) : Release the returned
+	  NPVariant value unless it is an NPObject to be used later.
+
+2010-04-09 20:15  Shiki.Okasaka
+
+	* setup.pepper: (naclsdk) : Switch to the latest. Turn off -Os for
+	  now.
+
+2010-04-09 07:19  Shiki.Okasaka
+
+	* cplusplus/any.h, npapi/Makefile.am, npapi/Makefile.in,
+	  npapi/include/esnpapi.h, npapi/include/proxyImpl.h,
+	  npapi/sample/npp_paint.cpp, npapi/sample/npp_sample.cpp,
+	  npapi/sample/npp_xhr.cpp, npapi/sample/paint.cc,
+	  npapi/sample/sample.cpp, npapi/sample/xhr.cc,
+	  npapi/src/bridge.cpp, npapi/src/invoke.cpp, npapi/src/proxy.cpp,
+	  npapi/src/stub.cpp: (ProxyControl) : Support garbage collection
+	  for proxy objects.
+
+2010-04-08 08:00  Shiki.Okasaka
+
+	* npapi/Makefile.am, npapi/Makefile.in, npapi/src/bridge.cpp,
+	  npapi/src/resolve.cpp, npapi/src/stub.cpp: (stub.cpp) : Rename
+	  resolve.cpp
+
+2010-04-08 07:43  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/npp_paint.cpp,
+	  npapi/sample/npp_sample.cpp, npapi/sample/npp_xhr.cpp,
+	  npapi/sample/paint.cc, npapi/sample/paint.h,
+	  npapi/sample/sample.cpp, npapi/sample/sample.h,
+	  npapi/sample/xhr.cc, npapi/sample/xhr.h, npapi/src/bridge.cpp,
+	  npapi/src/metadata.cpp, npapi/src/metadataFile.cpp,
+	  npapi/src/metadataGeolocation.cpp, npapi/src/metadataHtml.cpp,
+	  npapi/src/metadataHtmlA_G.cpp, npapi/src/metadataHtmlH_N.cpp,
+	  npapi/src/metadataHtmlO_U.cpp, npapi/src/metadataHtmlV_Z.cpp,
+	  npapi/src/metadataIndexedDB.cpp, npapi/src/metadataSvg.cpp,
+	  npapi/src/metadataSvgA_E.cpp, npapi/src/metadataSvgF_G.cpp,
+	  npapi/src/metadataSvgH_N.cpp, npapi/src/metadataSvgO_U.cpp,
+	  npapi/src/metadataSvgV_Z.cpp, npapi/src/metadataWebDatabase.cpp,
+	  npapi/src/metadataWebGL.cpp, npapi/src/metadataWorkers.cpp,
+	  npapi/src/proxy.cpp: (ProxyControl) : New for managing
+	  ProxyObject instances.
+
+2010-04-08 04:30  Shiki.Okasaka
+
+	* npapi/src/bridge.cpp, npapi/src/invoke.cpp, npapi/src/proxy.cpp:
+	  (proxy.cpp) : Take up proxy related functions from bridge.cpp.
+
+2010-04-06 06:02  Shiki.Okasaka
+
+	* npapi/sample/paint.cc, npapi/sample/sample.h,
+	  npapi/sample/xhr.cc: Clean up.
+
+2010-04-06 05:57  Shiki.Okasaka
+
+	* npapi/Makefile.am, npapi/Makefile.in, npapi/include/esnpapi.h,
+	  npapi/src/proxy.cpp: (proxy.cpp) : New. Split from esnpapi.h
+
+2010-04-06 05:27  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/include/proxyImpl.h,
+	  npapi/src/bridge.cpp: (ProxyObject) : Remove getInterfaceName()
+	  which is no longer used.
+
+2010-04-03 13:47  Shiki.Okasaka
+
+	* npapi/sample/Makefile.am, npapi/sample/Makefile.in,
+	  npapi/sample/npp_xhr.cpp, npapi/sample/paint.h,
+	  npapi/sample/paint.html, npapi/sample/xhr.cc, npapi/sample/xhr.h,
+	  npapi/sample/xhr.html, npapi/sample/xhr.js.html,
+	  npapi/sample/xhr.nacl.html, npapi/sample/xhr.txt,
+	  npapi/src/metadata.cpp: (npesxhr) : New; C++ XHR demo.
+
+2010-04-03 07:27  Shiki.Okasaka
+
+	* npapi/sample/sample.cpp, npapi/sample/sample.html,
+	  npapi/src/bridge.cpp, npapi/src/invoke.cpp,
+	  npapi/src/metadata.cpp, npapi/src/metadataFile.cpp,
+	  npapi/src/metadataHtml.cpp, npapi/src/metadataWebGL.cpp,
+	  npapi/src/metadataWorkers.cpp: (createProxy) : Support
+	  [Constructor] interfaces and interfaces with a stringifier.
+
+2010-04-03 07:13  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusMeta.h,
+	  include/cplusplusTemplate.h, include/esidl.h, include/reflect.h,
+	  src/cplusplus.cpp, src/esidl.cpp: (CPlusPlus) : Generate
+	  [Constructor] interface in a separate file.
+
+2010-04-02 18:52  Shiki.Okasaka
+
+	* npapi/sample/np_entry.cpp: (NP_Initialize) : Set enumerate and
+	  construct.
+
+2010-04-02 07:56  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp: (OpDcl) : Treat as returning
+	  'any' if the operation is a named getter of an interface with
+	  [OverrideBuiltins].
+
+2010-03-30 07:46  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp, src/parser.yy:
+	  (OpDcl::processExtendedAttributes) : Assign the default name to
+	  an unnamed property, which shall be banned in Web IDL.
+
+2010-03-30 05:15  Shiki.Okasaka
+
+	* cplusplus/Makefile.am, cplusplus/Makefile.in,
+	  cplusplus/org/w3c/dom.h, cplusplus/org/w3c/dom/ObjectMap.h:
+	  (ObjectMap) : New.
+
+2010-03-30 00:28  Shiki.Okasaka
+
+	* npapi/sample/paint.js.html: New.
+
+2010-03-29 08:15  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, npapi/sample/eraser.png,
+	  npapi/sample/npp_paint.cpp, npapi/sample/paint.cc,
+	  npapi/sample/paint.h, npapi/sample/paint.html,
+	  npapi/sample/paint.nacl.html, npapi/sample/pen.png,
+	  npapi/sample/tools.png, setup.nacl: (npespaint) : New.
+
+2010-03-26 05:50  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h: (npapi.h) : Use nacl/npapi.h with
+	  __native_client__.
+
+2010-03-25 10:43  Shiki.Okasaka
+
+	* npapi/sample/sample.html, npapi/sample/sample.nacl.html: (HTML) :
+	  Add missing <BODY>
+
+2010-03-25 09:42  Shiki.Okasaka
+
+	* npapi/src/metadata.cpp, npapi/src/metadataFile.cpp,
+	  npapi/src/metadataGeolocation.cpp, npapi/src/metadataHtml.cpp,
+	  npapi/src/metadataHtmlA_G.cpp, npapi/src/metadataHtmlH_N.cpp,
+	  npapi/src/metadataHtmlO_U.cpp, npapi/src/metadataHtmlV_Z.cpp,
+	  npapi/src/metadataIndexedDB.cpp, npapi/src/metadataSvg.cpp,
+	  npapi/src/metadataSvgA_E.cpp, npapi/src/metadataSvgF_G.cpp,
+	  npapi/src/metadataSvgH_N.cpp, npapi/src/metadataSvgO_U.cpp,
+	  npapi/src/metadataSvgV_Z.cpp, npapi/src/metadataWebDatabase.cpp,
+	  npapi/src/metadataWebGL.cpp, npapi/src/metadataWorkers.cpp:
+	  (initializeMetaData) : Clean up.
+
+2010-03-25 09:32  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, npapi/include/proxyImpl.h,
+	  npapi/src/bridge.cpp: (Proxy_Impl::createInstance) : Return
+	  Object* directly.
+
+2010-03-25 09:30  Shiki.Okasaka
+
+	* npapi/sample/np_entry.cpp: (NP_Initialize) : Call
+	  NPP_Initialize() on any platform.
+
+2010-03-24 10:19  Shiki.Okasaka
+
+	* npapi/src/metadataHtml.cpp: (initializeHtmlMetaData) : Regiseter
+	  DOMWindow for WebKit.
+
+2010-03-24 09:16  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp: (Node) : Display warnings for
+	  unknown extended attributes; parse AllowAny and OverrideBuiltins.
+
+2010-03-24 07:31  Shiki.Okasaka
+
+	* setup.pepper: New.
+
+2010-03-22 12:44  Shiki.Okasaka
+
+	* npapi/src/resolve.cpp: (StubObject) : Implement setProperty.
+
+2010-03-22 12:12  Shiki.Okasaka
+
+	* npapi/Makefile.am, npapi/Makefile.in, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, setup.nacl: (setup.nacl) : Set CXXFLAGS
+	  to reduce binary size.
+
+2010-03-22 11:17  Shiki.Okasaka
+
+	* npapi/Makefile.am, npapi/Makefile.in, npapi/include/esnpapi.h,
+	  npapi/src/metadataSvg.cpp, npapi/src/metadataSvgA_E.cpp,
+	  npapi/src/metadataSvgA_G.cpp, npapi/src/metadataSvgF_G.cpp:
+	  (initializeSvgMetaData) : Split into one more files.
+
+2010-03-22 05:28  Shiki.Okasaka
+
+	* npapi/src/metadataSvg.cpp: (initializeSvgMetaData) : Register
+	  "XMLDocument".
+
+2010-03-22 05:05  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusCall.h,
+	  include/cplusplusInvoke.h, include/cplusplusMeta.h,
+	  include/cplusplusTemplate.h, include/esidl.h, include/info.h,
+	  include/java.h, npapi/src/invoke.cpp, src/cplusplus.cpp,
+	  src/cxx.cpp, src/driver.cpp, src/esidl.cpp, src/java.cpp: (main)
+	  : Clean up not to loop over source files for CPlusPlus and Java.
+
+2010-03-21 16:15  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/src/bridge.cpp: (bridge) : Clean
+	  up.
+
+2010-03-21 15:51  Shiki.Okasaka
+
+	* npapi/Makefile.am, npapi/Makefile.in, npapi/include/esnpapi.h,
+	  npapi/sample/Makefile.am, npapi/sample/Makefile.in,
+	  npapi/src/metadataHtml.cpp, npapi/src/metadataHtmlA_G.cpp,
+	  npapi/src/metadataHtmlH_N.cpp, npapi/src/metadataHtmlO_U.cpp,
+	  npapi/src/metadataHtmlV_Z.cpp, npapi/src/metadataSvg.cpp,
+	  npapi/src/metadataSvgA_G.cpp, npapi/src/metadataSvgH_N.cpp,
+	  npapi/src/metadataSvgO_U.cpp, npapi/src/metadataSvgV_Z.cpp:
+	  (initializeHtmlMetaData, initializeSvgMetaData) : Split into
+	  multiple files.
+
+2010-03-21 05:38  Shiki.Okasaka
+
+	* npapi/Makefile.am, npapi/Makefile.in, npapi/include/esnpapi.h,
+	  npapi/sample/npp_sample.cpp, npapi/src/metadata.cpp,
+	  npapi/src/metadataFile.cpp, npapi/src/metadataGeolocation.cpp,
+	  npapi/src/metadataHtml.cpp, npapi/src/metadataIndexedDB.cpp,
+	  npapi/src/metadataSvg.cpp, npapi/src/metadataWebDatabase.cpp,
+	  npapi/src/metadataWebGL.cpp, npapi/src/metadataWorkers.cpp:
+	  (initializeMetaData) : Split into multiple files.
+
+2010-03-21 04:23  Shiki.Okasaka
+
+	* include/cplusplusMeta.h: (CPlusPlusMeta) : Generate unique
+	  metaData strings.
+
+2010-03-20 19:34  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h: (CPlusPlusTemplate) : Do not
+	  generate redundant casts.
+
+2010-03-20 19:22  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in: (esidl_SOURCES) : Add cplusplusInvoke.h
+
+2010-03-20 19:19  Shiki.Okasaka
+
+	* include/cplusplusCall.h, include/cplusplusInvoke.h,
+	  include/cplusplusMeta.h, include/cplusplusTemplate.h,
+	  npapi/Makefile.am, npapi/Makefile.in, npapi/include/esnpapi.h,
+	  npapi/include/object.h, npapi/include/proxyImpl.h,
+	  npapi/sample/Makefile.am, npapi/sample/Makefile.in,
+	  npapi/sample/npp_sample.cpp, npapi/sample/sample.cpp,
+	  npapi/src/bridge.cpp, npapi/src/invoke.cpp, src/cplusplus.cpp:
+	  (interface_cast) : Support -fno-rtti build.
+
+2010-03-20 12:02  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusInvoke.h,
+	  include/cplusplusTemplate.h, npapi/Makefile.am,
+	  npapi/Makefile.in, src/cplusplus.cpp: (CPlusPlusInvoke) : Hoist
+	  bridge template class functions into static class functions to
+	  reduce binary size.
+
+2010-03-20 04:45  Shiki.Okasaka
+
+	* npapi/Makefile.am, npapi/Makefile.in, npapi/include/esnpapi.h,
+	  npapi/sample/Makefile.am, npapi/sample/Makefile.in,
+	  npapi/sample/npp_sample.cpp, npapi/src/metadata.cpp:
+	  (initializeMetaData) : New.
+
+2010-03-18 09:52  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, configure, configure.ac,
+	  cplusplus/Makefile.am, cplusplus/Makefile.in, java/Makefile.am,
+	  java/Makefile.in, npapi/Makefile.am, npapi/Makefile.in,
+	  npapi/include/Makefile.am, npapi/include/Makefile.in,
+	  npapi/sample/Makefile.am, npapi/sample/Makefile.in: (EXTRA_DIST)
+	  : Add missing files.
+
+2010-03-16 06:26  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, setup.nacl: (EXTRA_DIST) : Add
+	  setup.nacl
+
+2010-03-16 05:18  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in: (AM_LDFLAGS) : Fix the link order.
+
+2010-03-16 02:55  Shiki.Okasaka
+
+	* configure, configure.ac, npapi/sample/sample.nacl.html: (EXEEXT)
+	  : Rename to .nexe for NaCl
+
+2010-03-15 18:17  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, config.sub, configure, configure.ac,
+	  cplusplus/Makefile.am, cplusplus/Makefile.in, java/Makefile.am,
+	  java/Makefile.in, npapi/Makefile.am, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, npapi/sample/sample.nacl.html:
+	  (configure) : Support Native Client. To build nexe, make sure
+	  your PATH includes NaCl SDK
+	  (build/native_client/src/third_party/nacl_sdk/linux/sdk/nacl-sdk/bin),
+	  and then execute 'configure --host=nacl --target=nacl; make'.
+
+2010-03-15 08:19  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/npp_sample.cpp,
+	  npapi/sample/sample.cpp, npapi/sample/sample.h,
+	  npapi/src/bridge.cpp, npapi/src/resolve.cpp: (StubObject) :
+	  Implementing and testing invoke() using EventListener.
+
+2010-03-15 07:18  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h, include/esidl.h, src/esidl.cpp,
+	  src/skeleton.cpp: (CPlusPlusTemplate) : Fix to generate the right
+	  mixin class.
+
+2010-03-15 06:56  Shiki.Okasaka
+
+	* include/cplusplusCall.h, include/cplusplusMeta.h,
+	  include/cplusplusTemplate.h, include/esidl.h, include/forward.h,
+	  include/info.h, include/meta.h, src/cplusplus.cpp, src/cxx.cpp,
+	  src/java.cpp, src/template.cpp: (Interface::collectSupplementals)
+	  : Rename from collectMixins which was not a right naming.
+
+2010-03-14 18:58  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/src/resolve.cpp: (StubObject) :
+	  Implementing getProperty().
+
+2010-03-14 18:47  Shiki.Okasaka
+
+	* include/cplusplusCall.h: (CPlusPlusCall) : Generate call() as a
+	  member template function to make the generated header files
+	  compilable.
+
+2010-03-14 18:34  Shiki.Okasaka
+
+	* cplusplus/any.h: (Any) : Add byteValue.
+
+2010-03-14 15:34  Shiki.Okasaka
+
+	* include/cplusplusCall.h, include/cplusplusMeta.h,
+	  include/cplusplusTemplate.h, npapi/include/Makefile.am,
+	  npapi/include/Makefile.in, npapi/include/object.h,
+	  npapi/include/object.idl, npapi/src/bridge.cpp,
+	  npapi/src/resolve.cpp, src/cplusplus.cpp: (StubObject) :
+	  Implementing NPClass functions; still work in progress.
+
+2010-03-14 09:48  Shiki.Okasaka
+
+	* include/cplusplusCall.h: (CPlusPlusCall) : Generate
+	  getMetaData(interfaceNumber) and getSymbolTable(interfaceNumber).
+
+2010-03-14 09:21  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, include/cplusplusMeta.h,
+	  include/reflect.h: (CPlusPlusMeta) : generate getSymbolTable()
+	  method.
+
+2010-03-14 07:57  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusMeta.h, include/cxx.h,
+	  include/expr.h, include/info.h, include/java.h, include/meta.h,
+	  src/skeleton.cpp: Clean up.
+
+2010-03-14 07:48  Shiki.Okasaka
+
+	* include/cplusplusMeta.h, include/cplusplusTemplate.h,
+	  src/cplusplus.cpp: (CPlusPlusMeta) : New based on Info.
+
+2010-03-14 07:39  Shiki.Okasaka
+
+	* include/info.h: (Info) : Clean up.
+
+2010-03-14 07:30  Shiki.Okasaka
+
+	* include/cplusplusCall.h, include/info.h, src/cplusplus.cpp,
+	  src/cxx.cpp: (Info) : Clean up.
+
+2010-03-13 16:10  Shiki.Okasaka
+
+	* include/cplusplusCall.h, npapi/Makefile.am, npapi/Makefile.in,
+	  npapi/include/esnpapi.h, npapi/src/bridge.cpp,
+	  npapi/src/invoke.cpp, npapi/src/resolve.cpp: (StubObject) :
+	  Implement the skeleton.
+
+2010-03-13 09:15  Shiki.Okasaka
+
+	* cplusplus/any.h, cplusplus/sequence.h,
+	  cplusplus/testsuite/sequence.cpp, npapi/include/esnpapi.h,
+	  npapi/src/bridge.cpp, npapi/src/invoke.cpp: (invoke) : Support
+	  variadic operations; still work in progress.
+
+2010-03-13 06:04  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, java/Makefile.am, java/Makefile.in:
+	  (w3c_idl_files) : Add console.idl
+
+2010-03-13 03:20  Shiki.Okasaka
+
+	* dom/console.idl: (Console) : New.
+
+2010-03-10 01:28  Shiki.Okasaka
+
+	* npapi/Makefile.in, npapi/include/Makefile.in: (Makefile.in) :
+	  Update
+
+2010-03-09 19:13  Shiki.Okasaka
+
+	* npapi/Makefile.am, npapi/include/Makefile.am: (Makefile) :
+	  Generate object.h again.
+
+2010-03-09 06:22  Shiki.Okasaka
+
+	* npapi/src/bridge.cpp: (toInteger) : Use lower camel case.
+
+2010-03-09 05:31  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, cplusplus/org/w3c/dom.h,
+	  dom/progress-events.idl, java/Makefile.am, java/Makefile.in:
+	  (w3c_idl_files) : Add progress-events.idl
+
+2010-03-09 04:57  Shiki.Okasaka
+
+	* dom/indexeddb.idl: Fix type in comment
+
+2010-03-09 04:48  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, cplusplus/org/w3c/dom.h, java/Makefile.am,
+	  java/Makefile.in: (w3c_idl_files) : Add indexeddb.idl
+
+2010-03-09 04:46  Shiki.Okasaka
+
+	* include/cplusplus.h: (CPlusPlus) : Use getEscapedName() where
+	  necessary
+
+2010-03-09 04:43  Shiki.Okasaka
+
+	* dom/indexeddb.idl: Fix typos, etc.
+
+2010-03-09 04:25  Shiki.Okasaka
+
+	* dom/indexeddb.idl: New.
+
+2010-03-09 04:14  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, cplusplus/org/w3c/dom.h,
+	  dom/webnotifications.idl, java/Makefile.am, java/Makefile.in:
+	  (w3c_idl_files) : Add webnotifications.idl
+
+2010-03-09 03:45  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, cplusplus/org/w3c/dom.h, dom/svg.idl,
+	  java/Makefile.am, java/Makefile.in: (w3c_idl_files) : Add svg.idl
+
+2010-03-09 03:29  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, dom/geolocation.idl, java/Makefile.am,
+	  java/Makefile.in: (w3c_idl_files) : Add geolocation.idl
+
+2010-03-09 02:25  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure,
+	  cplusplus/Makefile.am, cplusplus/Makefile.in, dom/smil.idl,
+	  java/Makefile.am, java/Makefile.in, ltmain.sh, npapi/Makefile.in,
+	  npapi/include/Makefile.am, npapi/include/Makefile.in,
+	  npapi/sample/Makefile.in, testsuite/Makefile.in,
+	  testsuite/runtime/Makefile.in: (w3c_idl_files) : Add smil.idl
+
+2010-03-09 02:11  Shiki.Okasaka
+
+	* configure, dom/geolocation.idl, dom/smil.idl, dom/svg.idl,
+	  npapi/include/w3c: Clean up.
+
+2010-03-09 01:28  Shiki.Okasaka
+
+	* npapi/sample/npp_sample.cpp, npapi/sample/sample.cpp,
+	  npapi/sample/sample.h: (NPP_New) : Create a window proxy before
+	  creating PluginInstance.
+
+2010-03-08 17:55  Shiki.Okasaka
+
+	* npapi/sample/npp_sample.cpp, npapi/sample/sample.cpp,
+	  npapi/sample/sample.h: (PluginInstance) : Create an HTML5 Window
+	  interface from NPNVWindowNPObject.
+
+2010-03-08 17:39  Shiki.Okasaka
+
+	* Makefile.in, aclocal.m4, configure, configure.ac,
+	  cplusplus/Makefile.am, cplusplus/Makefile.in, cplusplus/any.h,
+	  java/Makefile.in, ltmain.sh, npapi/Makefile.am,
+	  npapi/Makefile.in, npapi/include/any.h, npapi/include/esnpapi.h,
+	  npapi/include/nullable.h, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, npapi/sample/npp_sample.cpp,
+	  npapi/sample/sample.cpp, npapi/src/bridge.cpp,
+	  npapi/src/invoke.cpp, npapi/src/variant386.cpp,
+	  npapi/src/variantx64.S, testsuite/Makefile.in,
+	  testsuite/runtime/Makefile.in: (npapi) : Switching over to the
+	  new Web IDL C++ interfaces; work in progress.
+
+2010-03-08 10:26  Shiki.Okasaka
+
+	* cplusplus/org/w3c/dom.h: New.
+
+2010-03-08 05:10  Shiki.Okasaka
+
+	* cplusplus/testsuite/invoke.cpp: (invoke) : Clean up.
+
+2010-03-08 04:22  Shiki.Okasaka
+
+	* cplusplus/any.h, cplusplus/sequence.h,
+	  cplusplus/testsuite/sequence.cpp: (Any) : Support having
+	  Sequence<T>.
+
+2010-03-05 09:35  Shiki.Okasaka
+
+	* cplusplus/any.h, cplusplus/testsuite/invoke.cpp,
+	  include/cplusplus.h: (CPlusPlus) : Do not use '&' for Any and
+	  Sequence parameters so that we can use the implicit conversion by
+	  constructors.
+
+2010-03-05 07:57  Shiki.Okasaka
+
+	* cplusplus/any.h, cplusplus/nullable.h, cplusplus/testsuite,
+	  cplusplus/testsuite/invoke.cpp, cplusplus/testsuite/sequence.cpp:
+	  (Any, Nullable) : Refining runtime classes and tests; still work
+	  in progress.
+
+2010-03-05 07:53  Shiki.Okasaka
+
+	* include/reflect.h: (Reflect) : Preparing not to use separate iids
+	  in addition to meta data strings.
+
+2010-03-05 05:26  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, cplusplus/Makefile.am,
+	  cplusplus/Makefile.in, dom/webdatabase.idl, java/Makefile.am,
+	  java/Makefile.in: (webdatabase.idl) : New. Note we should switch
+	  over to Indexed Database API.
+
+2010-03-04 10:44  Shiki.Okasaka
+
+	* cplusplus/Makefile.am, cplusplus/Makefile.in, dom/cssomview.idl,
+	  dom/dom2views.idl, java/Makefile.am, java/Makefile.in: (CSSOM
+	  View Module) : Update to Editor's Draft 2 February 2010.
+
+2010-03-04 08:50  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h: (CPlusPlusTemplate) : Pass arguments
+	  as an array to invoke.
+
+2010-03-04 06:50  Shiki.Okasaka
+
+	* dom/cssomview.idl, include/esidl.h, npapi/sample/npp_sample.cpp:
+	  (Window) : Make it implement ScreenView. It seems to be better
+	  than do nothing.
+
+2010-03-04 04:10  Shiki.Okasaka
+
+	* include/reflect.h: (Reflect) : Support the updated meta data
+	  string format.
+
+2010-03-04 03:48  Shiki.Okasaka
+
+	* include/meta.h: (Meta) : Output the qualified name of the
+	  interface after kInterface.
+
+2010-03-03 09:30  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h, include/esidl.h, include/info.h,
+	  include/meta.h, src/cplusplus.cpp: (CPlusPlusTemplate) : Pass
+	  meta data to invoke as arguments. Various fixes in Meta, etc.
+
+2010-03-03 04:38  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, include/esidl.h, include/info.h,
+	  include/meta.h, include/reflect.h, src/cplusplus.cpp,
+	  src/driver.cpp, src/java.cpp: (Meta) : New to generate interface
+	  meta data in advance of executing programming language specific
+	  visitors.
+
+2010-03-02 05:32  Shiki.Okasaka
+
+	* configure, configure.ac: (configure) : Print messages when
+	  checking Java, C++, and NPAPI options.
+
+2010-03-02 02:09  Shiki.Okasaka
+
+	* dom/arrays.idl: (PrimitiveNameArray) : Define getElement and
+	  setElement.
+
+2010-03-01 10:30  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, configure, configure.ac: (configure) :
+	  Support --enable-java, --enable-cplusplus, and --enable-npapi
+	  options.
+
+2010-03-01 08:48  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusCall.h,
+	  include/cplusplusTemplate.h: (CPlusPlus) : Map variadic arguments
+	  to a Sequence (for now).
+
+2010-03-01 07:33  Shiki.Okasaka
+
+	* include/esidl.h, include/info.h, src/cplusplus.cpp, src/java.cpp:
+	  (Info) : Expand every supplemental interface.
+
+2010-03-01 07:20  Shiki.Okasaka
+
+	* cplusplus/Makefile.am, cplusplus/Makefile.in, include/info.h:
+	  (w3c_idl_files) : Add eventsource, websocket, webstorage, and
+	  workers to C++.
+
+2010-03-01 07:10  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, dom/eventsource.idl, dom/websocket.idl,
+	  dom/webstorage.idl, dom/workers.idl, java/Makefile.am,
+	  java/Makefile.in: (w3c_idl_files) : Add eventsource, websocket,
+	  webstorage, and workers.
+
+2010-02-26 11:20  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusCall.h,
+	  include/cplusplusTemplate.h, src/cplusplus.cpp: (CPlusPlus) : Map
+	  Sequence<> for the Web IDL sequence type.
+
+2010-02-26 10:54  Shiki.Okasaka
+
+	* cplusplus/sequence.h: (Sequence) : Revise to provide the
+	  compatible operations with ObjectArray.
+
+2010-02-26 10:52  Shiki.Okasaka
+
+	* cplusplus/org/w3c/dom/ObjectArray.h: (ObjectArray) : Fix the
+	  index type to unsigned int.
+
+2010-02-26 10:50  Shiki.Okasaka
+
+	* cplusplus/Makefile.am, cplusplus/Makefile.in: (w3c_idl_files) :
+	  Remove arrays.idl which is not necessary for C++.
+
+2010-02-24 10:24  Shiki.Okasaka
+
+	* cplusplus/sequence.h: (Sequence) : Fix a bug.
+
+2010-02-24 09:00  Shiki.Okasaka
+
+	* dom/xhr2.idl: (ByteArray) : Bind it to sequence<octet> for now.
+
+2010-02-24 07:58  Shiki.Okasaka
+
+	* cplusplus/sequence.h: (Sequence) : New.
+
+2010-02-22 10:34  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, include/cplusplusCall.h,
+	  include/cplusplusTemplate.h, include/esidl.h, src/cplusplus.cpp,
+	  src/esidl.cpp: (CPlusPlus) : Generate call methods for the
+	  reflection runtime.
+
+2010-02-22 06:08  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h, include/esidl.h, src/esidl.cpp:
+	  (CPlusPlusTemplate) : Fix the interface index numbering scheme to
+	  count the number of ancestor interfaces.
+
+2010-02-22 05:34  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h: (CPlusPlusTemplate) : Move the
+	  interface index number before the parent interface name in the
+	  invoke arguments; the index numbering sachem needs to be fixed
+	  later.
+
+2010-02-22 04:42  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h, include/esidl.h, src/esidl.cpp:
+	  (CPlusPlusTemplate) : Generate the bridge template using
+	  superList.
+
+2010-02-19 09:24  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h: (CPlusPlusTemplate) : Add the
+	  interface number to the invoke method arguments.
+
+2010-02-18 08:55  Shiki.Okasaka
+
+	* include/cplusplusTemplate.h: (CPlusPlusTemplate) : Generate the
+	  mixin interface to simply the bridge template generation.
+
+2010-02-18 06:06  Shiki.Okasaka
+
+	* include/cplusplus.h, include/cplusplusTemplate.h,
+	  include/esidl.h, src/cplusplus.cpp: (CPlusPlusTemplate) :
+	  Generate operations come from base, supplemental, and mixin
+	  classes. This is still work in progress; overridden operations
+	  need to be eliminated from the generate files.
+
+2010-02-17 09:28  Shiki.Okasaka
+
+	* include/esidl.h, include/info.h: (Interface::getSupplementals) :
+	  Rename getMixins which was confusing.
+
+2010-02-17 08:49  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp: (Interface) : Remove the
+	  supplementals list which is no longer used.
+
+2010-02-17 08:43  Shiki.Okasaka
+
+	* include/esidl.h: (Interface) : Remove the implementedOn list
+	  which is no longer used.
+
+2010-02-17 07:42  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, include/cplusplusTemplate.h,
+	  src/cplusplus.cpp: (CPlusPlusVisitor) : Generate template classes
+	  for bridges; still work in progress.
+
+2010-02-15 03:54  Shiki.Okasaka
+
+	* src/esidl.cpp: (resolveInBase) : Search the interface members to
+	  check method overrides.
+
+2010-02-12 09:15  Shiki.Okasaka
+
+	* src/esidl.cpp, testsuite/14.idl: (resolveInBase) : Do not search
+	  member names since typedef is not allowed in an interface in Web
+	  IDL.
+
+2010-02-10 10:21  Shiki.Okasaka
+
+	* include/info.h, src/cplusplus.cpp, src/cxx.cpp:
+	  (CPlusPlusInterface) : Generate reflection data.
+
+2010-02-10 07:14  Shiki.Okasaka
+
+	* cplusplus/Makefile.am, cplusplus/Makefile.in,
+	  cplusplus/nullable.h, cplusplus/org, cplusplus/org/w3c,
+	  cplusplus/org/w3c/dom, cplusplus/org/w3c/dom/ObjectArray.h,
+	  dom/arrays.idl, java/Makefile.am, java/Makefile.in,
+	  java/org/w3c/dom/ByteArray.java,
+	  java/org/w3c/dom/DoubleArray.java,
+	  java/org/w3c/dom/FloatArray.java,
+	  java/org/w3c/dom/LongArray.java,
+	  java/org/w3c/dom/LongLongArray.java,
+	  java/org/w3c/dom/OctetArray.java,
+	  java/org/w3c/dom/ShortArray.java,
+	  java/org/w3c/dom/UnsignedByteArray.java,
+	  java/org/w3c/dom/UnsignedLongArray.java,
+	  java/org/w3c/dom/UnsignedLongLongArray.java,
+	  java/org/w3c/dom/UnsignedShortArray.java: (array.idl) : Generate
+	  array interfaces from IDL for Java and C++.
+
+2010-02-09 08:35  Shiki.Okasaka
+
+	* include/cplusplus.h, src/cplusplus.cpp: (CPlusPlus) : Support
+	  Nullable and ObjectArray<E>.
+
+2010-02-05 07:11  Shiki.Okasaka
+
+	* cplusplus, cplusplus/Makefile.am, cplusplus/Makefile.in:
+	  (cplusplus) : New.
+
+2010-02-04 07:54  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cplusplus.cpp:
+	  (CPlusPlus) : Support Web IDL arrays - T[].
+
+2010-02-04 06:45  Shiki.Okasaka
+
+	* dom/webgl.idl: (WebGLRenderingContext) : Use GLfloat and GLint
+	  for sequences.
+
+2010-02-04 06:31  Shiki.Okasaka
+
+	* include/cplusplus.h, src/cplusplus.cpp: (CPlusPlus) : Support
+	  [Constructor] extended attribute.
+
+2010-02-03 09:50  Shiki.Okasaka
+
+	* include/cxx.h: (ESIDL_CXX_H_INCLUDED) : Fix the enclosing header
+	  typedef name.
+
+2010-02-03 09:41  Shiki.Okasaka
+
+	* include/cplusplus.h, src/cplusplus.cpp: (CPlusPlus) : Do not
+	  break down type defined sequence type names.
+
+2010-02-03 08:43  Shiki.Okasaka
+
+	* include/esidl.h, src/cplusplus.cpp: (CPlusPlusInclude::at(const
+	  OpDcl*)) : Check the return type of an overridden operation.
+
+2010-02-03 07:51  Shiki.Okasaka
+
+	* src/esidl.cpp: (resolve) : Fix a bug in inherited scope.
+
+2010-02-03 05:34  Shiki.Okasaka
+
+	* src/cplusplus.cpp: (CPlusPlusImport::print) : Fix a bug.
+
+2010-02-03 05:16  Shiki.Okasaka
+
+	* src/cplusplus.cpp: (CPlusPlusImport::at(const Interface*)) : Set
+	  currentNode correctly; the base class names are not in the class
+	  scope.
+
+2010-02-03 04:31  Shiki.Okasaka
+
+	* include/cplusplus.h: (CPlusPlus::at(const ParamDcl*)) : Apply
+	  getEscapedName() for the parameter name.
+
+2010-02-02 08:35  Shiki.Okasaka
+
+	* src/cplusplus.cpp: (CPlusPlusImport) : Keep the order of typedef
+	  statements.
+
+2010-02-02 08:13  Shiki.Okasaka
+
+	* src/cplusplus.cpp: (CPlusPlusImport) : Follow typedef of typedef
+	  names.
+
+2010-02-02 08:02  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/esidl.cpp: (CPlusPlus)
+	  : Generate right scoped names even if it is not visited from the
+	  top most module using Node::getQualifiedModuleName().
+
+2010-02-02 07:29  Shiki.Okasaka
+
+	* include/cplusplus.h, src/cplusplus.cpp: (CPlusPlusInclude) :
+	  Generate include statements for base classes and exception
+	  classes.
+
+2010-02-02 04:20  Shiki.Okasaka
+
+	* include/cplusplus.h, src/cplusplus.cpp: (CPlusPlusImport::print)
+	  : Process typedefs using CPlusPlusInterface.
+
+2010-02-02 02:37  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, configure, configure.ac,
+	  include/cplusplus.h, include/cxx.h, include/esidl.h,
+	  src/cplusplus.cpp, src/cxx.cpp, src/driver.cpp, src/esidl.cpp,
+	  src/skeleton.cpp, src/template.cpp: (CPlusPlus) : New C++ Web IDL
+	  binding which is more consistent with Java binding. Not enabled
+	  by default; still work in progress.
+
+2010-01-28 06:27  Shiki.Okasaka
+
+	* src/java.cpp: (JavaInterface) : Clean up.
+
+2010-01-25 08:37  Shiki.Okasaka
+
+	* include/esidl.h, src/parser.yy: (ArrayType::setSpec) : Fix a bug
+	  in handling a nested array.
+
+2010-01-22 07:09  Shiki.Okasaka
+
+	* src/esidl.cpp: (resolve) : Resolve a name taking into
+	  consideration interface inheritance.
+
+2010-01-22 07:00  Shiki.Okasaka
+
+	* testsuite/Makefile.am, testsuite/Makefile.in: (PATH) : esidl does
+	  not spawn esidl2 anymore.
+
+2010-01-22 04:49  Shiki.Okasaka
+
+	* include/java.h, src/esidl.cpp, src/java.cpp: (Java) : Fix not to
+	  set NULL to currentNode.
+
+2010-01-21 08:40  Shiki.Okasaka
+
+	* include/esidl.h, include/info.h, src/esidl.cpp:
+	  (ScopedName::search, Info) : Fix search() and others which depend
+	  on the search()'s wrong behavior.
+
+2010-01-20 09:15  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, include/info.h,
+	  include/java.h, include/reflect.h, java/Makefile.am,
+	  java/Makefile.in, java/build.xml.src, java/org, java/org/w3c,
+	  java/org/w3c/dom, java/org/w3c/dom/ByteArray.java,
+	  java/org/w3c/dom/DoubleArray.java,
+	  java/org/w3c/dom/FloatArray.java,
+	  java/org/w3c/dom/LongArray.java,
+	  java/org/w3c/dom/LongLongArray.java,
+	  java/org/w3c/dom/ObjectArray.java,
+	  java/org/w3c/dom/OctetArray.java,
+	  java/org/w3c/dom/ShortArray.java,
+	  java/org/w3c/dom/UnsignedByteArray.java,
+	  java/org/w3c/dom/UnsignedLongArray.java,
+	  java/org/w3c/dom/UnsignedLongLongArray.java,
+	  java/org/w3c/dom/UnsignedShortArray.java, src/cxx.cpp,
+	  src/esidl.cpp, src/java.cpp, src/parser.yy, src/print.cpp,
+	  testsuite/11.idl, testsuite/21.idl: (ArrayType) : Support T[] Web
+	  IDL notation for arrays with Java binding support.
+
+2010-01-08 03:23  Shiki.Okasaka
+
+	* dom/webgl.idl: (WebGLContextAttributes) : Sync with the latest
+	  spec.
+
+2010-01-07 09:32  Shiki.Okasaka
+
+	* dom/webgl.idl: (WebGLTypeNameArray) : Switch getter and setter
+	  types to what the underlying array is supposed to hold.
+
+2010-01-06 08:45  Shiki.Okasaka
+
+	* dom/webgl.idl, include/cplusplus.h, include/esidl.h,
+	  include/expr.h, include/forward.h, include/info.h,
+	  include/java.h, include/reflect.h, src/lexer.ll, src/parser.yy:
+	  (byte) : Add 'byte' keyword for signed 8-bit integers. This is
+	  experimental.
+
+2010-01-06 05:12  Shiki.Okasaka
+
+	* Makefile.in, aclocal.m4, configure, include/esidl.h,
+	  include/java.h, java/Makefile.in, ltmain.sh, npapi/Makefile.in,
+	  npapi/include/Makefile.in, npapi/include/w3c/Makefile.in,
+	  npapi/sample/Makefile.in, src/esidl.cpp, src/java.cpp,
+	  testsuite/Makefile.in, testsuite/runtime/Makefile.in:
+	  (USE_CONSTRUCTOR) : Generate Java factory interfaces for
+	  [Constructor] extended attributes. Still experimental.
+
+2009-12-16 05:08  Shiki.Okasaka
+
+	* dom/html5.idl: (html5) : Update to Editor's Draft 15 December
+	  2009.
+
+2009-12-15 05:01  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, dom/webgl.idl, java/Makefile.am,
+	  java/Makefile.in: (webgl) : Revise for esidl.
+
+2009-12-15 04:51  Shiki.Okasaka
+
+	* dom/webgl.idl: (webgl) : New from
+	  https://cvs.khronos.org/svn/repos/registry/trunk/public/webgl/doc/spec/WebGL-spec.html
+
+2009-12-14 08:13  Shiki.Okasaka
+
+	* include/info.h, src/esidl.cpp: (processExtendedAttributes) :
+	  Print a warning message for a deprecated extended attribute.
+
+2009-12-14 07:34  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp, src/parser.yy, testsuite/101.idl:
+	  (Interface::processExtendedAttributes) : Print a warning message
+	  for a deprecated extended attribute used on an interface.
+
+2009-12-10 01:01  Shiki.Okasaka
+
+	* dom/file.idl: (readAsText) : Use 'optional' instead of [Optional]
+	  following the current Web IDL editor's draft.
+
+2009-12-09 04:33  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, dom/idl_scraper.pl: (idl_scraper.pl) :
+	  Copy from tools.
+
+2009-12-07 07:43  Shiki.Okasaka
+
+	* src/parser.yy: (Preprocessor) : Fix yylloc.last_line
+	  initialization at #pragma source.
+
+2009-12-07 07:22  Shiki.Okasaka
+
+	* include/info.h: (at(const Interface*)) : Use the right element
+	  for check.
+
+2009-12-07 07:16  Shiki.Okasaka
+
+	* src/parser.yy: (Operation) : Set location.
+
+2009-12-04 09:48  Shiki.Okasaka
+
+	* java/Makefile.am, java/Makefile.in: (java-binding.zip) : New.
+
+2009-12-04 09:34  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, dom/dom3core.idl, dom/xhr2.idl,
+	  java/Makefile.am, java/Makefile.in: (xhr2.idl) : New from
+	  http://www.w3.org/TR/2009/WD-XMLHttpRequest2-20090820/
+
+2009-12-04 09:00  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, dom/cssomview.idl, java/Makefile.am,
+	  java/Makefile.in: (java) : Switch over to using Web IDL files
+	  prepaired by Cameron McCormack/W3C.
+
+2009-12-04 08:47  Shiki.Okasaka
+
+	* include/java.h, src/java.cpp: (Java::currentNode) :
+	  Node::search() can change the current node by typedef name.
+
+2009-12-04 08:41  Shiki.Okasaka
+
+	* dom/html5.idl: Revise for esidl.
+
+2009-12-04 07:54  Shiki.Okasaka
+
+	* include/java.h, src/java.cpp: (Java::getEscapedName) : New.
+
+2009-12-04 07:00  Shiki.Okasaka
+
+	* dom/file.idl: Revise for esidl.
+
+2009-12-04 05:40  Shiki.Okasaka
+
+	* dom/file.idl: New from
+	  http://www.w3.org/TR/2009/WD-FileAPI-20091117/
+
+2009-12-04 04:42  Shiki.Okasaka
+
+	* dom/html5.idl: New from
+	  http://www.w3.org/TR/2009/WD-html5-20090825/Overview.html
+
+2009-12-04 03:44  Shiki.Okasaka
+
+	* java/Makefile.am, java/Makefile.in: (esidl) : -I option is
+	  unnecessary for Java since package names are specified by Web
+	  IDL.
+
+2009-12-04 03:41  Shiki.Okasaka
+
+	* dom/NOTICE: Clean up.
+
+2009-12-04 03:37  Shiki.Okasaka
+
+	* dom/dom2events.idl, dom/dom2traversal.idl, dom/dom3ls.idl: (dom)
+	  : Fix trivial IDL errors.
+
+2009-12-04 03:35  Shiki.Okasaka
+
+	* dom/wget_webdil_dom, dom/wget_webidl_dom: Fix typo.
+
+2009-12-04 03:34  Shiki.Okasaka
+
+	* dom, dom/COPYRIGHT.html, dom/NOTICE, dom/dom2css.idl,
+	  dom/dom2events.idl, dom/dom2ranges.idl, dom/dom2stylesheets.idl,
+	  dom/dom2traversal.idl, dom/dom2views.idl, dom/dom3core.idl,
+	  dom/dom3ls.idl, dom/dom3validation.idl, dom/dom3xpath.idl,
+	  dom/wget_webdil_dom: (dom) : New from
+	  http://dev.w3.org/2006/webapi/WebIDL/dom/.
+
+2009-12-03 06:51  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp, src/parser.yy: (check) : Print
+	  message in a format easier to read. Work in progress.
+
+2009-12-03 05:16  Shiki.Okasaka
+
+	* include/esidl.h, src/driver.cpp, src/esidl.cpp:
+	  (AdjustMethodCount) : Add a new mode not to import methods in
+	  mixins specified by plain implements statements. Set this mode
+	  default unless flat namespace mode is used.
+
+2009-12-02 08:07  Shiki.Okasaka
+
+	* src/java.cpp: (Java) : Generate constructors for exception
+	  classes.
+
+2009-12-02 05:05  Shiki.Okasaka
+
+	* src/java.cpp: (Java) : Fix to generate exception class member
+	  fields. Regression in r1380.
+
+2009-12-01 07:15  Shiki.Okasaka
+
+	* java/build.xml.src: (build.xml) : Add clean target.
+
+2009-12-01 07:00  Shiki.Okasaka
+
+	* java/Makefile.am, java/Makefile.in, java/build.xml.src:
+	  (build.xml) : New for testing generated Java source files.
+
+2009-12-01 05:14  Shiki.Okasaka
+
+	* src/java.cpp: (JavaImport) : Fix scope name resolution.
+
+2009-12-01 04:11  Shiki.Okasaka
+
+	* include/java.h, npapi/include/w3c/cssomview.idl,
+	  npapi/include/w3c/geolocation.idl, npapi/include/w3c/html5.idl,
+	  src/esidl.cpp, src/java.cpp: (Java) : Fix scope name resolution.
+
+2009-11-30 10:25  Shiki.Okasaka
+
+	* src/java.cpp: (at(const ScopedName* node)) : Fix to follow
+	  typedef name.
+
+2009-11-30 09:59  Shiki.Okasaka
+
+	* include/esidl.h, include/java.h, src/java.cpp: (Java) : Generate
+	  required import statements.
+
+2009-11-30 06:03  Shiki.Okasaka
+
+	* java/Makefile.am, java/Makefile.in, src/java.cpp: (Java) :
+	  Generate java files in directories whose names reflect the
+	  package names.
+
+2009-11-27 08:55  Shiki.Okasaka
+
+	* src/esidl.cpp: (getOutputFilename) : Clean up.
+
+2009-11-27 08:32  Shiki.Okasaka
+
+	* src/java.cpp: (Java) : Generate package statements in exception
+	  classes.
+
+2009-11-27 08:20  Shiki.Okasaka
+
+	* include/esidl.h, include/java.h, npapi/include/w3c/cssomview.idl,
+	  npapi/include/w3c/eventsource.idl,
+	  npapi/include/w3c/geolocation.idl, npapi/include/w3c/html5.idl,
+	  src/esidl.cpp, src/java.cpp: (Java) : Generate package statements
+	  using the Web IDL prefixed names.
+
+2009-11-25 06:57  Shiki.Okasaka
+
+	* include/java.h, src/java.cpp: (Java::constructorMode) : Remove.
+
+2009-11-25 06:27  Shiki.Okasaka
+
+	* include/java.h: (Java) : Fix DOMString mapping from string to
+	  java.lang.String.
+
+2009-11-25 06:14  Shiki.Okasaka
+
+	* src/parser.yy: (OmittableSpecials) : Incorporate Web IDL W3C
+	  Editor’s Draft 30 September 2009 which fixed a grammar bug in
+	  Specials.
+
+2009-11-25 05:43  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, configure, configure.ac,
+	  include/esidl.h, include/info.h, include/java.h, java,
+	  java/Makefile.am, java/Makefile.in, npapi/include/nullable.h,
+	  npapi/include/w3c/Makefile.am, npapi/include/w3c/Makefile.in,
+	  npapi/include/w3c/cssomview.idl,
+	  npapi/include/w3c/geolocation.idl, npapi/include/w3c/html5.idl,
+	  src/driver.cpp, src/esidl.cpp, src/java.cpp: (Java) : Add java
+	  mode enabled by -java command line option. This is still work in
+	  progress.
+
+2009-11-17 08:46  Shiki.Okasaka
+
+	* npapi/include/w3c/html5.idl: (HTML5) : Update to Draft Standard -
+	  13 November 2009
+
+2009-11-13 07:28  Shiki.Okasaka
+
+	* npapi/include/any.h: (Any) : Use stdint types only inside Any to
+	  support intptr_t, etc. on various platforms.
+
+2009-11-12 06:26  Shiki.Okasaka
+
+	* npapi/include/Makefile.am, npapi/include/Makefile.in,
+	  npapi/include/w3c/Makefile.am, npapi/include/w3c/Makefile.in:
+	  (Makefile.am) : Remove a white space between -I and directory
+	  name for cpp.
+
+2009-09-29 05:13  shiki.okasaka
+
+	* npapi/include/Makefile.am, npapi/include/Makefile.in,
+	  npapi/include/w3c/Makefile.am, npapi/include/w3c/Makefile.in:
+	  (dist-hook) : Replace by nodist_noinst_HEADERS.
+
+2009-09-29 03:55  shiki.okasaka
+
+	* configure, configure.ac: Set version to 0.1.5.
+
+2009-09-17 07:55  shiki.okasaka
+
+	* Makefile.in, aclocal.m4, configure, ltmain.sh, npapi/Makefile.in,
+	  npapi/include/Makefile.in, npapi/include/w3c/Makefile.in,
+	  npapi/sample/Makefile.in, testsuite/Makefile.in,
+	  testsuite/runtime/Makefile.in: Reconfigure on Fedora 11.
+
+2009-09-17 07:52  shiki.okasaka
+
+	* npapi/sample/Makefile.am: Clean up.
+
+2009-09-08 05:23  shiki.okasaka
+
+	* include/reflect.h: Fix for Fedora 11.
+
+2009-09-03 08:35  Shiki.Okasaka
+
+	* npapi/sample/npp_sample.cpp, npapi/sample/sample.cpp,
+	  npapi/sample/sample.xml: (sample.xml) : New for SVG demo.
+
+2009-09-02 10:44  Shiki.Okasaka
+
+	* npapi/include/w3c/Makefile.am, npapi/include/w3c/Makefile.in,
+	  npapi/include/w3c/svg.idl, npapi/sample/npp_sample.cpp,
+	  npapi/sample/sample.cpp: (sample) : Include SVG interfaces.
+
+2009-09-02 10:42  Shiki.Okasaka
+
+	* include/esidl.h, include/forward.h, src/cxx.cpp, src/esidl.cpp,
+	  src/template.cpp: (esidl) : Generate C++ interface classes for
+	  mixins, and proxy template classes now inherit mixin classes.
+
+2009-08-31 10:21  shiki.okasaka
+
+	* include/esidl.h, npapi/include/esnpapi.h,
+	  npapi/include/proxyImpl.h, npapi/include/w3c/Makefile.am,
+	  npapi/include/w3c/Makefile.in, npapi/include/w3c/events.idl,
+	  npapi/sample/npp_sample.cpp, npapi/sample/sample.cpp,
+	  npapi/src/bridge.cpp, npapi/src/invoke.cpp, src/cxx.cpp,
+	  src/driver.cpp, src/esidl.cpp, src/template.cpp: (esidl) :
+	  Support interface multiple inheritance.
+
+2009-08-24 06:31  Shiki.Okasaka
+
+	* es/ent.h, include/stringOffsetter.h, src/ent.cpp,
+	  src/entdump.cpp, testsuite/Makefile.am, testsuite/Makefile.in:
+	  Clean up.
+
+2009-08-24 06:02  Shiki.Okasaka
+
+	* testsuite/9.idl: New.
+
+2009-08-24 05:29  Shiki.Okasaka
+
+	* include/esidl.h, include/formatter.h: (esidl) : Indent comments
+	  properly in the generated header files.
+
+2009-08-11 09:06  Shiki.Okasaka
+
+	* include/forward.h: (at(const Interface*)) : Forward declarations
+	  for base classes are useless.
+
+2009-08-11 02:28  Shiki.Okasaka
+
+	* npapi/include/w3c/html5.idl: (Date, FileList) : Add notes.
+
+2009-08-10 14:08  Shiki.Okasaka
+
+	* include/esidl.h, include/forward.h,
+	  npapi/include/w3c/cssomview.idl, npapi/include/w3c/html5.idl,
+	  src/cxx.cpp, src/esidl.cpp, testsuite/115.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (esidl) : Support
+	  [Supplemental] (in progress). Update html5.idl and cssomview.idl
+	  based on the latest drafts
+
+2009-08-10 08:47  Shiki.Okasaka
+
+	* src/parser.yy: (OmittableSpecials, Preprocessor) : Fix bugs.
+	  Follow line numbers correctly.
+
+2009-08-10 07:37  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, include/info.h,
+	  npapi/include/Makefile.am, npapi/include/Makefile.in,
+	  npapi/include/any.h, npapi/include/esnpapi.h,
+	  npapi/include/object.idl, npapi/include/proxyImpl.h,
+	  npapi/include/w3c/Makefile.am, npapi/include/w3c/Makefile.in,
+	  npapi/include/w3c/dom.idl, npapi/include/w3c/html5.idl,
+	  npapi/include/w3c/ls.idl, npapi/sample/sample.h, src/cxx.cpp,
+	  src/driver.cpp, src/esidl.cpp, src/lexer.ll, src/template.cpp,
+	  testsuite/103.idl, testsuite/27.idl, testsuite/28.idl,
+	  testsuite/29.idl: (esidl) : Switch over to the new Web IDL
+	  grammar defined in the editor's draft. Modify 'Object' keyword to
+	  'object'. Support leading '_' to escape an identifier from
+	  reserved keywords.
+
+2009-08-04 04:57  Shiki.Okasaka
+
+	* README: Add basic installation description.
+
+2009-08-04 04:26  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in: (esidl_SOURCES) : Add include/forward.h
+
+2009-08-04 04:18  Shiki.Okasaka
+
+	* include/cplusplus.h, src/cxx.cpp, src/esidl.cpp,
+	  src/skeleton.cpp, src/template.cpp: (getIncludedName) : Support
+	  multiple styles.
+
+2009-08-04 04:17  Shiki.Okasaka
+
+	* npapi/include/Makefile.am, npapi/include/Makefile.in,
+	  npapi/include/w3c/Makefile.am, npapi/include/w3c/Makefile.in,
+	  npapi/sample/Makefile.am, npapi/sample/Makefile.in: (Makefile.am)
+	  : Update command line options for esidl and gcc.
+
+2009-08-04 04:00  Shiki.Okasaka
+
+	* src/driver.cpp: (main) : Fix bugs.
+
+2009-08-04 03:41  Shiki.Okasaka
+
+	* src/cxx.cpp: (visitInterfaceElement) : Clean up.
+
+2009-08-04 02:12  Shiki.Okasaka
+
+	* npapi/sample/sample.cpp: Clean up.
+
+2009-08-03 10:13  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, include/formatter.h,
+	  src/cxx.cpp, src/driver.cpp, src/esidl.cpp, src/skeleton.cpp,
+	  src/template.cpp: (esidl) : Support -indent option. Valid style
+	  options are -indent webkit and -indent google. The default is ES
+	  style.
+
+2009-08-03 08:33  Shiki.Okasaka
+
+	* include/cplusplus.h, include/formatter.h, src/cxx.cpp,
+	  src/skeleton.cpp, src/template.cpp: (Formatter) : Prep for
+	  multiple styles support. Cont.
+
+2009-08-03 06:32  Shiki.Okasaka
+
+	* include/cplusplus.h, include/formatter.h, src/cxx.cpp,
+	  src/skeleton.cpp, src/template.cpp: (Formatter) : Prep for
+	  multiple styles support. Cont.
+
+2009-07-31 08:00  Shiki.Okasaka
+
+	* include/formatter.h, src/cxx.cpp: (Formatter) : Prep for multiple
+	  styles support.
+
+2009-07-29 06:02  Shiki.Okasaka
+
+	* src/esidl.cpp, testsuite/100.idl: (TreatNullAs, TreatUndefinedAs)
+	  : Switch over to the new Web IDL grammar defined in the editor's
+	  draft.
+
+2009-07-29 05:30  Shiki.Okasaka
+
+	* LICENSE, Makefile.am, Makefile.in, README, include/esidl.h,
+	  include/forward.h, include/info.h, include/stringOffsetter.h,
+	  npapi/include/any.h, npapi/include/object.idl,
+	  npapi/include/w3c/COPYRIGHT.html, npapi/include/w3c/css.idl,
+	  npapi/include/w3c/cssomview.idl, npapi/include/w3c/dom.idl,
+	  npapi/include/w3c/events.idl, npapi/include/w3c/eventsource.idl,
+	  npapi/include/w3c/html5.idl, npapi/include/w3c/ls.idl,
+	  npapi/include/w3c/ranges.idl, npapi/include/w3c/smil.idl,
+	  npapi/include/w3c/stylesheets.idl,
+	  npapi/include/w3c/traversal.idl,
+	  npapi/include/w3c/validation.idl, npapi/include/w3c/views.idl,
+	  npapi/sample/sample.h, npapi/src/variant386.cpp,
+	  npapi/src/variantx64.S, src/esidl.cpp, testsuite/114.idl,
+	  testsuite/206.idl, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (Forward) : Switch over to the new Web IDL grammar defined in the
+	  editor's draft. Generate interface forward declarations
+	  automatically.
+
+2009-07-27 09:11  mahanthg74
+
+	* include/stringOffsetter.h, npapi/include/any.h,
+	  npapi/include/object.idl, npapi/include/w3c/COPYRIGHT.html,
+	  npapi/include/w3c/css.idl, npapi/include/w3c/cssomview.idl,
+	  npapi/include/w3c/dom.idl, npapi/include/w3c/events.idl,
+	  npapi/include/w3c/eventsource.idl, npapi/include/w3c/html5.idl,
+	  npapi/include/w3c/ls.idl, npapi/include/w3c/ranges.idl,
+	  npapi/include/w3c/smil.idl, npapi/include/w3c/stylesheets.idl,
+	  npapi/include/w3c/traversal.idl,
+	  npapi/include/w3c/validation.idl, npapi/include/w3c/views.idl,
+	  npapi/src/variant386.cpp, npapi/src/variantx64.S,
+	  testsuite/206.idl: support tcp write timeout
+
+2009-07-27 03:17  Shiki.Okasaka
+
+	* src/lexer.ll: (Identifier) : Switch over to the Web IDL syntax
+	  defined in the editor's draft.
+
+2009-07-24 07:00  Shiki.Okasaka
+
+	* include/esidl.h, npapi/include/w3c/cssomview.idl,
+	  npapi/include/w3c/events.idl, npapi/include/w3c/html5.idl,
+	  src/esidl.cpp, src/lexer.ll, src/parser.yy, testsuite/112.idl:
+	  (ImplementsStatement) : Switch over to the new Web IDL grammar
+	  defined in the editor's draft. Drop [ImplementedOn].
+
+2009-07-24 05:46  Shiki.Okasaka
+
+	* include/esidl.h, include/info.h, include/reflect.h,
+	  src/parser.yy, testsuite/113.idl: (Nullable) : Switch over to the
+	  new Web IDL grammar defined in the editor's draft.
+
+2009-07-24 04:57  Shiki.Okasaka
+
+	* include/esidl.h, npapi/include/w3c/html5.idl, src/esidl.cpp,
+	  src/lexer.ll, src/parser.yy, testsuite/113.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in:
+	  (AttributeOrOperation) : Switch over to the new Web IDL grammar
+	  defined in the editor's draft. Drop [Stringifies].
+
+2009-07-24 03:31  Shiki.Okasaka
+
+	* include/esidl.h, include/info.h, npapi/include/w3c/html5.idl,
+	  src/esidl.cpp, src/parser.yy, src/print.cpp, src/skeleton.cpp,
+	  testsuite/108.idl, testsuite/109.idl, testsuite/202.idl,
+	  testsuite/23.idl, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (OmittableSpecials) : New to support new Web IDL grammar defined
+	  in the editor's draft. Drop [Callable], [IndexGetter],
+	  [IndexSetter], [IndexCreator], [IndexDeleter], [NameGetter],
+	  [NameSetter], [NameCreator], [NameDeleter], and
+	  [NoIndexingOperations].
+
+2009-07-24 01:43  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (Definitions) : Switch over to the
+	  new Web IDL grammar defined in the editor's draft. Add new
+	  keywords.
+
+2009-07-24 01:00  Shiki.Okasaka
+
+	* include/expr.h, src/cxx.cpp, src/lexer.ll, src/parser.yy,
+	  testsuite/3.idl: (BooleanLiteral) : Switch over to the new Web
+	  IDL grammar defined in the editor's draft. Change TRUE and FALSE
+	  to lowercase.
+
+2009-07-23 06:34  Shiki.Okasaka
+
+	* include/esidl.h, src/parser.yy, testsuite/2.idl: (ScopedName) :
+	  Switch over to the new Web IDL grammar defined in the editor's
+	  draft. AbsoluteScopedName is now supported.
+
+2009-07-23 05:21  Shiki.Okasaka
+
+	* npapi/include/w3c/html5.idl, src/esidl.cpp, src/lexer.ll,
+	  src/parser.yy, testsuite/103.idl, testsuite/110.idl: (Optional) :
+	  New to support new Web IDL grammar defined in the editor's draft.
+	  Drop [Optional].
+
+2009-07-23 05:08  Shiki.Okasaka
+
+	* npapi/include/w3c/html5.idl, src/esidl.cpp, src/lexer.ll,
+	  src/parser.yy, testsuite/107.idl, testsuite/110.idl,
+	  testsuite/111.idl: (Ellipsis) : New to support new Web IDL
+	  grammar defined in the editor's draft. Drop [Variadic].
+
+2009-07-23 04:45  Shiki.Okasaka
+
+	* src/parser.yy: (ForwardDcl) : Move to the ES extensions section.
+
+2009-07-23 04:26  Shiki.Okasaka
+
+	* src/parser.yy: (UnsignedIntegerType) : Switch over to the new Web
+	  IDL grammar defined in the editor's draft.
+
+2009-07-23 03:09  Shiki.Okasaka
+
+	* src/parser.yy: (ConstType) : Add a note.
+
+2009-07-22 08:56  Shiki.Okasaka
+
+	* src/parser.yy: (ExtendedAttributeList) : Switch over to the new
+	  Web IDL grammar defined in the editor's draft.
+
+2009-07-22 05:28  Shiki.Okasaka
+
+	* src/parser.yy: (esidl) : Switching over to the new Web IDL
+	  grammar defined in the editor's draft; in progress.
+
+2009-07-22 05:03  Shiki.Okasaka
+
+	* src/parser.yy: (Definitions) : Reorder the rules in the same
+	  order as in the editor's draft.
+
+2009-07-22 04:22  Shiki.Okasaka
+
+	* src/parser.yy: (esidl) : Switching over to the new Web IDL
+	  grammar defined in the editor's draft; in progress.
+
+2009-07-22 03:18  Shiki.Okasaka
+
+	* npapi/include/w3c/dom.idl, npapi/include/w3c/events.idl,
+	  npapi/include/w3c/ls.idl, npapi/include/w3c/ranges.idl,
+	  src/esidl.cpp, src/lexer.ll, src/parser.yy, testsuite/14.idl,
+	  testsuite/15.idl, testsuite/16.idl, testsuite/18.idl,
+	  testsuite/19.idl, testsuite/206.idl, testsuite/25.idl,
+	  testsuite/3.idl, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (esidl) : Switching over to the new Web IDL grammar defined in
+	  the editor's draft; not yet completed.
+
+2009-07-21 08:19  Shiki.Okasaka
+
+	* npapi/sample/npp_sample.cpp, npapi/sample/sample.cpp:
+	  (drawCharts) : Add more examples.
+
+2009-07-21 08:18  Shiki.Okasaka
+
+	* npapi/include/proxyImpl.h, npapi/src/bridge.cpp: (Proxy_Base) :
+	  New.
+
+2009-07-21 08:17  Shiki.Okasaka
+
+	* npapi/src/invoke.cpp: (invoke) : Support variadic operation.
+
+2009-07-21 08:15  Shiki.Okasaka
+
+	* npapi/include/w3c/html5.idl: (HTMLDivElement) : New.
+
+2009-07-21 08:08  Shiki.Okasaka
+
+	* src/template.cpp: (TemplateVisitor) : Add intprt_t casts when
+	  converting a pointer to Any.
+
+2009-07-21 03:53  Shiki.Okasaka
+
+	* include/info.h, include/reflect.h, testsuite/runtime/method.cpp:
+	  (Reflect) : Add isVariadic() to Method class. Modify esidl to
+	  support this.
+
+2009-07-20 06:10  Shiki.Okasaka
+
+	* src/cxx.cpp: (at(const OpDcl*)) : Fix not to output a semicolon
+	  at the end in constructor mode.
+
+2009-07-20 05:56  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp, src/parser.yy,
+	  src/print.cpp, src/template.cpp: (esidl) : Unify param_type_spec
+	  and simple_type_spec following the editor's draft. Remove C++
+	  binding specific members from Node class.
+
+2009-07-17 07:01  Shiki.Okasaka
+
+	* src/cxx.cpp: Clean up.
+
+2009-07-17 06:53  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h: Clean up.
+
+2009-07-17 05:58  Shiki.Okasaka
+
+	* include/esidl.h, npapi/include/esnpapi.h,
+	  npapi/sample/npp_sample.cpp, npapi/sample/sample.cpp,
+	  npapi/sample/sample.h, npapi/src/bridge.cpp,
+	  npapi/src/invoke.cpp, src/template.cpp: (esidl) : Expand mixins
+	  in the right order in template classes.
+
+2009-07-16 01:35  Shiki.Okasaka
+
+	* include/info.h, include/reflect.h: (Reflect) : Include
+	  ImplementedOn information.
+
+2009-07-16 01:05  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/sample.h: Clean up.
+
+2009-07-16 01:00  Shiki.Okasaka
+
+	* include/esidl.h, src/cxx.cpp, src/esidl.cpp, src/skeleton.cpp,
+	  src/template.cpp, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (esidl) : Suppress skeleton and template generation for
+	  ImplementedOn interfaces.
+
+2009-07-15 12:36  Shiki.Okasaka
+
+	* config.sub, src/cxx.cpp: (at(const Interface*)) : Clean up.
+
+2009-07-15 09:54  Shiki.Okasaka
+
+	* configure, configure.ac, include/esidl.h, include/info.h,
+	  npapi/include/Makefile.am, npapi/include/Makefile.in,
+	  npapi/include/esnpapi.h, npapi/include/w3c/Makefile.am,
+	  npapi/include/w3c/Makefile.in, npapi/sample/Makefile.am,
+	  npapi/sample/Makefile.in, npapi/sample/npp_sample.cpp,
+	  src/driver.cpp, src/esidl.cpp, src/parser.yy: (esidl) : Process
+	  specified IDL files at once to expand mixins defined in the other
+	  IDL files.
+
+2009-07-14 07:59  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp: (Node::search) : Skip forward
+	  declarations if there is the interface definition.
+
+2009-07-14 06:50  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, include/cplusplus.h, include/esidl.h,
+	  include/expr.h, src/cxx.cpp, src/driver.cpp, src/esidl.cpp,
+	  src/skeleton.cpp, src/template.cpp, testsuite/Makefile.am,
+	  testsuite/Makefile.in: (esidl) : Drop ENT file format support.
+	  Preparing handling all IDL files at once to support mixins.
+
+2009-07-13 04:00  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/npp_sample.cpp,
+	  npapi/sample/sample.cpp: (HTMLCanvasElement) : Add to the
+	  interface database for the sample.
+
+2009-07-10 16:45  Shiki.Okasaka
+
+	* npapi/src/invoke.cpp: Clean up.
+
+2009-07-10 16:23  Shiki.Okasaka
+
+	* npapi/include/esnpapi.h, npapi/sample/npp_sample.cpp,
+	  npapi/src/bridge.cpp, npapi/src/invoke.cpp: (addInterfaceData,
+	  getInterfaceData) : New.
+
+2009-07-10 15:23  Shiki.Okasaka
+
+	* npapi/include/Makefile.am, npapi/include/Makefile.in: Fix
+	  clean-local.
+
+2009-07-10 15:04  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, aclocal.m4, config.guess, config.sub,
+	  configure, configure.ac, include/cplusplus.h, include/esidl.h,
+	  include/expr.h, include/formatter.h, include/info.h,
+	  include/reflect.h, include/string.h, include/stringOffsetter.h,
+	  include/utf.h, ltmain.sh, npapi, npapi/Makefile.am,
+	  npapi/Makefile.in, npapi/include, npapi/include/Makefile.am,
+	  npapi/include/Makefile.in, npapi/include/any.h,
+	  npapi/include/esnpapi.h, npapi/include/npapi,
+	  npapi/include/npapi/npapi.h, npapi/include/npapi/npruntime.h,
+	  npapi/include/npapi/nptypes.h, npapi/include/npapi/npupp.h,
+	  npapi/include/object.idl, npapi/include/proxyImpl.h,
+	  npapi/include/w3c, npapi/include/w3c/COPYRIGHT.html,
+	  npapi/include/w3c/css.idl, npapi/include/w3c/cssomview.idl,
+	  npapi/include/w3c/dom.idl, npapi/include/w3c/events.idl,
+	  npapi/include/w3c/eventsource.idl, npapi/include/w3c/html5.idl,
+	  npapi/include/w3c/ls.idl, npapi/include/w3c/ranges.idl,
+	  npapi/include/w3c/smil.idl, npapi/include/w3c/stylesheets.idl,
+	  npapi/include/w3c/traversal.idl,
+	  npapi/include/w3c/validation.idl, npapi/include/w3c/views.idl,
+	  npapi/sample, npapi/sample/Makefile.am, npapi/sample/Makefile.in,
+	  npapi/sample/np_entry.cpp, npapi/sample/npn_gate.cpp,
+	  npapi/sample/npp_gate.cpp, npapi/sample/npp_sample.cpp,
+	  npapi/sample/sample.cpp, npapi/sample/sample.h,
+	  npapi/sample/sample.html, npapi/src, npapi/src/bridge.cpp,
+	  npapi/src/invoke.cpp, npapi/src/variant386.cpp,
+	  npapi/src/variantx64.S, src/ent.cpp, src/template.cpp,
+	  testsuite/Makefile.in, testsuite/runtime/Makefile.in:
+	  (esidl/npapi) : Initial check-in.
+
+2009-07-10 04:06  Shiki.Okasaka
+
+	* src/template.cpp: (TemplateVisitor) : Fix method invocation that
+	  returns an object.
+
+2009-07-08 07:59  Shiki.Okasaka
+
+	* include/cplusplus.h: (hasCustomStringType) : New to support
+	  std::string as DOMString.
+
+2009-07-04 03:53  Shiki.Okasaka
+
+	* include/formatter.h, include/info.h, include/reflect.h,
+	  testsuite/205.idl, testsuite/runtime/param.cpp: Remove unwanted
+	  svn:mergeinfo
+
+2009-07-03 17:13  plk1986@gmail.com
+
+	* include/formatter.h, include/info.h, include/reflect.h,
+	  testsuite/205.idl, testsuite/runtime/param.cpp: add libjpeg v7 &
+	  libxml2 2.7.3
+
+2009-07-03 10:08  mahanthg74
+
+	* include/formatter.h, include/info.h, include/reflect.h,
+	  testsuite/205.idl, testsuite/runtime/param.cpp: basic icmp
+	  redirect message receipt
+
+2009-07-03 07:08  Shiki.Okasaka
+
+	* testsuite/runtime/method.cpp: Clean up.
+
+2009-07-03 07:05  Shiki.Okasaka
+
+	* include/esidl.h, include/info.h, include/reflect.h,
+	  testsuite/runtime/method.cpp: (info) : Support Indexed properties
+	  and Named properties.
+
+2009-07-01 10:28  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, include/cplusplus.h, include/esidl.h,
+	  src/cxx.cpp, src/driver.cpp, src/esidl.cpp, src/lexer.ll,
+	  src/parser.yy, src/template.cpp, testsuite/107.idl,
+	  testsuite/3.idl, testsuite/8.idl, testsuite/Makefile.am,
+	  testsuite/Makefile.in: (esidl) : Make 'in' optional. Retire
+	  'out', 'inout', and string constants.
+
+2009-06-29 14:06  Shiki.Okasaka
+
+	* include/reflect.h, testsuite/runtime/method.cpp: (isParam) :
+	  Check kPointer
+
+2009-06-29 05:05  shiki.okasaka
+
+	* Makefile.am, Makefile.in, testsuite/runtime/Makefile.am,
+	  testsuite/runtime/Makefile.in: (Makefile.am) : Replace -I with
+	  -iquote.
+
+2009-06-29 05:04  shiki.okasaka
+
+	* include/info.h: (setter) : Fix a bug.
+
+2009-06-26 01:03  shiki.okasaka
+
+	* include/reflect.h: (Reflect) : Fix bugs.
+
+2009-06-25 08:47  shiki.okasaka
+
+	* src/cxx.cpp: (createInstance) : Return pointer to the created
+	  instance.
+
+2009-06-25 07:17  shiki.okasaka
+
+	* src/cxx.cpp: (createInstance) : Return 0 if constructor is not
+	  set.
+
+2009-06-24 18:25  mahanthg74
+
+	* include/formatter.h, include/info.h, testsuite/runtime/param.cpp:
+	  tcp read time out test
+
+2009-06-24 09:48  shiki.okasaka
+
+	* include/cplusplus.h: (asParam) : Remove.
+
+2009-06-24 09:21  shiki.okasaka
+
+	* include/reflect.h: (skipType) : Check kPointer.
+
+2009-06-24 09:19  shiki.okasaka
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure, configure.ac,
+	  include/esidl.h, include/info.h, include/reflect.h, src/cxx.cpp,
+	  src/esidl.cpp, src/print.cpp, testsuite/6.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in, testsuite/runtime,
+	  testsuite/runtime/Makefile.am, testsuite/runtime/Makefile.in,
+	  testsuite/runtime/array.cpp, testsuite/runtime/constant.cpp,
+	  testsuite/runtime/interface.cpp, testsuite/runtime/method.cpp,
+	  testsuite/runtime/param.cpp, testsuite/runtime/sequence.cpp:
+	  (esidl) : Generate string encoded interface meta-data.
+
+2009-06-22 11:03  ailvpeng25
+
+	* include/formatter.h: Daytime Protocol
+
+2009-06-22 08:26  shiki.okasaka
+
+	* src/lexer.ll, src/parser.yy, testsuite/205.idl, testsuite/3.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (char) : Obsolete
+	  in Web IDL.)
+
+2009-06-22 08:20  shiki.okasaka
+
+	* include/expr.h: (Literal::operator) : Add 'inline' specifier.
+
+2009-06-19 04:11  shiki.okasaka
+
+	* include/esidl.h, include/expr.h, src/ent.cpp, src/entdump.cpp,
+	  src/parser.yy, testsuite/3.idl: ((long double) : Obsolete in Web
+	  IDL.)
+
+2009-06-18 05:45  shiki.okasaka
+
+	* src/lexer.ll, src/parser.yy, testsuite/11.idl, testsuite/20.idl,
+	  testsuite/21.idl, testsuite/25.idl, testsuite/5.idl,
+	  testsuite/6.idl, testsuite/8.idl, testsuite/9.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (struct) : Obsolete
+	  in Web IDL.
+
+2009-06-17 12:23  Shiki.Okasaka
+
+	* include/formatter.h: (Formatter(const Formatter*)) : New.
+
+2009-06-17 04:16  shiki.okasaka
+
+	* Makefile.am, Makefile.in: (include/formatter.h) : New.
+
+2009-06-17 04:14  shiki.okasaka
+
+	* include/cplusplus.h, include/formatter.h, src/cxx.cpp:
+	  (Formatter) : Isolate from CPlusPlus.
+
+2009-06-16 04:29  shiki.okasaka
+
+	* src/cxx.cpp: (at(const Interface)) : Expand mixin methods and
+	  attributes in the implemented-on interface.
+
+2009-06-16 03:37  shiki.okasaka
+
+	* include/cplusplus.h, src/cxx.cpp, src/ent.cpp, src/esidl.cpp,
+	  src/skeleton.cpp: (USE_FUNCTION_CALLBACK) : Remove.
+
+2009-06-16 03:29  shiki.okasaka
+
+	* include/esidl.h, src/esidl.cpp, src/skeleton.cpp:
+	  (Interface::processExtendedAttributes) : Fix ImplementedOn to be
+	  unidirectional.
+
+2009-06-10 05:16  shiki.okasaka
+
+	* src/skeleton.cpp: (at(const Interface*)) : Disable skeleton
+	  generation for interfaces with ImplementedOn attribute.
+
+2009-06-08 09:57  shiki.okasaka
+
+	* Makefile.am, Makefile.in, include/esidl.h, src/driver.cpp,
+	  src/esidl.cpp, src/skeleton.cpp, testsuite/112.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (printSkeleton) :
+	  Add C++ skeleton class generator.
+
+2009-06-02 05:26  shiki.okasaka
+
+	* include/esidl.h, include/expr.h: (Literal) : Make it more
+	  portable using standard int types.
+
+2009-05-15 05:25  Shiki.Okasaka
+
+	* src/cxx.cpp: (Cxx::at(const Interface*)) : Generate 'name' as a
+	  const pointer.
+
+2009-05-15 05:09  Shiki.Okasaka
+
+	* include/esidl.h, src/cxx.cpp, src/esidl.cpp, src/parser.yy,
+	  testsuite/28.idl, testsuite/29.idl, testsuite/Makefile.am,
+	  testsuite/Makefile.in: (esidl) : Support -namespace option to
+	  keep every interface in a single specified namespace.
+
+2009-05-14 04:11  Shiki.Okasaka
+
+	* es/ent.h, include/cplusplus.h, include/esidl.h, src/cxx.cpp,
+	  src/esidl.cpp: Revert to r856.
+
+2009-05-14 02:29  Shiki.Okasaka
+
+	* include/esidl.h, src/cxx.cpp, src/esidl.cpp: (printCxx) : Take
+	  the default namespace name as an argument.
+
+2009-05-13 07:48  Shiki.Okasaka
+
+	* src/parser.yy: (esidl) : Make it possible to define Object
+	  interface.
+
+2009-05-13 07:11  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp, src/esidl.cpp,
+	  src/lexer.ll, src/parser.yy, testsuite/27.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (esidl) : Make it
+	  possible to define Object interface.
+
+2009-05-12 06:39  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/ent.cpp, src/esidl.cpp:
+	  (esidl) : Use Object instead of Interface in IDL files.
+
+2009-05-11 09:09  Shiki.Okasaka
+
+	* src/parser.yy, testsuite/203.idl, testsuite/204.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (parser.yy) : Print
+	  the error location.
+
+2009-05-11 07:48  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp, src/esidl.cpp:
+	  (esidl) : Support -fexceptions and -fno-exceptions command line
+	  options.
+
+2009-05-11 06:00  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/driver.cpp,
+	  src/ent.cpp, src/parser.yy, testsuite/13.idl, testsuite/4.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (esidl) : Support
+	  getraises and setraises for attributes.
+
+2009-05-08 05:49  Shiki.Okasaka
+
+	* include/esidl.h, include/expr.h, src/ent.cpp, src/lexer.ll,
+	  src/parser.yy, testsuite/21.idl, testsuite/3.idl: (wchar,
+	  wstring) : Remove which are not used in Web IDL.
+
+2009-05-08 05:37  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp, src/esidl.cpp:
+	  (esidl) : Make C++ string type name configurable.
+
+2009-05-08 04:13  Shiki.Okasaka
+
+	* include/esidl.h, include/string.h, src/cxx.cpp, src/lexer.ll,
+	  src/parser.yy, src/print.cpp, testsuite/13.idl: (#pragma ID) :
+	  Remove which is not used in Web IDL.
+
+2009-05-08 03:09  Shiki.Okasaka
+
+	* src/driver.cpp, src/esidl.cpp: (esidl) : Add -string and
+	  -namespace command line options.
+
+2009-05-07 04:18  Shiki.Okasaka
+
+	* include/cplusplus.h, src/cxx.cpp: (USE_FUNCTION_CALLBACK) :
+	  Disable by default.
+
+2009-04-24 01:06  Shiki.Okasaka
+
+	* src/cxx.cpp: (printCxx) : Insert a blank line between imports and
+	  predeclarations.
+
+2009-04-24 00:43  Shiki.Okasaka
+
+	* src/cxx.cpp: (at(const ConstDcl*)) : Remove extra spaces before
+	  JavaDoc.
+
+2009-04-24 00:19  Shiki.Okasaka
+
+	* include/esidl.h, src/cxx.cpp, src/esidl.cpp: (Predeclaration) :
+	  Suppress empty class generation.
+
+2009-04-23 22:32  Shiki.Okasaka
+
+	* src/cxx.cpp: (Predeclaration) : Generate forward class
+	  declarations first.
+
+2009-04-23 20:01  Shiki.Okasaka
+
+	* src/cxx.cpp: (at(const Interface*)) : Clean up.
+
+2009-04-23 18:14  Shiki.Okasaka
+
+	* src/cxx.cpp: (at(const Interface*)) : Fix callback and optional
+	  staging.
+
+2009-04-22 03:12  Shiki.Okasaka
+
+	* include/cplusplus.h, src/parser.yy: (SequenceType) : Support
+	  sequence of interfaces.
+
+2009-04-22 00:56  Shiki.Okasaka
+
+	* include/cplusplus.h: (USE_FUNCTION_ATTRIBUTE) : Disable by
+	  default.
+
+2009-04-22 00:00  Shiki.Okasaka
+
+	* include/cplusplus.h, src/ent.cpp, src/esidl.cpp: (esidl) : Use
+	  C++ default arguments for [Variadic].
+
+2009-04-21 20:29  Shiki.Okasaka
+
+	* src/ent.cpp: (at(const Interface*)) : Fix for handling interfaces
+	  with predeclarations only.
+
+2009-04-20 22:44  Shiki.Okasaka
+
+	* src/esidl.cpp, src/parser.yy: (interface_inheritance_spec) :
+	  Check if interfaces are declared.
+
+2009-04-20 22:41  Shiki.Okasaka
+
+	* src/lexer.ll: (MultiLineComment) : Update yylloc.
+
+2009-04-20 18:02  Shiki.Okasaka
+
+	* include/cplusplus.h, testsuite/111.idl, testsuite/Makefile.am,
+	  testsuite/Makefile.in: (esidl) : Support [Callback=FunctionOnly]
+	  interface attributes.
+
+2009-04-16 17:22  Shiki.Okasaka
+
+	* include/cplusplus.h: (esidl) : Use get prefix even for boolean
+	  attributes following the Web IDL Java binding.
+
+2009-04-14 20:35  Shiki.Okasaka
+
+	* src/lexer.ll: Clean up.
+
+2009-04-13 21:41  Shiki.Okasaka
+
+	* include/esidl.h, src/driver.cpp, src/esidl.cpp, src/lexer.ll,
+	  src/parser.yy, testsuite/201.idl, testsuite/202.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (esidl) : Keep
+	  track of the location of each construct.
+
+2009-04-11 03:10  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (%pure-parser) : Remove to generate
+	  a normal non-reentrant parser.
+
+2009-04-11 02:38  Shiki.Okasaka
+
+	* src/esidl.cpp, testsuite/201.idl, testsuite/Makefile.am,
+	  testsuite/Makefile.in: (main) : Check the returned value from
+	  yyparse().
+
+2009-04-10 10:24  Shiki.Okasaka
+
+	* include/esidl.h, src/esidl.cpp: (ProcessExtendedAttributes) :
+	  Process extended attributes after yyparse() to deal with forward
+	  declarations.
+
+2009-04-07 07:25  Shiki.Okasaka
+
+	* testsuite/Interface.idl, testsuite/Makefile.am,
+	  testsuite/Makefile.in, testsuite/dom.idl, testsuite/events.idl,
+	  testsuite/html.idl, testsuite/views.idl: (TESTS) : Remove extra
+	  files.
+
+2009-04-06 10:11  Shiki.Okasaka
+
+	* include/esidl.h: (collectImplementedOn) : Fix not to include
+	  leaves.
+
+2009-04-06 09:30  Shiki.Okasaka
+
+	* include/cplusplus.h: (savedContext) : Include overloading stage
+	  counts.
+
+2009-04-06 05:51  Shiki.Okasaka
+
+	* include/cplusplus.h: (savedContext) : New.
+
+2009-04-06 03:38  Shiki.Okasaka
+
+	* include/cplusplus.h: (at(const ParamDcl*)) : Accept callback
+	  interface pointer even if [Callback=FunctionOnly] for C++.
+
+2009-04-05 05:35  Shiki.Okasaka
+
+	* include/cplusplus.h: (at(const ParamDcl*)) : Do not add 'const'
+	  for sequence of objects.
+
+2009-04-05 05:27  Shiki.Okasaka
+
+	* include/esidl.h: (compare) : Fix the return value type.
+
+2009-04-03 09:40  Shiki.Okasaka
+
+	* include/cplusplus.h: (paramMode) : New.
+
+2009-04-02 05:33  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in: Revert to the previous version.
+
+2009-04-02 05:31  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in: (cssomview.idl) : Make it default
+	  superseding views.idl.
+
+2009-03-31 08:42  Shiki.Okasaka
+
+	* include/cplusplus.h: (at(const ParamDcl*)) : Fix to print the
+	  parameter name instead of the callback method name.
+
+2009-03-31 07:50  Shiki.Okasaka
+
+	* include/cplusplus.h: (at(const OpDcl*)) : Fix not to put a
+	  redundant comma.
+
+2009-03-31 03:19  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h: (esidl) : Fix problems to
+	  support the base object name specified in a qualified name
+	  format.
+
+2009-03-30 15:02  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/ent.cpp, src/esidl.cpp,
+	  src/parser.yy: (esidl) : The base object name is specified in a
+	  qualified name format; Fix associated bugs.
+
+2009-03-30 14:52  Shiki.Okasaka
+
+	* es/ent.h: (addConstant) : Fix bugs.
+
+2009-03-25 08:10  shiki.okasaka
+
+	* testsuite/17.idl, testsuite/Makefile.am, testsuite/Makefile.in,
+	  testsuite/dom.idl, testsuite/events.idl, testsuite/html.idl:
+	  (events.idl) : New.
+
+2009-03-25 08:07  shiki.okasaka
+
+	* include/esidl.h, src/esidl.cpp: (AdjustMethodCount) : Adjust
+	  interface method counts later to deal with forward interface
+	  declarations.
+
+2009-03-25 05:30  Shiki.Okasaka
+
+	* include/esidl.h: (collectImplementedOn) : Check mixins specified
+	  in base interfaces.
+
+2009-03-25 05:23  Shiki.Okasaka
+
+	* include/cplusplus.h: (printChildren) : Save the original
+	  currentNode.
+
+2009-03-24 05:21  shiki.okasaka
+
+	* src/parser.yy: (scoped_name) : Print an error message and exit
+	  instead of assert().
+
+2009-03-23 14:41  Shiki.Okasaka
+
+	* testsuite/21.idl: Remove definitions using Object, which should
+	  be checked later.
+
+2009-03-23 14:14  shiki.okasaka
+
+	* src/driver.cpp, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (main) : Return EXIT_FAILURE if terminated abnormally.
+
+2009-03-23 13:52  shiki.okasaka
+
+	* include/esidl.h: (ConstDcl::value) : Change type to uint64_t.
+
+2009-03-23 10:24  Shiki.Okasaka
+
+	* include/cplusplus.h: (isCallback) : New.
+
+2009-03-10 06:56  Shiki.Okasaka
+
+	* es/ent.h: (CallbackMask) : Fix the value.
+
+2009-03-10 06:51  Shiki.Okasaka
+
+	* include/esidl.h: (CallbackMask) : Fix the value.
+
+2009-03-04 06:50  shiki.okasaka
+
+	* Makefile.am, Makefile.in, es, es/ent.h: (esidl): Make esidl
+	  tarball stand-alone compilable.
+
+2009-03-04 05:38  shiki.okasaka
+
+	* Makefile.am, Makefile.in, src/reflect.cpp: (reflect) : Move to
+	  tools.
+
+2009-03-04 05:18  shiki.okasaka
+
+	* Makefile.am, Makefile.in, include/cplusplus.h, include/esidl.h,
+	  include/expr.h, include/guid.h, include/utf.h, src/ent.cpp,
+	  src/entdump.cpp, src/guid.cpp, src/lexer.ll, src/parser.yy,
+	  src/reflect.cpp: (esidl) : Remove obsolete UUID related code.
+
+2009-03-04 02:20  shiki.okasaka
+
+	* src/driver.cpp, src/esidl.cpp, testsuite/Makefile.am,
+	  testsuite/Makefile.in: (esidl) : Make ENT file generation
+	  optional using the -ent option
+
+2009-03-02 08:47  shiki.okasaka
+
+	* include/esidl.h: (collectImplementedOn) : New.
+
+2009-02-24 04:21  shiki.okasaka
+
+	* include/cplusplus.h: (getParamCount, getVariadic) : New.
+
+2009-02-20 07:54  shiki.okasaka
+
+	* include/cplusplus.h, src/ent.cpp, src/esidl.cpp: (esidl) :
+	  Generate an extra operation for [Variadic] with no variadic
+	  arguments.
+
+2009-02-20 07:38  shiki.okasaka
+
+	* testsuite/110.idl, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (110.idl) : New.
+
+2009-02-20 06:25  shiki.okasaka
+
+	* include/esidl.h: (Node::rbegin, rend) : New.
+
+2009-02-20 06:24  shiki.okasaka
+
+	* testsuite/109.idl, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (109.idl) : New.
+
+2009-02-20 04:40  shiki.okasaka
+
+	* include/esidl.h, src/ent.cpp, src/esidl.cpp, testsuite/108.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (namespace Ent) :
+	  Clean up attribute bits.
+
+2009-02-18 08:58  shiki.okasaka
+
+	* include/esidl.h: (Interface::getCallable) : New.
+
+2009-02-18 08:46  shiki.okasaka
+
+	* testsuite/100.idl: Add tests for parameters.
+
+2009-02-18 08:24  shiki.okasaka
+
+	* include/esidl.h: (Attribute::getAttr) : New.
+
+2009-02-18 07:40  shiki.okasaka
+
+	* include/esidl.h: (Node::isBaseObject) : New.
+
+2009-02-18 05:47  shiki.okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/print.cpp,
+	  testsuite/107.idl, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (esidl) : Support [Variadic] extended attribute.
+
+2009-02-18 02:40  shiki.okasaka
+
+	* src/esidl.cpp, testsuite/106.idl, testsuite/Makefile.am,
+	  testsuite/Makefile.in: (esidl) : Parse [NamedConstructor]
+	  extended attribute.
+
+2009-02-16 12:17  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp, src/ent.cpp,
+	  src/esidl.cpp, testsuite/104.idl, testsuite/105.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (esidl) : Support
+	  [PutForwards] and [Replaceable] extended attributes.
+
+2009-02-16 11:15  Shiki.Okasaka
+
+	* src/lexer.ll: (DOMString) : DOMString is an intrinsic type in Web
+	  IDL.
+
+2009-02-16 08:19  shiki.okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp, src/ent.cpp,
+	  src/esidl.cpp, testsuite/102.idl, testsuite/103.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: (esidl) : Support
+	  [Callback] and [Optional] extended attributes.
+
+2009-02-13 03:32  shiki.okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp: Clean up.
+
+2009-02-12 12:00  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/ent.cpp, src/esidl.cpp,
+	  src/parser.yy, src/print.cpp, testsuite/100.idl,
+	  testsuite/101.idl, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (esidl) : Parse more extended attributes.
+
+2009-02-07 04:34  Shiki.Okasaka
+
+	* configure, configure.ac: Set version to 0.1.4.
+
+2009-02-06 14:15  Shiki.Okasaka
+
+	* include/cplusplus.h: (esidl) : Change the C++ mapping for the
+	  output string type.
+
+2009-02-06 11:20  Shiki.Okasaka
+
+	* testsuite/Makefile.in: (configure) : Update with autoconf 2.63.
+
+2009-02-05 07:43  shiki.okasaka
+
+	* include/esidl.h, src/esidl.cpp, src/print.cpp: (esidl) : Fix
+	  errors when compiling interfaces with [Constructor] attributes.
+
+2009-02-03 06:07  shiki.okasaka
+
+	* include/esidl.h, src/esidl.cpp, src/parser.yy, src/print.cpp,
+	  testsuite/html.idl, testsuite/views.idl: (esidl) : Support
+	  'ImplementedOn' extended attribute.
+
+2009-02-02 09:27  shiki.okasaka
+
+	* src/parser.yy: (extended_attribute_details) : Merge
+	  ExtendedAttributeScopedName rule from the updated Web IDL working
+	  draft.
+
+2009-02-02 08:57  shiki.okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp, src/ent.cpp,
+	  src/entdump.cpp, src/lexer.ll, src/parser.yy, src/print.cpp,
+	  src/reflect.cpp, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (enum_type) : Remove as it is not supported in Web IDL.
+
+2009-02-01 14:24  Shiki.Okasaka
+
+	* include/cplusplus.h: (CPlusPlus) : Fix bugs.
+
+2009-02-01 14:04  Shiki.Okasaka
+
+	* include/cplusplus.h, include/esidl.h, src/cxx.cpp, src/esidl.cpp,
+	  testsuite/Makefile.am, testsuite/Makefile.in,
+	  testsuite/views.idl: (esidl) : Do not add I prefix to each
+	  interface name for C++.
+
+2009-01-29 01:30  shiki.okasaka
+
+	* include/cplusplus.h, src/cxx.cpp: Clean up.
+
+2009-01-26 13:02  Shiki.Okasaka
+
+	* aclocal.m4, configure, include/cplusplus.h, include/esidl.h,
+	  src/cxx.cpp, src/driver.cpp, src/esidl.cpp, src/parser.yy:
+	  (esidl) : Support '-isystem' option.
+
+2009-01-25 14:59  Shiki.Okasaka
+
+	* Makefile.am, Makefile.in, include/cplusplus.h, include/esidl.h,
+	  src/cxx.cpp, src/driver.cpp, src/esidl.cpp,
+	  testsuite/Makefile.am, testsuite/Makefile.in, testsuite/html.idl:
+	  (cplusplus.h) : Separated from cxx.cpp.
+
+2009-01-23 04:11  shiki.okasaka
+
+	* src/cxx.cpp: (Cxx) : Use the specified name for 'Object' by
+	  -object option rather than 'void*'.
+
+2009-01-21 09:54  shiki.okasaka
+
+	* include/esidl.h, src/cxx.cpp, src/driver.cpp, src/esidl.cpp,
+	  testsuite/Interface.idl, testsuite/Makefile.am,
+	  testsuite/Makefile.in, testsuite/dom.idl, testsuite/html.idl:
+	  (ScopedName::search) : Resolve the typedef name for a scoped
+	  name.
+
+2009-01-15 03:27  shiki.okasaka
+
+	* include/esidl.h, include/string.h, src/cxx.cpp, src/ent.cpp:
+	  (getQualifiedName) : Return the qualified name as defined in Web
+	  IDL draft.
+
+2009-01-14 09:44  shiki.okasaka
+
+	* src/cxx.cpp: (Any) : Rename Variant to Any to sync with Web IDL.
+
+2009-01-09 06:25  shiki.okasaka
+
+	* include/esidl.h, include/string.h, src/cxx.cpp, src/ent.cpp,
+	  src/entdump.cpp, src/esidl.cpp, src/parser.yy, src/print.cpp,
+	  src/reflect.cpp, testsuite/24.idl, testsuite/26.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: DCE's UUID based
+	  interface ID is no longer used. The interface ID is given by a
+	  character string and the use of UUID has been deprecated.
+	  The 'Constructor' extended attribute is supported in .idl files.
+	  To construct a new object instance, simply use 'new' in
+	  ECMAScript, and use 'createInstance' static interface member
+	  function in C++. The ClassFactory interface has been deprecated.
+	  The "C" POSIX runtime implementation has been updated to use the
+	  above changes. To reflect that, please apply a new patch to
+	  newlib-1.16.0 and rebuild gcc for ES and other runtime libraries.
+
+2008-11-15 05:16  Shiki.Okasaka
+
+	* include/esidl.h, src/driver.cpp, src/esidl.cpp, src/parser.yy:
+	  (esidl) : Support -include and -object options to eliminate the
+	  needs for explicitly extending interfaces from Interface and
+	  including IInterface.h from the IDL files.
+
+2008-11-10 05:24  shiki.okasaka
+
+	* include/esidl.h, src/cxx.cpp, src/ent.cpp, src/lexer.ll,
+	  src/parser.yy, testsuite/15.idl, testsuite/22.idl,
+	  testsuite/23.idl, testsuite/25.idl, testsuite/Makefile.am,
+	  testsuite/Makefile.in: (NativeType) : Modify bindings to C++ as
+	  "any" to "Variant" and "native void_pointer" to "void*".
+
+2008-11-09 05:12  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: Clean up.
+
+2008-11-09 05:03  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (union_type) : Remove as it is not
+	  supported in Web IDL.
+
+2008-11-09 04:55  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (context_expr) : Remove as it is not
+	  supported in Web IDL.
+
+2008-11-09 04:14  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (value_dcl, value_abs_dcl,
+	  value_base_type) : Remove as they are not supported in Web IDL.
+
+2008-11-09 03:14  Shiki.Okasaka
+
+	* src/parser.yy: (interface_name_list) : Remove as it is redundant
+	  and eliminated in Web IDL.
+
+2008-11-09 02:44  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (abstract_local_opt) : Remove as it
+	  is not supported in Web IDL.
+
+2008-11-09 01:58  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (type_id_dcl) : Remove as it is not
+	  supported in Web IDL.
+
+2008-11-09 01:53  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (Web IDL) : Add the reference to the
+	  specification.
+
+2008-11-09 01:44  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (type_prefix_dcl) : Remove as it is
+	  not supported in Web IDL.
+
+2008-11-09 01:35  Shiki.Okasaka
+
+	* src/lexer.ll, src/parser.yy: (import_list) : Remove as it is not
+	  supported in Web IDL.
+
+2008-10-25 11:49  shiki.okasaka
+
+	* configure, configure.ac: Set version to 0.1.3.
+
+2008-08-10 05:50  Ishibashi.Kenichi
+
+	* testsuite/23.idl, testsuite/24.idl: Add test code.
+
+2008-08-09 05:33  Ishibashi.Kenichi
+
+	* include/esidl.h, src/ent.cpp, src/esidl.cpp, src/parser.yy,
+	  src/print.cpp, testsuite/Makefile.am, testsuite/Makefile.in: Add
+	  Index/Name Getter/Setter support.
+
+2008-07-13 11:36  shiki.okasaka
+
+	* Makefile.in, aclocal.m4, configure, testsuite/Makefile.in:
+	  Regenerate by autoconf 2.61 and automake 1.10.1.
+
+2008-07-05 12:24  ishibashi.kenichi
+
+	* include/esidl.h, src/cxx.cpp, src/ent.cpp, src/lexer.ll,
+	  src/parser.yy, src/reflect.cpp, testsuite/22.idl,
+	  testsuite/Makefile.am, testsuite/Makefile.in: Added Variant
+	  support to esidl.
+
+2008-06-22 00:15  Shiki.Okasaka
+
+	* include/esidl.h: Fix bugs detected by gcc 4.3.0.
+
+2008-06-21 11:00  joao.taveira
+
+	* src/cxx.cpp: Rollback to revision 594. Reflection runtime assumes
+	  simple layout.
+
+2008-06-18 12:43  joao.taveira
+
+	* src/cxx.cpp: Corrected esidl bug which did not allow multiple
+	  inheritance (diamond problem) in generated C++.
+
+2008-04-05 22:51  Shiki.Okasaka
+
+	* configure, configure.ac: Increment ES version to 0.1.2
+
+2008-03-30 23:22  Shiki.Okasaka
+
+	* src/cxx.cpp: (esidl) : Add the 'I' prefix automatically to each
+	  interface name in the generated C++ header files. Removed the 'I'
+	  prefixes from the IDL definitions.
+
+2008-01-23 04:40  Shiki.Okasaka
+
+	* include/expr.h, include/string.h, src/ent.cpp: Clean up.
+
+2008-01-22 12:52  Shiki.Okasaka
+
+	* src/ent.cpp: (TypeOffsetter::process) : Fix a bug.
+
+2008-01-18 15:34  Shiki.Okasaka
+
+	* src/esidl.cpp, testsuite/Makefile.am, testsuite/Makefile.in:
+	  (esidl) : Support -Idir option style (no space between -I and
+	  dir).
+
+2008-01-18 03:57  Shiki.Okasaka
+
+	* include/esidl.h: (StructType) : Initialize memberCount.
+
+2008-01-16 13:56  Shiki.Okasaka
+
+	* include/expr.h, include/string.h, src/ent.cpp, src/esidl.cpp:
+	  (offset) : Convert to u32 from size_t.
+
+2008-01-15 15:24  Shiki.Okasaka
+
+	* ylwrap: Add original.
+
+2008-01-15 15:19  Shiki.Okasaka
+
+	* ylwrap: Delete link.
+
+2008-01-15 14:03  Shiki.Okasaka
+
+	* include/esidl.h, include/expr.h, include/guid.h,
+	  include/string.h, include/utf.h, src/cxx.cpp, src/driver.cpp,
+	  src/ent.cpp, src/entdump.cpp, src/esidl.cpp, src/guid.cpp,
+	  src/lexer.ll, src/parser.yy, src/print.cpp, src/reflect.cpp:
+	  Convert to the Apache License, Version 2.0.
+
+2008-01-14 02:19  Shiki.Okasaka
+
+	* ylwrap: New.
+
+2008-01-14 02:18  Shiki.Okasaka
+
+	* include/esidl.h: (#include) : Remove <es/irf.h>
+
+2008-01-12 16:58  Shiki.Okasaka
+
+	* Makefile.am, configure.ac, include/esidl.h, include/expr.h,
+	  include/guid.h, include/string.h, include/utf.h, src/cxx.cpp,
+	  src/driver.cpp, src/ent.cpp, src/entdump.cpp, src/esidl.cpp,
+	  src/guid.cpp, src/lexer.ll, src/parser.yy, src/print.cpp,
+	  src/reflect.cpp, testsuite/1.idl, testsuite/10.idl,
+	  testsuite/11.idl, testsuite/12.idl, testsuite/13.idl,
+	  testsuite/14.idl, testsuite/15.idl, testsuite/16.idl,
+	  testsuite/17.idl, testsuite/18.idl, testsuite/19.idl,
+	  testsuite/2.idl, testsuite/20.idl, testsuite/21.idl,
+	  testsuite/3.idl, testsuite/4.idl, testsuite/5.idl,
+	  testsuite/6.idl, testsuite/7.idl, testsuite/8.idl,
+	  testsuite/9.idl, testsuite/Makefile.am: (svn:executable) :
+	  Remove.
+
+2008-01-12 02:46  Shiki.Okasaka
+
+	* (trunk) : Organize
+
+2007-12-10 02:21  okasaka
+
+	* (NEWS) : Set version to 0.1.1.
+
+2007-12-07 07:46  okasaka
+
+	* (esidl2-cxx.$(OBJEXT)) : Depends on Makefile for VERSION.
+
+2007-11-16 08:13  okasaka
+
+	* (at(const Attribute*)) : Remove the length parameter from a
+	  string setter.
+
+2007-10-03 04:14  okasaka
+
+	* (esidl) : Switch to OMG IDL syntax.
+
+2007-08-30 08:04  okasaka
+
+	* Set version to 0.0.13.
+
+2007-07-26 06:54  okasaka
+
+	* Set version to 0.0.12.
+
+2007-07-26 01:59  okasaka
+
+	* Switch to aclocal 1.10, autoconf 2.61, and automake 1.10 of F7.
+
+2007-06-22 07:29  okasaka
+
+	* Set version to 0.0.11.
+
+2007-06-22 01:10  okasaka
+
+	* Drop -iquote for older gcc.
+
+2007-04-27 00:59  okasaka
+
+	* Set version to 0.0.10.
+
+2007-04-17 02:28  okasaka
+
+	* Set version to 0.0.9.
+
+2007-03-26 03:55  okasaka
+
+	* Set version to 0.0.8.
+
+2007-03-05 04:10  okasaka
+
+	* Set version to 0.0.7.
+
+2007-02-09 06:40  okasaka
+
+	* Set version to 0.0.6.
+
+2007-01-17 01:59  okasaka
+
+	* (DeclaratorHandler) : Fix to add const qualifier to constant
+	  array parameters.
+
+2006-12-26 00:56  okasaka
+
+	* Set version to 0.0.5.
+
+2006-11-29 07:31  okasaka
+
+	* (main) : Use the symbol VERSION to embed the version number in
+	  the generated header file.
+
+2006-10-17 02:51  okasaka
+
+	* Set version to 0.0.4.
+
+2006-09-28 06:23  okasaka
+
+	* Set version to 0.0.3.
+
+2006-09-26 04:30  okasaka
+
+	* Implement the interface store.
+
+2006-09-14 09:23  okasaka
+
+	* Set version to 0.0.2.
+
+2006-09-13 08:22  okasaka
+
+	* Support procedural IPC.
+
+2006-08-30 09:33  okasaka
+
+	* Initial revision
+
