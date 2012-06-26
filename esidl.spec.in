@@ -3,7 +3,7 @@ Name: esidl
 Version: @VERSION@
 Release: 1%{?dist}
 License: Apache License, Version 2.0
-Group: Development/Tools
+Group: Development/Languages
 URL: http://code.google.com/p/es-operating-system/
 Source0: esidl-%{version}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
