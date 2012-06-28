@@ -11,9 +11,7 @@ BuildRequires: bison flex
 
 %description
 Esidl is a Web IDL compiler which generates C++ header and source
-files from the interface definitions written in Web IDL. Web IDL
-is an interface definition language being developed at W3C and
-used for the HTML and other specifications published from W3C.
+files from the interface definitions written in Web IDL.
 
 %prep
 %setup -q
