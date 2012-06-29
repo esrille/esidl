@@ -1,3 +1,12 @@
+2012-06-29 07:48  Shiki.Okasaka@gmail.com
+
+	* esidl.spec.in: (BuildRequires) : Add more basic build tools for
+	  completeness.
+
+2012-06-29 04:03  Shiki.Okasaka@gmail.com
+
+	* ChangeLog: Update.
+
 2012-06-29 04:01  Shiki.Okasaka@gmail.com
 
 	* esidl.spec.in: (%configure) : Clean up; use --target=i686 option
