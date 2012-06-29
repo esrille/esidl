@@ -1,3 +1,12 @@
+2012-06-29 04:01  Shiki.Okasaka@gmail.com
+
+	* esidl.spec.in: (%configure) : Clean up; use --target=i686 option
+	  with rpmbuild when building a package for x86.
+
+2012-06-28 23:34  Shiki.Okasaka@gmail.com
+
+	* ChangeLog, configure, configure.ac: Set version to 0.2.0.
+
 2012-06-28 23:29  Shiki.Okasaka@gmail.com
 
 	* esidl.spec.in: (%description) : Update.
