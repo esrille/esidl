@@ -17,8 +17,7 @@ files from the interface definitions written in Web IDL.
 %setup -q
 
 %build
-%configure CFLAGS="-O2 -g" CXXFLAGS="-O2 -g" \
-	--disable-java --disable-npapi --disable-jsapi --disable-v8api --disable-cplusplus
+%configure
 make
 
 %install
