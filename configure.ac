@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script
-AC_INIT([esidl], [0.2.0])
+AC_INIT([esidl], [0.2.3])
 AC_CONFIG_AUX_DIR(.)
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([foreign no-define])
@@ -11,6 +11,7 @@ AC_PROG_LEX
 AM_PROG_LIBTOOL
 AC_CONFIG_FILES([
   esidl.spec
+  debian/changelog
   Makefile
   testsuite/Makefile
   testsuite/runtime/Makefile

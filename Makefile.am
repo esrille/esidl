@@ -90,6 +90,14 @@ AM_CPPFLAGS = \
 EXTRA_DIST = \
 	esidl.spec.in \
 	esidl.spec \
+	debian/changelog \
+	debian/changelog.in \
+	debian/compat \
+	debian/control \
+	debian/copyright \  
+	debian/docs \
+	debian/rules \
+	debian/source/format \
 	LICENSE \
 	dom/COPYRIGHT.html \
 	dom/2dcontext.idl \
