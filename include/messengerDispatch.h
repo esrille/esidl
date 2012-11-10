@@ -26,6 +26,7 @@
 class MessengerDispatch : public Messenger
 {
     bool overloaded;
+    bool asSpecial;
 
     void writeSelectorZero(Node* stringifier)
     {
@@ -57,7 +58,8 @@ class MessengerDispatch : public Messenger
 public:
     MessengerDispatch(Formatter* formatter, const std::string& stringTypeName, const std::string& objectTypeName, bool useExceptions) :
         Messenger(formatter, stringTypeName, objectTypeName, useExceptions),
-        overloaded(false)
+        overloaded(false),
+        asSpecial(false)
     {
         currentNode = 0;
     }
@@ -136,7 +138,7 @@ public:
                             continue;
                         if (!(op->getAttr() & OpDcl::UnnamedProperty))
                             operations.insert(std::pair<uint32_t, OpDcl*>(op->getHash(), op));
-                        if (op->getAttr() & (OpDcl::UnnamedProperty | OpDcl::Omittable | OpDcl::Caller))
+                        if (op->getAttr() & (OpDcl::UnnamedProperty | OpDcl::Omittable | OpDcl::IndexMask | OpDcl::Caller))
                             operations.insert(std::pair<uint32_t, OpDcl*>(0, op));
                         continue;
                     }
@@ -153,6 +155,7 @@ public:
             }
             for (std::multimap<uint32_t, OpDcl*>::iterator i = operations.begin(); i != operations.end(); ++i)
             {
+	        asSpecial = (i->first == 0);
                 writeln("case 0x%x:", i->first);
                 indent();
                 int count = operations.count(i->first);
@@ -184,6 +187,7 @@ public:
                 unindent();
                 if (i->first == 0)
                 {
+		    asSpecial = false;
                     doneSelectorZero = true;
                     writeSelectorZero(stringifier);
                 }
@@ -333,7 +337,7 @@ public:
         int paramCount = getParamCount(node);
 
         writetab();
-        if (node->getAttr() & OpDcl::IndexMask) {
+        if (asSpecial && (node->getAttr() & OpDcl::IndexMask)) {
             write("if (");
             if (node->getAttr() & OpDcl::Caller)
             {
