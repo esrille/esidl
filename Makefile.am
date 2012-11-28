@@ -94,7 +94,7 @@ EXTRA_DIST = \
 	debian/changelog.in \
 	debian/compat \
 	debian/control \
-	debian/copyright \  
+	debian/copyright \
 	debian/docs \
 	debian/rules \
 	debian/source/format \
