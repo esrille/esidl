@@ -1,3 +1,30 @@
+2012-11-28 07:52  Shiki.Okasaka@gmail.com
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure, configure.ac,
+	  cplusplus/Makefile.in, java/Makefile.in, jsapi/Makefile.in,
+	  npapi/Makefile.in, npapi/sample/Makefile.in,
+	  testsuite/Makefile.in, testsuite/runtime/Makefile.in,
+	  v8api/Makefile.in: configure.ac : Set version to 0.2.1; note
+	  esidl will not sync up with the version number of escort in the
+	  0.2 series any more
+	  Makefile.am : Clean up
+
+2012-11-10 12:42  Shiki.Okasaka@gmail.com
+
+	* include/messengerDispatch.h: (MessengerDispatch::at(const
+	  Interface*), MessengerDispatch::at(const OpDcl*)) : Fix bugs
+	  around special operations
+
+2012-08-18 07:34  Shiki.Okasaka@gmail.com
+
+	* ChangeLog, Makefile.am, Makefile.in, configure, configure.ac,
+	  debian, debian/changelog.in, debian/compat, debian/control,
+	  debian/copyright, debian/docs, debian/rules, debian/source,
+	  debian/source/format: (AC_INIT) : Set version to 0.2.3 to sync up
+	  with escort
+	  (debian) : New for building deb packages
+	  (AC_CONFIG_FILES, EXTRA_DIST) : Include files under 'debian'
+
 2012-06-29 11:20  Shiki.Okasaka@gmail.com
 
 	* ChangeLog: Update.
