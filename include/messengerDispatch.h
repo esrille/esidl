@@ -480,6 +480,10 @@ public:
                 write("arguments[%u].toObject()", getParamCount() - 1);
             }
         }
+        else if ((node->getParent()->getAttr() & OpDcl::IndexMask) && getParamCount() - 1 == 0)
+        {
+            write("arguments[%u].toArrayIndex()", getParamCount() - 1);
+        }
         else
         {
             write("static_cast<");
