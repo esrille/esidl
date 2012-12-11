@@ -336,6 +336,7 @@ public:
             assert(forwards);
             spec = forwards->getSpec();
         }
+        bool useConstString = spec->isString(node->getParent()) && hasCustomStringType();
         std::string name = getBufferName(node);
 
         // setter
@@ -343,13 +344,17 @@ public:
         if (!className.empty())
             write("%s::", className.c_str());
         write("set%s(", cap.c_str());
-        spec->accept(this);
-#if 0
-        if (spec->isInterface(node->getParent()))
+        if (useConstString)
         {
+            write("const ");
+            spec->accept(this);
             write("&");
         }
-#endif
+        else
+        {
+            spec->accept(this);
+        }
+
         write(" %s)", name.c_str());
         if (useExceptions && node->getSetRaises())
         {
@@ -459,6 +464,7 @@ public:
         static VariadicType variadic(0);
 
         Node* spec = node->getSpec();
+        bool useConstString = spec->isString(node->getParent()) && hasCustomStringType() && !node->isVariadic();
         if (node->isVariadic())
         {
             variadicParam = node;
@@ -466,13 +472,17 @@ public:
             spec = &variadic;
         }
 
-        spec->accept(this);
-#if 0
-        if (spec->isInterface(node->getParent()))
+        if (useConstString)
         {
+            write("const ");
+            spec->accept(this);
             write("&");
         }
-#endif
+        else
+        {
+            spec->accept(this);
+        }
+
         write(" %s", getEscapedName(node->getName()).c_str());
 
         // Default argument for the variadic parameter
