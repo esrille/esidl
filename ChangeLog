@@ -1,3 +1,19 @@
+2012-12-11 01:34  Shiki.Okasaka@gmail.com
+
+	* include/messenger.h: (Messenger::setter, Messenger::at(const
+	  ParamDcl*)) : Generate string const references for function
+	  arguments
+
+2012-12-06 04:57  Shiki.Okasaka@gmail.com
+
+	* include/messengerDispatch.h: (MessengerDispatch::at) : Generate
+	  dispatch() using Any::toArrayIndex for accessing indexed
+	  properties; requires r3250 or later
+
+2012-11-30 09:58  Shiki.Okasaka@gmail.com
+
+	* ChangeLog: Update
+
 2012-11-28 07:52  Shiki.Okasaka@gmail.com
 
 	* Makefile.am, Makefile.in, aclocal.m4, configure, configure.ac,
