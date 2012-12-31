@@ -131,10 +131,13 @@ int yylex();
 %type <node>        CallbackOrInterface
 %type <node>        CallbackRestOrInterface
 %type <node>        Interface
+%type <node>        Partial
+%type <node>        PartialDefinition
 %type <node>        PartialInterface
 %type <node>        InterfaceMember
 %type <node>        Dictionary
 %type <node>        DictionaryMember
+%type <node>        PartialDictionary
 %type <node>        Default
 %type <node>        DefaultValue
 %type <node>        Exception
@@ -240,7 +243,7 @@ Definitions :
 Definition :
     Module          /* backward compatibility */
     | CallbackOrInterface
-    | PartialInterface
+    | Partial
     | Dictionary
     | Exception
     | Enum
@@ -362,10 +365,23 @@ Interface :
         }
     ;
 
-PartialInterface :
-    PARTIAL INTERFACE IDENTIFIER
+
+Partial :
+    PARTIAL PartialDefinition
         {
-            Interface* node = new Interface($3);
+            $$ = $2;
+        }
+    ;
+
+PartialDefinition :
+    PartialInterface
+    | PartialDictionary
+    ;
+
+PartialInterface :
+    INTERFACE IDENTIFIER
+        {
+            Interface* node = new Interface($2);
             if (Node::getFlatNamespace())
             {
                 setCurrent(getSpecification());
@@ -373,11 +389,11 @@ PartialInterface :
             getCurrent()->add(node);
             setCurrent(node);
             node->setAttr(node->getAttr() | Interface::Supplemental);
-            free($3);
+            free($2);
         }
     '{' InterfaceMembers '}' ';'
         {
-            getCurrent()->setLocation(&@1, &@8);
+            getCurrent()->setLocation(&@1, &@7);
             $$ = getCurrent();
             setCurrent(getCurrent()->getParent());
             if (Node::getFlatNamespace() && getCurrent() == getSpecification())
@@ -475,7 +491,31 @@ DictionaryMember :
             getCurrent()->add(attr);
             $$ = attr;
         }
+    ;
 
+PartialDictionary :
+    DICTIONARY IDENTIFIER
+        {
+            Dictionary* node = new Dictionary($2);
+            if (Node::getFlatNamespace())
+            {
+                setCurrent(getSpecification());
+            }
+            getCurrent()->add(node);
+            setCurrent(node);
+            node->setAttr(node->getAttr() | Interface::Supplemental);
+            free($2);
+        }
+    '{' DictionaryMembers '}' ';'
+        {
+            getCurrent()->setLocation(&@1, &@7);
+            $$ = getCurrent();
+            setCurrent(getCurrent()->getParent());
+            if (Node::getFlatNamespace() && getCurrent() == getSpecification())
+            {
+                setCurrent(dynamic_cast<Module*>(getSpecification()->search(Node::getFlatNamespace())));
+            }
+        }
     ;
 
 Default:

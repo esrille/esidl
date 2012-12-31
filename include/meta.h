@@ -496,7 +496,7 @@ public:
 
     virtual void at(const Interface* node)
     {
-        if (node->isLeaf())
+        if ((node->getAttr() & Interface::Supplemental) || node->isLeaf())
         {
             return;
         }
