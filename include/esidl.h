@@ -1229,6 +1229,7 @@ public:
              ++i)
         {
             assert(!(*i)->isLeaf());
+            assert((*i) != this);
             (*i)->collectSupplementals(interfaceList);
         }
         interfaceList->push_front(this);
