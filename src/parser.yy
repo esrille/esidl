@@ -1366,13 +1366,14 @@ NonAnyType  :
             $$->setParent(getCurrent());
             $$->setLocation(&@1, &@7);
         }
-    | DATE TypeSuffix
+    | DATE Null TypeSuffix
         {
             $$ = new Type("Date");
-            if ($2)
+            $$->setAttr($$->getAttr() | $2);
+            if ($3)
             {
-                static_cast<ArrayType*>($2)->setSpec($$);
-                $$ = $2;
+                static_cast<ArrayType*>($3)->setSpec($$);
+                $$ = $3;
                 $$->setParent(getCurrent());
             }
             $$->setLocation(&@1);
