@@ -122,9 +122,13 @@ attribute           {
                         stepLocation();
                         return ATTRIBUTE;
                     }
-byte                {   /* ES extension for WebGL */
+byte                {
                         stepLocation();
                         return BYTE;
+                    }
+ByteString          {   /* cf. http://dev.w3.org/2006/webapi/WebIDL/#idl-ByteString */
+                        stepLocation();
+                        return STRING;
                     }
 boolean             {
                         stepLocation();
