@@ -923,7 +923,7 @@ Qualifiers :
         {
             $$ = OpDcl::Static;
         }
-    | OMITTABLE Specials
+    | OMITTABLE Specials     /* backward compatibility */
         {
             $$ = OpDcl::Omittable | $2;
         }
