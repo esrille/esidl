@@ -251,6 +251,14 @@ public:
         {
             write("unsigned long long");
         }
+        else if (node->getName() == "unrestricted float")
+        {
+            write("float");
+        }
+        else if (node->getName() == "unrestricted double")
+        {
+            write("double");
+        }
         else
         {
             write("%s", node->getName().c_str());

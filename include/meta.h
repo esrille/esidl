@@ -206,7 +206,15 @@ public:
         {
             output << Reflect::kFloat;
         }
+        else if (node->getName() == "unrestricted float")
+        {
+            output << Reflect::kFloat;
+        }
         else if (node->getName() == "double")
+        {
+            output << Reflect::kDouble;
+        }
+        else if (node->getName() == "unrestricted double")
         {
             output << Reflect::kDouble;
         }
