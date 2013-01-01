@@ -430,90 +430,87 @@ void Interface::processExtendedAttributes()
 {
     static unsigned supplementalCount = 0;
 
-    NodeList* list = getExtendedAttributes();
-    if (!list)
+    if (NodeList* list = getExtendedAttributes())
     {
-        return;
-    }
-
-    ScopedName* interfaceName;
-    for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
-    {
-        ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
-        assert(ext);
-        if (ext->getName() == "Callback")
+        ScopedName* interfaceName;
+        for (NodeList::iterator i = list->begin(); i != list->end(); ++i)
         {
-            if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
+            ExtendedAttribute* ext = dynamic_cast<ExtendedAttribute*>(*i);
+            assert(ext);
+            if (ext->getName() == "Callback")
             {
-                if (name->getName() == "FunctionOnly")
+                if (ScopedName* name = dynamic_cast<ScopedName*>(ext->getDetails()))
                 {
-                    attr |= CallbackIsFunctionOnly;
+                    if (name->getName() == "FunctionOnly")
+                    {
+                        attr |= CallbackIsFunctionOnly;
+                    }
+                    else if (name->getName() == "PropertyOnly")
+                    {
+                        attr |= CallbackIsPropertyOnly;
+                    }
                 }
-                else if (name->getName() == "PropertyOnly")
+                else
                 {
-                    attr |= CallbackIsPropertyOnly;
+                    attr |= Callback;
                 }
+            }
+            else if (ext->getName() == "NoInterfaceObject")
+            {
+                attr |= NoInterfaceObject;
+            }
+            else if (ext->getName() == "Constructor" || ext->getName() == "NamedConstructor")
+            {
+                if (constructor == NULL)
+                {
+                    Node* extends = 0;
+                    ScopedName* name = new ScopedName(getBaseObjectName());
+                    extends = new Node();
+                    extends->add(name);
+                    constructor = new Interface("Constructor", extends);
+                    constructor->setRank(getRank());
+                    constructor->setAttr(constructor->getAttr() | Interface::Constructor);
+                    add(constructor);
+
+                    interfaceName = new ScopedName(getName());
+                }
+                OpDcl* op;
+                if (op = dynamic_cast<OpDcl*>(ext->getDetails()))
+                {
+                    op->setSpec(interfaceName);
+                    op->getName() = "createInstance";
+                }
+                else
+                {
+                    // Default constructor
+                    op = new OpDcl("createInstance", interfaceName);
+                }
+                constructor->add(op);
+            }
+            else if (ext->getName() == "OverrideBuiltins")
+            {
+                attr |= OverrideBuiltins;
+            }
+            else if (ext->getName() == "Supplemental")
+            {
+                attr |= Supplemental;
+            }
+            else if (ext->getName() == "ReplaceableNamedProperties")
+            {
+                attr |= ReplaceableNamedProperties;
+            }
+            else if (ext->getName() == "NoIndexingOperations" ||
+                    ext->getName() == "ImplementedOn" ||
+                    ext->getName() == "Callable" ||
+                    ext->getName() == "Stringifies" ||
+                    ext->getName() == "PrototypeRoot")
+            {
+                ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
             }
             else
             {
-                attr |= Callback;
+                ext->report("Warning: unknown extended attribute '%s'.", ext->getName().c_str());
             }
-        }
-        else if (ext->getName() == "NoInterfaceObject")
-        {
-            attr |= NoInterfaceObject;
-        }
-        else if (ext->getName() == "Constructor" || ext->getName() == "NamedConstructor")
-        {
-            if (constructor == NULL)
-            {
-                Node* extends = 0;
-                ScopedName* name = new ScopedName(getBaseObjectName());
-                extends = new Node();
-                extends->add(name);
-                constructor = new Interface("Constructor", extends);
-                constructor->setRank(getRank());
-                constructor->setAttr(constructor->getAttr() | Interface::Constructor);
-                add(constructor);
-
-                interfaceName = new ScopedName(getName());
-            }
-            OpDcl* op;
-            if (op = dynamic_cast<OpDcl*>(ext->getDetails()))
-            {
-                op->setSpec(interfaceName);
-                op->getName() = "createInstance";
-            }
-            else
-            {
-                // Default constructor
-                op = new OpDcl("createInstance", interfaceName);
-            }
-            constructor->add(op);
-        }
-        else if (ext->getName() == "OverrideBuiltins")
-        {
-            attr |= OverrideBuiltins;
-        }
-        else if (ext->getName() == "Supplemental")
-        {
-            attr |= Supplemental;
-        }
-        else if (ext->getName() == "ReplaceableNamedProperties")
-        {
-            attr |= ReplaceableNamedProperties;
-        }
-        else if (ext->getName() == "NoIndexingOperations" ||
-                 ext->getName() == "ImplementedOn" ||
-                 ext->getName() == "Callable" ||
-                 ext->getName() == "Stringifies" ||
-                 ext->getName() == "PrototypeRoot")
-        {
-            ext->report("Warning: '%s' has been deprecated.", ext->getName().c_str());
-        }
-        else
-        {
-            ext->report("Warning: unknown extended attribute '%s'.", ext->getName().c_str());
         }
     }
 
