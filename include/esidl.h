@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Esrille Inc.
+ * Copyright 2010-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -179,7 +179,7 @@ public:
     static const uint32_t HasCovariant =             0x10000000;
     static const uint32_t HasIndexedProperties =     0x20000000;
     static const uint32_t HasNamedProperties =       0x40000000;
-    static const uint32_t UnnamedProperty =          0x80000000;  // This should be banned.
+    static const uint32_t UnnamedProperty =          0x80000000;
 
     void setLocation(struct YYLTYPE* yylloc);
     void setLocation(struct YYLTYPE* first, struct YYLTYPE* last);
