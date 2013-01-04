@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Esrille Inc.
+ * Copyright 2010-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -49,7 +49,7 @@ class MessengerInvoke : public Messenger
             if (!constructorMode)
                 write("return %smessage_(", target);
             else
-                write("*this = getConstructor().message_(");
+                write("return getConstructor().message_(");
             post = ").toObject()";
         }
         else if (spec->isString(node) || spec->isEnum(node))
@@ -172,23 +172,6 @@ public:
         noDefaultArgument = true;
         Messenger::at(node, className);
         noDefaultArgument = false;
-        if (constructorMode)
-        {
-            Interface* prototype = dynamic_cast<Interface*>(interface->getParent());
-            if (prototype && prototype->getExtends())
-            {
-                const char* separator = " : ";
-                for (NodeList::iterator i = prototype->getExtends()->begin();
-                    i != prototype->getExtends()->end();
-                    ++i)
-                {
-                    write(separator);
-                    separator = ", ";
-                    (*i)->accept(this);
-                    write("(0)");
-                }
-            }
-        }
         writeln("{");
 
             // Invoke

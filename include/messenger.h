@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Esrille Inc.
+ * Copyright 2010-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -443,9 +443,16 @@ public:
 
         if (constructorMode)
         {
-            if (!className.empty())
+            if (className.empty())
+            {
+                write("static %s ", getEscapedName(node->getParent()->getParent()->getName()).c_str());
+            }
+            else
+            {
+                write("%s ", getEscapedName(node->getParent()->getParent()->getName()).c_str());
                 write("%s::", className.c_str());
-            write("%s(", getEscapedName(node->getParent()->getParent()->getName()).c_str());
+            }
+            write("construct(", getEscapedName(node->getParent()->getParent()->getName()).c_str());
             writeParameters(node);
             write(")");
             return;
