@@ -344,7 +344,7 @@ public:
             assert(forwards);
             spec = forwards->getSpec();
         }
-        bool useConstString = spec->isString(node->getParent()) && hasCustomStringType();
+        bool useConstString = (spec->isString(node->getParent()) || spec->isEnum(node->getParent())) && hasCustomStringType();
         std::string name = getBufferName(node);
 
         // setter
@@ -479,7 +479,7 @@ public:
         static VariadicType variadic(0);
 
         Node* spec = node->getSpec();
-        bool useConstString = spec->isString(node->getParent()) && hasCustomStringType() && !node->isVariadic();
+        bool useConstString = (spec->isString(node->getParent()) || spec->isEnum(node->getParent())) && hasCustomStringType() && !node->isVariadic();
         if (node->isVariadic())
         {
             variadicParam = node;
