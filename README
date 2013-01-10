@@ -1,16 +1,14 @@
 This directory contains the esidl Web IDL compiler.
 
-The esidl Web IDL compiler is an Web IDL compiler being developed for the ES
-operating system; it can be used for products other than the ES operating
-system. The directory named 'npapi' contains an library and example programs
-for creating NPAPI/Pepper modules using the C++ DOM API. More information
-about the C++ DOM API can be found at:
+Esidl is a Web IDL compiler which generates C++ header files and source files
+from the interface definition files written in Web IDL. The latest W3C Web IDL
+specification is avairable at:
 
-        http://code.google.com/p/es-operating-system/wiki/CplusplusDOM
+        http://dev.w3.org/2006/webapi/WebIDL/v1.html  (First Edition)
+        http://dev.w3.org/2006/webapi/WebIDL/  (Second Edition)
 
-ES operating system is open source software. See the file LICENSE for 
-copying permission. The manuals, and some of the software programs, are
-under different terms; see the individual source files for details.
+Esidl is open source software. See the file LICENSE for copying permission.
+The manuals, and some of the software programs, are under different terms;
+see the individual source files for details.
 
 See http://code.google.com/p/es-operating-system/ for how to report problems.
-
