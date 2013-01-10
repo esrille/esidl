@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, 2012 Esrille Inc.
+ * Copyright 2011-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -31,17 +31,8 @@
 #include <iostream>
 #include <sstream>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-int yyparse(void);
-
 extern FILE* yyin;
-
-#ifdef __cplusplus
-}
-#endif
+extern int yyparse(void);
 
 namespace
 {

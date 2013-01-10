@@ -14,4 +14,3 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Web IDL compiler
  Esidl is a Web IDL compiler which generates C++ header and source 
  files from the interface definitions written in Web IDL.
-

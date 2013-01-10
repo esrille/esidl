@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, 2012 Esrille Inc.
+ * Copyright 2011-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -40,8 +40,6 @@
 #else
 #define PRINTF(...)     printf(__VA_ARGS__)
 #endif
-
-extern "C" int yyparse(void);
 
 void yyerror(const char* str);
 
