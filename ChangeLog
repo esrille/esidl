@@ -1,3 +1,67 @@
+2013-01-10 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* README: Update
+
+2013-01-06 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (Messenger::setter, Messenger::at(const ParamDcl*)) : Generate
+	string const references for arguments of the enum types
+
+2013-01-04 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	Map [Constructor] to a static class function named 'construct' in the
+	C++11 binding.  Note there can be an interface that takes the same
+	interface type as the only constructor argument, which cannot be
+	distinguished from the C++ copy constructor.
+
+	* (Messenger::at(const OpDcl*, const std::string&), MessengerInvoke::
+	writeInvoke, MessengerInvoke::at(const OpDcl*)) : Refine
+
+2013-01-03 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (MessengerInclude::at(const Interface*)) : Treat unnamed properties
+	as overloaded
+
+2013-01-02 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (Interface::processExtendedAttributes) : Fix to set name to partial
+	interfaces
+
+2012-12-31 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (Partial, PartialDefinition, PartialInterface, PartialDictionary,
+	Meta::at(const Interface*)) : Support partial dictionary definitions
+
+2012-12-31 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (ByteString) : New from Web IDL 2nd ed.
+
+2012-12-31 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (Meta::at(const Type*), Messenger::at(const Type*)) : Bind
+	'unrestricted float' and 'unrestricted double' to float and double
+	for now
+
+2012-12-31 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (Qualifiers) : Add a comment for 'omittable'
+
+2012-12-31 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (NonAnyType) : Allow 'Date?' to be parsed
+
+2012-12-31 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (Interface::collectSupplementals) : Add an assert
+
+2012-12-30 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (AC_INIT) : Set version to 0.3.0
+
+2012-12-14 Shiki Okasaka <shiki.okasaka@gmail.com>
+
+	* configure.ac : Set version to 0.2.2 ChangeLog : Update
+
 2012-12-11 01:34  Shiki.Okasaka@gmail.com
 
 	* include/messenger.h: (Messenger::setter, Messenger::at(const
