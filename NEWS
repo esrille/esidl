@@ -1,0 +1,58 @@
+New in 0.3.0 [2013-01-11]:
+
+* Web IDL Core
+
+  - Support 'Data?', 'ByteString', 'unrestricted float' and 'unrestricted double'
+  - Support partial dictionary definitions
+
+* C++11 binding
+
+  - Map [Constructor] to a static class function named 'construct'
+  - Map 'unrestricted float' and 'unrestricted double' to float and double
+  - Map 'ByteString' to std::u16string
+  - Generate string const references for arguments of enum types
+
+* Support Fedora 18
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+New in 0.2.2 [2012-12-14]:
+
+* C++11 binding
+
+  - Generate string const references for function arguments
+  - Generate dispatch() using Any::toArrayIndex for accessing indexed properties
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+New in 0.2.1 [2012-12-01]:
+
+* C++11 binding
+
+  - Fixed bugs around special operations
+
+* Support Ubuntu 12.10
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+New in 0.2.0 [2012/07/01]:
+
+* Web IDL Core
+
+  - Support static operations, enumerations, union types, callback functions,
+    and partial interface definitions
+
+* C++11 binding
+
+  - Support new message-oriented C++11 Web IDL binding based on duck typing
+  - Generate string const references for function arguments
+  - Map union types to Any
+  - Map callback function to functors
+
+* Included bridges for JSAPI and V8
+
+* Support Fedora 17
+
+-----
+
+Copyright 2010-2013 Esrille Inc.
