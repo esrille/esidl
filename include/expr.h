@@ -39,6 +39,8 @@ inline Literal::operator bool() const
     }
 
     // syntax error
+    report("Syntax error: %s.", name.c_str());
+    std::exit(EXIT_FAILURE);
 }
 
 inline Literal::operator char() const

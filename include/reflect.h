@@ -774,6 +774,8 @@ public:
                 info = Method::skip(info);
                 break;
             }
+
+            return info;
         }
 
     public:

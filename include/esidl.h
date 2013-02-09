@@ -652,12 +652,12 @@ public:
 
     static int incLevel()
     {
-        ++level;
+        return ++level;
     }
 
     static int decLevel()
     {
-        --level;
+        return --level;
     }
 
     static const char* getBaseObjectName()
