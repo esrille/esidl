@@ -68,12 +68,12 @@ class Formatter
                 break;
             }
         } while (buffer < p);
-        fprintf(file, "%.*s\n", p - buffer, buffer);
+        fprintf(file, "%.*s\n", static_cast<int>(p - buffer), buffer);
         fprintf(file, "%s", indentString.c_str());
         fprintf(file, "%c", c);
         if (*rest)
         {
-            fprintf(file, rest);
+            fputs(rest, file);
         }
     }
 
