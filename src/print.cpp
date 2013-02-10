@@ -44,16 +44,14 @@ class Print : public Visitor
         }
 
         const NodeList* attrlist = node->getExtendedAttributes();
-        int count = 0;
         printf("[");
         for (NodeList::const_iterator i = attrlist->begin();
              i != attrlist->end();
              ++i)
         {
             (*i)->accept(this);
-            ++count;
         }
-        printf("] ", count);
+        printf("] ");
     }
 public:
     virtual void at(const Node* node)
