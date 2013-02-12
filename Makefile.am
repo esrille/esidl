@@ -99,6 +99,7 @@ EXTRA_DIST = \
 	debian/rules \
 	debian/source/format \
 	LICENSE \
+	NOTICE \
 	dom/COPYRIGHT.html \
 	dom/2dcontext.idl \
 	dom/arrays.idl \
