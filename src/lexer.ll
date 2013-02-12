@@ -33,7 +33,7 @@
 %{
 
 #include "esidl.h"
-#include "parser.h"
+#include "parser.hh"
 
 #ifndef VERBOSE
 #define PRINTF(...)     (__VA_ARGS__)

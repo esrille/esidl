@@ -328,7 +328,7 @@ top_srcdir = @top_srcdir@
 @ENABLE_V8API_TRUE@V8APIDIR = v8api
 SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR) $(V8APIDIR)
 DIST_SUBDIRS = testsuite java cplusplus npapi jsapi v8api
-@NACL_FALSE@BUILT_SOURCES = lexer.cc parser.cc parser.h
+@NACL_FALSE@BUILT_SOURCES = lexer.cc parser.cc parser.hh
 @NACL_FALSE@esidl_SOURCES = \
 @NACL_FALSE@	include/cplusplus.h\
 @NACL_FALSE@	include/cplusplusCall.h \
@@ -1229,7 +1229,7 @@ uninstall-am: uninstall-binPROGRAMS
 @NACL_FALSE@	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
 
 @NACL_FALSE@dist-hook:
-@NACL_FALSE@	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.h
+@NACL_FALSE@	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.hh
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

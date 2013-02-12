@@ -33,7 +33,7 @@ DIST_SUBDIRS = testsuite java cplusplus npapi jsapi v8api
 
 if !NACL
 
-BUILT_SOURCES = lexer.cc parser.cc parser.h
+BUILT_SOURCES = lexer.cc parser.cc parser.hh
 
 bin_PROGRAMS = esidl
 
@@ -77,7 +77,7 @@ clean-local:
 	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
 
 dist-hook:
-	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.h
+	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.hh
 
 endif
 

@@ -17,7 +17,7 @@
  */
 
 #include "esidl.h"
-#include "parser.h"
+#include "parser.hh"
 #include "forward.h"
 
 #include <sys/stat.h>
