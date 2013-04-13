@@ -1,3 +1,33 @@
+2013-04-12 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* configure.ac (AC_INIT): Set version to 0.3.1
+
+2013-02-12 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* Makefile.am, src/esidl.cpp, src/lexer.ll: Fix to include parser.hh
+
+2013-02-12 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* NOTICE: New Makefile.am (EXTRA_DIST): Add NOTICE
+
+2013-02-10 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* (printExtendedAttributes): Clean up
+
+2013-02-09 Yusuke Suzuki <utatane.tea@gmail.com>
+
+	Suppress warning "control reaches end of non-void function"
+
+	* (Formatter::breakLineAt): Suppress g++ warnings#4
+	* (Node::incLevel): Return level
+	* (Node::decLevel): Return level
+	* (Literal::operator bool): Insert syntax error report
+	* (Interface::step): Return info string
+
+2013-02-09 Yusuke Suzuki <utatane.tea@gmail.com>
+
+	* (Formatter::breakLineAt): Suppress g++ warnings
+
 2013-01-11 Shiki Okasaka <Shiki.Okasaka@gmail.com>
 
 	* NEWS : New
