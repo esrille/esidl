@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, 2011 Esrille Inc.
+ * Copyright 2010-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -476,7 +476,7 @@ public:
         {
             included = "No" + included;
         }
-        for (int i = 0; i < included.size(); ++i)
+        for (size_t i = 0; i < included.size(); ++i)
         {
             char c = included[i];
             included[i] = isalnum(c) ? (capitalize ? toupper(c) : c) : '_';

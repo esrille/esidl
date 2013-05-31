@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Esrille Inc.
+ * Copyright 2012, 2013 Esrille Inc.
  * Copyright 2009, 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -290,10 +290,10 @@ public:
         write(" {\n");
             bool hasBuffer = false;
             Node* spec = node->getSpec();
-            unsigned paramIndex;
+            size_t paramIndex;
 
             // Convert parameters into the array of 'Any'
-            unsigned paramCount = getParamCount();
+            size_t paramCount = getParamCount();
             ++paramCount;  // for 'this'
             if (spec->isSequence(node) ||
                 stringTypeName == "char*" && (spec->isString(node) ||

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2013 Esrille Inc.
  * Copyright 2008, 2009 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -125,7 +126,7 @@ public:
             node->getExtends()->accept(this);
         }
 
-        printf(" // countCount: %d, methodCount %d, rank %d",
+        printf(" // countCount: %zu, methodCount %zu, rank %d",
                node->getConstCount(), node->getMethodCount(), node->getRank());
 
         if (!node->isLeaf())
@@ -229,7 +230,7 @@ public:
             node->getRaises()->accept(this);
             printf(")");
         }
-        printf(" /* paramCount: %d */", node->getParamCount());
+        printf(" /* paramCount: %zu */", node->getParamCount());
     }
 
     virtual void at(const ParamDcl* node)

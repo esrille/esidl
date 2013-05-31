@@ -858,7 +858,7 @@ Node* ScopedName::searchCplusplus(const Node* scope) const
 }
 
 // This method works only after AdjustMethodCount visitor has been applied.
-int Interface::getInterfaceCount() const
+size_t Interface::getInterfaceCount() const
 {
     if (interfaceCount != 0)
     {

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2013 Esrille Inc.
  * Copyright 2009, 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +25,7 @@ std::string getFileName(const std::string& name)
 {
     std::string lowered(name);
 
-    for (int i = 0; i < lowered.size(); ++i)
+    for (size_t i = 0; i < lowered.size(); ++i)
     {
         char c = lowered[i];
         lowered[i] = tolower(c);

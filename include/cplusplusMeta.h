@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Esrille Inc.
+ * Copyright 2010-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -94,7 +94,7 @@ public:
 
     virtual void at(const OpDcl* node)
     {
-        for (int i = 0; i < node->getMethodCount(); ++i)
+        for (size_t i = 0; i < node->getMethodCount(); ++i)
         {
             if (i != 0)
             {

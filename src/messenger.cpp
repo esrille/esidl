@@ -729,17 +729,17 @@ public:
             pos += 2;
         }
 
-        int i;
+        size_t i;
         for (i = 0;
              i < prevName.size() && i < packageName.size() && prevName[i] == packageName[i];
              ++i)
         {
         }
-        for (int j = i; j < prevName.size(); ++j)
+        for (size_t j = i; j < prevName.size(); ++j)
         {
             writeln("}");
         }
-        for (int j = i; j < packageName.size(); ++j)
+        for (size_t j = i; j < packageName.size(); ++j)
         {
             writeln("namespace %s {", Messenger::getEscapedName(packageName[j]).c_str());
         }
@@ -752,7 +752,7 @@ public:
         if (0 < packageName.size())
         {
             write("\n");
-            for (int i = 0; i < packageName.size(); ++i)
+            for (size_t i = 0; i < packageName.size(); ++i)
             {
                 writeln("}");
             }

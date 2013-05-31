@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Esrille Inc.
+ * Copyright 2010-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -334,7 +334,7 @@ public:
     {
         Interface* interface = dynamic_cast<Interface*>(node->getParent());
         assert(interface);
-        int paramCount = getParamCount(node);
+        size_t paramCount = getParamCount(node);
 
         writetab();
         if (asSpecial && (node->getAttr() & OpDcl::IndexMask)) {
@@ -389,7 +389,7 @@ public:
 
         if (overloaded)
         {
-            unsigned n = 0;
+            size_t n = 0;
             for (NodeList::iterator i = node->begin(); n < paramCount && i != node->end(); ++i, ++n)
             {
                 ParamDcl* param = dynamic_cast<ParamDcl*>(*i);

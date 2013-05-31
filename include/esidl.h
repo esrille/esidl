@@ -1036,10 +1036,10 @@ public:
 
 private:
     Node* extends;
-    int constCount;
-    int methodCount;
-    int staticMethodCount;
-    mutable int interfaceCount;  // total number of non-supplemental interfaces this interface will implement excluding Object.
+    size_t constCount;
+    size_t methodCount;
+    size_t staticMethodCount;
+    mutable size_t interfaceCount;  // total number of non-supplemental interfaces this interface will implement excluding Object.
     Interface* constructor;
     std::list<const Interface*> supplementalList;
     std::list<const Interface*> implementList;
@@ -1115,37 +1115,37 @@ public:
         return true;
     }
 
-    int getConstCount() const
+    size_t getConstCount() const
     {
         return constCount;
     }
 
-    int getMethodCount() const
+    size_t getMethodCount() const
     {
         return methodCount;
     }
 
-    int addMethodCount(int count)
+    size_t addMethodCount(int count)
     {
         methodCount += count;
         return methodCount;
     }
 
-    int getStaticMethodCount() const
+    size_t getStaticMethodCount() const
     {
         return staticMethodCount;
     }
 
-    int addStaticMethodCount(int count)
+    size_t addStaticMethodCount(int count)
     {
         staticMethodCount += count;
         return staticMethodCount;
     }
 
-    int getInterfaceCount() const;
+    size_t getInterfaceCount() const;
     void getInterfaceList(std::list<const Interface*>* list) const;
 
-    int getSuperCount() const
+    size_t getSuperCount() const
     {
         Node* extends = getExtends();
         if (!extends)
@@ -1800,9 +1800,9 @@ public:
 class OpDcl : public Member
 {
     Node* raises;
-    int paramCount;
-    int methodCount;
-    std::vector<int> paramCounts;  // for each method
+    size_t paramCount;
+    size_t methodCount;
+    std::vector<size_t> paramCounts;  // for each method
 
     mutable std::vector<std::string> metaOps;
 
@@ -1823,7 +1823,7 @@ public:
     virtual void add(Node* node);
     void processExtendedAttributes();
 
-    std::string& getMetaOp(int i) const
+    std::string& getMetaOp(size_t i) const
     {
         assert(i < methodCount);
         if (metaOps.size() < methodCount)
@@ -1843,7 +1843,7 @@ public:
         this->raises = raises;
     }
 
-    int getRaisesCount() const
+    size_t getRaisesCount() const
     {
         if (raises == 0)
         {
@@ -1856,19 +1856,19 @@ public:
     // Need to be called after the source file is completely read.
     void adjustMethodCount();
 
-    int getParamCount() const
+    size_t getParamCount() const
     {
         return paramCount;
     }
 
-    int getMethodCount() const
+    size_t getMethodCount() const
     {
         return methodCount;
     }
 
-    int getParamCount(int i) const
+    size_t getParamCount(size_t i) const
     {
-        assert(0 <= i && i < methodCount);
+        assert(i < methodCount);
         return (methodCount == 1) ? paramCount : paramCounts[i];
     }
 
