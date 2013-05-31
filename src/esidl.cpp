@@ -257,7 +257,7 @@ void Module::add(Node* node)
 {
     if (node->getRank() == 1)
     {
-        if (Interface* interface = dynamic_cast<Interface*>(node))
+        if (dynamic_cast<Interface*>(node))
         {
             if (!node->isLeaf())
             {

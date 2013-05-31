@@ -956,7 +956,6 @@ public:
         {
             if (dynamic_cast<Module*>((*i)->getParent()))
             {
-                size_t pos = ns->enter((*i)->getPrefixedName());
                 MessengerInterface messengerInterface(this, stringTypeName, objectTypeName, useExceptions);
                 if (Member* type = dynamic_cast<Member*>(*i))
                     messengerInterface.at(type);
@@ -1023,8 +1022,6 @@ public:
 
     virtual void at(const Interface* node)
     {
-        Interface* constructor = node->getConstructor();
-
         if (!currentNode)
         {
             currentNode = node->getParent();
@@ -1299,8 +1296,6 @@ public:
 
     virtual void at(const Interface* node)
     {
-        Interface* constructor = node->getConstructor();
-
         if (!currentNode)
         {
             currentNode = node->getParent();
@@ -1563,8 +1558,6 @@ public:
 
     virtual void at(const Interface* node)
     {
-        Interface* constructor = node->getConstructor();
-
         if (!currentNode)
         {
             currentNode = node->getParent();

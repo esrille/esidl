@@ -94,8 +94,6 @@ public:
 
     virtual void at(const Interface* node)
     {
-        Interface* constructor = node->getConstructor();
-
         if (!currentNode)
         {
             currentNode = node->getParent();

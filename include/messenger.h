@@ -288,7 +288,6 @@ public:
     virtual void at(const ArrayType* node)
     {
         Node* spec = node->getSpec();
-        Type* type = dynamic_cast<Type*>(spec);
         // Note we don't need separate array types for primitive types in C++.
         std::string name = getScopedName(targetModuleName, std::string(Node::getDefaultPrefix()) + "::ObjectArray");
         write("%s<", name.c_str());
