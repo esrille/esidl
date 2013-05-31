@@ -956,6 +956,7 @@ public:
         {
             if (dynamic_cast<Module*>((*i)->getParent()))
             {
+                ns->enter((*i)->getPrefixedName());
                 MessengerInterface messengerInterface(this, stringTypeName, objectTypeName, useExceptions);
                 if (Member* type = dynamic_cast<Member*>(*i))
                     messengerInterface.at(type);
