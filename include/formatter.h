@@ -101,8 +101,8 @@ public:
         indentLevel(4),
         caseIndentation(0),
         namespaceIndentation(false),
-        bracesOnItsOwnLine(true),
-        bracesOnFuncDeclLine(false)
+        bracesOnFuncDeclLine(false),
+        bracesOnItsOwnLine(true)
     {
         initialize();
         if (indent == "google")
@@ -121,8 +121,8 @@ public:
         indentLevel(f->indentLevel),
         caseIndentation(f->caseIndentation),
         namespaceIndentation(f->namespaceIndentation),
-        bracesOnItsOwnLine(f->bracesOnItsOwnLine),
-        bracesOnFuncDeclLine(f->bracesOnFuncDeclLine)
+        bracesOnFuncDeclLine(f->bracesOnFuncDeclLine),
+        bracesOnItsOwnLine(f->bracesOnItsOwnLine)
     {
         initialize();
     }
