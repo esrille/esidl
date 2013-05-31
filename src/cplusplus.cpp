@@ -840,7 +840,6 @@ public:
         {
             if (dynamic_cast<Module*>((*i)->getParent()))
             {
-                size_t pos = ns->enter((*i)->getPrefixedName());
                 CPlusPlusInterface cplusplusInterface(this, stringTypeName, objectTypeName, useExceptions);
                 cplusplusInterface.at(*i);
                 newline = true;
