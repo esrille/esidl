@@ -221,9 +221,9 @@ public:
         parent(0),
         children(0),
         offset(0),
+        rank(level),
         extendedAttributes(0),
         source(getFilename()),
-        rank(level),
         hash(0)
     {
     }
@@ -231,12 +231,12 @@ public:
     Node(std::string name) :
         attr(0),
         parent(0),
-        name(name),
         children(0),
+        name(name),
         offset(0),
+        rank(level),
         extendedAttributes(0),
         source(getFilename()),
-        rank(level),
         hash(0)
     {
     }
@@ -245,9 +245,9 @@ public:
         attr(0),
         parent(0),
         offset(0),
+        rank(level),
         extendedAttributes(0),
         source(getFilename()),
-        rank(level),
         hash(0)
     {
         setChildren(children);
