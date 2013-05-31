@@ -258,15 +258,15 @@ public:
         parent(0),
         name(name),
         offset(0),
+        rank(level),
         extendedAttributes(0),
         source(getFilename()),
-        rank(level),
         hash(0)
     {
         setChildren(children);
     }
 
-    ~Node()
+    virtual ~Node()
     {
         if (parent)
         {
