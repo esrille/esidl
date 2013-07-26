@@ -50,6 +50,7 @@ static long stdinLine;
 {
     int                     attr;
     char*                   name;
+    const char*             cname;
     Node*                   node;
     NodeList*               nodeList;
     std::list<std::string>* nameList;
@@ -213,7 +214,7 @@ int yylex();
 %type <node>        MultExpr
 %type <node>        UnaryExpr
 %type <node>        PrimaryExpr
-%type <name>        UnaryOperator
+%type <cname>       UnaryOperator
 %type <node>        Preprocessor
 %type <node>        positive_int_const
 %type <name>        JavaDoc
