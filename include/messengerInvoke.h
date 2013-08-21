@@ -203,24 +203,32 @@ public:
                 }
             }
             const char* post = writeInvoke(node, node->getSpec());
-            switch (node->getAttr() & OpDcl::IndexMask)
+            if ((node->getAttr() & Node::UnnamedProperty) && (node->getAttr() & OpDcl::IndexMask))
             {
-            case OpDcl::IndexCreator:
-                write("SPECIAL_CREATOR_");
-                break;
-            case OpDcl::IndexDeleter:
-                write("SPECIAL_DELETER_");
-                break;
-            case OpDcl::IndexGetter:
-                write("SPECIAL_GETTER_");
-                break;
-            case OpDcl::IndexSetter:
-                write("SPECIAL_SETTER_");
-                break;
-            case OpDcl::IndexSetter | OpDcl::IndexCreator:
-                write("SPECIAL_SETTER_CREATOR_");
-                break;
-            case 0:
+                switch (node->getAttr() & OpDcl::IndexMask)
+                {
+                case OpDcl::IndexCreator:
+                    write("SPECIAL_CREATOR_");
+                    break;
+                case OpDcl::IndexDeleter:
+                    write("SPECIAL_DELETER_");
+                    break;
+                case OpDcl::IndexGetter:
+                    write("SPECIAL_GETTER_");
+                    break;
+                case OpDcl::IndexSetter:
+                    write("SPECIAL_SETTER_");
+                    break;
+                case OpDcl::IndexSetter | OpDcl::IndexCreator:
+                    write("SPECIAL_SETTER_CREATOR_");
+                    break;
+                default:
+                    node->check(node->getAttr() & OpDcl::IndexMask, "%s has invalid specials", node->getName().c_str(), node->getAttr());
+                    break;
+                }
+            }
+            else
+            {
                 if (interface->isCallback())
                 {
                     write("CALLBACK_ | ");
@@ -233,10 +241,6 @@ public:
                 {
                     write("%u + %s.size()", paramCount, variadicName.c_str());
                 }
-                break;
-            default:
-                node->check(node->getAttr(), "%s has invalid specials", node->getName().c_str(), node->getAttr());
-                break;
             }
             write((0 < getParamCount()) ? ", arguments_" : ", 0");
             write("%s;\n", post);
