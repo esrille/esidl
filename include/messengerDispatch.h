@@ -155,7 +155,7 @@ public:
             }
             for (std::multimap<uint32_t, OpDcl*>::iterator i = operations.begin(); i != operations.end(); ++i)
             {
-	        asSpecial = (i->first == 0);
+                asSpecial = (i->first == 0);
                 writeln("case 0x%x:", i->first);
                 indent();
                 int count = operations.count(i->first);
@@ -187,7 +187,7 @@ public:
                 unindent();
                 if (i->first == 0)
                 {
-		    asSpecial = false;
+                    asSpecial = false;
                     doneSelectorZero = true;
                     writeSelectorZero(stringifier);
                 }
@@ -490,7 +490,7 @@ public:
             spec->accept(this);
             write(">(arguments[%u])", getParamCount() - 1);
         }
-     }
- };
+    }
+};
 
 #endif  // ESIDL_MESSENGER_DISPATCH_H_INCLUDEDx
