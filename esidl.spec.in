@@ -19,7 +19,7 @@ files from the interface definitions written in Web IDL.
 
 %build
 %configure
-make
+make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
