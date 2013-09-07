@@ -1,3 +1,72 @@
+2013-09-05  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* debian/rules: debian/rules : Support parallel make
+
+2013-09-05  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* esidl.spec.in: esidl.spec.in : Support parallel make; cf. Fedora
+	Packaging:Guidelines
+
+2013-08-21  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* include/messengerInvoke.h: (MessengerInvoke::at(const OpDcl*)) :
+	Fix not to use special operations for named operation invocations;
+	cf. 946344e5
+
+2013-08-21  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* configure, configure.ac:  configure.ac (AC_INIT): Set version to 0.3.2
+
+2013-08-21  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* include/messengerDispatch.h: include/messengerDispatch.h : Clean
+	up
+
+2013-07-26  Yusuke Suzuki <utatane.tea@gmail.com>
+
+	* src/parser.yy: (parser.yy) : Remove const char* to char* cast
+
+2013-05-31  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* include/cplusplus.h, include/cplusplusInvoke.h,
+	include/cplusplusMeta.h, include/cxx.h, include/esidl.h,
+	include/formatter.h, include/info.h, include/messenger.h,
+	include/messengerDispatch.h, src/cplusplus.cpp, src/esidl.cpp,
+	src/messenger.cpp, src/print.cpp, src/skeleton.cpp,
+	src/template.cpp: Fix warnings
+
+2013-05-31  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* src/messenger.cpp: (MessengerImport::print) : Fix a bug
+
+2013-05-31  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* include/messenger.h, include/messengerInvoke.h,
+	src/cplusplus.cpp, src/esidl.cpp, src/java.cpp, src/messenger.cpp:
+	Clean up unused variables.
+
+2013-05-31  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* include/cplusplus.h, include/cplusplusInvoke.h,
+	include/cplusplusTemplate.h, src/cplusplus.cpp: Clean up unused
+	variables.
+
+2013-05-31  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* include/formatter.h: (Formatter::Formatter) : Clean up
+
+2013-05-31  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* include/esidl.h: (Node::~Node) : Fix a bug
+
+2013-05-31  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* include/esidl.h: (Node::Node) : Clean up
+
+2013-04-13  Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* ChangeLog, NEWS: Update
+
 2013-04-12 Shiki Okasaka <Shiki.Okasaka@gmail.com>
 
 	* configure.ac (AC_INIT): Set version to 0.3.1
