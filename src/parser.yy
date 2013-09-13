@@ -215,6 +215,7 @@ int yylex();
 %type <node>        UnaryExpr
 %type <node>        PrimaryExpr
 %type <cname>       UnaryOperator
+%type <attr>        LinemarkerFlags
 %type <node>        Preprocessor
 %type <node>        positive_int_const
 %type <name>        JavaDoc
@@ -1753,67 +1754,39 @@ positive_int_const :
     ConstExpr
     ;
 
+// FLAGS: 1) new file 2) return 4) system file 8) "C"
+LinemarkerFlags :
+    /* empty */
+        {
+            $$ = 0;
+        }
+    | LinemarkerFlags INTEGER_LITERAL
+        {
+            int flag = atoi($2);
+            if (flag)
+            {
+                $$ = $1 | (1u << (flag - 1));
+            }
+            free($2);
+        }
+    ;
+
 Preprocessor :
-    POUND_SIGN INTEGER_LITERAL STRING_LITERAL INTEGER_LITERAL EOL
+    POUND_SIGN INTEGER_LITERAL STRING_LITERAL LinemarkerFlags EOL
         {
-            // # LINENUM FILENAME FLAGS
-            // FLAGS: 1) new file 2) return
-            switch (atoi($4))
+            // # linenum filename flags
+            if ($4 && 1)
             {
-            case 1: // New file
-                getCurrent()->add(new Include($3));
+                // New file
+                getCurrent()->add(new Include($3, ($4 & 4)));
                 setFilename($3);
-                break;
-            case 2: // Return
+            }
+            else if ($4 && 2)
+            {
+                // Return
                 setFilename($3);
-                break;
             }
-            if (strcmp($3, "\"<stdin>\"") == 0)
-            {
-                stdinLine = atol($2);
-                yylloc.last_line = stdinLine - stdinOffset;
-            }
-            else
-            {
-                yylloc.last_line = atol($2);
-            }
-            free($2);
-            free($3);
-            free($4);
-            $$ = 0;
-        }
-    | POUND_SIGN INTEGER_LITERAL STRING_LITERAL INTEGER_LITERAL INTEGER_LITERAL INTEGER_LITERAL EOL
-        {
-            // # LINENUM FILENAME FLAGS
-            // FLAGS: 1) new file 2) return
-            switch (atoi($4))
-            {
-            case 1: // New file
-                getCurrent()->add(new Include($3, strcmp("3", $5) == 0));
-                setFilename($3);
-                break;
-            case 2: // Return
-                setFilename($3);
-                break;
-            }
-            if (strcmp($3, "\"<stdin>\"") == 0)
-            {
-                stdinLine = atol($2);
-                yylloc.last_line = stdinLine - stdinOffset;
-            }
-            else
-            {
-                yylloc.last_line = atol($2);
-            }
-            free($2);
-            free($3);
-            free($4);
-            $$ = 0;
-        }
-    | POUND_SIGN INTEGER_LITERAL STRING_LITERAL EOL
-        {
-            // # LINENUM FILENAME
-            if (strcmp("1", $2) == 0)
+            else if (strcmp("1", $2) == 0)
             {
                 setFilename($3);
             }
