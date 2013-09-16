@@ -1,3 +1,11 @@
+2013-09-13 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* src/parser.yy (Preprocessor) : Process linemarkers correctly
+
+2013-09-13 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* configure.ac (AC_INIT): Set version to 0.3.3
+
 2013-09-05  Shiki Okasaka <Shiki.Okasaka@gmail.com>
 
 	* debian/rules : Support parallel make

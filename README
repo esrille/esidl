@@ -1,6 +1,6 @@
 This directory contains the esidl Web IDL compiler.
 
-Esidl is a Web IDL compiler which generates C++ header files and source files
+Esidl is a Web IDL compiler for generating C++ header files and source files
 from the interface definition files written in Web IDL. The latest W3C Web IDL
 specification is available at:
 
