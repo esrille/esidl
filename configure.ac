@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script
-AC_INIT([esidl], [0.3.4])
+AC_INIT([esidl], [0.4.0])
 AC_CONFIG_AUX_DIR(.)
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([foreign no-define])
