@@ -272,8 +272,16 @@ public:
         }
 #endif
 
+        writeln("");
+        writeln("%s() = default;", getEscapedName(getClassName(node)).c_str());
+
+        writeln("%s(const %s&) = default;", getEscapedName(getClassName(node)).c_str(), getEscapedName(getClassName(node)).c_str());
+        writeln("%s(%s&&) = default;", getEscapedName(getClassName(node)).c_str(), getEscapedName(getClassName(node)).c_str());
+        writeln("%s& operator=(const %s&) = default;", getEscapedName(getClassName(node)).c_str(), getEscapedName(getClassName(node)).c_str());
+        writeln("%s& operator=(%s&&) = default;", getEscapedName(getClassName(node)).c_str(), getEscapedName(getClassName(node)).c_str());
+
         writetab();
-        write("%s(Object* object)", getEscapedName(getClassName(node)).c_str());
+        write("%s(const Object* object)", getEscapedName(getClassName(node)).c_str());
         if (node->getExtends())
         {
             write(" :\n");
@@ -292,13 +300,11 @@ public:
             }
             write(" ");
             unindent();
-            write("{\n");
         }
+        write("{\n");
         writeln("}");
-
-        // copy constructor
         writetab();
-        write("%s(const %s& object)", getEscapedName(getClassName(node)).c_str(), getEscapedName(getClassName(node)).c_str());
+        write("explicit %s(Imp* pimpl)", getEscapedName(getClassName(node)).c_str());
         if (node->getExtends())
         {
             write(" :\n");
@@ -312,17 +318,72 @@ public:
             {
                 write(separator);
                 (*i)->accept(this);
-                write("(object)");
+                write("(pimpl)");
                 separator = ", ";
             }
             write(" ");
             unindent();
-            write("{\n");
         }
+        write("{\n");
         writeln("}");
 
-        // assignment
-        writeln("%s& operator=(const %s& object) {", getEscapedName(getClassName(node)).c_str(), getEscapedName(getClassName(node)).c_str());
+        writetab();
+        write("%s(std::nullptr_t)\n{\n", getEscapedName(getClassName(node)).c_str());
+        writeln("}");
+
+        writeln("");
+        writeln("template <class IMP>");
+        writetab();
+        write("%s(const std::shared_ptr<IMP>& pimpl)", getEscapedName(getClassName(node)).c_str());
+        if (node->getExtends())
+        {
+            write(" :\n");
+            indent();
+            writetab();
+
+            const char* separator = "";
+            for (NodeList::iterator i = node->getExtends()->begin();
+                 i != node->getExtends()->end();
+                 ++i)
+            {
+                write(separator);
+                (*i)->accept(this);
+                write("(pimpl)");
+                separator = ", ";
+            }
+            write(" ");
+            unindent();
+        }
+        write("{\n");
+        writeln("}");
+        writeln("template <class IMP>");
+        writetab();
+        write("%s(std::shared_ptr<IMP>&& pimpl)", getEscapedName(getClassName(node)).c_str());
+        if (node->getExtends())
+        {
+            write(" :\n");
+            indent();
+            writetab();
+
+            const char* separator = "";
+            for (NodeList::iterator i = node->getExtends()->begin();
+                 i != node->getExtends()->end();
+                 ++i)
+            {
+                write(separator);
+                (*i)->accept(this);
+                write("(pimpl)");
+                separator = ", ";
+            }
+            write(" ");
+            unindent();
+        }
+        write("{\n");
+        writeln("}");
+
+        writeln("");
+        writeln("template <class IMP>");
+        writeln("%s& operator=(const std::shared_ptr<IMP>& pimpl) {", getEscapedName(getClassName(node)).c_str());
         if (node->getExtends())
         {
             for (NodeList::iterator i = node->getExtends()->begin();
@@ -331,10 +392,25 @@ public:
             {
                 writetab();
                 (*i)->accept(this);
-                write("::operator =(object);\n");
+                write("::operator=(pimpl);\n");
+                writeln("return *this;");
             }
         }
-            writeln("return *this;");
+        writeln("}");
+        writeln("template <class IMP>");
+        writeln("%s& operator=(std::shared_ptr<IMP>&& pimpl) {", getEscapedName(getClassName(node)).c_str());
+        if (node->getExtends())
+        {
+            for (NodeList::iterator i = node->getExtends()->begin();
+                 i != node->getExtends()->end();
+                 ++i)
+            {
+                writetab();
+                (*i)->accept(this);
+                write("::operator=(pimpl);\n");
+                writeln("return *this;");
+            }
+        }
         writeln("}");
 
         writeln("");
