@@ -88,6 +88,7 @@ AM_CPPFLAGS = \
 	-iquote $(srcdir)/src
 
 EXTRA_DIST = \
+	install-prerequisites \
 	esidl.spec.in \
 	esidl.spec \
 	debian/changelog \
