@@ -1,8 +1,4 @@
-if NACL
-esidl=esidl
-else
 esidl=../esidl
-endif
 
 SUFFIXES = .java .idl
 

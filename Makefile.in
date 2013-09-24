@@ -78,14 +78,13 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-target_triplet = @target@
-@NACL_FALSE@bin_PROGRAMS = esidl$(EXEEXT)
+bin_PROGRAMS = esidl$(EXEEXT)
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
 	$(srcdir)/esidl.spec.in $(top_srcdir)/debian/changelog.in \
 	lexer.cc parser.hh parser.cc depcomp ylwrap ChangeLog NEWS \
-	README config.guess config.sub install-sh missing ltmain.sh
+	README config.guess config.sub install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -97,32 +96,15 @@ CONFIG_CLEAN_FILES = esidl.spec debian/changelog
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__esidl_SOURCES_DIST = include/cplusplus.h include/cplusplusCall.h \
-	include/cplusplusInvoke.h include/cplusplusMeta.h \
-	include/cplusplusSrc.h include/cplusplusTemplate.h \
-	include/cxx.h include/esidl.h include/expr.h \
-	include/formatter.h include/forward.h include/info.h \
-	include/java.h include/messenger.h include/messengerDispatch.h \
-	include/messengerInvoke.h include/messengerMeta.h \
-	include/meta.h include/reflect.h include/sheet.h include/utf.h \
-	src/messenger.cpp src/cplusplus.cpp src/cxx.cpp src/driver.cpp \
-	src/esidl.cpp src/java.cpp src/lexer.ll src/parser.yy \
-	src/print.cpp src/skeleton.cpp src/template.cpp
-@NACL_FALSE@am_esidl_OBJECTS = esidl-messenger.$(OBJEXT) \
-@NACL_FALSE@	esidl-cplusplus.$(OBJEXT) esidl-cxx.$(OBJEXT) \
-@NACL_FALSE@	esidl-driver.$(OBJEXT) esidl-esidl.$(OBJEXT) \
-@NACL_FALSE@	esidl-java.$(OBJEXT) esidl-lexer.$(OBJEXT) \
-@NACL_FALSE@	esidl-parser.$(OBJEXT) esidl-print.$(OBJEXT) \
-@NACL_FALSE@	esidl-skeleton.$(OBJEXT) esidl-template.$(OBJEXT)
+am_esidl_OBJECTS = esidl-messenger.$(OBJEXT) esidl-cxx.$(OBJEXT) \
+	esidl-driver.$(OBJEXT) esidl-esidl.$(OBJEXT) \
+	esidl-java.$(OBJEXT) esidl-lexer.$(OBJEXT) \
+	esidl-parser.$(OBJEXT) esidl-print.$(OBJEXT) \
+	esidl-skeleton.$(OBJEXT) esidl-template.$(OBJEXT)
 esidl_OBJECTS = $(am_esidl_OBJECTS)
 esidl_LDADD = $(LDADD)
-AM_V_lt = $(am__v_lt_@AM_V@)
-am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
-am__v_lt_0 = --silent
-am__v_lt_1 = 
-esidl_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(esidl_CXXFLAGS) \
-	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+esidl_LINK = $(CXXLD) $(esidl_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -139,27 +121,24 @@ DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_CXX = $(am__v_CXX_@AM_V@)
 am__v_CXX_ = $(am__v_CXX_@AM_DEFAULT_V@)
 am__v_CXX_0 = @echo "  CXX     " $@;
 am__v_CXX_1 = 
 CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
-	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
 AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
 LEXCOMPILE = $(LEX) $(AM_LFLAGS) $(LFLAGS)
-LTLEXCOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(LEX) $(AM_LFLAGS) $(LFLAGS)
 AM_V_LEX = $(am__v_LEX_@AM_V@)
 am__v_LEX_ = $(am__v_LEX_@AM_DEFAULT_V@)
 am__v_LEX_0 = @echo "  LEX     " $@;
@@ -168,32 +147,24 @@ YLWRAP = $(top_srcdir)/ylwrap
 am__yacc_c2h = sed -e s/cc$$/hh/ -e s/cpp$$/hpp/ -e s/cxx$$/hxx/ \
 		   -e s/c++$$/h++/ -e s/c$$/h/
 YACCCOMPILE = $(YACC) $(AM_YFLAGS) $(YFLAGS)
-LTYACCCOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(YACC) $(AM_YFLAGS) $(YFLAGS)
 AM_V_YACC = $(am__v_YACC_@AM_V@)
 am__v_YACC_ = $(am__v_YACC_@AM_DEFAULT_V@)
 am__v_YACC_0 = @echo "  YACC    " $@;
 am__v_YACC_1 = 
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CFLAGS) $(CFLAGS)
 AM_V_CC = $(am__v_CC_@AM_V@)
 am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
 am__v_CC_0 = @echo "  CC      " $@;
 am__v_CC_1 = 
 CCLD = $(CC)
-LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(esidl_SOURCES)
-DIST_SOURCES = $(am__esidl_SOURCES_DIST)
+DIST_SOURCES = $(esidl_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -280,7 +251,6 @@ distcleancheck_listfiles = find . -type f -print
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
-AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
@@ -291,50 +261,32 @@ CCASDEPMODE = @CCASDEPMODE@
 CCASFLAGS = @CCASFLAGS@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
-CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
-CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DLLTOOL = @DLLTOOL@
-DSYMUTIL = @DSYMUTIL@
-DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
-EGREP = @EGREP@
 EXEEXT = @EXEEXT@
-FGREP = @FGREP@
-GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-LD = @LD@
 LDFLAGS = @LDFLAGS@
 LEX = @LEX@
 LEXLIB = @LEXLIB@
 LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
-LIBTOOL = @LIBTOOL@
-LIPO = @LIPO@
-LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
-MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
-NM = @NM@
-NMEDIT = @NMEDIT@
-OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
-OTOOL = @OTOOL@
-OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -344,7 +296,6 @@ PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 RANLIB = @RANLIB@
-SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -355,10 +306,8 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
-ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -400,11 +349,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
-target = @target@
 target_alias = @target_alias@
-target_cpu = @target_cpu@
-target_os = @target_os@
-target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
@@ -412,50 +357,41 @@ top_srcdir = @top_srcdir@
 @ENABLE_JAVA_TRUE@JAVADIR = java
 @ENABLE_CPLUSPLUS_FALSE@CPLUSPLUSDIR = 
 @ENABLE_CPLUSPLUS_TRUE@CPLUSPLUSDIR = cplusplus
-@ENABLE_NPAPI_FALSE@NPAPIDIR = 
-@ENABLE_NPAPI_TRUE@NPAPIDIR = npapi
 @ENABLE_JSAPI_FALSE@JSAPIDIR = 
 @ENABLE_JSAPI_TRUE@JSAPIDIR = jsapi
 @ENABLE_V8API_FALSE@V8APIDIR = 
 @ENABLE_V8API_TRUE@V8APIDIR = v8api
-SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR) $(V8APIDIR)
-DIST_SUBDIRS = testsuite java cplusplus npapi jsapi v8api
-@NACL_FALSE@BUILT_SOURCES = lexer.cc parser.cc parser.hh
-@NACL_FALSE@esidl_SOURCES = \
-@NACL_FALSE@	include/cplusplus.h\
-@NACL_FALSE@	include/cplusplusCall.h \
-@NACL_FALSE@	include/cplusplusInvoke.h \
-@NACL_FALSE@	include/cplusplusMeta.h \
-@NACL_FALSE@	include/cplusplusSrc.h \
-@NACL_FALSE@	include/cplusplusTemplate.h \
-@NACL_FALSE@	include/cxx.h \
-@NACL_FALSE@	include/esidl.h \
-@NACL_FALSE@	include/expr.h \
-@NACL_FALSE@	include/formatter.h \
-@NACL_FALSE@	include/forward.h \
-@NACL_FALSE@	include/info.h \
-@NACL_FALSE@	include/java.h \
-@NACL_FALSE@	include/messenger.h \
-@NACL_FALSE@	include/messengerDispatch.h \
-@NACL_FALSE@	include/messengerInvoke.h \
-@NACL_FALSE@	include/messengerMeta.h \
-@NACL_FALSE@	include/meta.h \
-@NACL_FALSE@	include/reflect.h \
-@NACL_FALSE@	include/sheet.h \
-@NACL_FALSE@	include/utf.h \
-@NACL_FALSE@	src/messenger.cpp \
-@NACL_FALSE@	src/cplusplus.cpp \
-@NACL_FALSE@	src/cxx.cpp \
-@NACL_FALSE@	src/driver.cpp \
-@NACL_FALSE@	src/esidl.cpp \
-@NACL_FALSE@	src/java.cpp \
-@NACL_FALSE@	src/lexer.ll \
-@NACL_FALSE@	src/parser.yy \
-@NACL_FALSE@	src/print.cpp \
-@NACL_FALSE@	src/skeleton.cpp \
-@NACL_FALSE@	src/template.cpp
+SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(JSAPIDIR) $(V8APIDIR)
+DIST_SUBDIRS = testsuite java cplusplus jsapi v8api
+BUILT_SOURCES = lexer.cc parser.cc parser.hh
+esidl_SOURCES = \
+	include/cxx.h \
+	include/esidl.h \
+	include/expr.h \
+	include/formatter.h \
+	include/forward.h \
+	include/info.h \
+	include/java.h \
+	include/messenger.h \
+	include/messengerDispatch.h \
+	include/messengerInvoke.h \
+	include/messengerMeta.h \
+	include/meta.h \
+	include/reflect.h \
+	include/sheet.h \
+	include/utf.h \
+	src/messenger.cpp \
+	src/cxx.cpp \
+	src/driver.cpp \
+	src/esidl.cpp \
+	src/java.cpp \
+	src/lexer.ll \
+	src/parser.yy \
+	src/print.cpp \
+	src/skeleton.cpp \
+	src/template.cpp
 
-@NACL_FALSE@esidl_CXXFLAGS = -D YYERROR_VERBOSE
+esidl_CXXFLAGS = -D YYERROR_VERBOSE
 AM_YFLAGS = -d -v -t
 AM_CPPFLAGS = \
 	-iquote $(srcdir)/include \
@@ -523,7 +459,7 @@ all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .cc .cpp .ll .lo .o .obj .yy
+.SUFFIXES: .cc .cpp .ll .o .obj .yy
 am--refresh: Makefile
 	@:
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
@@ -572,7 +508,6 @@ install-binPROGRAMS: $(bin_PROGRAMS)
 	for p in $$list; do echo "$$p $$p"; done | \
 	sed 's/$(EXEEXT)$$//' | \
 	while read p p1; do if test -f $$p \
-	 || test -f $$p1 \
 	  ; then echo "$$p"; echo "$$p"; else :; fi; \
 	done | \
 	sed -e 'p;s,.*/,,;n;h' \
@@ -587,8 +522,8 @@ install-binPROGRAMS: $(bin_PROGRAMS)
 	while read type dir files; do \
 	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	    test -z "$$files" || { \
-	    echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	    $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
+	      echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
+	      $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
 	    } \
 	; done
 
@@ -604,13 +539,7 @@ uninstall-binPROGRAMS:
 	cd "$(DESTDIR)$(bindir)" && rm -f $$files
 
 clean-binPROGRAMS:
-	@list='$(bin_PROGRAMS)'; test -n "$$list" || exit 0; \
-	echo " rm -f" $$list; \
-	rm -f $$list || exit $$?; \
-	test -n "$(EXEEXT)" || exit 0; \
-	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
-	echo " rm -f" $$list; \
-	rm -f $$list
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 parser.hh: parser.cc
 	@if test ! -f $@; then rm -f parser.cc; else :; fi
 	@if test ! -f $@; then $(MAKE) $(AM_MAKEFLAGS) parser.cc; else :; fi
@@ -625,7 +554,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-cplusplus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-cxx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-driver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-esidl.Po@am__quote@
@@ -651,13 +579,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-.cc.lo:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
-
 esidl-messenger.o: src/messenger.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-messenger.o -MD -MP -MF $(DEPDIR)/esidl-messenger.Tpo -c -o esidl-messenger.o `test -f 'src/messenger.cpp' || echo '$(srcdir)/'`src/messenger.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/esidl-messenger.Tpo $(DEPDIR)/esidl-messenger.Po
@@ -671,20 +592,6 @@ esidl-messenger.obj: src/messenger.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/messenger.cpp' object='esidl-messenger.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-messenger.obj `if test -f 'src/messenger.cpp'; then $(CYGPATH_W) 'src/messenger.cpp'; else $(CYGPATH_W) '$(srcdir)/src/messenger.cpp'; fi`
-
-esidl-cplusplus.o: src/cplusplus.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-cplusplus.o -MD -MP -MF $(DEPDIR)/esidl-cplusplus.Tpo -c -o esidl-cplusplus.o `test -f 'src/cplusplus.cpp' || echo '$(srcdir)/'`src/cplusplus.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/esidl-cplusplus.Tpo $(DEPDIR)/esidl-cplusplus.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/cplusplus.cpp' object='esidl-cplusplus.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-cplusplus.o `test -f 'src/cplusplus.cpp' || echo '$(srcdir)/'`src/cplusplus.cpp
-
-esidl-cplusplus.obj: src/cplusplus.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-cplusplus.obj -MD -MP -MF $(DEPDIR)/esidl-cplusplus.Tpo -c -o esidl-cplusplus.obj `if test -f 'src/cplusplus.cpp'; then $(CYGPATH_W) 'src/cplusplus.cpp'; else $(CYGPATH_W) '$(srcdir)/src/cplusplus.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/esidl-cplusplus.Tpo $(DEPDIR)/esidl-cplusplus.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/cplusplus.cpp' object='esidl-cplusplus.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-cplusplus.obj `if test -f 'src/cplusplus.cpp'; then $(CYGPATH_W) 'src/cplusplus.cpp'; else $(CYGPATH_W) '$(srcdir)/src/cplusplus.cpp'; fi`
 
 esidl-cxx.o: src/cxx.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-cxx.o -MD -MP -MF $(DEPDIR)/esidl-cxx.Tpo -c -o esidl-cxx.o `test -f 'src/cxx.cpp' || echo '$(srcdir)/'`src/cxx.cpp
@@ -826,13 +733,6 @@ esidl-template.obj: src/template.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-.cpp.lo:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
-
 .ll.cc:
 	$(AM_V_LEX)$(am__skiplex) $(SHELL) $(YLWRAP) $< $(LEX_OUTPUT_ROOT).c $@ -- $(LEXCOMPILE)
 
@@ -848,15 +748,6 @@ parser.cc: src/parser.yy
 	$(AM_V_YACC) \
 	$(am__skipyacc) \
 	$(SHELL) $(YLWRAP) `test -f 'src/parser.yy' || echo '$(srcdir)/'`src/parser.yy y.tab.c parser.cc y.tab.h `echo parser.cc | $(am__yacc_c2h)` y.output parser.output -- $(YACC) $(AM_YFLAGS) $(YFLAGS)
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool config.lt
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -963,7 +854,6 @@ cscopelist-am: $(am__tagged_files)
 distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 	-rm -f cscope.out cscope.in.out cscope.po.out cscope.files
-@NACL_TRUE@dist-hook:
 
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
@@ -1193,18 +1083,16 @@ maintainer-clean-generic:
 	-rm -f parser.cc
 	-rm -f parser.hh
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-@NACL_TRUE@clean-local:
 clean: clean-recursive
 
-clean-am: clean-binPROGRAMS clean-generic clean-libtool clean-local \
-	mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-local mostlyclean-am
 
 distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
-	distclean-libtool distclean-tags
+	distclean-tags
 
 dvi: dvi-recursive
 
@@ -1255,8 +1143,7 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool
+mostlyclean-am: mostlyclean-compile mostlyclean-generic
 
 pdf: pdf-recursive
 
@@ -1273,11 +1160,10 @@ uninstall-am: uninstall-binPROGRAMS
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
 	am--refresh check check-am clean clean-binPROGRAMS \
-	clean-cscope clean-generic clean-libtool clean-local cscope \
-	cscopelist-am ctags ctags-am dist dist-all dist-bzip2 \
-	dist-gzip dist-hook dist-lzip dist-shar dist-tarZ dist-xz \
-	dist-zip distcheck distclean distclean-compile \
-	distclean-generic distclean-libtool distclean-tags \
+	clean-cscope clean-generic clean-local cscope cscopelist-am \
+	ctags ctags-am dist dist-all dist-bzip2 dist-gzip dist-hook \
+	dist-lzip dist-shar dist-tarZ dist-xz dist-zip distcheck \
+	distclean distclean-compile distclean-generic distclean-tags \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-binPROGRAMS \
 	install-data install-data-am install-dvi install-dvi-am \
@@ -1286,16 +1172,15 @@ uninstall-am: uninstall-binPROGRAMS
 	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs installdirs-am \
 	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
-	uninstall-binPROGRAMS
+	mostlyclean-compile mostlyclean-generic pdf pdf-am ps ps-am \
+	tags tags-am uninstall uninstall-am uninstall-binPROGRAMS
 
 
-@NACL_FALSE@clean-local:
-@NACL_FALSE@	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
+clean-local:
+	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
 
-@NACL_FALSE@dist-hook:
-@NACL_FALSE@	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.hh
+dist-hook:
+	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.hh
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

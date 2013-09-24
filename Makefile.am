@@ -10,12 +10,6 @@ else
 CPLUSPLUSDIR =
 endif
 
-if ENABLE_NPAPI
-NPAPIDIR = npapi
-else
-NPAPIDIR =
-endif
-
 if ENABLE_JSAPI
 JSAPIDIR = jsapi
 else
@@ -28,22 +22,14 @@ else
 V8APIDIR =
 endif
 
-SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(NPAPIDIR) $(JSAPIDIR) $(V8APIDIR)
-DIST_SUBDIRS = testsuite java cplusplus npapi jsapi v8api
-
-if !NACL
+SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(JSAPIDIR) $(V8APIDIR)
+DIST_SUBDIRS = testsuite java cplusplus jsapi v8api
 
 BUILT_SOURCES = lexer.cc parser.cc parser.hh
 
 bin_PROGRAMS = esidl
 
 esidl_SOURCES = \
-	include/cplusplus.h\
-	include/cplusplusCall.h \
-	include/cplusplusInvoke.h \
-	include/cplusplusMeta.h \
-	include/cplusplusSrc.h \
-	include/cplusplusTemplate.h \
 	include/cxx.h \
 	include/esidl.h \
 	include/expr.h \
@@ -60,7 +46,6 @@ esidl_SOURCES = \
 	include/sheet.h \
 	include/utf.h \
 	src/messenger.cpp \
-	src/cplusplus.cpp \
 	src/cxx.cpp \
 	src/driver.cpp \
 	src/esidl.cpp \
@@ -78,8 +63,6 @@ clean-local:
 
 dist-hook:
 	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.hh
-
-endif
 
 AM_YFLAGS = -d -v -t
 

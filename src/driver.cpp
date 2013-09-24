@@ -98,8 +98,6 @@ int main(int argc, char* argv[])
     bool messengerImp = false;
     bool messengerImpSrc = false;
     bool java = false;
-    bool cplusplus = false;
-    bool cplusplusSrc = false;
     bool sheet = false;
     const char* stringTypeName = "char*";   // C++ string type name to be used
     const char* objectTypeName = "Object";  // C++ object type name to be used
@@ -138,14 +136,6 @@ int main(int argc, char* argv[])
             else if (strcmp(argv[i], "-messenger-imp-src") == 0)
             {
                 messengerImpSrc = true;
-            }
-            else if (strcmp(argv[i], "-cplusplus") == 0)
-            {
-                cplusplus = true;
-            }
-            else if (strcmp(argv[i], "-cplusplus-src") == 0)
-            {
-                cplusplusSrc = true;
             }
             else if (strcmp(argv[i], "-fexceptions") == 0)
             {
@@ -370,7 +360,7 @@ int main(int argc, char* argv[])
 
     setBaseFilename("");
 
-    if (java || cplusplus || cplusplusSrc || sheet)
+    if (java || sheet)
     {
         Node::setCtorScope("_");
     }
@@ -405,16 +395,6 @@ int main(int argc, char* argv[])
     else if (java)
     {
         result = printJava(indent);
-    }
-    else if (cplusplus)
-    {
-        result = printCPlusPlus(stringTypeName, objectTypeName,
-                                useExceptions, useVirtualBase, indent);
-    }
-    else if (cplusplusSrc)
-    {
-        result = printCPlusPlusSrc(stringTypeName, objectTypeName,
-                                   useExceptions, useVirtualBase, indent);
     }
     else if (sheet)
     {

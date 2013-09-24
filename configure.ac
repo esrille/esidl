@@ -1,14 +1,14 @@
 dnl Process this file with autoconf to produce a configure script
 AC_INIT([esidl], [0.4.0])
 AC_CONFIG_AUX_DIR(.)
-AC_CANONICAL_TARGET
+AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([foreign no-define])
 AC_PROG_YACC
 AC_PROG_CXX
 AC_PROG_CC
 AM_PROG_AS
+AC_PROG_RANLIB
 AC_PROG_LEX
-AM_PROG_LIBTOOL
 AC_CONFIG_FILES([
   esidl.spec
   debian/changelog
@@ -17,32 +17,9 @@ AC_CONFIG_FILES([
   testsuite/runtime/Makefile
   java/Makefile
   cplusplus/Makefile 
-  npapi/Makefile
-  npapi/sample/Makefile
   jsapi/Makefile 
   v8api/Makefile
 ])
-
-case ${target} in
-  i[[34567]]86-*-*)
-	cpu_type=i386
-	;;
-  x86_64-*-*)
-	cpu_type=x86_64
-	;;
-  nacl-*-*)
-	nacl=yes
-	EXEEXT=.nexe
-	;;
-  *)
-	echo 'unknown cpu type';
-	exit 1
-	;;
-esac
-
-AM_CONDITIONAL(I386, test x$cpu_type = xi386)
-AM_CONDITIONAL(X86_64, test x$cpu_type = xx86_64)
-AM_CONDITIONAL(NACL, test x$nacl = xyes)
 
 AC_MSG_CHECKING([whether to generate Java interfaces])
 AC_ARG_ENABLE(java, AC_HELP_STRING([--enable-java],
@@ -50,13 +27,6 @@ AC_ARG_ENABLE(java, AC_HELP_STRING([--enable-java],
               [], [enable_java="no"])
 AC_MSG_RESULT([$enable_java])
 AM_CONDITIONAL(ENABLE_JAVA, test "$enable_java" = "yes")
-
-AC_MSG_CHECKING([whether to generate NPAPI interfaces])
-AC_ARG_ENABLE(npapi, AC_HELP_STRING([--enable-npapi],
-                                    [enable NPAPI demo [[default=no]]]), 
-              [], [enable_npapi="no"])
-AC_MSG_RESULT([$enable_npapi])
-AM_CONDITIONAL(ENABLE_NPAPI, test "$enable_npapi" = "yes")
 
 AC_MSG_CHECKING([whether to generate C++ interfaces])
 AC_ARG_ENABLE(cplusplus, AC_HELP_STRING([--enable-cplusplus],
