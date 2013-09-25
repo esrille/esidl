@@ -98,9 +98,10 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_esidl_OBJECTS = esidl-messenger.$(OBJEXT) esidl-cxx.$(OBJEXT) \
 	esidl-driver.$(OBJEXT) esidl-esidl.$(OBJEXT) \
-	esidl-java.$(OBJEXT) esidl-lexer.$(OBJEXT) \
-	esidl-parser.$(OBJEXT) esidl-print.$(OBJEXT) \
-	esidl-skeleton.$(OBJEXT) esidl-template.$(OBJEXT)
+	esidl-java.$(OBJEXT) esidl-help.$(OBJEXT) \
+	esidl-lexer.$(OBJEXT) esidl-parser.$(OBJEXT) \
+	esidl-print.$(OBJEXT) esidl-skeleton.$(OBJEXT) \
+	esidl-template.$(OBJEXT)
 esidl_OBJECTS = $(am_esidl_OBJECTS)
 esidl_LDADD = $(LDADD)
 esidl_LINK = $(CXXLD) $(esidl_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
@@ -385,6 +386,7 @@ esidl_SOURCES = \
 	src/driver.cpp \
 	src/esidl.cpp \
 	src/java.cpp \
+	src/help.cpp \
 	src/lexer.ll \
 	src/parser.yy \
 	src/print.cpp \
@@ -557,6 +559,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-cxx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-driver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-esidl.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-help.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-java.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-lexer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/esidl-messenger.Po@am__quote@
@@ -648,6 +651,20 @@ esidl-java.obj: src/java.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/java.cpp' object='esidl-java.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-java.obj `if test -f 'src/java.cpp'; then $(CYGPATH_W) 'src/java.cpp'; else $(CYGPATH_W) '$(srcdir)/src/java.cpp'; fi`
+
+esidl-help.o: src/help.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-help.o -MD -MP -MF $(DEPDIR)/esidl-help.Tpo -c -o esidl-help.o `test -f 'src/help.cpp' || echo '$(srcdir)/'`src/help.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/esidl-help.Tpo $(DEPDIR)/esidl-help.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/help.cpp' object='esidl-help.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-help.o `test -f 'src/help.cpp' || echo '$(srcdir)/'`src/help.cpp
+
+esidl-help.obj: src/help.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-help.obj -MD -MP -MF $(DEPDIR)/esidl-help.Tpo -c -o esidl-help.obj `if test -f 'src/help.cpp'; then $(CYGPATH_W) 'src/help.cpp'; else $(CYGPATH_W) '$(srcdir)/src/help.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/esidl-help.Tpo $(DEPDIR)/esidl-help.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/help.cpp' object='esidl-help.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -c -o esidl-help.obj `if test -f 'src/help.cpp'; then $(CYGPATH_W) 'src/help.cpp'; else $(CYGPATH_W) '$(srcdir)/src/help.cpp'; fi`
 
 esidl-lexer.o: lexer.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(esidl_CXXFLAGS) $(CXXFLAGS) -MT esidl-lexer.o -MD -MP -MF $(DEPDIR)/esidl-lexer.Tpo -c -o esidl-lexer.o `test -f 'lexer.cc' || echo '$(srcdir)/'`lexer.cc

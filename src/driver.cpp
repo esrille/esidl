@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Esrille Inc.
+ * Copyright 2010-2013 Esrille Inc.
  * Copyright 2008-2010 Google Inc.
  * Copyright 2007 Nintendo Co., Ltd.
  *
@@ -86,7 +86,6 @@ int main(int argc, char* argv[])
     argCpp[optCpp++] = "cpp";
     argCpp[optCpp++] = "-C";  // Use -C for cpp by default.
 
-    bool version = false;
     bool skeleton = false;
     bool generic = false;
     bool isystem = false;
@@ -216,18 +215,17 @@ int main(int argc, char* argv[])
                 ++i;
                 stringTypeName = argv[i];
             }
+            else if (strcmp(argv[i], "--help") == 0)
+            {
+                help();
+                return 0;
+            }
             else if (strcmp(argv[i], "--version") == 0)
             {
-                version = true;
-                break;
+                printf("%s version %s\n", PACKAGE_NAME, PACKAGE_VERSION);
+                return 0;
             }
         }
-    }
-
-    if (version)
-    {
-        printf("%s version %s\n", PACKAGE_NAME, PACKAGE_VERSION);
-        return 0;
     }
 
     argCpp[optCpp] = 0;

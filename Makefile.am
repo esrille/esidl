@@ -50,6 +50,7 @@ esidl_SOURCES = \
 	src/driver.cpp \
 	src/esidl.cpp \
 	src/java.cpp \
+	src/help.cpp \
 	src/lexer.ll \
 	src/parser.yy \
 	src/print.cpp \

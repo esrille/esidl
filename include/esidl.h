@@ -2360,4 +2360,6 @@ int output(const char* filename,
            bool skeleton,
            bool generic);
 
+void help();
+
 #endif  // ESIDL_H_INCLUDED
