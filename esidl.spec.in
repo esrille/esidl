@@ -1,4 +1,4 @@
-Summary: A Web IDL compiler
+Summary: The Esidl Web IDL compiler
 Name: esidl
 Version: @VERSION@
 Release: 1%{?dist}
@@ -7,11 +7,11 @@ Group: Development/Languages
 URL: http://code.google.com/p/es-operating-system/
 Source0: esidl-%{version}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires: gcc gcc-c++ autoconf automake libtool texinfo
+BuildRequires: gcc gcc-c++ autoconf automake help2man texinfo
 BuildRequires: bison flex
 
 %description
-Esidl is a Web IDL compiler which generates C++ header and source
+Esidl is a Web IDL compiler for generating C++ header and source
 files from the interface definitions written in Web IDL.
 
 %prep
@@ -34,6 +34,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc README LICENSE ChangeLog
 %{_bindir}/esidl
+%{_mandir}/man1/esidl.1.gz
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -29,6 +29,11 @@ BUILT_SOURCES = lexer.cc parser.cc parser.hh
 
 bin_PROGRAMS = esidl
 
+man1_MANS = esidl.1
+
+esidl.1: esidl
+	-$(HELP2MAN) -o $@ -n 'The Esidl Web IDL compiler' -N ./esidl
+
 esidl_SOURCES = \
 	include/cxx.h \
 	include/esidl.h \
@@ -60,7 +65,7 @@ esidl_SOURCES = \
 esidl_CXXFLAGS = -D YYERROR_VERBOSE
 
 clean-local:
-	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS)
+	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS) esidl.1
 
 dist-hook:
 	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.hh

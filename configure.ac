@@ -21,6 +21,11 @@ AC_CONFIG_FILES([
   v8api/Makefile
 ])
 
+AC_PATH_PROG([HELP2MAN], [help2man])
+if test x"$HELP2MAN" = x; then
+    AC_MSG_ERROR([Cannot find help2man.])
+fi
+
 AC_MSG_CHECKING([whether to generate Java interfaces])
 AC_ARG_ENABLE(java, AC_HELP_STRING([--enable-java],
                                    [enable Java interface generation [[default=no]]]), 

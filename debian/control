@@ -2,7 +2,7 @@ Source: esidl
 Section: devel
 Priority: extra
 Maintainer: Esrille Inc. (0.2) <info@esrille.org>
-Build-Depends: debhelper (>= 8.0.0), autotools-dev, bison, flex
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, bison, flex, help2man
 Standards-Version: 3.9.2
 Homepage: http://code.google.com/p/es-operating-system/
 #Vcs-Svn: http://es-operating-system.googlecode.com/svn/trunk/esidl
@@ -12,5 +12,5 @@ Package: esidl
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Web IDL compiler
- Esidl is a Web IDL compiler which generates C++ header and source 
+ Esidl is a Web IDL compiler for generating C++ header and source
  files from the interface definitions written in Web IDL.
