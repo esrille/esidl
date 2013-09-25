@@ -228,6 +228,12 @@ int main(int argc, char* argv[])
         }
     }
 
+    if (messenger || messengerSrc || messengerImp || messengerImpSrc)
+    {
+        // Multiple inheritance is not allowed in Web IDL.
+        useMultipleInheritance = false;
+    }
+
     argCpp[optCpp] = 0;
 
     // Set up the global module
