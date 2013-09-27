@@ -2361,5 +2361,6 @@ int output(const char* filename,
            bool generic);
 
 void help();
+void version();
 
 #endif  // ESIDL_H_INCLUDED

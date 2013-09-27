@@ -46,3 +46,8 @@ void help()
 {
     std::cout << helpText;
 }
+
+void version()
+{
+    std::cout << PACKAGE_NAME << ' ' << PACKAGE_VERSION << '\n';
+}
