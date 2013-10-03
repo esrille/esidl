@@ -2,7 +2,8 @@ Source: esidl
 Section: devel
 Priority: extra
 Maintainer: Esrille Inc. (0.2) <info@esrille.org>
-Build-Depends: debhelper (>= 8.0.0), autotools-dev, bison, flex, help2man
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, automake,
+	bison, flex, help2man
 Standards-Version: 3.9.2
 Homepage: http://code.google.com/p/es-operating-system/
 #Vcs-Svn: http://es-operating-system.googlecode.com/svn/trunk/esidl
