@@ -218,7 +218,7 @@ public:
         writeln("static bool hasInstance(Object& object) {");
             writeln("return static_cast<bool>(object.message_(0, getPrefixedName(), IS_KIND_OF_, 0));");
         writeln("}");
-        writeln("static bool hasInstance(std::shared_ptr<Imp> pimpl) {");
+        writeln("static bool hasInstance(const std::shared_ptr<Imp>& pimpl) {");
             writeln("return pimpl && static_cast<bool>(pimpl->message_(0, getPrefixedName(), IS_KIND_OF_, 0));");
         writeln("}");
 
