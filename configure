@@ -585,12 +585,6 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
-ENABLE_V8API_FALSE
-ENABLE_V8API_TRUE
-ENABLE_JSAPI_FALSE
-ENABLE_JSAPI_TRUE
-ENABLE_CPLUSPLUS_FALSE
-ENABLE_CPLUSPLUS_TRUE
 ENABLE_JAVA_FALSE
 ENABLE_JAVA_TRUE
 HELP2MAN
@@ -707,9 +701,6 @@ enable_option_checking
 enable_silent_rules
 enable_dependency_tracking
 enable_java
-enable_cplusplus
-enable_jsapi
-enable_v8api
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1351,9 +1342,6 @@ Optional Features:
   --disable-dependency-tracking
                           speeds up one-time build
   --enable-java           enable Java interface generation [[default=no]]
-  --enable-cplusplus      enable C++ interface generation [[default=no]]
-  --enable-jsapi          enable JSAPI bridge [[default=no]]
-  --enable-v8api          enable V8 API bridge [[default=no]]
 
 Some influential environment variables:
   YACC        The `Yet Another Compiler Compiler' implementation to use.
@@ -4348,7 +4336,7 @@ fi
 rm -f conftest.l $LEX_OUTPUT_ROOT.c
 
 fi
-ac_config_files="$ac_config_files esidl.spec debian/changelog Makefile testsuite/Makefile testsuite/runtime/Makefile java/Makefile cplusplus/Makefile jsapi/Makefile v8api/Makefile"
+ac_config_files="$ac_config_files esidl.spec debian/changelog Makefile testsuite/Makefile testsuite/runtime/Makefile java/Makefile"
 
 
 # Extract the first word of "help2man", so it can be a program name with args.
@@ -4412,124 +4400,6 @@ $as_echo "$enable_java" >&6; }
 else
   ENABLE_JAVA_TRUE='#'
   ENABLE_JAVA_FALSE=
-fi
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to generate C++ interfaces" >&5
-$as_echo_n "checking whether to generate C++ interfaces... " >&6; }
-# Check whether --enable-cplusplus was given.
-if test "${enable_cplusplus+set}" = set; then :
-  enableval=$enable_cplusplus;
-else
-  enable_cplusplus="no"
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_cplusplus" >&5
-$as_echo "$enable_cplusplus" >&6; }
- if test "$enable_cplusplus" = "yes"; then
-  ENABLE_CPLUSPLUS_TRUE=
-  ENABLE_CPLUSPLUS_FALSE='#'
-else
-  ENABLE_CPLUSPLUS_TRUE='#'
-  ENABLE_CPLUSPLUS_FALSE=
-fi
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to generate JSAPI interfaces" >&5
-$as_echo_n "checking whether to generate JSAPI interfaces... " >&6; }
-# Check whether --enable-jsapi was given.
-if test "${enable_jsapi+set}" = set; then :
-  enableval=$enable_jsapi;
-else
-  enable_jsapi="no"
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_jsapi" >&5
-$as_echo "$enable_jsapi" >&6; }
- if test "$enable_jsapi" = "yes"; then
-  ENABLE_JSAPI_TRUE=
-  ENABLE_JSAPI_FALSE='#'
-else
-  ENABLE_JSAPI_TRUE='#'
-  ENABLE_JSAPI_FALSE=
-fi
-
-
-# check for SpiderMonkey 1.8.5
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing JS_NewCompartmentAndGlobalObject" >&5
-$as_echo_n "checking for library containing JS_NewCompartmentAndGlobalObject... " >&6; }
-if ${ac_cv_search_JS_NewCompartmentAndGlobalObject+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_func_search_save_LIBS=$LIBS
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char JS_NewCompartmentAndGlobalObject ();
-int
-main ()
-{
-return JS_NewCompartmentAndGlobalObject ();
-  ;
-  return 0;
-}
-_ACEOF
-for ac_lib in '' js mozjs185; do
-  if test -z "$ac_lib"; then
-    ac_res="none required"
-  else
-    ac_res=-l$ac_lib
-    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
-  fi
-  if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_search_JS_NewCompartmentAndGlobalObject=$ac_res
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext
-  if ${ac_cv_search_JS_NewCompartmentAndGlobalObject+:} false; then :
-  break
-fi
-done
-if ${ac_cv_search_JS_NewCompartmentAndGlobalObject+:} false; then :
-
-else
-  ac_cv_search_JS_NewCompartmentAndGlobalObject=no
-fi
-rm conftest.$ac_ext
-LIBS=$ac_func_search_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_JS_NewCompartmentAndGlobalObject" >&5
-$as_echo "$ac_cv_search_JS_NewCompartmentAndGlobalObject" >&6; }
-ac_res=$ac_cv_search_JS_NewCompartmentAndGlobalObject
-if test "$ac_res" != no; then :
-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-
-fi
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to generate V8 API interfaces" >&5
-$as_echo_n "checking whether to generate V8 API interfaces... " >&6; }
-# Check whether --enable-v8api was given.
-if test "${enable_v8api+set}" = set; then :
-  enableval=$enable_v8api;
-else
-  enable_v8api="no"
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_v8api" >&5
-$as_echo "$enable_v8api" >&6; }
- if test "$enable_v8api" = "yes"; then
-  ENABLE_V8API_TRUE=
-  ENABLE_V8API_FALSE='#'
-else
-  ENABLE_V8API_TRUE='#'
-  ENABLE_V8API_FALSE=
 fi
 
 
@@ -4712,18 +4582,6 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${ENABLE_JAVA_TRUE}" && test -z "${ENABLE_JAVA_FALSE}"; then
   as_fn_error $? "conditional \"ENABLE_JAVA\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${ENABLE_CPLUSPLUS_TRUE}" && test -z "${ENABLE_CPLUSPLUS_FALSE}"; then
-  as_fn_error $? "conditional \"ENABLE_CPLUSPLUS\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${ENABLE_JSAPI_TRUE}" && test -z "${ENABLE_JSAPI_FALSE}"; then
-  as_fn_error $? "conditional \"ENABLE_JSAPI\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${ENABLE_V8API_TRUE}" && test -z "${ENABLE_V8API_FALSE}"; then
-  as_fn_error $? "conditional \"ENABLE_V8API\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
@@ -5305,9 +5163,6 @@ do
     "testsuite/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/Makefile" ;;
     "testsuite/runtime/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/runtime/Makefile" ;;
     "java/Makefile") CONFIG_FILES="$CONFIG_FILES java/Makefile" ;;
-    "cplusplus/Makefile") CONFIG_FILES="$CONFIG_FILES cplusplus/Makefile" ;;
-    "jsapi/Makefile") CONFIG_FILES="$CONFIG_FILES jsapi/Makefile" ;;
-    "v8api/Makefile") CONFIG_FILES="$CONFIG_FILES v8api/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

@@ -4,26 +4,8 @@ else
 JAVADIR =
 endif
 
-if ENABLE_CPLUSPLUS
-CPLUSPLUSDIR = cplusplus
-else
-CPLUSPLUSDIR =
-endif
-
-if ENABLE_JSAPI
-JSAPIDIR = jsapi
-else
-JSAPIDIR =
-endif
-
-if ENABLE_V8API
-V8APIDIR = v8api
-else
-V8APIDIR =
-endif
-
-SUBDIRS = . testsuite $(JAVADIR) $(CPLUSPLUSDIR) $(JSAPIDIR) $(V8APIDIR)
-DIST_SUBDIRS = testsuite java cplusplus jsapi v8api
+SUBDIRS = . testsuite $(JAVADIR)
+DIST_SUBDIRS = testsuite java
 
 BUILT_SOURCES = lexer.cc parser.cc parser.hh
 
