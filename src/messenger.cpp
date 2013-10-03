@@ -281,29 +281,6 @@ public:
         writeln("%s& operator=(%s&&) = default;", getEscapedName(getClassName(node)).c_str(), getEscapedName(getClassName(node)).c_str());
 
         writetab();
-        write("%s(const Object* object)", getEscapedName(getClassName(node)).c_str());
-        if (node->getExtends())
-        {
-            write(" :\n");
-            indent();
-            writetab();
-
-            const char* separator = "";
-            for (NodeList::iterator i = node->getExtends()->begin();
-                 i != node->getExtends()->end();
-                 ++i)
-            {
-                write(separator);
-                (*i)->accept(this);
-                write("(object)");
-                separator = ", ";
-            }
-            write(" ");
-            unindent();
-        }
-        write("{\n");
-        writeln("}");
-        writetab();
         write("explicit %s(Imp* pimpl)", getEscapedName(getClassName(node)).c_str());
         if (node->getExtends())
         {

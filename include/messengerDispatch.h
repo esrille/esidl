@@ -306,7 +306,7 @@ public:
                 {
                     write("arguments[0].toString()");
                 }
-                else if (spec->isInterface(node->getParent()))
+                else if (spec->isInterface(node->getParent()) || spec->isSequence(node->getParent()))
                 {
                     write("arguments[0].toObject()");
                 }
@@ -467,7 +467,7 @@ public:
         {
             write("arguments[%u].toString()", getParamCount() - 1);
         }
-        else if (spec->isInterface(node->getParent()))
+        else if (spec->isInterface(node->getParent()) || spec->isSequence(node->getParent()))
         {
             if (overloaded)
             {
