@@ -1,3 +1,7 @@
+2013-10-07 Shiki Okasaka <Shiki.Okasaka@gmail.com>
+
+	* Makefile.am (BUILT_SOURCES) : Remove parser.cc
+
 2013-10-04 Shiki Okasaka <Shiki.Okasaka@gmail.com>
 
 	Drop jsapi and v8api demo
