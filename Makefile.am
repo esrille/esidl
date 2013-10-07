@@ -7,7 +7,7 @@ endif
 SUBDIRS = . testsuite $(JAVADIR)
 DIST_SUBDIRS = testsuite java
 
-BUILT_SOURCES = lexer.cc parser.cc parser.hh
+BUILT_SOURCES = lexer.cc parser.hh
 
 bin_PROGRAMS = esidl
 
@@ -47,7 +47,7 @@ esidl_SOURCES = \
 esidl_CXXFLAGS = -D YYERROR_VERBOSE
 
 clean-local:
-	-rm -f $(BUILT_SOURCES) parser.output $(nobase_nodist_include_HEADERS) esidl.1
+	-rm -f $(BUILT_SOURCES) parser.cc parser.output $(nobase_nodist_include_HEADERS) esidl.1
 
 dist-hook:
 	-rm -f $(distdir)/lexer.cc $(distdir)/parser.cc $(distdir)/parser.hh
