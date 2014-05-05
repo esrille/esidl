@@ -1582,7 +1582,7 @@ class MessengerImpSrc : public Messenger
         }
         else if (spec->isInterface(node))
         {
-            writeln("return static_cast<Object*>(0);");
+            writeln("return nullptr;");
         }
         else if (spec->isString(node))
         {
